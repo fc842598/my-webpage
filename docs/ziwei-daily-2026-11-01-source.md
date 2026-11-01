@@ -21,7 +21,7 @@ slug：`ziwei-hepan-shengshi-chayi-jilu`
 ### 检查资料精度是否改变结论
 可以为两张盘建一张差异表：左栏写甲的确定输入，右栏写乙两个可能时辰；每条解读后标明是否两种时辰都成立。若只在其中一盘成立，例如夫妻宫四化由禄变忌，就把这条解释从结论移到待核问题。现实沟通中先讨论双方都确认发生过的事件，再谈盘面可能怎样帮助整理表达。这样既能使用已有资料，也不会把缺失的出生记录伪装成确定答案。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘时先为两人分别核出生时间来源，给不确定的一方排相邻时辰双盘；只讨论两盘共同成立的关系问题，再用双方实际沟通记录核实差异。若时间无法确认，就让结论保留条件。
 英文标题：Zi Wei Dou Shu Compatibility With Uneven Birth Time Records
 英文描述：Compare adjacent possible birth hours before making Zi Wei Dou Shu compatibility claims.
 英文正文：
@@ -29,7 +29,7 @@ One partner has a birth certificate; the other only remembers an approximate mor
 
 Read two possible charts for the partner with an uncertain birth hour. Label every palace claim by the input on which it depends. A chart that looks more appealing is not evidence of the correct hour. Use actual relationship conversations and consent to check the practical question.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Read two possible charts for the uncertain birth hour. Keep claims that change between them provisional, and check the relationship question through both partners' accounts.
 
 ---
 
@@ -52,7 +52,7 @@ slug：`ziwei-hepan-liangren-jielun-guishu`
 ### 给每句话加证据等级
 写合盘笔记时可用三种标记：甲盘提示、乙盘提示、双方确认的事实。比如甲觉得自己承担家务较多，这是真实感受，但乙是否故意回避不能从甲盘推出。再比如乙说本周因加班无法赴约，这是乙的陈述，需要双方讨论调整安排。把盘面语言换成可当面提出的问题，能避免把一个人的观察当成另一个人的性格判决。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘时把甲的夫妻宫、乙的夫妻宫和双方确认的互动分别记录。每个四化判断都写明盘主，再用具体提问核实家务、沟通和时间安排；不从一方的宫位推断另一方的性格。
 英文标题：Keep Each Partner's Palace Claims Separate in a Chinese Astrology Chart
 英文描述：Keep each partner's palace observations separate from the other person's character.
 英文正文：
@@ -60,7 +60,7 @@ A pattern in person A's Spouse Palace is not a diagnosis of person B. Label ever
 
 Person A's Spouse Palace describes a perspective within A's chart. It does not diagnose B. Tag each sentence with its chart owner, palace, and time layer. Compare A and B only after reading their charts independently, then test relationship questions through conversation.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Label every observation by chart owner before comparing the two people. Ask about actual shared routines and disagreements instead of assigning a personality from one palace.
 
 ---
 
@@ -83,7 +83,7 @@ slug：`ziwei-liuyue-huaquan-yusuan-quanxian`
 ### 预算会议怎样落地
 开会前让三方各带一份资料：执行者带采购范围，审批者带可动用额度，财务带付款与报销规则。若盘面提示本月责任增加，就问有没有新增授权；若没有，把任务范围调小或要求书面授权。月底复盘时比较批准额、已支付额和未付合同额。这个表比一句武曲化权带财权更能说明问题，也能避免由执行者为不可控的超支背责。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先核本月武曲化权落宫，再分别看官禄职责与财帛预算。现实中查采购范围、审批人和超支责任，三项没有书面对应前，不把化权读成已经取得签字权。
 英文标题：Wu Qu Hua Quan and Monthly Budget Authority in Zi Wei Dou Shu
 英文描述：Separate budget approval from delivery responsibility in a monthly Zi Wei Dou Shu reading.
 英文正文：
@@ -91,7 +91,7 @@ Wu Qu Hua Quan can prompt a budget authority question. A project manager may be 
 
 Wu Qu Hua Quan in a monthly layer can prompt a budget question, but it does not grant spending authority. Separate who proposes a purchase, who approves it, and who owns an overrun. Compare the current month and palace placement, then use the written approval chain to decide the real action.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Confirm the current month and Wu Qu's receiving palace. Check the purchase limit, approver, and overrun owner in writing before treating authority as real.
 
 ---
 
@@ -114,7 +114,7 @@ slug：`ziwei-liuyue-huaji-xiuxi-jiedian`
 ### 给恢复安排一个观察窗口
 可以先试两周：把必须当日完成的任务与可推迟任务分开，设定无会议时段，记录每天的实际下班时间。若工时下降后状态改善，说明排班值得继续调整；若没有改善，进一步检查身体、睡眠或环境因素。命盘的流月标签只能提示本月值得复盘，不能把疲惫的所有原因都归给天同，更不能代替就医或劳动条件的协商。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先确定天同化忌属于当前流月及其落宫，再核官禄、福德与疾厄涉及的问题。以两周工时和休息记录判断安排是否改善；身体症状应由专业人员评估。
 英文标题：Tian Tong Hua Ji and Recovery Time in Zi Wei Dou Shu
 英文描述：Track work hours and recovery before interpreting monthly Tian Tong Hua Ji.
 英文正文：
@@ -122,7 +122,7 @@ Tian Tong Hua Ji does not establish a health outcome. If hours rise while concen
 
 Tian Tong Hua Ji is not a diagnosis. Confirm the monthly chart layer and the receiving palace, then compare work hours, sleep, and deadlines. A schedule problem may call for a clearer handoff; persistent symptoms call for professional care. Recheck the next month's chart instead of carrying one label forward.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Check the monthly layer and palace first. Compare two weeks of hours, rest, and workload; seek qualified care for symptoms rather than treating a chart label as a diagnosis.
 
 ---
 
@@ -145,7 +145,7 @@ slug：`ziwei-caibo-shouru-he-ziyou-xianjin`
 ### 别把收入增长当作缓冲增长
 做决定时还要区分现金余额和可动用余额。银行里有五万元，但其中三万元是下月税费与房租，这笔钱不能随意用于课程或投资。若财帛宫与田宅宫同时出现变化，更应把固定住房支出列在前面。先建立到期日清单，再安排客户回款、储蓄与可选消费；这样才能看出问题在收入、账期还是支出结构。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先看本命财帛的收入方式，再联系官禄交付和田宅固定负担。把签约、到账、税费与贷款逐笔放到到期日表上，流月只帮助安排催款，不把未收款当余额。
 英文标题：Wealth Palace Income Versus Available Cash
 英文描述：Separate signed revenue, received cash, and fixed bills in the Wealth Palace.
 英文正文：
@@ -153,7 +153,7 @@ The Wealth Palace can frame how income is earned, but signed revenue is not cash
 
 A favorable Wealth Palace does not make an unpaid invoice spendable. Separate signed work, received money, and fixed bills. Use the Career Palace to frame delivery and payment terms and the Property Palace to frame long term obligations. The monthly layer can organize follow up timing; bank records determine today's available cash.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Read the Wealth Palace with delivery obligations and fixed housing costs. Put invoices, receipts, tax, and loan dates into one cash schedule before spending.
 
 ---
 
@@ -176,7 +176,7 @@ slug：`ziwei-caibo-xuexi-zhichu-huishou`
 ### 用小试点验证培训价值
 课程宣传承诺转职，不等于雇主认可该证书。付款前可先完成一份小作品，找目标岗位的招聘方或从业者询问缺什么，再决定是否报班。若目标工作需要长期实操，给练习和反馈留时间；若只是补一个工具技能，先试短课。官禄宫帮助确定岗位问题，财帛宫提醒支出边界，现实招聘反馈则决定是否继续投入。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先从财帛核学费与生活缓冲，再看官禄对应的目标职责和迁移的市场机会。用三个真实招聘要求和一份可展示作品检验课程价值，别凭化科直接付款。
 英文标题：Training Costs, Career Palace, and Return on Effort
 英文描述：Compare training costs with real job requirements and available cash.
 英文正文：
@@ -184,7 +184,7 @@ A promising Wealth Palace reading does not justify any training purchase. Compar
 
 A Wealth Palace reading cannot justify any expensive course. Compare its cost and practice time with three real job descriptions. Use the Career Palace for the new role and the Wealth Palace for the cash buffer. A portfolio, interviews, and a written offer remain the evidence that training can be used.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Compare course costs with a cash buffer and three actual job requirements. A completed work sample and hiring feedback are stronger evidence than a transformation label.
 
 ---
 
@@ -207,7 +207,7 @@ slug：`ziwei-huaji-guanlu-fanfu-fangong`
 ### 排除团队信息不一致
 返工有时来自多位审批人给了相反要求。可把每版设计稿的意见集中在一份记录里，请最终负责人确认优先级，再开始修改。若仍持续出现同一技术问题，就针对技能做练习或找同事评审。官禄化忌不该成为责备员工的理由，也不该替流程缺陷开脱；关键是让下一次返工是否减少变得可测量。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先标官禄化忌的时间层次，再查交友协作与财帛成本。把每轮返工的审批人、意见和验收标准记录下来；流程混乱与技能缺口应分别处理。
 英文标题：Career Palace Hua Ji and Repeated Rework
 英文描述：Use Career Palace Hua Ji to investigate rework and approval gaps.
 英文正文：
@@ -215,7 +215,7 @@ Career Palace Hua Ji can frame a question about friction, not prove job failure.
 
 Career Palace Hua Ji can frame a friction question without proving job failure. Compare revision notes, reviewers, and acceptance criteria. Changing requirements call for a process fix; a repeated technical gap may call for practice. Label the natal, annual, or monthly layer before linking the chart to the event.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Identify whether Career Palace friction is natal, annual, or monthly. Use revision history and approval notes to separate a workflow problem from a skill gap.
 
 ---
 
@@ -238,7 +238,7 @@ slug：`ziwei-huaji-tianzhai-jujia-bianhua`
 ### 住得更好与买得起分开
 假设新房每月增加两千元租金，但节省两小时通勤；这个选择可用时间和现金比较。另一个方案是原房多花一次性费用改造工作角，长期支出较低。若贪狼在田宅引出对空间品质的偏好，也要分清必要条件和审美升级。用三套实际房源及合同条款比较，避免把田宅化忌写成一定要搬或一定不能搬。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先看田宅的居住主题，再核夫妻双方需求与财帛承受额。用实际房源、租约与通勤时间比较方案；房屋损失须由合同与现场检查确认。
 英文标题：Property Palace Hua Ji and Housing Disagreement
 英文描述：Separate housing needs, moving costs, and contract risks in the Property Palace.
 英文正文：
@@ -246,7 +246,7 @@ Property Palace Hua Ji does not automatically mean a property loss. A housing di
 
 Property Palace Hua Ji does not establish a property loss. One partner may value a shorter commute while another needs a quiet workspace. List lease dates, deposits, moving costs, and actual needs. Read the annual layer separately from natal preferences and use the Spouse and Wealth Palaces to organize the discussion.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Read Property Palace preferences with both residents' needs and the real housing budget. Compare leases and inspections before deciding whether a move causes loss.
 
 ---
 
@@ -269,7 +269,7 @@ slug：`ziwei-feihua-fachu-gong-guanxi`
 ### 画路线时防止漏项
 在纸上用箭头写发出宫到落入宫，箭头旁标宫干和化入星，再把本命、大限或流年的标签写在上方。假设夫妻宫发出而落官禄，先问工作时间怎样影响双方；若改成子女宫发出，即使落点仍是官禄，也应重问家庭照顾如何影响工作。只改一个起点就复制整段结论，会把不同的问题混成同一故事。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先写发出宫、宫干、承载星与落入宫，注明四化表和时间层次。再把夫妻或交友问题连接到具体互动记录；漏了起点时不要给关系下结论。
 英文标题：Identify the Sending Palace in Relationship Flying Transformations
 英文描述：Identify the sending palace before interpreting a relationship transformation.
 英文正文：
@@ -277,7 +277,7 @@ A transformation landing in the Career Palace says little until the sending pala
 
 A transformation landing in the Career Palace says little without its sending palace. Record the palace stem, carrier star, receiving palace, chart layer, and table convention. A Spouse Palace route and a Friends Palace route raise different questions, even if both land in Career. Neither route proves a coworker's identity or motive.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Write the sending palace, stem, carrier star, and receiving palace. Keep the transformation convention and time layer visible before making a relationship claim.
 
 ---
 
@@ -300,7 +300,7 @@ slug：`ziwei-feihua-shouti-bianhuan`
 ### 遇到第三人先收紧结论
 命主可能想用自己的盘推断孩子或伴侣的未来选择。可以先整理命主能做的事，例如询问对方是否需要帮助、明确自己能提供多少时间和资源。对方的意愿与事实不能由命主盘代替。若要看另一人的个人盘，还需其准确出生资料和同意；两张盘的信息不要混写。这样转宫只是整理问题的工具，不会变成替他人作决定。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘前先注明盘主与观察主体，主体换成子女或伴侣时重画宫位和四化路径。只讨论命主能确认或能主动沟通的事，别替第三人决定其关系。
 英文标题：Changing the Reference Person in Zi Wei Dou Shu
 英文描述：Name the chart owner and reference person when changing a palace frame.
 英文正文：
@@ -308,7 +308,7 @@ Derived palaces depend on whose relationship is being examined. Write down the r
 
 A derived palace depends on the reference person. Write the chart owner and the relationship being examined before recomputing any transformation route. A concern about an adult child's relationship cannot simply be assigned to the chart owner's own marriage. Ask only about facts people choose to share.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Name the chart owner and reference person, then redraw the palace route when the subject changes. Discuss only facts the person can confirm or ask about.
 
 ---
 
@@ -331,7 +331,7 @@ slug：`ziwei-guanlu-mianshi-gangwei-miaoshu`
 ### 面试时问出可比较的答案
 对每个模糊岗位至少问五件事：前三个月交付什么、谁评估结果、可用预算多少、能调动几人、哪些决定需上报。把面试官回答与职位说明逐条对照。若岗位既要带团队又无招聘权，要讨论目标是否可调整；若只要求个人产出，则可核专业技能和时间。官禄宫提示关注职责，正式条件仍应写进合同或邮件确认。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先用官禄宫整理职责问题，再用财帛核薪资与风险。面试后向招聘方书面确认团队、预算、审批权和试用期目标，岗位是否合适以正式条件为准。
 英文标题：Career Palace Questions for a Vague Job Description
 英文描述：Ask concrete Career Palace questions about an unclear job description.
 英文正文：
@@ -339,7 +339,7 @@ A vague growth role needs concrete interview questions. Use the Career Palace to
 
 A vague growth role needs a clear team, budget, reporting line, and trial period goal. Use the Career Palace to frame responsibility questions and the Wealth Palace for pay and risk. A leadership title may lack authority; an individual title may hide management work. Confirm the answers in the written offer.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Use the Career Palace to prepare interview questions and the Wealth Palace to test pay. Request written confirmation of team, budget, authority, and trial goals.
 
 ---
 
@@ -362,7 +362,7 @@ slug：`ziwei-guanlu-guanli-wu-shouquan`
 ### 把权责缺口写成谈判表
 表格左边列任务，如排班、招聘、预算和绩效；右边列当前审批人。若主管负责结果却对关键动作无权，先提出授权或资源要求。不能增加授权时，至少调整考核目标和升级处理路径。两周后复盘被审批卡住的任务数量，比抽象地说有管理格更能支持沟通。星曜只能提示关注角色，组织制度决定角色能否落地。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先区分本命的工作方式和当前岗位，再联读官禄、交友与财帛。把每项管理任务对应到实际审批人；无授权时应谈目标调整，不让星曜代替授权书。
 英文标题：Management Responsibility Without Authority in Zi Wei Dou Shu
 英文描述：Compare management responsibilities with written authority and resources.
 英文正文：
@@ -370,7 +370,7 @@ A Career Palace reading can describe an approach to responsibility; it cannot gr
 
 The Career Palace can frame a person's approach to responsibility; it cannot grant authority. A manager who owns staffing outcomes without hiring rights needs a written delegation and realistic goals. Compare role, reporting line, resources, and pay before interpreting the chart as a management advantage.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Read Career, Friends, and Wealth Palaces together, then map every management duty to an actual approver. A chart cannot replace written delegation.
 
 ---
 
@@ -393,7 +393,7 @@ slug：`ziwei-zhuanzhi-neitui-waibu-yaoyue`
 ### 不同机会用相同标尺
 给每条机会记录职位名称、汇报对象、薪资范围、工作地点、面试进度和有效期。朋友内推可能信息温暖但岗位未开放；猎头邀约可能描述完整却缺少用人部门确认。哪条更接近实际录用，要看证据而不是关系远近。迁移宫有外部变化时，也只提示可以主动核实，不鼓励在合同出现前提前辞职。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先看迁移涉及的外部接触，再看官禄岗位和财帛薪资。把内推与猎头邀约按面试阶段、书面信息和截止日期排列，签约前保留现职退路。
 英文标题：Comparing Referrals and External Offers With the Travel Palace
 英文描述：Compare a referral and recruiter contact using the same evidence standard.
 英文正文：
@@ -401,7 +401,7 @@ A referral and a recruiter invitation are both outside signals, but neither is a
 
 A referral and a recruiter message are both external signals, not offers. The Travel Palace can frame how opportunities arrive; the Career and Wealth Palaces frame role and pay. Compare each lead by written role, interview stage, authority, commute, and compensation before changing jobs.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Use the Travel Palace to organize outside leads. Rank the referral and recruiter message by written role, interview stage, and deadline before changing jobs.
 
 ---
 
@@ -424,7 +424,7 @@ slug：`ziwei-zhuanzhi-xianjin-chubei-guanlu`
 ### 缓冲月数要按坏情形算
 离职计划常按最乐观的求职周期估算；更稳妥的是把面试延期、试用期薪资、保险和家庭突发支出列进去。若还有房贷或抚养责任，田宅与子女宫的现实事项也要进入预算。写出能承受的最低收入和最迟重新就业日期，观察流年变化时就不会把官禄一处的动象当成无限资金支持。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先看官禄的职业变化，再核财帛现金流与田宅固定支出。用实际余额算最坏情形的缓冲月数，再比较内部调整和外部聘书；不因流年动象立即辞职。
 英文标题：Career Change Timing and Cash Reserves in Chinese Astrology
 英文描述：Calculate a cash runway before making a career change.
 英文正文：
@@ -432,7 +432,7 @@ A changing Career Palace does not replace a cash runway. Calculate fixed househo
 
 A changing Career Palace does not replace a cash runway. Calculate fixed expenses and months of available funds first. Compare internal adjustment, external applications, and actual written offers. The chart may organize timing; resignation depends on cash, contract terms, and the risk of a gap.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Read Career changes with Wealth cash flow and Property obligations. Calculate a conservative runway before comparing internal options with written outside offers.
 
 ---
 
@@ -455,7 +455,7 @@ slug：`ziwei-jichu-paibu-xingyao-hedan`
 ### 校盘别从结论倒推输入
 两款软件若给出不同的事业解释，先不要试图用过去经历选择更准的一款。先核输入页、公农历、出生地点和钟表时间，再逐步比命身、局数与紫微星位置。若第一处差异就出现在命宫，后续十四主星和四化不同可能只是连锁结果。记录第一个分歧点，可以减少在十几个宫位里反复猜测。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先核公农历、地点与时辰，然后逐项比较命身、五行局、紫微起点和十四主星。找到第一个算法差异前，暂停两款软件的事业或感情解读。
 英文标题：Audit Star Placement Across Two Zi Wei Dou Shu Charts
 英文描述：Check birth inputs before comparing main star positions across chart apps.
 英文正文：
@@ -463,7 +463,7 @@ When two chart apps place primary stars differently, check birth date conversion
 
 When two chart apps place the main stars differently, compare calendar setting, birthplace, time zone, and birth hour first. Then locate the earliest difference in Life Palace, Five Phase Bureau, and the Zi Wei anchor. A transformation table disagreement is a different problem from a main star placement disagreement.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Compare birth conversion and hour, then Life Palace, bureau, Zi Wei anchor, and all primary stars. Pause interpretation until the first placement difference is explained.
 
 ---
 
@@ -486,7 +486,7 @@ slug：`ziwei-konggong-shuliang-buju`
 ### 一个逐宫清单就能定位
 把十二宫按相同顺序排列，每宫只记十四主星，不记辅曜。两款软件若这份清单完全一致，所谓空宫数量不同多半是标签或显示设置；若某颗主星缺失，就检查是否隐藏、漏排或采用不同安星法。等主星清单确认后，再把辅曜与四化加回去讨论对宫。这样不会因界面上星很多就误以为没有空宫。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先列十二宫的十四主星，再比较软件对空宫的定义与辅曜显示。只有主星排布确认后，才看对宫与三方；空宫总数本身不是人生评分。
 英文标题：Empty Palace Counts and Chart Layout Checks
 英文描述：Check the definition and primary star layout behind empty palace counts.
 英文正文：
@@ -494,7 +494,7 @@ Different empty palace counts may reflect different chart inputs or definitions.
 
 An empty palace usually means no primary star, not an entirely blank palace. Check whether both apps use that definition and display the same supporting stars. Compare the full primary star layout and the Zi Wei anchor before borrowing an opposite palace interpretation.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+List primary stars in all twelve palaces and compare each app's empty palace definition. Only after the layout agrees should the opposite palace be interpreted.
 
 ---
 
@@ -517,7 +517,7 @@ slug：`ziwei-wuxingju-daxian-qisui-xiaoyan`
 ### 起岁差异还可能是年龄写法
 一种软件把大限第一段标作二至十一岁，另一种用周岁显示对应日历年份，看起来会差一岁。先问标注的是虚岁、周岁还是进入宫位的年份，再对同一出生日期计算。若局数与方向都相同，单纯展示标记不同不必重排全盘。若实际起点仍不一致，则回到命宫干支与出生日期换算逐项校验。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先核命宫干支和五行局，再比起限岁数、顺逆方向及虚周岁标法。若只是年龄展示不同，注明口径即可；真正的计算差异解决后再谈大限主题。
 英文标题：Ren Stem Hua Ke: Zuo Fu or Tian Fu Across Schools
 英文描述：Audit Five Phase Bureau and age conventions when decade start ages differ.
 英文正文：
@@ -525,7 +525,7 @@ Different decade starting ages may reflect different chart inputs or display con
 
 The Five Phase Bureau helps determine the starting age of decade cycles. If two apps show different bureaus, compare birth conversion and Life Palace stem and branch first. If the bureau matches but cycle direction differs, check the separate direction rule. Record both apps' settings before interpreting any decade.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Compare the Life Palace stem and branch, bureau, decade direction, and age convention. Resolve calculation differences before interpreting the decade theme.
 
 ---
 
@@ -548,7 +548,7 @@ slug：`ziwei-wuxingju-bazi-wuxing-qubie`
 ### 不要用标签反推性格
 有人看到水二局就认为自己一定情绪化，或以为八字缺水必须改变职业；两个推断都没有从所问问题出发。紫微盘里局数的任务是帮助安星和起大限，讨论工作还需看官禄、命宫与现实岗位。八字五行则应按其自身规则完整分析。把计算标签与应用问题分开，才能避免同字不同义造成的误会。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘时把紫微的局数、紫微起点与大限起岁放在一栏，八字五行另列一栏。问清两套标签各自如何计算，避免从水二局反推个人五行不足或职业选择。
 英文标题：Keep the Transformation Table Consistent Across Chart Apps
 英文描述：Keep Zi Wei Dou Shu bureau labels separate from Four Pillars element counts.
 英文正文：
@@ -556,7 +556,7 @@ Water Two Bureau and Water in a Four Pillars chart answer different questions.
 
 Water Two Bureau is a Zi Wei Dou Shu chart calculation label. It is not a count of Water in a Four Pillars chart. The same element word can serve different calculation systems. Keep the bureau, primary star placement, and decade start in one record; keep any Four Pillars element analysis in another.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Keep the Zi Wei bureau calculation separate from Four Pillars element analysis. Similar element names do not answer the same personal or career question.
 
 ---
 
@@ -579,7 +579,7 @@ slug：`ziwei-daxian-fuqi-yiduiyi-hezuo`
 ### 合作需要比关系更具体的条款
 一对一合作至少要写清工作范围、交付日期、费用、修改次数和退出方式。夫妻宫大限若提醒关系议题，这些条款可以成为观察点；但对方是否可靠，仍须靠历史合作和合同履行来判断。若合作对象也是伴侣，更应把私人沟通与业务审批分开，不让同一场争执同时决定感情和付款。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先定位夫妻宫大限的阶段主题，再根据问题联读官禄、财帛与交友。把合作范围、付款、交付和退出写成合同条款；宫位不能替合作方承诺履约。
 英文标题：Wen Chang and Wen Qu Near a Birth Hour Boundary
 英文描述：Read a Spouse Palace decade as a possible one to one cooperation question.
 英文正文：
@@ -587,7 +587,7 @@ A decade in the Spouse Palace can also frame one to one work relationships.
 
 A decade cycle passing through the Spouse Palace does not guarantee a marriage event. It may also frame one to one contracts or negotiations. A consultant renewing with a client and partners opening a shop share a relationship structure but need different checks for work, money, and exit terms.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Read the decade Spouse Palace as a possible cooperation frame, then test work scope, payment, and exit terms in a real agreement.
 
 ---
 
@@ -610,7 +610,7 @@ slug：`ziwei-daxian-shinian-niandu-jihua`
 ### 年度复盘保留可撤回空间
 十年计划可以设方向，却要允许一年后修正。年初记录能投入的预算和时间，年中核项目反馈，年底比较目标与实际。若流年显示外部机会，但市场需求没有验证，就先做小规模试点；若官禄责任增加而团队资源不足，先谈授权。用可撤回的小动作回应大限主题，比预言某年必有升迁更实际。
 
-排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
+排盘先确定大限与三方四正的长期主题，再用当年流年缩小问题。给年度目标设预算、试点和复盘日；每年按真实结果修正计划，不把十年宫位写成事件表。
 英文标题：Why Wen Chang and Wen Qu Together Do Not Predict Grades
 英文描述：Turn decade themes into annual goals and review points, not event predictions.
 英文正文：
@@ -618,6 +618,6 @@ A decade theme is a planning frame rather than a calendar of guaranteed events.
 
 A decade palace is a broad planning frame, not an event forecast for every year. Set one year goals, budgets, and checkpoints using real conditions. Revisit the annual chart when circumstances change. A career transition or external platform idea needs actual skills, offers, costs, and feedback before action.
 
-Start with the birth inputs and chart convention, then separate natal, decade, annual, and monthly layers. Use the chart to frame a question and real records to test it.
+Use the decade chart for a broad theme and the annual chart for current choices. Set a budget, small trial, and review date instead of predicting a guaranteed event.
 
 ---
