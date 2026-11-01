@@ -10,7 +10,7 @@
 | 04 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-liuyue-huaji-xiuxi-jiedian.html / https://yuetianai.com/articles/en/ziwei-liuyue-huaji-xiuxi-jiedian.html | ziwei-liuyue-huaji-xiuxi-jiedian | 流月天同化忌遇上工作倦怠，怎样区分节奏问题？ | 大限流年 |
 | 05 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-caibo-shouru-he-ziyou-xianjin.html / https://yuetianai.com/articles/en/ziwei-caibo-shouru-he-ziyou-xianjin.html | ziwei-caibo-shouru-he-ziyou-xianjin | 财帛宫看起来有收入，为什么可支配现金仍少？ | 财运事业 |
 | 06 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-caibo-xuexi-zhichu-huishou.html / https://yuetianai.com/articles/en/ziwei-caibo-xuexi-zhichu-huishou.html | ziwei-caibo-xuexi-zhichu-huishou | 为学习花钱后想转职，财帛和官禄各核什么？ | 财运事业 |
-| 07 | 待发布 | ziwei-huaji-guanlu-fanfu-fangong | 官禄化忌遇反复返工，压力是岗位还是流程？ | 财运事业 |
+| 07 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-huaji-guanlu-fanfu-fangong.html / https://yuetianai.com/articles/en/ziwei-huaji-guanlu-fanfu-fangong.html | ziwei-huaji-guanlu-fanfu-fangong | 官禄化忌遇反复返工，压力是岗位还是流程？ | 财运事业 |
 | 08 | 待发布 | ziwei-huaji-tianzhai-jujia-bianhua | 田宅化忌遇搬家分歧，如何分开居住需求与损失？ | 宫位组合 |
 | 09 | 待发布 | ziwei-feihua-fachu-gong-guanxi | 飞化谈感情时，如何确认是哪个宫位发出四化？ | 四化 |
 | 10 | 待发布 | ziwei-feihua-shouti-bianhuan | 同一颗化忌换了观察主体，为什么不能直接套结论？ | 四化 |
