@@ -23,7 +23,7 @@ slug：`ziwei-hepan-shengshi-chayi-jilu`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Zi Wei Dou Shu Compatibility With Uneven Birth Time Records
-英文描述：排盘输入可靠度；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Compare adjacent possible birth hours before making Zi Wei Dou Shu compatibility claims.
 英文正文：
 One partner has a birth certificate; the other only remembers an approximate morning hour. Record the source of each birth time and compare adjacent possible charts before reading compatibility. Keep uncertain palace claims provisional and ask permission before using the other person's data.
 
@@ -54,7 +54,7 @@ slug：`ziwei-hepan-liangren-jielun-guishu`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Keep Each Partner's Palace Claims Separate in a Chinese Astrology Chart
-英文描述：论断归属；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Keep each partner's palace observations separate from the other person's character.
 英文正文：
 A pattern in person A's Spouse Palace is not a diagnosis of person B. Label every statement by chart owner, palace, and observed behavior. Compare the two readings only after each chart is checked, then verify relationship claims through conversation.
 
@@ -85,7 +85,7 @@ slug：`ziwei-liuyue-huaquan-yusuan-quanxian`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Wu Qu Hua Quan and Monthly Budget Authority in Zi Wei Dou Shu
-英文描述：流月预算权限；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Separate budget approval from delivery responsibility in a monthly Zi Wei Dou Shu reading.
 英文正文：
 Wu Qu Hua Quan can prompt a budget authority question. A project manager may be responsible for delivery without permission to approve spending. Verify the monthly chart layer, then put approver, purchaser, and overrun owner in separate columns.
 
@@ -116,7 +116,7 @@ slug：`ziwei-liuyue-huaji-xiuxi-jiedian`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Tian Tong Hua Ji and Recovery Time in Zi Wei Dou Shu
-英文描述：流月工作与休息节奏；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Track work hours and recovery before interpreting monthly Tian Tong Hua Ji.
 英文正文：
 Tian Tong Hua Ji does not establish a health outcome. If hours rise while concentration falls, track sleep, workload, and deadlines. Check the monthly transformation's actual palace before relating it to the Career or Health Palace; use medical advice for symptoms.
 
@@ -147,7 +147,7 @@ slug：`ziwei-caibo-shouru-he-ziyou-xianjin`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Wealth Palace Income Versus Available Cash
-英文描述：实收与可用现金；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Separate signed revenue, received cash, and fixed bills in the Wealth Palace.
 英文正文：
 The Wealth Palace can frame how income is earned, but signed revenue is not cash in the bank. Separate invoiced work, received payments, taxes, and fixed costs. Read the chart only after the financial terms are clear.
 
@@ -178,7 +178,7 @@ slug：`ziwei-caibo-xuexi-zhichu-huishou`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Training Costs, Career Palace, and Return on Effort
-英文描述：培训支出与岗位回收；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Compare training costs with real job requirements and available cash.
 英文正文：
 A promising Wealth Palace reading does not justify any training purchase. Compare course cost and study time with a specific job description. Use the Career Palace to frame the role question, then check actual skills and hiring requirements.
 
@@ -209,7 +209,7 @@ slug：`ziwei-huaji-guanlu-fanfu-fangong`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Career Palace Hua Ji and Repeated Rework
-英文描述：返工的岗位与流程来源；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Use Career Palace Hua Ji to investigate rework and approval gaps.
 英文正文：
 Career Palace Hua Ji can frame a question about friction, not prove job failure. When a deliverable is revised repeatedly, compare review notes and approval owners. Separate unclear workflow from a skill gap before deciding what to change.
 
@@ -240,7 +240,7 @@ slug：`ziwei-huaji-tianzhai-jujia-bianhua`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Property Palace Hua Ji and Housing Disagreement
-英文描述：居住需求与实际损失；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Separate housing needs, moving costs, and contract risks in the Property Palace.
 英文正文：
 Property Palace Hua Ji does not automatically mean a property loss. A housing dispute may involve commute time, workspace, or lease cost. List each person's requirement and actual expense before using the chart to organize the discussion.
 
@@ -271,7 +271,7 @@ slug：`ziwei-feihua-fachu-gong-guanxi`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Identify the Sending Palace in Relationship Flying Transformations
-英文描述：飞化发出宫的归属；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Identify the sending palace before interpreting a relationship transformation.
 英文正文：
 A transformation landing in the Career Palace says little until the sending palace and chart method are identified. Record the sending palace, carrier star, receiving palace, and time layer. Do not turn that route into a factual claim about a coworker.
 
@@ -302,7 +302,7 @@ slug：`ziwei-feihua-shouti-bianhuan`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Changing the Reference Person in Zi Wei Dou Shu
-英文描述：观察主体切换；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Name the chart owner and reference person when changing a palace frame.
 英文正文：
 Derived palaces depend on whose relationship is being examined. Write down the reference person before changing the palace frame, then recompute the transformation route. A relative's concern cannot be assigned to the chart owner as behavior.
 
@@ -333,7 +333,7 @@ slug：`ziwei-guanlu-mianshi-gangwei-miaoshu`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Career Palace Questions for a Vague Job Description
-英文描述：模糊岗位的面试核查；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Ask concrete Career Palace questions about an unclear job description.
 英文正文：
 A vague growth role needs concrete interview questions. Use the Career Palace to frame responsibility, then ask about team size, decision rights, resources, and trial period goals. The written job offer remains the source for employment terms.
 
@@ -364,7 +364,7 @@ slug：`ziwei-guanlu-guanli-wu-shouquan`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Management Responsibility Without Authority in Zi Wei Dou Shu
-英文描述：管理责任与授权缺口；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Compare management responsibilities with written authority and resources.
 英文正文：
 A Career Palace reading can describe an approach to responsibility; it cannot grant workplace authority. If a manager owns staffing outcomes but cannot approve hiring, compare the role description, reporting line, and written delegation.
 
@@ -395,7 +395,7 @@ slug：`ziwei-zhuanzhi-neitui-waibu-yaoyue`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Comparing Referrals and External Offers With the Travel Palace
-英文描述：外部机会的证据强弱；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Compare a referral and recruiter contact using the same evidence standard.
 英文正文：
 A referral and a recruiter invitation are both outside signals, but neither is an offer. Compare the Travel and Career Palaces only after noting the actual role, pay range, interview stage, and written evidence for each lead.
 
@@ -426,7 +426,7 @@ slug：`ziwei-zhuanzhi-xianjin-chubei-guanlu`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Career Change Timing and Cash Reserves in Chinese Astrology
-英文描述：离职现金缓冲；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Calculate a cash runway before making a career change.
 英文正文：
 A changing Career Palace does not replace a cash runway. Calculate fixed household expenses and months of available funds before resigning. Compare internal adjustment and external applications with actual offers, then use the chart to organize timing questions.
 
@@ -457,7 +457,7 @@ slug：`ziwei-jichu-paibu-xingyao-hedan`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Audit Star Placement Across Two Zi Wei Dou Shu Charts
-英文描述：十四主星排布输入核验；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Check birth inputs before comparing main star positions across chart apps.
 英文正文：
 When two chart apps place primary stars differently, check birth date conversion, location, time zone, and hour first. Then compare the Zi Wei anchor and primary star layout. Only after inputs match should the calculation method be investigated.
 
@@ -488,7 +488,7 @@ slug：`ziwei-konggong-shuliang-buju`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Empty Palace Counts and Chart Layout Checks
-英文描述：空宫定义的技术差异；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Check the definition and primary star layout behind empty palace counts.
 英文正文：
 Different empty palace counts may reflect different chart inputs or definitions. Confirm all primary stars are present, compare the Zi Wei anchor, and ask whether an app counts supporting stars when labeling a palace empty. Do not read the count as a life score.
 
@@ -519,7 +519,7 @@ slug：`ziwei-wuxingju-daxian-qisui-xiaoyan`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Ren Stem Hua Ke: Zuo Fu or Tian Fu Across Schools
-英文描述：五行局与起限年龄；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Audit Five Phase Bureau and age conventions when decade start ages differ.
 英文正文：
 Different decade starting ages may reflect different chart inputs or display conventions.
 
@@ -550,7 +550,7 @@ slug：`ziwei-wuxingju-bazi-wuxing-qubie`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Keep the Transformation Table Consistent Across Chart Apps
-英文描述：五行局与八字五行概念；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Keep Zi Wei Dou Shu bureau labels separate from Four Pillars element counts.
 英文正文：
 Water Two Bureau and Water in a Four Pillars chart answer different questions.
 
@@ -581,7 +581,7 @@ slug：`ziwei-daxian-fuqi-yiduiyi-hezuo`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Wen Chang and Wen Qu Near a Birth Hour Boundary
-英文描述：夫妻宫大限与一对一合作；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Read a Spouse Palace decade as a possible one to one cooperation question.
 英文正文：
 A decade in the Spouse Palace can also frame one to one work relationships.
 
@@ -612,7 +612,7 @@ slug：`ziwei-daxian-shinian-niandu-jihua`
 
 排盘使用顺序：先固定出生资料和采用的四化表，按本文问题所涉宫位逐项记录，再区分本命、大限、流年与流月；把每个判断转换成可向当事人核实的事实。若证据不足，保留两种可能，不替现实作最终决定。
 英文标题：Why Wen Chang and Wen Qu Together Do Not Predict Grades
-英文描述：十年主题转年度计划；以具体宫位和现实证据核查，不作确定性断言。
+英文描述：Turn decade themes into annual goals and review points, not event predictions.
 英文正文：
 A decade theme is a planning frame rather than a calendar of guaranteed events.
 
