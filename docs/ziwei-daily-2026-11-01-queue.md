@@ -6,7 +6,7 @@
 |---|---|---|---|---|
 | 01 | 已发布 2026-11-01 10:07 https://yuetianai.com/articles/ziwei-hepan-shengshi-chayi-jilu.html / https://yuetianai.com/articles/en/ziwei-hepan-shengshi-chayi-jilu.html | ziwei-hepan-shengshi-chayi-jilu | 合盘时两人的出生时间精度不同，先核哪一步？ | 宫位组合 |
 | 02 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-hepan-liangren-jielun-guishu.html / https://yuetianai.com/articles/en/ziwei-hepan-liangren-jielun-guishu.html | ziwei-hepan-liangren-jielun-guishu | 合盘解读把一方的夫妻宫写成另一方性格，怎样纠正？ | 宫位组合 |
-| 03 | 待发布 | ziwei-liuyue-huaquan-yusuan-quanxian | 流月武曲化权涉及预算，决定权和执行责任怎么分？ | 大限流年 |
+| 03 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-liuyue-huaquan-yusuan-quanxian.html / https://yuetianai.com/articles/en/ziwei-liuyue-huaquan-yusuan-quanxian.html | ziwei-liuyue-huaquan-yusuan-quanxian | 流月武曲化权涉及预算，决定权和执行责任怎么分？ | 大限流年 |
 | 04 | 待发布 | ziwei-liuyue-huaji-xiuxi-jiedian | 流月天同化忌遇上工作倦怠，怎样区分节奏问题？ | 大限流年 |
 | 05 | 待发布 | ziwei-caibo-shouru-he-ziyou-xianjin | 财帛宫看起来有收入，为什么可支配现金仍少？ | 财运事业 |
 | 06 | 待发布 | ziwei-caibo-xuexi-zhichu-huishou | 为学习花钱后想转职，财帛和官禄各核什么？ | 财运事业 |
