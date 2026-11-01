@@ -14,7 +14,7 @@
 | 08 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-huaji-tianzhai-jujia-bianhua.html / https://yuetianai.com/articles/en/ziwei-huaji-tianzhai-jujia-bianhua.html | ziwei-huaji-tianzhai-jujia-bianhua | 田宅化忌遇搬家分歧，如何分开居住需求与损失？ | 宫位组合 |
 | 09 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-feihua-fachu-gong-guanxi.html / https://yuetianai.com/articles/en/ziwei-feihua-fachu-gong-guanxi.html | ziwei-feihua-fachu-gong-guanxi | 飞化谈感情时，如何确认是哪个宫位发出四化？ | 四化 |
 | 10 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-feihua-shouti-bianhuan.html / https://yuetianai.com/articles/en/ziwei-feihua-shouti-bianhuan.html | ziwei-feihua-shouti-bianhuan | 同一颗化忌换了观察主体，为什么不能直接套结论？ | 四化 |
-| 11 | 待发布 | ziwei-guanlu-mianshi-gangwei-miaoshu | 面试岗位职责写得模糊，官禄宫能帮你问什么？ | 财运事业 |
+| 11 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-guanlu-mianshi-gangwei-miaoshu.html / https://yuetianai.com/articles/en/ziwei-guanlu-mianshi-gangwei-miaoshu.html | ziwei-guanlu-mianshi-gangwei-miaoshu | 面试岗位职责写得模糊，官禄宫能帮你问什么？ | 财运事业 |
 | 12 | 待发布 | ziwei-guanlu-guanli-wu-shouquan | 官禄见管理责任却没有授权，命盘和合同如何分读？ | 财运事业 |
 | 13 | 待发布 | ziwei-zhuanzhi-neitui-waibu-yaoyue | 内推与外部邀约同时来，迁移宫该怎样比较机会？ | 财运事业 |
 | 14 | 待发布 | ziwei-zhuanzhi-xianjin-chubei-guanlu | 想离职却没有现金储备，官禄与财帛先后怎么读？ | 财运事业 |
