@@ -18,7 +18,7 @@
 | 12 | 已发布 2026-11-01 10:10 https://yuetianai.com/articles/ziwei-guanlu-guanli-wu-shouquan.html / https://yuetianai.com/articles/en/ziwei-guanlu-guanli-wu-shouquan.html | ziwei-guanlu-guanli-wu-shouquan | 官禄见管理责任却没有授权，命盘和合同如何分读？ | 财运事业 |
 | 13 | 已发布 2026-11-01 10:10 https://yuetianai.com/articles/ziwei-zhuanzhi-neitui-waibu-yaoyue.html / https://yuetianai.com/articles/en/ziwei-zhuanzhi-neitui-waibu-yaoyue.html | ziwei-zhuanzhi-neitui-waibu-yaoyue | 内推与外部邀约同时来，迁移宫该怎样比较机会？ | 财运事业 |
 | 14 | 已发布 2026-11-01 10:10 https://yuetianai.com/articles/ziwei-zhuanzhi-xianjin-chubei-guanlu.html / https://yuetianai.com/articles/en/ziwei-zhuanzhi-xianjin-chubei-guanlu.html | ziwei-zhuanzhi-xianjin-chubei-guanlu | 想离职却没有现金储备，官禄与财帛先后怎么读？ | 财运事业 |
-| 15 | 待发布 | ziwei-jichu-paibu-xingyao-hedan | 两个排盘主星布局不同，先查安星还是出生资料？ | 看盘方法 |
+| 15 | 已发布 2026-11-01 10:10 https://yuetianai.com/articles/ziwei-jichu-paibu-xingyao-hedan.html / https://yuetianai.com/articles/en/ziwei-jichu-paibu-xingyao-hedan.html | ziwei-jichu-paibu-xingyao-hedan | 两个排盘主星布局不同，先查安星还是出生资料？ | 看盘方法 |
 | 16 | 待发布 | ziwei-konggong-shuliang-buju | 空宫数量不同，如何判断是基础排布还是漏排？ | 看盘方法 |
 | 17 | 待发布 | ziwei-wuxingju-daxian-qisui-xiaoyan | 五行局为何影响大限起岁，两个软件不同怎样核？ | 看盘方法 |
 | 18 | 待发布 | ziwei-wuxingju-bazi-wuxing-qubie | 水二局与八字五行多少，为什么不能混作一个结论？ | 看盘方法 |
