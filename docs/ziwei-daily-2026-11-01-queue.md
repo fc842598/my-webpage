@@ -16,7 +16,7 @@
 | 10 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-feihua-shouti-bianhuan.html / https://yuetianai.com/articles/en/ziwei-feihua-shouti-bianhuan.html | ziwei-feihua-shouti-bianhuan | 同一颗化忌换了观察主体，为什么不能直接套结论？ | 四化 |
 | 11 | 已发布 2026-11-01 10:09 https://yuetianai.com/articles/ziwei-guanlu-mianshi-gangwei-miaoshu.html / https://yuetianai.com/articles/en/ziwei-guanlu-mianshi-gangwei-miaoshu.html | ziwei-guanlu-mianshi-gangwei-miaoshu | 面试岗位职责写得模糊，官禄宫能帮你问什么？ | 财运事业 |
 | 12 | 已发布 2026-11-01 10:10 https://yuetianai.com/articles/ziwei-guanlu-guanli-wu-shouquan.html / https://yuetianai.com/articles/en/ziwei-guanlu-guanli-wu-shouquan.html | ziwei-guanlu-guanli-wu-shouquan | 官禄见管理责任却没有授权，命盘和合同如何分读？ | 财运事业 |
-| 13 | 待发布 | ziwei-zhuanzhi-neitui-waibu-yaoyue | 内推与外部邀约同时来，迁移宫该怎样比较机会？ | 财运事业 |
+| 13 | 已发布 2026-11-01 10:10 https://yuetianai.com/articles/ziwei-zhuanzhi-neitui-waibu-yaoyue.html / https://yuetianai.com/articles/en/ziwei-zhuanzhi-neitui-waibu-yaoyue.html | ziwei-zhuanzhi-neitui-waibu-yaoyue | 内推与外部邀约同时来，迁移宫该怎样比较机会？ | 财运事业 |
 | 14 | 待发布 | ziwei-zhuanzhi-xianjin-chubei-guanlu | 想离职却没有现金储备，官禄与财帛先后怎么读？ | 财运事业 |
 | 15 | 待发布 | ziwei-jichu-paibu-xingyao-hedan | 两个排盘主星布局不同，先查安星还是出生资料？ | 看盘方法 |
 | 16 | 待发布 | ziwei-konggong-shuliang-buju | 空宫数量不同，如何判断是基础排布还是漏排？ | 看盘方法 |
