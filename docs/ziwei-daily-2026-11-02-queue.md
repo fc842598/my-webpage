@@ -5,7 +5,7 @@
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-11-02 10:14 https://yuetianai.com/articles/ziwei-tianji-caibo-fuye-hetong.html / https://yuetianai.com/articles/en/ziwei-tianji-caibo-fuye-hetong.html | ziwei-tianji-caibo-fuye-hetong | 财帛宫天机见文昌，副业收入先看专业还是合同？ | 财运事业 |
-| 02 | 待发布 | ziwei-pojun-caibo-lucun-shouru-bodong | 财帛宫破军遇禄存，收入起伏时先查哪笔钱？ | 财运事业 |
+| 02 | 已发布 2026-11-02 10:14 https://yuetianai.com/articles/ziwei-pojun-caibo-lucun-shouru-bodong.html / https://yuetianai.com/articles/en/ziwei-pojun-caibo-lucun-shouru-bodong.html | ziwei-pojun-caibo-lucun-shouru-bodong | 财帛宫破军遇禄存，收入起伏时先查哪笔钱？ | 财运事业 |
 | 03 | 待发布 | ziwei-kongming-qianyi-yidi-mianshi | 命宫空宫借迁移，异地面试该问自己什么？ | 看盘方法 |
 | 04 | 待发布 | ziwei-taiyang-minggong-zuofu-bei-hulue | 命宫太阳见左辅，工作贡献仍被忽略怎么读？ | 宫位组合 |
 | 05 | 待发布 | ziwei-qianyi-huake-yuancheng-koubei | 迁移宫化科做远程合作，口碑是怎么形成的？ | 四化 |
