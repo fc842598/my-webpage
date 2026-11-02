@@ -14,7 +14,7 @@
 | 08 | 已发布 2026-11-02 10:14 https://yuetianai.com/articles/ziwei-taiyang-miaowang-huaji-kuaibumen.html / https://yuetianai.com/articles/en/ziwei-taiyang-miaowang-huaji-kuaibumen.html | ziwei-taiyang-miaowang-huaji-kuaibumen | 太阳庙旺却遇化忌，跨部门发言为何吃力？ | 四化 |
 | 09 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-fuqi-konggong-jieguanlu-fengong.html / https://yuetianai.com/articles/en/ziwei-fuqi-konggong-jieguanlu-fengong.html | ziwei-fuqi-konggong-jieguanlu-fengong | 夫妻宫空宫借官禄，怎样讨论家里的分工？ | 宫位组合 |
 | 10 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-fuqi-tanlang-hualu-fude-huaji.html / https://yuetianai.com/articles/en/ziwei-fuqi-tanlang-hualu-fude-huaji.html | ziwei-fuqi-tanlang-hualu-fude-huaji | 夫妻宫贪狼化禄、福德见忌，社交热闹为何仍累？ | 宫位组合 |
-| 11 | 待发布 | ziwei-tianji-minggong-wenzi-zhiye-xuanze | 天机坐命想做文字工作，星曜与技能怎样分开？ | 财运事业 |
+| 11 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-tianji-minggong-wenzi-zhiye-xuanze.html / https://yuetianai.com/articles/en/ziwei-tianji-minggong-wenzi-zhiye-xuanze.html | ziwei-tianji-minggong-wenzi-zhiye-xuanze | 天机坐命想做文字工作，星曜与技能怎样分开？ | 财运事业 |
 | 12 | 待发布 | ziwei-guanlu-taiyang-wenchang-xingzheng-zhize | 官禄宫太阳文昌，行政岗位到底要展示什么能力？ | 财运事业 |
 | 13 | 待发布 | ziwei-daxian-guanlu-liunian-caibo-huaji | 官禄大限有发展，流年财帛化忌为何还要控现金？ | 大限流年 |
 | 14 | 待发布 | ziwei-daxian-caibo-liunian-guanlu-huake | 财帛大限遇官禄流年化科，转赛道该先试哪一步？ | 大限流年 |
