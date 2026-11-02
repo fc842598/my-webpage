@@ -11,7 +11,7 @@
 | 05 | 已发布 2026-11-02 10:14 https://yuetianai.com/articles/ziwei-qianyi-huake-yuancheng-koubei.html / https://yuetianai.com/articles/en/ziwei-qianyi-huake-yuancheng-koubei.html | ziwei-qianyi-huake-yuancheng-koubei | 迁移宫化科做远程合作，口碑是怎么形成的？ | 四化 |
 | 06 | 已发布 2026-11-02 10:14 https://yuetianai.com/articles/ziwei-qianyi-wuqu-huaquan-waipai-shouquan.html / https://yuetianai.com/articles/en/ziwei-qianyi-wuqu-huaquan-waipai-shouquan.html | ziwei-qianyi-wuqu-huaquan-waipai-shouquan | 迁移宫武曲化权遇外派，职责和授权如何核对？ | 四化 |
 | 07 | 已发布 2026-11-02 10:14 https://yuetianai.com/articles/ziwei-minggong-tianji-huaji-fangan-fanfu.html / https://yuetianai.com/articles/en/ziwei-minggong-tianji-huaji-fangan-fanfu.html | ziwei-minggong-tianji-huaji-fangan-fanfu | 命宫天机化忌，方案反复修改是能力问题吗？ | 宫位组合 |
-| 08 | 待发布 | ziwei-taiyang-miaowang-huaji-kuaibumen | 太阳庙旺却遇化忌，跨部门发言为何吃力？ | 四化 |
+| 08 | 已发布 2026-11-02 10:14 https://yuetianai.com/articles/ziwei-taiyang-miaowang-huaji-kuaibumen.html / https://yuetianai.com/articles/en/ziwei-taiyang-miaowang-huaji-kuaibumen.html | ziwei-taiyang-miaowang-huaji-kuaibumen | 太阳庙旺却遇化忌，跨部门发言为何吃力？ | 四化 |
 | 09 | 待发布 | ziwei-fuqi-konggong-jieguanlu-fengong | 夫妻宫空宫借官禄，怎样讨论家里的分工？ | 宫位组合 |
 | 10 | 待发布 | ziwei-fuqi-tanlang-hualu-fude-huaji | 夫妻宫贪狼化禄、福德见忌，社交热闹为何仍累？ | 宫位组合 |
 | 11 | 待发布 | ziwei-tianji-minggong-wenzi-zhiye-xuanze | 天机坐命想做文字工作，星曜与技能怎样分开？ | 财运事业 |
