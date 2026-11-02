@@ -23,4 +23,4 @@
 | 17 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-xiongdigung-lucun-caibo-huaji-hehuo.html / https://yuetianai.com/articles/en/ziwei-xiongdigung-lucun-caibo-huaji-hehuo.html | ziwei-xiongdigung-lucun-caibo-huaji-hehuo | 兄弟宫禄存、财帛化忌，合伙款项怎样分账？ | 财运事业 |
 | 18 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-xiongdigung-kongjie-jiekuan-bianjie.html / https://yuetianai.com/articles/en/ziwei-xiongdigung-kongjie-jiekuan-bianjie.html | ziwei-xiongdigung-kongjie-jiekuan-bianjie | 兄弟宫见空劫，朋友愿借钱还要核什么？ | 宫位组合 |
 | 19 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-tianzhai-qianyi-zufang-tongqin.html / https://yuetianai.com/articles/en/ziwei-tianzhai-qianyi-zufang-tongqin.html | ziwei-tianzhai-qianyi-zufang-tongqin | 田宅想住得宽、迁移要求多跑，租房先比较什么？ | 宫位组合 |
-| 20 | 待发布 | ziwei-tianzhai-huaji-banjia-huanjing | 搬家后总睡不好，田宅化忌要先核哪些现实条件？ | 宫位组合 |
+| 20 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-tianzhai-huaji-banjia-huanjing.html / https://yuetianai.com/articles/en/ziwei-tianzhai-huaji-banjia-huanjing.html | ziwei-tianzhai-huaji-banjia-huanjing | 搬家后总睡不好，田宅化忌要先核哪些现实条件？ | 宫位组合 |
