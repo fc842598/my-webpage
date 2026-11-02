@@ -19,7 +19,7 @@
 | 13 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-daxian-guanlu-liunian-caibo-huaji.html / https://yuetianai.com/articles/en/ziwei-daxian-guanlu-liunian-caibo-huaji.html | ziwei-daxian-guanlu-liunian-caibo-huaji | 官禄大限有发展，流年财帛化忌为何还要控现金？ | 大限流年 |
 | 14 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-daxian-caibo-liunian-guanlu-huake.html / https://yuetianai.com/articles/en/ziwei-daxian-caibo-liunian-guanlu-huake.html | ziwei-daxian-caibo-liunian-guanlu-huake | 财帛大限遇官禄流年化科，转赛道该先试哪一步？ | 大限流年 |
 | 15 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-tianzhai-huaquan-zufang-juece.html / https://yuetianai.com/articles/en/ziwei-tianzhai-huaquan-zufang-juece.html | ziwei-tianzhai-huaquan-zufang-juece | 田宅宫化权租房，谁做决定和谁付钱一样吗？ | 宫位组合 |
-| 16 | 待发布 | ziwei-tianzhai-konggong-jiezinvgong-shufang | 田宅宫空宫借子女宫，居家书房怎么安排？ | 看盘方法 |
+| 16 | 已发布 2026-11-02 10:15 https://yuetianai.com/articles/ziwei-tianzhai-konggong-jiezinvgong-shufang.html / https://yuetianai.com/articles/en/ziwei-tianzhai-konggong-jiezinvgong-shufang.html | ziwei-tianzhai-konggong-jiezinvgong-shufang | 田宅宫空宫借子女宫，居家书房怎么安排？ | 看盘方法 |
 | 17 | 待发布 | ziwei-xiongdigung-lucun-caibo-huaji-hehuo | 兄弟宫禄存、财帛化忌，合伙款项怎样分账？ | 财运事业 |
 | 18 | 待发布 | ziwei-xiongdigung-kongjie-jiekuan-bianjie | 兄弟宫见空劫，朋友愿借钱还要核什么？ | 宫位组合 |
 | 19 | 待发布 | ziwei-tianzhai-qianyi-zufang-tongqin | 田宅想住得宽、迁移要求多跑，租房先比较什么？ | 宫位组合 |
