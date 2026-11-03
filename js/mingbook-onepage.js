@@ -1773,6 +1773,8 @@
   function syncChatPanelState() {
     if (!document.getElementById('aip-panel-chat')) return;
     if (!state.chartReady || !state.chart || !state.norm) {
+      window._chart = null;
+      window._chartInputs = null;
       window._chartRecordId = null;
       if (typeof window._chatPanelInit === 'function') window._chatPanelInit();
       return;

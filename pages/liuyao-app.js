@@ -167,9 +167,8 @@ function localQuestionGate(question) {
   if (!hasQuestionCue) {
     return fail('占问还没有明确结果，暂不起卦。', '请写成一句明确的问题，例如：这次面试能通过吗？');
   }
-  if ((normalizedQuestion.match(/[？?]/g) || []).length > 1 || /同时|另外|还有|以及|顺便/.test(normalizedQuestion)) {
-    return fail('一次只问一件事。', '请先删到一个核心问题，再提交。');
-  }
+  // Related questions about one event may contain several question marks.
+  // Let the server review meaning instead of rejecting punctuation here.
   return {
     allowed: true,
     normalizedQuestion,
@@ -246,6 +245,7 @@ async function refreshRemoteQuota(currentQuota) {
       clientId
     }
   }, 6000);
+  if (data?.ok === false) throw new Error('Quota temporarily unavailable');
   return data?.quota ? mergeQuota(currentQuota, data.quota) : normalizeQuota(currentQuota);
 }
 async function reviewQuestion(question, currentQuota) {
@@ -272,25 +272,25 @@ async function reviewQuestion(question, currentQuota) {
         clientId,
         recordId: makeUuid()
       }
-    }, 6000);
-    const gate = typeof data?.allowed === 'boolean' ? data : parseGateJson(data?.reply) || local;
+    }, 35000);
+    const gate = typeof data?.allowed === 'boolean' ? data : parseGateJson(data?.reply);
+    if (!gate || typeof gate.allowed !== 'boolean' || data?.ok === false) {
+      throw new Error('Question review unavailable');
+    }
     return {
       ...gate,
       quota: data?.quota || gate.quota || currentQuota
     };
   } catch {
-    const quota = normalizeQuota(currentQuota);
-    return quota.remaining > 0 ? {
-      ...local,
-      allowed: true,
-      reason: '本地审题通过，可以起卦。后台次数稍后同步。',
-      quota
-    } : {
+    // A lost response may still have consumed a server-side use. Reconcile it;
+    // never turn a timeout into a successful, unmetered divination.
+    const quota = await refreshRemoteQuota(currentQuota).catch(() => normalizeQuota(currentQuota));
+    return {
       allowed: false,
       normalizedQuestion: question,
-      reason: '今日六爻占卜已满 3 次，明天再起卦。',
-      suggestion: '',
-      retryable: false,
+      reason: quota.remaining <= 0 ? '今日六爻占卜已满 3 次，明天再起卦。' : '暂未确认审题结果，先不起卦。',
+      suggestion: quota.remaining <= 0 ? '' : '问题已保留，请稍后刷新次数再试。',
+      retryable: quota.remaining > 0,
       quota
     };
   }

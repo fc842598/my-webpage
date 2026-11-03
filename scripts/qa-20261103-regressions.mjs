@@ -3,6 +3,16 @@ import vm from 'node:vm';
 import assert from 'node:assert/strict';
 
 const desktop = fs.readFileSync('js/mingbook-onepage.js', 'utf8');
+let chatSnapshot;
+const chatContext = vm.createContext({
+  document: { getElementById: () => ({}) },
+  state: { chartReady: false, chart: null, norm: null },
+  window: { _chart: { stale: true }, _chartInputs: { stale: true }, _chartRecordId: 'stale-chart' },
+});
+chatContext.window._chatPanelInit = () => { chatSnapshot = { ...chatContext.window }; };
+vm.runInContext(desktop.slice(desktop.indexOf('  function syncChatPanelState('), desktop.indexOf('  function parseTimeText(')), chatContext);
+chatContext.syncChatPanelState();
+for (const key of ['_chart', '_chartInputs', '_chartRecordId']) assert.equal(chatSnapshot[key], null, 'pending chart must not start stale chat save retries');
 const input = { value: '', focus() {} };
 const applied = [];
 const requests = [];
