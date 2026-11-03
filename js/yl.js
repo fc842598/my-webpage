@@ -1195,7 +1195,7 @@
     if (typeof quotaRemaining === "number") {
       quotaText += (quotaMode === "daily" ? " · 今日剩余 " : " · 剩余 ") + Math.max(0, quotaRemaining) + " 次";
     }
-    var chartLimit = quota.chartLimit == null && isMember
+    var chartLimit = quota.chartLimit === null || (quota.chartLimit === undefined && isMember)
       ? null
       : Number(quota.chartLimit || (isMember ? selectedProduct.chartLimit : 1));
     var chartUsed = Math.max(0, Number(quota.chartUsage?.used || 0));

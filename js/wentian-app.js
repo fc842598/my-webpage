@@ -6715,6 +6715,19 @@ async function callWentianChartAiModule(moduleKey, chartData) {
   return wentianPostJson("/api/ai/run", buildWentianChartAiPayload(moduleKey, chartData), 285000, 0);
 }
 
+function getWentianReportError(error) {
+  const text = String(error?.message || "");
+  if (/请先登录|请登录|not authenticated|unauthorized|login required/i.test(text)) {
+    return getWentianCompactText("请先登录账号，再生成完整解读。", "Sign in before generating the complete reading.");
+  }
+  if (!isWentianRetryableError(error) && !/<|request[_ -]?id|stack|deepseek|api[_ -]?key/i.test(text)
+    && /次数|额度|命主|月卡/.test(text) && text.length < 180) return text;
+  return getWentianCompactText(
+    "暂时连接不上解读服务，已生成的内容仍保留。请稍后再试。",
+    "The reading service could not be reached. Completed content is saved. Please try again later."
+  );
+}
+
 function refreshWentianChartAiScreen() {
   if (state.route === "screen-27") navigatePreservingScroll("screen-27", false);
 }
@@ -6761,7 +6774,7 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
       refreshWentianChartAiScreen();
     } catch (error) {
       if (isWentianChartAiRunStale(runSerial, chartData.chartRecordId)) return 0;
-      wentianChartAiState.error = error.message || `${task.label}生成失败`;
+      wentianChartAiState.error = getWentianReportError(error);
       refreshWentianChartAiScreen();
     }
   }
@@ -12751,7 +12764,7 @@ function getWentianMemberSnapshot() {
   const limit = getWentianQuotaLimit(quota, defaultLimit);
   const remaining = getWentianQuotaRemaining(quota, limit);
   const planName = isMember ? (quota.planName || WENTIAN_PAID_PRODUCT_NAME) : (isGuest ? "未登录体验" : "免费用户");
-  const chartLimit = quota.chartLimit == null && isMember ? null : Number(quota.chartLimit || 1);
+  const chartLimit = quota.chartLimit === null || (quota.chartLimit === undefined && isMember) ? null : Number(quota.chartLimit || 1);
   const chartUsed = getWentianChartUsageForDisplay(quota, isGuest);
   return {
     isMember,

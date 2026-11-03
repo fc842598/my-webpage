@@ -40,6 +40,16 @@ assert.equal(requests[1].length, 1, 'previous person must not reach the recognit
 assert.equal((await send('2月3日晚上8点，男，深圳')).complete, true, 'explicit partial follow-up remains supported');
 
 const mobile = fs.readFileSync('js/wentian-app.js', 'utf8');
+const errorContext = vm.createContext({
+  getWentianCompactText: (zh, en) => errorContext.english ? en : zh,
+  isWentianRetryableError: error => /failed to fetch|timeout/i.test(error?.message || ''),
+});
+vm.runInContext(mobile.slice(mobile.indexOf('function getWentianReportError('), mobile.indexOf('function refreshWentianChartAiScreen(')), errorContext);
+assert(!/Failed to fetch/.test(errorContext.getWentianReportError(new Error('Failed to fetch'))));
+assert(!/request_id|DeepSeek/.test(errorContext.getWentianReportError(new Error('DeepSeek 503 request_id=synthetic'))));
+assert(/登录/.test(errorContext.getWentianReportError(new Error('请先登录'))));
+errorContext.english = true;
+assert(/Completed content is saved/.test(errorContext.getWentianReportError(new Error('Failed to fetch'))));
 const guaContext = vm.createContext({ window: {}, LIUYAO_ZHOUYI_ORIGINALS: {} });
 vm.runInContext(fs.readFileSync('pages/zhouyi-originals.js', 'utf8'), guaContext);
 vm.runInContext(mobile.slice(mobile.indexOf('function getLiuyaoZhouyiOriginal('), mobile.indexOf('function getYijingHexagramImageSrc(')), guaContext);
