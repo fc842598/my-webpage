@@ -636,7 +636,7 @@ export default function Home() {
       pendingTimer.current = window.setTimeout(() => {
         setPicked(null);
         setFeedback(null);
-      }, 760);
+      }, 1600);
       return;
     }
 
@@ -675,7 +675,7 @@ export default function Home() {
       pendingTimer.current = window.setTimeout(() => {
         setYijingPicked(null);
         setYijingFeedback(null);
-      }, 760);
+      }, 1600);
       return;
     }
 
@@ -813,6 +813,7 @@ export default function Home() {
         clearProgress();
         if (mobile) finishMobilePanelAction();
       }}>重置当前主题进度</button>
+      <small>只重置本主题关卡和连对，累计答对与最佳记录保留。</small>
     </>
   );
 

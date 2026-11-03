@@ -11934,6 +11934,10 @@ async function shareWentianApp(target = "system") {
 }
 
 async function handleWentianContactAction(action) {
+  if (action === "wentian-contact-form") {
+    window.location.href = "contact.html";
+    return;
+  }
   if (action === "wentian-contact-email") {
     const isEn = getWentianLanguageCode() === "en";
     await copyWentianContactText("842598522@qq.com", isEn ? "Email copied. You can contact us directly." : "邮箱已复制，可直接发邮件联系");
@@ -20673,7 +20677,10 @@ function renderWentianPolishedScreen(screen) {
     `;
   }
   if (no === 35) {
-    const contacts = [["电子邮箱", "842598522@qq.com", "邮", "wentian-contact-email"]];
+    const contacts = [
+      ["电子邮箱", "842598522@qq.com", "邮", "wentian-contact-email"],
+      [getWentianCompactText("问题反馈", "Issue report"), getWentianCompactText("填写问题，可附截图", "Describe the issue and attach a screenshot"), "单", "wentian-contact-form"]
+    ];
     const contactStatusTop = 128 + contacts.length * 78 + 16;
     return `
       ${figBox("wt35-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
