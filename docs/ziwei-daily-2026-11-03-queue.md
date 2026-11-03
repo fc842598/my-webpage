@@ -15,7 +15,7 @@
 | 09 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-fuqi-tiantong-huake-yidi-anpai.html / https://yuetianai.com/articles/en/ziwei-fuqi-tiantong-huake-yidi-anpai.html | ziwei-fuqi-tiantong-huake-yidi-anpai | 夫妻宫天同化科，异地相处靠聊天还是靠安排？ | 宫位组合 |
 | 10 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-fuqi-lianzhen-huaji-yinsi-bianjie.html / https://yuetianai.com/articles/en/ziwei-fuqi-lianzhen-huaji-yinsi-bianjie.html | ziwei-fuqi-lianzhen-huaji-yinsi-bianjie | 夫妻宫廉贞化忌，家庭隐私边界怎么讨论？ | 宫位组合 |
 | 11 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-guanlu-tianliang-huake-kaozheng-gangwei.html / https://yuetianai.com/articles/en/ziwei-guanlu-tianliang-huake-kaozheng-gangwei.html | ziwei-guanlu-tianliang-huake-kaozheng-gangwei | 官禄宫天梁化科，考证后岗位会怎样变化？ | 财运事业 |
-| 12 | 待发布 | ziwei-guanlu-qisha-huaquan-guanli-fanwei | 官禄宫七杀化权，新岗位的管理范围怎么核？ | 财运事业 |
+| 12 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-guanlu-qisha-huaquan-guanli-fanwei.html / https://yuetianai.com/articles/en/ziwei-guanlu-qisha-huaquan-guanli-fanwei.html | ziwei-guanlu-qisha-huaquan-guanli-fanwei | 官禄宫七杀化权，新岗位的管理范围怎么核？ | 财运事业 |
 | 13 | 待发布 | ziwei-daxian-tianzhai-liunian-qianyi-huancheng | 大限田宅、流年迁移同动，换城市之前先算什么？ | 大限流年 |
 | 14 | 待发布 | ziwei-daxian-fude-liunian-guanlu-huaquan | 大限福德遇流年官禄化权，责任增加时怎样保留休息？ | 大限流年 |
 | 15 | 待发布 | ziwei-tianzhai-tianfu-hualu-zhuchu-yusuan | 田宅宫天府化禄，改善住处先做哪笔预算？ | 宫位组合 |
