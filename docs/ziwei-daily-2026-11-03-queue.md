@@ -21,6 +21,6 @@
 | 15 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-tianzhai-tianfu-hualu-zhuchu-yusuan.html / https://yuetianai.com/articles/en/ziwei-tianzhai-tianfu-hualu-zhuchu-yusuan.html | ziwei-tianzhai-tianfu-hualu-zhuchu-yusuan | 田宅宫天府化禄，改善住处先做哪笔预算？ | 宫位组合 |
 | 16 | 已发布 2026-11-03 09:09 https://yuetianai.com/articles/ziwei-tianzhai-jumen-huaji-linli-zaoyin.html / https://yuetianai.com/articles/en/ziwei-tianzhai-jumen-huaji-linli-zaoyin.html | ziwei-tianzhai-jumen-huaji-linli-zaoyin | 田宅宫巨门化忌，邻里噪音要先处理哪件事？ | 宫位组合 |
 | 17 | 已发布 2026-11-03 09:09 https://yuetianai.com/articles/ziwei-xiongdi-tianxiang-huake-hehuo-jilu.html / https://yuetianai.com/articles/en/ziwei-xiongdi-tianxiang-huake-hehuo-jilu.html | ziwei-xiongdi-tianxiang-huake-hehuo-jilu | 兄弟宫天相化科，合伙决策怎样留下可核对的记录？ | 财运事业 |
-| 18 | 待发布 | ziwei-xiongdi-tanlang-hualu-jieshao-yongjin | 兄弟宫贪狼化禄，朋友介绍生意后佣金怎么算？ | 财运事业 |
+| 18 | 已发布 2026-11-03 09:09 https://yuetianai.com/articles/ziwei-xiongdi-tanlang-hualu-jieshao-yongjin.html / https://yuetianai.com/articles/en/ziwei-xiongdi-tanlang-hualu-jieshao-yongjin.html | ziwei-xiongdi-tanlang-hualu-jieshao-yongjin | 兄弟宫贪狼化禄，朋友介绍生意后佣金怎么算？ | 财运事业 |
 | 19 | 待发布 | ziwei-tianzhai-guanlu-zaijia-bangong | 田宅与官禄互牵，在家办公先调整房间还是工作流程？ | 宫位组合 |
 | 20 | 待发布 | ziwei-tianzhai-qianyi-zhuwai-duanzu | 田宅与迁移同看，短期驻外租房要先查哪三项？ | 宫位组合 |
