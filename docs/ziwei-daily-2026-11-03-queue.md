@@ -12,7 +12,7 @@
 | 06 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-qianyi-tianliang-huake-huanpingtai.html / https://yuetianai.com/articles/en/ziwei-qianyi-tianliang-huake-huanpingtai.html | ziwei-qianyi-tianliang-huake-huanpingtai | 迁移宫天梁化科，换平台后专业信誉怎样重新建立？ | 宫位组合 |
 | 07 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-taiyang-luoxian-lucun-muhou-pingjia.html / https://yuetianai.com/articles/en/ziwei-taiyang-luoxian-lucun-muhou-pingjia.html | ziwei-taiyang-luoxian-lucun-muhou-pingjia | 太阳落陷会照禄存，幕后协调工作怎样被评价？ | 宫位组合 |
 | 08 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-taiyang-miaowang-guanlu-huaji-liucheng.html / https://yuetianai.com/articles/en/ziwei-taiyang-miaowang-guanlu-huaji-liucheng.html | ziwei-taiyang-miaowang-guanlu-huaji-liucheng | 太阳庙旺而官禄化忌，带团队为何仍受流程限制？ | 四化 |
-| 09 | 待发布 | ziwei-fuqi-tiantong-huake-yidi-anpai | 夫妻宫天同化科，异地相处靠聊天还是靠安排？ | 宫位组合 |
+| 09 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-fuqi-tiantong-huake-yidi-anpai.html / https://yuetianai.com/articles/en/ziwei-fuqi-tiantong-huake-yidi-anpai.html | ziwei-fuqi-tiantong-huake-yidi-anpai | 夫妻宫天同化科，异地相处靠聊天还是靠安排？ | 宫位组合 |
 | 10 | 待发布 | ziwei-fuqi-lianzhen-huaji-yinsi-bianjie | 夫妻宫廉贞化忌，家庭隐私边界怎么讨论？ | 宫位组合 |
 | 11 | 待发布 | ziwei-guanlu-tianliang-huake-kaozheng-gangwei | 官禄宫天梁化科，考证后岗位会怎样变化？ | 财运事业 |
 | 12 | 待发布 | ziwei-guanlu-qisha-huaquan-guanli-fanwei | 官禄宫七杀化权，新岗位的管理范围怎么核？ | 财运事业 |
