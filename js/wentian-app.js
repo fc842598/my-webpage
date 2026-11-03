@@ -13649,6 +13649,7 @@ function initWentianChartForm() {
   const form = (getWentianArchiveEditId() ? null : readWentianChartFormDraft()) || saved?.form || {};
   const defaultDate = new Date(form.datetime || "2026-05-12T15:21");
   const date = Number.isNaN(defaultDate.getTime()) ? new Date("2026-05-12T15:21") : defaultDate;
+  const hasBirthDate = !!form.datetime && !Number.isNaN(new Date(form.datetime).getTime());
   const name = document.getElementById("wentian-chart-name");
   if (name) name.value = form.name || "";
   populateWentianChartSelects();
@@ -13681,6 +13682,11 @@ function initWentianChartForm() {
   if (lunarMonth) lunarMonth.value = String(lunarSourceMonth);
   updateWentianChartDayOptions(lunarDay, 0, 0, getWentianLunarMonthMax(lunarSourceYear, lunarSourceMonth, lunarSourceIsLeap));
   if (lunarDay) lunarDay.value = String(Math.min(lunarSourceDay, Math.max(1, Number(lunarDay.options.length) - 1)));
+  if (!hasBirthDate) {
+    for (const field of [hiddenDate, year, month, day, hour, minute, lunarYear, lunarMonth, lunarDay]) {
+      if (field) field.value = "";
+    }
+  }
   const leapAuto = document.getElementById("wentian-chart-lunar-leap");
   if (leapAuto) leapAuto.checked = form.autoLeapMonth !== false;
   setWentianChartButtonValue("gender", getWentianChartDefaultGender(form));
@@ -16343,7 +16349,7 @@ function getLiuyaoHexReading(hex) {
 }
 
 function getLiuyaoZhouyiOriginal(hex) {
-  const original = LIUYAO_ZHOUYI_ORIGINALS[Number(hex?.no)];
+  const original = window.YUETIAN_ZHOUYI_ORIGINALS?.[Number(hex?.no)] || LIUYAO_ZHOUYI_ORIGINALS[Number(hex?.no)];
   if (original) {
     return {
       label: "周易原文",
@@ -16351,12 +16357,10 @@ function getLiuyaoZhouyiOriginal(hex) {
       source: "《周易》卦辞、象辞"
     };
   }
-  const reading = getLiuyaoHexReading(hex);
-  const fallback = firstReadableSentence(reading.liu || reading.summary, "");
   return {
-    label: "卦辞摘录",
-    text: fallback ? compactLiuyaoOriginalText(fallback) : "此卦卦辞待补录，先按卦象结构与动爻取用。",
-    source: formatLiuyaoOriginalSource(reading.source)
+    label: "卦辞待核",
+    text: "此卦原文尚未校对，先按卦象结构与动爻取用。",
+    source: ""
   };
 }
 
@@ -17683,6 +17687,7 @@ function loadYangzhaiState() {
 
 let yangzhaiState = loadYangzhaiState();
 let yangzhaiCompassHandler = null;
+let yangzhaiCompassReadTimer = null;
 let yangzhaiCompassSmoothedHeading = null;
 let yangzhaiCompassLastAppliedAt = 0;
 let yangzhaiCompassPoorAccuracyCount = 0;
@@ -18013,6 +18018,8 @@ function setYangzhaiCompassStatus(text, tone = "") {
 function handleYangzhaiCompassOrientation(event) {
   const heading = getYangzhaiHeadingFromOrientationEvent(event);
   if (heading === null) return;
+  clearTimeout(yangzhaiCompassReadTimer);
+  yangzhaiCompassReadTimer = null;
   const now = Date.now();
   if (now - yangzhaiCompassLastAppliedAt < YANGZHAI_COMPASS_MIN_INTERVAL) return;
   const smoothed = smoothYangzhaiCompassHeading(heading);
@@ -18022,6 +18029,8 @@ function handleYangzhaiCompassOrientation(event) {
 }
 
 function stopYangzhaiCompass() {
+  clearTimeout(yangzhaiCompassReadTimer);
+  yangzhaiCompassReadTimer = null;
   resetYangzhaiCompassSmoothing();
   if (yangzhaiCompassHandler) {
     window.removeEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
@@ -18050,6 +18059,14 @@ async function startYangzhaiCompass() {
     window.addEventListener("deviceorientationabsolute", yangzhaiCompassHandler, true);
     window.addEventListener("deviceorientation", yangzhaiCompassHandler, true);
     setYangzhaiCompassActiveUi(true);
+    yangzhaiCompassReadTimer = setTimeout(() => {
+      stopYangzhaiCompass();
+      const isEn = getWentianLanguageCode() === "en";
+      setYangzhaiCompassStatus(isEn ? "No sensor data" : "未收到方向数据", "warn");
+      setYangzhaiCompassPrompt(isEn
+        ? "This device may not have a compass. Check sensor permissions or select the direction manually."
+        : "当前设备可能没有方向传感器，请检查授权，或手动选择方位。", "warn");
+    }, 8000);
     if (getWentianLanguageCode() === "en") {
       setYangzhaiCompassStatus("Reading", "active");
       setYangzhaiCompassPrompt("Reading direction. Rotate the phone to align south, east, north, west.", "active");
@@ -18258,7 +18275,8 @@ function buildYangzhaiResults() {
       } : {
         kind: "hex",
         title: `${displayLabel}住${palace.gua}(${palace.dir}) - ${hex ? hex.name : palace.role}`,
-        desc: bodyText,
+        desc: `传统象义：${displayLabel}在${palace.dir}，对应${hex?.name || palace.role}，可作家庭分工与居住体验的观察提示。\n现实检查：先看采光、通风、动线、隐私和同住者的实际感受，再讨论是否调整。\n单一住宅方位不能判定婚姻破散、寿命或疾病；下方原文保留作传统文化学习，不是对居住者的断言。`,
+        original: bodyText,
         full: hex
           ? `结构：${hex.index}；上卦=角色(${YANGZHAI_ROLE_GUA[mappedLabel]})，下卦=方位(${palace.gua})。原文摘录：${bodyText}`
           : bodyText,
@@ -18270,10 +18288,15 @@ function buildYangzhaiResults() {
 }
 
 function getYangzhaiResultCardHeight(item) {
-  const descLines = Math.max(4, String(item?.desc || "").split("\n").reduce((sum, line) => {
+  const descLines = Math.max(4, getYangzhaiResultDisplayText(item).split("\n").reduce((sum, line) => {
     return sum + Math.max(1, Math.ceil(line.length / 16));
   }, 0));
-  return Math.max(YANGZHAI_RESULT_CARD_HEIGHT, 144 + descLines * 33);
+  return Math.max(YANGZHAI_RESULT_CARD_HEIGHT, 184 + descLines * 33);
+}
+
+function getYangzhaiResultDisplayText(item) {
+  return String(item?.desc || "") + (item?.original && yangzhaiState.expanded?.[item.title]
+    ? `\n\n传统学习原文（不作个人结论）\n${item.original}` : "");
 }
 
 function getYangzhaiResultHeight() {
@@ -18622,7 +18645,8 @@ function sourceYangzhaiResultScreen() {
         ${figText(`yz44-title-${index}`, item.title, 84, y + 19, 248, 18, "#2b251c", 900, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;line-height:1.4;")}
         ${figBox(`yz44-tag-${index}`, 250, y + 74, 82, 26, "", "border:1px solid #ead9bd;border-radius:13px;background:#fff1dc;")}
         ${figText(`yz44-tag-text-${index}`, tag, 250, y + 80, 82, 12, "#8a5a22", 800, "center", "line-height:1.15;")}
-        ${figText(`yz44-desc-${index}`, item.desc, 42, y + 112, 300, 18, "#3f372f", 400, "left", "line-height:1.8;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
+        ${figText(`yz44-desc-${index}`, getYangzhaiResultDisplayText(item), 42, y + 112, 300, 18, "#3f372f", 400, "left", "line-height:1.8;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
+        ${item.original ? `<button type="button" data-action="yangzhai-original-toggle" data-result-index="${index}" style="position:absolute;left:42px;top:${y + cardHeight - 46}px;min-height:34px;border:1px solid #dcceb8;border-radius:12px;background:#fffaf0;color:#7b5128;padding:5px 12px;">${yangzhaiState.expanded?.[item.title] ? "收起传统原文" : "查看传统原文"}</button>` : ""}
       `;
     }).join("")}
     ${figBox("yz44-tip", 20, height - 153, 350, 44, "", "border-radius:12px;background:#fffdf8;")}
@@ -20882,7 +20906,7 @@ function sourceChartFormScreen() {
       <input type="hidden" id="wentian-chart-gender" value="male">
       <input type="hidden" id="wentian-chart-type" value="ziwei">
       <input type="hidden" id="wentian-chart-cal" value="solar">
-      <input type="hidden" id="wentian-chart-date" value="2026-05-12T15:21">
+      <input type="hidden" id="wentian-chart-date" value="">
 
       <div class="wentian-chart-row two">
         <span class="wentian-chart-label">${isEn ? "Name" : "姓名"}</span>
@@ -23770,6 +23794,14 @@ document.addEventListener("toggle", (event) => {
 
 document.addEventListener("click", (event) => {
   const earlyActionTarget = event.target.closest("[data-action]");
+  if (earlyActionTarget?.dataset.action === "yangzhai-original-toggle") {
+    const item = buildYangzhaiResults()[Number(earlyActionTarget.dataset.resultIndex)];
+    if (item) {
+      yangzhaiState.expanded[item.title] = !yangzhaiState.expanded[item.title];
+      navigatePreservingScroll("screen-44", false);
+    }
+    return;
+  }
   if (Date.now() < wentianPointerRouteSuppressUntil) {
     event.preventDefault();
     event.stopPropagation();

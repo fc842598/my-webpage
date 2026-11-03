@@ -4446,8 +4446,8 @@
     fcBirthYear = Number(norm.year) || Number(String(norm.dateStr || '').slice(0, 4)) || state.profile.year;
 
     const genderLabel = fcCurrentGender === 'male' ? '阳男' : '阴女';
-    const zodiac = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
-    const zodiacSign = zodiac[((fcBirthYear - 4) % 12 + 12) % 12];
+    // Use the same lunar-year zodiac as the chart engine/mobile chart.
+    const zodiacSign = chart.zodiac || '—';
     $('#mbpFcName').textContent = state.profile.name || genderLabel;
     $('#mbpFcMeta').textContent = chart.fiveElementsClass ? `${chart.fiveElementsClass}  属${zodiacSign}` : `属${zodiacSign}`;
 
@@ -8519,7 +8519,9 @@
       const day = aiNumber(data.day);
       if (calType === 'lunar') {
         if (Number.isFinite(year)) $('#mbpLunarYear').value = year;
+        else if (options.clearMissing) $('#mbpLunarYear').value = '';
         if (Number.isFinite(month)) $('#mbpLunarMonth').value = month;
+        else if (options.clearMissing) $('#mbpLunarMonth').value = '';
         refreshLunarDayOptions();
         if (Number.isFinite(day)) $('#mbpLunarDay').value = day;
         else if (options.clearMissing) $('#mbpLunarDay').value = '';
@@ -8527,7 +8529,9 @@
         updateLunarLeapState();
       } else {
         if (Number.isFinite(year)) $('#mbpYear').value = year;
+        else if (options.clearMissing) $('#mbpYear').value = '';
         if (Number.isFinite(month)) $('#mbpMonth').value = month;
+        else if (options.clearMissing) $('#mbpMonth').value = '';
         refreshDayOptions();
         if (Number.isFinite(day)) $('#mbpDay').value = day;
         else if (options.clearMissing) $('#mbpDay').value = '';
@@ -8778,6 +8782,12 @@
       const text = String(input?.value || '').trim();
       if (!text || mbpAiBusy) return;
       input.value = '';
+      // A completed recognition belongs to the previous person. A new message
+      // must not silently inherit that person's birthday, time or city.
+      if (mbpAiDraft?.complete || /换个人|另一个人|另一位|新命主|重新识别/.test(text)) {
+        mbpAiDraft = {};
+        mbpAiHistory = [];
+      }
       addMbpAiBubble('user', text);
       mbpAiHistory.push({ role: 'user', content: text });
       const localData = localAiBirthFallback(text);
@@ -8794,7 +8804,15 @@
         if (thinking) thinking.remove();
         setMbpAiBusy(false);
       }
-      const data = mergeAiBirthData(mbpAiDraft, remoteData);
+      let data = mergeAiBirthData(mbpAiDraft, remoteData);
+      const unknownDate = /(?:不记得|不知道|不清楚|忘了|不确定).{0,8}(?:生日|日期|几月|几号)/.test(text);
+      const unknownTime = /(?:不记得|不知道|不清楚|忘了|不确定).{0,15}(?:时辰|时间|几点)/.test(text);
+      if (unknownDate || unknownTime) {
+        data = finalizeAiDraft({ ...data,
+          ...(unknownDate ? { month: null, day: null } : {}),
+          ...(unknownTime ? { hour: null, minute: null } : {}),
+        });
+      }
       mbpAiDraft = data;
       const localHadValue = describeAiKnown(localData).length > 0;
       const reply = buildAiReply(data, remoteData?.reply, localHadValue);

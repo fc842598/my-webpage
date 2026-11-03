@@ -332,7 +332,7 @@ function makeQuestion(moduleId: ModuleId, lifeIndex: number, level: DifficultyLe
 function TrigramLines({ index, compact = false }: { index: number; compact?: boolean }) {
   const trigram = trigrams[index];
   return (
-    <span className={`trigram-lines ${compact ? "compact" : ""}`} aria-label={`${trigram.name}卦`}>
+    <span className={`trigram-lines ${compact ? "compact" : ""}`} role="img" aria-label={`三爻，从下往上：${trigram.lines.map((line) => line ? "阳爻" : "阴爻").join("、")}`}>
       {[...trigram.lines].reverse().map((line, lineIndex) => (
         <i className={line ? "yang" : "yin"} key={`${trigram.name}-${lineIndex}`} aria-hidden="true">
           {!line && <><b /><b /></>}

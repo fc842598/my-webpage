@@ -3413,7 +3413,8 @@
               ...base,
               tag: matched ? "本位相合" : "卦象解读",
               title: formatHanText(hex ? `${displayLabel}住${palace.gua}宫 · 第${hex.no}卦 ${hex.name}` : `${displayLabel}住${palace.gua}宫`),
-              body: bodyLines.join("\n"),
+              body: `传统象义：${displayLabel}在${palace.dir}，对应${hex?.name || palace.role}，可作家庭分工与居住体验的观察提示。\n现实检查：先看采光、通风、动线、隐私和同住者的实际感受，再讨论是否调整。\n单一住宅方位不能判定婚姻破散、寿命或疾病；原文保留作传统文化学习，不是对居住者的断言。`,
+              original: bodyLines.join("\n"),
               source: formatHanText(reading?.source || sourceTitle)
             });
           }));
@@ -3468,7 +3469,7 @@
               <button class="reading-card-jump${index === activeIndex ? " is-active" : ""}" type="button" data-result-index="${index}">${formatIndex(item.number)}</button>
             </div>
             <h3><span aria-hidden="true">${formatIndex(item.number)}</span>${escapeHtml(formatHanText(item.title))}</h3>
-            <div class="reading-body">${bodyHtml}</div>
+            <div class="reading-body">${bodyHtml}${item.original ? `<details><summary>查看传统原文（不作个人结论）</summary>${item.original.split("\n").map((line) => `<p>${escapeHtml(formatHanText(line))}</p>`).join("")}</details>` : ""}</div>
             <div class="result-top">
               <span class="reading-palace-chip">${escapeHtml(formatHanText(item.label))}</span>
               <span class="reading-source">${escapeHtml(formatHanText(item.source))}</span>

@@ -640,12 +640,11 @@
   }
 
   function getZhouyiOriginal(hex) {
-    const reading = getHexReading(hex);
-    const fallback = firstReadableSentence(reading.liu || reading.summary, '');
+    const original = window.YUETIAN_ZHOUYI_ORIGINALS?.[Number(hex?.no)];
     return {
-      label: '卦辞摘录',
-      text: fallback ? compactText(fallback, 72) : '此卦卦辞待补录，先按卦象结构与动爻取用。',
-      source: formatOriginalSource(reading.source),
+      label: original ? '周易原文' : '卦辞待核',
+      text: original ? [original.gua, original.xiang].filter(Boolean).join('\n') : '此卦原文尚未校对，先按卦象结构与动爻取用。',
+      source: original ? '《周易》卦辞、象辞' : '',
     };
   }
 
