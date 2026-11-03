@@ -5,7 +5,7 @@
 | 顺序 | 状态 | slug | 标题 | 大类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-11-03 09:07 https://yuetianai.com/articles/ziwei-caibo-wuqu-huake-jixiao-gongzi.html / https://yuetianai.com/articles/en/ziwei-caibo-wuqu-huake-jixiao-gongzi.html | ziwei-caibo-wuqu-huake-jixiao-gongzi | 财帛宫武曲化科，绩效奖金该怎样与固定工资分开看？ | 财运事业 |
-| 02 | 待发布 | ziwei-caibo-jumen-huaji-zixun-baojia | 财帛宫巨门化忌，咨询报价争议先核哪一步？ | 财运事业 |
+| 02 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-caibo-jumen-huaji-zixun-baojia.html / https://yuetianai.com/articles/en/ziwei-caibo-jumen-huaji-zixun-baojia.html | ziwei-caibo-jumen-huaji-zixun-baojia | 财帛宫巨门化忌，咨询报价争议先核哪一步？ | 财运事业 |
 | 03 | 待发布 | ziwei-kongming-jieqianyi-zhuanzhuanye | 命宫空宫借迁移，转专业时还要看哪一宫？ | 看盘方法 |
 | 04 | 待发布 | ziwei-qisha-tianfu-shiyongqi-shiying | 命宫七杀会照天府，试用期该看适应力还是资源？ | 财运事业 |
 | 05 | 待发布 | ziwei-qianyi-tiantong-hualu-kuacheng-renmai | 迁移宫天同化禄，跨城工作的人脉能转成机会吗？ | 宫位组合 |
