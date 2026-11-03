@@ -18,7 +18,7 @@
 | 12 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-guanlu-qisha-huaquan-guanli-fanwei.html / https://yuetianai.com/articles/en/ziwei-guanlu-qisha-huaquan-guanli-fanwei.html | ziwei-guanlu-qisha-huaquan-guanli-fanwei | 官禄宫七杀化权，新岗位的管理范围怎么核？ | 财运事业 |
 | 13 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-daxian-tianzhai-liunian-qianyi-huancheng.html / https://yuetianai.com/articles/en/ziwei-daxian-tianzhai-liunian-qianyi-huancheng.html | ziwei-daxian-tianzhai-liunian-qianyi-huancheng | 大限田宅、流年迁移同动，换城市之前先算什么？ | 大限流年 |
 | 14 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-daxian-fude-liunian-guanlu-huaquan.html / https://yuetianai.com/articles/en/ziwei-daxian-fude-liunian-guanlu-huaquan.html | ziwei-daxian-fude-liunian-guanlu-huaquan | 大限福德遇流年官禄化权，责任增加时怎样保留休息？ | 大限流年 |
-| 15 | 待发布 | ziwei-tianzhai-tianfu-hualu-zhuchu-yusuan | 田宅宫天府化禄，改善住处先做哪笔预算？ | 宫位组合 |
+| 15 | 已发布 2026-11-03 09:08 https://yuetianai.com/articles/ziwei-tianzhai-tianfu-hualu-zhuchu-yusuan.html / https://yuetianai.com/articles/en/ziwei-tianzhai-tianfu-hualu-zhuchu-yusuan.html | ziwei-tianzhai-tianfu-hualu-zhuchu-yusuan | 田宅宫天府化禄，改善住处先做哪笔预算？ | 宫位组合 |
 | 16 | 待发布 | ziwei-tianzhai-jumen-huaji-linli-zaoyin | 田宅宫巨门化忌，邻里噪音要先处理哪件事？ | 宫位组合 |
 | 17 | 待发布 | ziwei-xiongdi-tianxiang-huake-hehuo-jilu | 兄弟宫天相化科，合伙决策怎样留下可核对的记录？ | 财运事业 |
 | 18 | 待发布 | ziwei-xiongdi-tanlang-hualu-jieshao-yongjin | 兄弟宫贪狼化禄，朋友介绍生意后佣金怎么算？ | 财运事业 |
