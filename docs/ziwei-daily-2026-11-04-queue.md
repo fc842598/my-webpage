@@ -22,5 +22,5 @@
 | 16 | 待次日研究复核，未发布 | ziwei-liuyue-fuqigong-guanxi-shijian-cengci | 流月轮到夫妻宫，关系议题为何不能只看一个月？ |
 | 17 | 已发布 2026-11-04 21:11 https://yuetianai.com/articles/ziwei-guanlu-tanlang-huoke-liuke.html / https://yuetianai.com/articles/en/ziwei-guanlu-tanlang-huoke-liuke.html | ziwei-guanlu-tanlang-huoke-liuke | 官禄宫贪狼，获客与留客为何要分两张表？ |
 | 18 | 待次日研究复核，未发布 | ziwei-guanlu-tanlang-fuqi-hehuo-fengong | 官禄宫贪狼对夫妻宫，合伙人分工怎么读？ |
-| 19 | 待发布 | ziwei-liunian-guanlu-gangwei-zhize-touxian | 流年官禄有变化，岗位调整先看职责还是头衔？ |
+| 19 | 已发布 2026-11-04 21:12 https://yuetianai.com/articles/ziwei-liunian-guanlu-gangwei-zhize-touxian.html / https://yuetianai.com/articles/en/ziwei-liunian-guanlu-gangwei-zhize-touxian.html | ziwei-liunian-guanlu-gangwei-zhize-touxian | 流年官禄有变化，岗位调整先看职责还是头衔？ |
 | 20 | 待次日研究复核，未发布 | ziwei-liunian-guanlu-zhuan-gang-pipei | 流年官禄主星不同，转岗前怎样核岗位匹配？ |
