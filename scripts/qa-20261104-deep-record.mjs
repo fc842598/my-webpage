@@ -88,4 +88,21 @@ selectedYear = { key: '31' };
 completeYear({ title: '30岁新结果' });
 await yearRequest;
 assert.equal(race.wentianChartAiState.xiaoLianAgeKey, '30', 'the response must retain the age requested before the selection changed');
-console.log('DEEP_RECORD_UI_OK: honest sections, distinct action steps, reset confirmation, selected-decade response isolation');
+let sensorTimeout;
+const sensorEvents = [];
+const sensor = vm.createContext({
+  window: { DeviceOrientationEvent: {}, addEventListener() {} },
+  stopYangzhaiCompass: () => sensorEvents.push('stopped'),
+  handleYangzhaiCompassOrientation() {}, setYangzhaiCompassActiveUi() {},
+  setYangzhaiCompassStatus: text => sensorEvents.push(text),
+  setYangzhaiCompassPrompt: text => sensorEvents.push(text),
+  getWentianLanguageCode: () => 'zh',
+  setTimeout: (callback, ms) => { assert.equal(ms, 8000); sensorTimeout = callback; return 1; },
+});
+vm.runInContext(extract('async function startYangzhaiCompass(', 'function toggleYangzhaiCompass('), sensor);
+await sensor.startYangzhaiCompass();
+assert(sensorEvents.includes('读取中'));
+sensorTimeout();
+assert(sensorEvents.includes('未收到方向数据'));
+assert(sensorEvents.some(text => text.includes('手动选择方位')));
+console.log('DEEP_RECORD_UI_OK: honest sections, distinct action steps, reset confirmation, selected-decade response isolation, compass timeout');
