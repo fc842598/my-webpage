@@ -13,7 +13,7 @@
 | 07 | 已发布 2026-11-04 21:15 https://yuetianai.com/articles/ziwei-shichen-changqu-kongjie-sixing-heda.html / https://yuetianai.com/articles/en/ziwei-shichen-changqu-kongjie-sixing-heda.html | ziwei-shichen-changqu-kongjie-sixing-heda | 时辰跨界，昌曲空劫四星为什么要一起核？ | 看盘方法 |
 | 08 | 已发布 2026-11-04 21:11 https://yuetianai.com/articles/ziwei-zuoyou-shengyue-shichen-fenbie-hedui.html / https://yuetianai.com/articles/en/ziwei-zuoyou-shengyue-shichen-fenbie-hedui.html | ziwei-zuoyou-shengyue-shichen-fenbie-hedui | 左辅右弼不随时辰变，为什么还要核出生月？ |
 | 09 | 已发布 2026-11-04 21:15 https://yuetianai.com/articles/ziwei-xiongdijiaoyou-hehuo-guquan-zhouzhuan.html / https://yuetianai.com/articles/en/ziwei-xiongdijiaoyou-hehuo-guquan-zhouzhuan.html | ziwei-xiongdijiaoyou-hehuo-guquan-zhouzhuan | 兄弟宫与交友宫看合伙，股权和周转款先分什么？ | 财运事业 |
-| 10 | 待发布 | ziwei-fumugong-guanlu-shangsi-mohu-fankui | 父母宫与官禄宫同看，主管反馈模糊时怎样问清验收？ | 财运事业 |
+| 10 | 已发布 2026-11-04 21:15 https://yuetianai.com/articles/ziwei-fumugong-guanlu-shangsi-mohu-fankui.html / https://yuetianai.com/articles/en/ziwei-fumugong-guanlu-shangsi-mohu-fankui.html | ziwei-fumugong-guanlu-shangsi-mohu-fankui | 父母宫与官禄宫同看，主管反馈模糊时怎样问清验收？ | 财运事业 |
 | 11 | 待次日研究复核，未发布 | ziwei-taiyang-wenchang-gongkai-neibu-huibao | 太阳会文昌，公开发言和内部汇报怎么分开看？ |
 | 12 | 已发布 2026-11-04 21:11 https://yuetianai.com/articles/ziwei-tanlang-wenchang-yingxiao-chengnuo.html / https://yuetianai.com/articles/en/ziwei-tanlang-wenchang-yingxiao-chengnuo.html | ziwei-tanlang-wenchang-yingxiao-chengnuo | 贪狼会文昌，营销话术何时会偏离产品承诺？ |
 | 13 | 待次日研究复核，未发布 | ziwei-zinvgong-dai-xinren-peiyang-jihua | 子女宫看带新人，培养计划要核哪些现实条件？ |
