@@ -5755,10 +5755,11 @@ function getWentianXiaoLianReadingGroups(data) {
       content: found?.content || "",
     };
   });
+  const populated = groups.filter((item) => item.content);
   sections.forEach((section, index) => {
-    if (!used.has(index) && section.content && groups.length < 3) groups.push({ title: section.title || "补充解读", content: section.content });
+    if (!used.has(index) && section.content && populated.length < 3) populated.push({ title: section.title || "补充解读", content: section.content });
   });
-  return groups.filter((item) => item.content || item.title).slice(0, 3);
+  return populated.slice(0, 3);
 }
 
 function renderWentianXiaoLianTags(items) {
@@ -5781,7 +5782,6 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
     ? (resultMatches && groups.length ? "重批当前小限" : "批当前小限")
     : (resultMatches && groups.length ? "重批选中小限" : "单独批小限");
   const buttonLabel = isLoading ? "加载中..." : readyLabel;
-  const showGenerateButton = isLoading || !groups.length;
   const summaryTitle = [
     selected.solarYear ? `${selected.solarYear}` : "",
     selected.yearGanzhi || "",
@@ -5819,7 +5819,7 @@ function renderWentianXiaoLianReading(data, fallback, actionAttr) {
     </div>
     <div class="wentian-mb-xiaolian-actions">
       <button type="button" data-action="wentian-chart-ai-xiaolian-current">回到今年</button>
-      ${showGenerateButton ? renderWentianMobileActionButton(actionAttr, buttonLabel, isLoading) : ""}
+      ${renderWentianMobileActionButton(actionAttr, buttonLabel, isLoading)}
     </div>
   `;
 }
@@ -6292,9 +6292,12 @@ function getWentianAdviceGroups(data, fallback) {
 
 function getWentianAdvicePlanItems(groups) {
   const source = (groups || []).map((item) => normalizeWentianAiText(item.content)).filter(Boolean).join(" ");
+  const used = new Set();
   const pick = (words, fallback) => {
-    const sentence = source.match(/[^。！？；.!?;]+[。！？；.!?;]?/g)?.find((item) => words.some((word) => item.includes(word)));
-    return trimWentianAiText(sentence || fallback, 72);
+    const sentence = source.match(/[^。！？；.!?;]+[。！？；.!?;]?/g)?.find((item) => !used.has(trimWentianAiText(item, 72)) && words.some((word) => item.includes(word)));
+    const text = trimWentianAiText(sentence || fallback, 72);
+    used.add(text);
+    return text;
   };
   return [
     ["7天内", pick(["风险", "压力", "避免", "不宜"], "先列出当前最容易失控的一件事，减少情绪化决定。")],
@@ -17703,6 +17706,7 @@ function loadYangzhaiState() {
 }
 
 let yangzhaiState = loadYangzhaiState();
+let yangzhaiResetConfirmOpen = false;
 let yangzhaiCompassHandler = null;
 let yangzhaiCompassReadTimer = null;
 let yangzhaiCompassSmoothedHeading = null;
@@ -17996,7 +18000,14 @@ function confirmYangzhaiSelection() {
   navigate("screen-42");
 }
 
-function resetYangzhai() {
+function resetYangzhai({ confirmed = false } = {}) {
+  const hasPlacements = Object.values(yangzhaiState.placements || {}).some((items) => Array.isArray(items) ? items.length > 0 : Boolean(items));
+  if (hasPlacements && !confirmed) {
+    yangzhaiResetConfirmOpen = true;
+    navigate("screen-42", false);
+    return;
+  }
+  yangzhaiResetConfirmOpen = false;
   yangzhaiState.placements = {};
   yangzhaiState.pendingItems = [];
   yangzhaiState.expanded = {};
@@ -18543,6 +18554,13 @@ function sourceYangzhaiCompassScreen(showPrompt = true) {
     ${figText("yz42-section-help", "逐格点击加号安位", 214, 111, 154, 12, "#8e7d68", 700, "right", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
     ${yangzhaiCompassShell("yz42", false, showPrompt)}
     ${yangzhaiActions("yz42")}
+    ${yangzhaiResetConfirmOpen ? `<div class="liuyao-reset-confirm" role="dialog" aria-modal="true" aria-label="${escapeHtml(getWentianCompactText("确认清空阳宅安位", "Confirm clearing home placements"))}">
+      <div class="liuyao-reset-confirm-card">
+        <strong>${getWentianCompactText("清空全部安位？", "Clear all placements?")}</strong>
+        <p>${getWentianCompactText("当前布局会清空。取消可保留所有已安位的成员与空间。", "This clears the current layout. Cancel to keep all placed people and rooms.")}</p>
+        <div><button type="button" data-action="yangzhai-reset-cancel">${getWentianCompactText("取消", "Cancel")}</button>
+        <button type="button" class="primary" data-action="yangzhai-reset-confirm">${getWentianCompactText("确认清空", "Confirm Clear")}</button></div>
+      </div></div>` : ""}
   `;
 }
 
@@ -23894,6 +23912,15 @@ document.addEventListener("click", (event) => {
   }
   if (earlyAction === "yangzhai-reset") {
     resetYangzhai();
+    return;
+  }
+  if (earlyAction === "yangzhai-reset-confirm") {
+    resetYangzhai({ confirmed: true });
+    return;
+  }
+  if (earlyAction === "yangzhai-reset-cancel") {
+    yangzhaiResetConfirmOpen = false;
+    navigate("screen-42", false);
     return;
   }
   if (earlyAction === "yangzhai-autofill") {
