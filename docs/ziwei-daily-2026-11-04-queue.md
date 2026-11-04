@@ -8,8 +8,8 @@
 | 02 | 已发布 2026-11-04 16:03 https://yuetianai.com/articles/ziwei-fuqi-huaji-duonian-guanxi-zeren-yilai.html / https://yuetianai.com/articles/en/ziwei-fuqi-huaji-duonian-guanxi-zeren-yilai.html | ziwei-fuqi-huaji-duonian-guanxi-zeren-yilai | 夫妻宫化忌却多年未分，怎样区分责任与关系依赖？ | 婚恋与关系 |
 | 03 | 已发布 2026-11-04 16:03 https://yuetianai.com/articles/ziwei-kongming-jieqianyi-neibu-waibu-zhuangang.html / https://yuetianai.com/articles/en/ziwei-kongming-jieqianyi-neibu-waibu-zhuangang.html | ziwei-kongming-jieqianyi-neibu-waibu-zhuangang | 命宫空宫借迁移，内部转岗和外部邀约先比什么？ | 看盘方法 |
 | 04 | 已发布 2026-11-04 16:04 https://yuetianai.com/articles/ziwei-changqu-kongjie-jiaogao-jiaodui-jiedian.html / https://yuetianai.com/articles/en/ziwei-changqu-kongjie-jiaogao-jiaodui-jiedian.html | ziwei-changqu-kongjie-jiaogao-jiaodui-jiedian | 文昌文曲遇空劫，交稿前该怎样安排校对节点？ | 宫位组合 |
-| 05 | 待次日研究复核，未发布 | ziwei-fuqi-guanlu-caibo-huangang-tanpan | 夫妻、官禄、财帛同时牵动，换岗先谈什么？ |
-| 06 | 待次日研究复核，未发布 | ziwei-caibo-konggong-jiefude-ziyouchengdan | 财帛空宫借福德，接自由职业单要先问什么？ |
+| 05 | 已发布 2026-11-04 20:06 https://yuetianai.com/articles/ziwei-fuqi-guanlu-caibo-huangang-tanpan.html / https://yuetianai.com/articles/en/ziwei-fuqi-guanlu-caibo-huangang-tanpan.html | ziwei-fuqi-guanlu-caibo-huangang-tanpan | 夫妻、官禄、财帛同时牵动，换岗先谈什么？ | 财运事业 |
+| 06 | 待发布 | ziwei-caibo-konggong-jiefude-ziyouchengdan | 财帛空宫借福德，接自由职业单要先问什么？ | 财运事业 |
 | 07 | 待次日研究复核，未发布 | ziwei-shichen-chayige-changqu-luogong-hedui | 时辰只差一格，文昌文曲落宫该怎样核？ |
 | 08 | 待次日研究复核，未发布 | ziwei-zuoyou-shengyue-shichen-fenbie-hedui | 左辅右弼不随时辰变，为什么还要核出生月？ |
 | 09 | 待次日研究复核，未发布 | ziwei-zinvgong-ziwei-haizi-mubiao-shicuo | 子女宫紫微，给孩子设目标怎样留试错空间？ |

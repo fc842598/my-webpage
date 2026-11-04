@@ -126,3 +126,69 @@ Wen Chang and Wen Qu can point to different aspects of organizing and expressing
 An editor may write a strong headline while attaching an outdated price list. That calls for a source and number check before delivery. A designer may explore several visual ideas and only then discover the wrong page dimensions. That calls for a specification check before production and saved versions during the project.
 
 Keep draft, fact review, format review, and final approval as separate checkpoints. Identify who owns each step and when changes freeze. If Hua Ke appears in a relevant palace, ask how quality is evaluated; if Hua Ji appears, clarify who handles rework. Verify the birth hour and star placement before interpreting the pattern. The signed brief and acceptance record decide whether the work is complete.
+
+---
+
+## 5. 夫妻、官禄、财帛同时牵动，换岗先谈什么？
+slug：`ziwei-fuqi-guanlu-caibo-huangang-tanpan`
+搜索意图：换岗时协调职业、收入与伴侣时间
+素材线索：2026-11-04，https://mingming3.com/cn/ziwei/articles/ziwei_practical；采用角度：把同一决定拆成岗位、到账与家庭排班三份协商；区别于站内单宫职业判断和换城讨论。
+正文草稿：
+换岗谈判常被缩成“新职位值不值得去”。紫微斗数若同时牵动官禄、财帛和夫妻宫，问题其实有三个：做什么工作、钱怎么到账、共同生活的时间由谁承担。宫位提供核对顺序，不能替代录用通知、家庭账本或伴侣的意见。先把三个问题写成可回答的条款，谈判才不会只围绕一个工资数字打转。
+
+### 官禄先问职责，别只看职位名
+官禄宫看角色与工作方式。主星与三方四正能提示适合承担的任务类型，化权尤其要核权限是否随责任增加。某员工得到“项目负责人”头衔，却没有排期和预算决定权，职位变化与实际职责就不一致。另一人头衔不变，却能带新团队、决定交付次序，成长可能更具体。面谈时要索取岗位说明、汇报对象、试用期指标和可调动资源，而不是从星曜推定必然升职。
+
+### 财帛核到账节奏，夫妻宫核共同时间
+财帛宫关心收入的来源、稳定性和可支配程度。固定工资增加，与按项目结算的预期收入，不能直接按年总额比较。若新工作有绩效奖金，先问计算口径与发放日期。夫妻宫在这里用来整理伴侣共同安排，不意味着伴侣能替自己决定职业。晚班、出差、育儿接送和老人照护都要列进时间表。化忌落相关宫时，先找到反复争议的具体费用或时段，不给任何一方贴“拖累事业”的标签。
+
+### 两种换岗，谈判重点不一样
+一位护士转到夜间管理岗，薪资上升，但一周三晚不能接孩子。她应先谈轮班和照护替代方案，再算增加的净收入。另一位设计师改做自由项目，通勤减少，却要承担找客户与催款；他应先核最低月收入、预付款和空档期储备，再讨论在家工作的时间边界。两人都可能看见三宫连动，实际谈判清单却不同。
+
+### 排盘使用顺序
+先确认本命官禄、财帛、夫妻宫各自的落星与对宫，再看三方四正和四化是否把三类议题连在一起；大限、流年用于判断当前变化的持续时间。最后拿岗位条款、现金流和家庭排班逐项验证。若其中一项无法落实，先补谈该项，不用“吉凶”替代协商。
+英文标题：Zi Wei Dou Shu Job Change: Career, Wealth, and Relationship Talks
+英文描述：Compare duties, pay timing, and shared schedules before accepting a new role.
+英文正文：
+A job offer can change three parts of daily life at once. In Zi Wei Dou Shu, the Career Palace frames duties, the Wealth Palace frames how income arrives, and the relationship axis can raise questions about shared time. None of them replaces a written offer or a conversation at home.
+
+### Start with the actual role
+A new title may come without authority over budgets or schedules. A role with the same title may offer more real responsibility. Ask for reporting lines, resources, trial period goals, and decision rights. If Hua Quan appears in a relevant palace, the practical question is whether authority matches accountability.
+
+### Compare cash and time separately
+A higher annual figure can conceal uncertain bonuses or delayed project payments. Write down the fixed amount, expected payment date, and minimum monthly cash needed. Then list evening shifts, travel, childcare, and care for relatives. One nurse moving to night management may need a care plan before accepting higher pay. A designer taking freelance projects may gain time at home while adding client and collection work.
+
+Read the natal palaces and their connections first, then use the annual layer for timing. Put the offer, household schedule, and cash plan side by side. Negotiate the missing term rather than expecting a star to settle the choice.
+
+---
+
+## 6. 财帛空宫借福德，接自由职业单要先问什么？
+slug：`ziwei-caibo-konggong-jiefude-ziyouchengdan`
+搜索意图：财帛空宫时评估自由职业订单的可持续性
+素材线索：2026-11-04，https://xingge.tw/en/learn/c1-empty；采用角度：借对宫后评估接单成本与恢复能力；区别于站内空宫入门、薪资比较和职业转换文章。
+正文草稿：
+财帛宫没有十四主星，不表示没有收入，更不能从“空”字推断不适合自由职业。借看对宫福德，是为收入判断补一层长期消耗与满足感；还要把官禄的专业交付和迁移的客户渠道放在同一张图上。接不接一单，关键是报价、工时、回款与机会成本能否算清。盘面帮你列问题，账本才给出答案。
+
+### 借对宫不是把福德结论搬过来
+先看财帛宫本宫的辅煞与四化，再借福德宫主星，最后看官禄、迁移形成的三方。若福德宫强调稳定和休息，问题可能是高频急件会否耗掉恢复时间；若迁移宫资源活跃，要问外部客户能否持续，而非把一位大客户当成永久收入。化禄提示资源进入的位置，化忌提示款项或精力的卡点。每一步都需回到对应宫位，不可一句“对宫好，所以能赚钱”带过。
+
+### 先算净收入，再比较两种订单
+设计师收到一份高价三日急件，表面报价可观，但需要取消既有客户例会，还可能承担两轮无偿修改。报价应扣掉外包、税费和被挤走的工作时间。翻译者拿到较低单价的三个月固定订单，若每周工时可控、每月按时付款，现金流反而容易规划。前者要谈修改范围和预付款，后者要核工作量上限与终止条款。没有这些条件，星曜不能替合同估价。
+
+### 把接单能力和接单渠道分开
+官禄宫对应能完成什么，迁移宫对应怎样接触客户，财帛宫才回到钱能否留下。摄影师技术成熟却只有一个转介绍来源，应先建立备用询盘；咨询师询盘很多，却每次都重新做免费方案，应先设定付费诊断边界。若四化把责任推到官禄，就记录实际交付时长；若牵动迁移，就记录线索来源与成交率。这样才能判断是能力、渠道还是定价出了问题。
+
+### 排盘使用顺序
+确认财帛确为空宫及借星规则，读本宫、福德对宫与官禄迁移三方，随后叠加大限流年观察眼下接单节奏。最后用过去三个月的工时、净收入、回款天数和休息时间验证。若记录缺失，先做一单小规模试验，而非凭空宫给自己下职业结论。
+英文标题：Empty Wealth Palace in Zi Wei Dou Shu: Should You Take a Freelance Job?
+英文描述：Use the opposite palace for context, then compare hours, net pay, client access, and recovery time.
+英文正文：
+An empty Wealth Palace in a Zi Wei Dou Shu chart does not predict low income. Borrowing the opposite Wellbeing Palace adds context about whether a way of earning is sustainable. Career describes delivery skills, while Travel can help frame access to clients. The decision to accept a freelance job still depends on terms you can measure.
+
+### Price the whole job
+A designer may receive a high rush fee but lose a regular client's meeting and spend extra hours on revisions. A translator may accept a lower rate for a three month contract that pays on time. Compare net pay after costs, time displaced, revision limits, and payment dates. Ask for a deposit when the risk of nonpayment is meaningful.
+
+### Separate skill from client flow
+A capable photographer with one referral source has a channel risk. A consultant with many inquiries but repeated unpaid proposals has a pricing boundary problem. Use Career, Travel, and Wealth as separate questions rather than treating a borrowed star as a single answer. Track leads, conversion, hours, and collection days for three months.
+
+Check the natal Wealth Palace and its own supporting stars before borrowing from the opposite palace. Add the longer cycle only after that. If the records are thin, test one small contract and review the result before making a career decision.
