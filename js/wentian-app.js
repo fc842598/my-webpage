@@ -5502,8 +5502,8 @@ function getWentianLuckReadingGroups(data) {
 function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
   const chartData = getWentianChartPayload();
   const selected = getWentianSelectedDecade(chartData);
-  const currentDecade = selected.items?.find((item) => item.key === selected.currentKey) || selected;
-  const currentRangeLabel = currentDecade?.rangeLabel || selected.rangeLabel || "当前十年";
+  const selectedRangeLabel = selected.rangeLabel || "选中十年";
+  const isCurrentDecade = selected.key === selected.currentKey;
   const selectedData = getWentianLuckAiResultForSelected(selected) || (selected.key === selected.currentKey ? data : null);
   const groups = selectedData ? getWentianLuckReadingGroups(selectedData) : [];
   const isLoading = wentianChartAiState.status === "running" && wentianChartAiState.runningModule === "current_luck";
@@ -5511,11 +5511,10 @@ function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
     ? (groups.length ? "重批当前十年" : "批当前十年")
     : (groups.length ? "重批选中十年" : "批选中十年");
   const buttonLabel = isLoading ? "加载中..." : readyLabel;
-  const showGenerateButton = isLoading || !groups.length;
   return `
     <div class="wentian-mb-luck-hero">
       <span>十年大限</span>
-      <h3>当前十年<br>现在是${escapeHtml(currentRangeLabel)}</h3>
+      <h3>${isCurrentDecade ? "当前十年" : "选中十年"}<br>${escapeHtml(selectedRangeLabel)}</h3>
     </div>
     <div class="wentian-mb-luck-rail" aria-label="十年大限选择">
       ${(selected.items || []).map((item) => `
@@ -5543,7 +5542,7 @@ function renderWentianLuckReading(data, fallback, actionAttr, actionLabel) {
     </div>
     <div class="wentian-mb-luck-actions">
       <button type="button" data-action="wentian-chart-ai-luck-current">回到当前</button>
-      ${showGenerateButton ? renderWentianMobileActionButton(actionAttr, buttonLabel, isLoading) : ""}
+      ${renderWentianMobileActionButton(actionAttr, buttonLabel, isLoading)}
     </div>
   `;
 }
@@ -6748,8 +6747,6 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
     runningModule: "",
     results: options.reset ? {} : { ...(wentianChartAiState.results || {}) },
     luckAiResults: options.reset ? {} : { ...(wentianChartAiState.luckAiResults || {}) },
-    luckDecadeKey: moduleKeys.includes("current_luck") ? (getWentianSelectedDecade(chartData).key || "") : wentianChartAiState.luckDecadeKey,
-    xiaoLianAgeKey: moduleKeys.includes("xiaoxian_liunian") ? (getWentianSelectedXiaoLianYear(chartData).key || "") : wentianChartAiState.xiaoLianAgeKey,
     curveGenerated: options.reset ? false : !!wentianChartAiState.curveGenerated,
     error: "",
     updatedAt: "",
@@ -6761,16 +6758,21 @@ async function decodeWentianChartAiModules(moduleKeys, options = {}) {
     if (isWentianChartAiRunStale(runSerial, chartData.chartRecordId)) return 0;
     wentianChartAiState.runningModule = task.module;
     refreshWentianChartAiScreen();
+    // The selection may change while the request is in flight. Keep its original target.
+    const requestedDecade = task.module === "current_luck" ? getWentianSelectedDecade(chartData) : null;
+    const requestedYear = task.module === "xiaoxian_liunian" ? getWentianSelectedXiaoLianYear(chartData) : null;
     try {
       const taskResult = await callWentianChartAiModule(task.module, chartData);
       if (isWentianChartAiRunStale(runSerial, chartData.chartRecordId)) return 0;
       if (task.module === "current_luck") {
-        const selected = getWentianSelectedDecade(chartData);
+        const selected = requestedDecade;
         const selectedKey = selected.key || "";
+        wentianChartAiState.luckDecadeKey = selectedKey;
         if (selectedKey) wentianChartAiState.luckAiResults[selectedKey] = taskResult;
         if (!selectedKey || selectedKey === selected.currentKey) wentianChartAiState.results.current_luck = taskResult;
       } else {
         wentianChartAiState.results[task.module] = taskResult;
+        if (requestedYear) wentianChartAiState.xiaoLianAgeKey = requestedYear.key || "";
       }
       success += 1;
       saveWentianChartAiState();
@@ -18547,6 +18549,7 @@ function yangzhaiActions(id, primaryText = "解读分析", y = YANGZHAI_ACTION_Y
 }
 
 function sourceYangzhaiCompassScreen(showPrompt = true) {
+  const placedCount = YANGZHAI_PALACES.filter((palace) => palace.key !== "center" && getYangzhaiPlacementItems(palace.key).length).length;
   return `
     ${yangzhaiBg("yz42", getYangzhaiCompassHeight())}
     ${yangzhaiHeader("yz42")}
@@ -18554,6 +18557,10 @@ function sourceYangzhaiCompassScreen(showPrompt = true) {
     ${figText("yz42-section-help", "逐格点击加号安位", 214, 111, 154, 12, "#8e7d68", 700, "right", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;")}
     ${yangzhaiCompassShell("yz42", false, showPrompt)}
     ${yangzhaiActions("yz42")}
+    ${figText("yz42-saved-layout-note", placedCount
+      ? getWentianCompactText(`已载入本机保存的 ${placedCount} 宫安位，请按实际住房核对。`, `Loaded ${placedCount} saved placements. Verify the layout.`)
+      : getWentianCompactText("尚未安位，请按实际居住位置添加成员或空间。", "No placements yet. Add people or rooms."), 24, 674, 342, 13, "#6e6254", 600, "left", "line-height:1.6;")}
+    ${figText("yz42-center-note", getWentianCompactText("中宫只用于指南针定向，不安置成员。没有方向传感器时，可按户型图手动选择方位。", "Center: compass only, not a placement. No sensor? Use a floor plan."), 24, 710, 342, 13, "#6e6254", 500, "left", "line-height:1.6;")}
     ${yangzhaiResetConfirmOpen ? `<div class="liuyao-reset-confirm" role="dialog" aria-modal="true" aria-label="${escapeHtml(getWentianCompactText("确认清空阳宅安位", "Confirm clearing home placements"))}">
       <div class="liuyao-reset-confirm-card">
         <strong>${getWentianCompactText("清空全部安位？", "Clear all placements?")}</strong>
@@ -18593,7 +18600,7 @@ function sourceYangzhaiSelectScreen() {
     ${figText("yz43-close", "\u00d7", 330, titleY - 9, 42, 30, "#5f5a52", 500, "center", "z-index:43;")}
     ${figBox("yz43-palace-pill", 206, palacePillY, 106, 32, "", "border:1px solid #eadbc6;border-radius:16px;background:#fffdf8;z-index:42;")}
     ${figText("yz43-palace-text", `${activePalace.dir} / ${activePalace.role}`, 206, palacePillY + 9, 106, 12, "#8a5a22", 800, "center", "white-space:nowrap;font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:43;")}
-    ${figText("yz43-sub", "\u6309\u5b9e\u9645\u5c45\u4f4f\u4f4d\u7f6e\u5b89\u4eba", 24, subtitleY, 210, 12, "#817568", 700, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:42;")}
+    ${figText("yz43-sub", getYangzhaiPlacementItems(activePalace.key).length ? getWentianCompactText("已带入本宫原有成员，可修改", "Existing members loaded for editing") : getWentianCompactText("本宫未安位，请先选择成员", "Empty location: choose a member first"), 24, subtitleY, 210, 12, "#817568", 700, "left", "font-family:'Noto Sans SC','Microsoft YaHei',sans-serif;z-index:42;")}
     ${figBox("yz43-confirm-panel", 24, confirmPanelY, 342, 54, "", "border:1px solid #eadbc6;border-radius:18px;background:linear-gradient(180deg,#fffdf8,#fdf6eb);box-shadow:0 10px 24px rgba(70,45,25,.06);z-index:42;")}
     ${figText("yz43-confirm-kicker", selectedItems.length ? `\u5df2\u9009 ${selectedItems.length} \u9879` : "\u672a\u9009\u6210\u5458", 42, confirmPanelY + 11, 120, 11, "#9a6b33", 900, "left", "letter-spacing:.02em;z-index:43;")}
     ${figText("yz43-confirm-note", selectedItems.length ? "\u5148\u786e\u8ba4\u672c\u5bab\uff0c\u518d\u7ee7\u7eed\u5fae\u8c03\u4e0b\u9762\u6210\u5458\u3002" : "\u5148\u9009\u6210\u5458\uff0c\u518d\u786e\u8ba4\u5f53\u524d\u5bab\u4f4d\u3002", 42, confirmPanelY + 28, 148, 11, "#8a7a67", 700, "left", "line-height:1.35;z-index:43;")}
