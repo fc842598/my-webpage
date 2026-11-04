@@ -77,6 +77,8 @@ function normalizeQuota(raw) {
       date: String(raw?.date || ''),
       exhausted: false,
       testingUnlimited: true,
+      syncPending: Boolean(raw?.syncPending),
+      syncError: Boolean(raw?.syncError),
       unlimitedUntil: raw?.unlimitedUntil || '',
       checkedAt: Number(raw?.checkedAt) || Date.now()
     };
@@ -90,15 +92,29 @@ function normalizeQuota(raw) {
     remaining,
     date: String(raw?.date || ''),
     exhausted: remaining <= 0,
+    syncPending: Boolean(raw?.syncPending),
+    syncError: Boolean(raw?.syncError),
     checkedAt: Number(raw?.checkedAt) || Date.now()
   };
 }
 function formatQuotaTagText(raw) {
   const quota = normalizeQuota(raw);
   const isEn = new URLSearchParams(window.location.search).get('lang') === 'en' || localStorage.getItem('wentian-app-language-v1') === 'en';
+  if (quota.syncPending) return isEn ? 'Checking uses…' : '次数同步中…';
+  if (quota.syncError) return isEn ? 'Could not check uses' : '次数同步失败';
   if (quota.testingUnlimited) return isEn ? 'Test unlimited' : '测试不限';
-  if (quota.remaining <= 0) return isEn ? 'No uses left today' : '今日已满';
+  if (quota.remaining <= 0) return isEn ? 'No uses left today' : '今日已用完';
   return isEn ? `${quota.remaining} left today` : `今日还余${quota.remaining}次`;
+}
+function formatQuotaDetailText(raw) {
+  const quota = normalizeQuota(raw);
+  const isEn = new URLSearchParams(window.location.search).get('lang') === 'en' || localStorage.getItem('wentian-app-language-v1') === 'en';
+  if (quota.syncPending) return isEn ? 'Checking today’s uses before you submit.' : '正在核对今日次数，完成后即可提交。';
+  if (quota.syncError) return isEn ? 'Could not check your uses. Reload the page to retry.' : '暂时无法核对次数，请刷新页面重试。';
+  if (quota.testingUnlimited) return formatQuotaTagText(quota);
+  return isEn
+    ? `Used ${quota.used}/${quota.limit} today · ${quota.remaining} left. Resets at 00:00 Beijing time.`
+    : `今日已用 ${quota.used}/${quota.limit} 次 · 剩余 ${quota.remaining} 次。北京时间次日0点重置。`;
 }
 function mergeQuota(currentRaw, nextRaw) {
   const next = normalizeQuota(nextRaw);
@@ -245,7 +261,7 @@ async function refreshRemoteQuota(currentQuota) {
       clientId
     }
   }, 6000);
-  if (data?.ok === false) throw new Error('Quota temporarily unavailable');
+  if (data?.ok === false || !data?.quota) throw new Error('Quota temporarily unavailable');
   return data?.quota ? mergeQuota(currentQuota, data.quota) : normalizeQuota(currentQuota);
 }
 async function reviewQuestion(question, currentQuota) {
@@ -733,7 +749,7 @@ function QuestionStep({
 }) {
   const valid = question.trim().length >= 4;
   const quotaInfo = normalizeQuota(quota);
-  const disabled = !valid || reviewing || quotaInfo.remaining <= 0;
+  const disabled = !valid || reviewing || quotaInfo.syncPending || quotaInfo.syncError || quotaInfo.remaining <= 0;
   return /*#__PURE__*/React.createElement("div", {
     style: {
       flex: 1,
@@ -815,7 +831,7 @@ function QuestionStep({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "liuyao-thinking-dot"
-  }), "\u5927\u6A21\u578B\u6B63\u5728\u5BA1\u9898\uFF0C\u8BF7\u7A0D\u5019") : gateMessage?.text || formatQuotaTagText(quotaInfo)), /*#__PURE__*/React.createElement("button", {
+  }), "\u5927\u6A21\u578B\u6B63\u5728\u5BA1\u9898\uFF0C\u8BF7\u7A0D\u5019") : gateMessage?.text || formatQuotaDetailText(quotaInfo)), /*#__PURE__*/React.createElement("button", {
     onClick: onSubmit,
     disabled: disabled,
     style: {
@@ -843,7 +859,7 @@ function QuestionStep({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "liuyao-review-spinner"
-  }), "\u5BA1\u9898\u4E2D") : quotaInfo.remaining <= 0 ? '今日已满' : '提交占问'));
+  }), "\u5BA1\u9898\u4E2D") : quotaInfo.syncPending ? '正在核对次数' : quotaInfo.syncError ? '请刷新重试' : quotaInfo.remaining <= 0 ? '今日已用完，明天再来' : '提交占问'));
 }
 
 /* ─── Trigram mark ─── */
@@ -1718,7 +1734,7 @@ function ShakeScene({
       color: C.gold,
       fontWeight: 700
     }
-  }, "\xB7 ", YAO_TYPE_INFO[lastResult]?.name))), !isShaking && !done && /*#__PURE__*/React.createElement("div", {
+  }, "\xB7 ", YAO_TYPE_INFO[lastResult]?.name))), isShaking && /*#__PURE__*/React.createElement("p", { role: 'status', style: { fontSize: 14, color: C.text2, textAlign: 'center', marginTop: 10 } }, '正在投币，请等待本爻完成后再投下一爻。'), !isShaking && !done && /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       marginTop: 2,
@@ -2374,6 +2390,23 @@ function TypingText({
 }
 
 /* ─── Result Step ─── */
+function makeLiuyaoFollowupContext({ recordId, question, vals, results, reading = '' }) {
+  const chart = buildLiuyaoReadingPayload({ question, vals, results }).chartData;
+  const movingText = chart.dynamicLines.map(line => line.label).join('、') || '无动爻';
+  return {
+    type: 'liuyao', recordId, question,
+    title: `六爻占卜：${chart.hex.fullName}${chart.changedHex ? ` 之 ${chart.changedHex.fullName}` : ''}`,
+    summaryLine: movingText,
+    createdAt: chart.generatedAt,
+    castAtText: chart.generatedAt,
+    primaryText: `第${chart.hex.number}卦 ${chart.hex.fullName}`,
+    changedText: chart.changedHex ? `第${chart.changedHex.number}卦 ${chart.changedHex.fullName}` : '',
+    movingText,
+    linesText: chart.lines.map(line => `${line.label}:${line.value}${line.type}`).join('；'),
+    advice: String(reading).slice(0, 6000),
+  };
+}
+
 function ResultStep({
   vals,
   question,
@@ -2386,6 +2419,16 @@ function ResultStep({
   const [ai, setAi] = useState('');
   const [loadingAi, setLoadingAi] = useState(true);
   const [aiError, setAiError] = useState('');
+  const [followupId] = useState(makeUuid);
+  const openFollowup = () => {
+    const context = makeLiuyaoFollowupContext({ recordId: followupId, question, vals, results, reading: ai });
+    try {
+      sessionStorage.setItem('wentian-xudashi-context-v1', JSON.stringify(context));
+      window.location.href = './wentian-app.html#screen-4';
+    } catch {
+      setAiError('暂时无法接入追问，请保留本页并稍后重试。');
+    }
+  };
   useEffect(() => {
     let alive = true;
     setAi('');
@@ -2625,7 +2668,12 @@ function ResultStep({
   }, /*#__PURE__*/React.createElement(TypingText, {
     text: ai,
     speed: 18
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("button", {
+    type: 'button', onClick: openFollowup, disabled: loadingAi,
+    style: { padding: '15px 20px', borderRadius: 14, border: 'none', background: C.primary, color: '#fff', fontSize: 17, fontWeight: 700, cursor: loadingAi ? 'wait' : 'pointer' }
+  }, '继续追问这卦'), /*#__PURE__*/React.createElement("p", {
+    style: { color: C.text2, fontSize: 13, lineHeight: 1.6, textAlign: 'center' }
+  }, '沿用本次卦象，不重新起卦；对话次数按账号权益计算。'), /*#__PURE__*/React.createElement("div", {
     style: {
       height: 8
     }
@@ -2644,7 +2692,7 @@ function App() {
   const [lastResult, setLastResult] = useState(null);
   const [manualResults, setManualResults] = useState([]);
   const [shakeReady, setShakeReady] = useState(false);
-  const [quota, setQuota] = useState(() => loadStoredQuota());
+  const [quota, setQuota] = useState(() => ({ ...loadStoredQuota(), syncPending: true }));
   const [questionGate, setQuestionGate] = useState(null);
   const [reviewing, setReviewing] = useState(false);
   const tossInFlightRef = useRef(false);
@@ -2665,11 +2713,11 @@ function App() {
   }, []);
   useEffect(() => {
     let alive = true;
-    refreshRemoteQuota(quota).then(nextQuota => {
+    refreshRemoteQuota(null).then(nextQuota => {
       if (!alive) return;
-      setQuota(nextQuota);
+      setQuota({ ...nextQuota, syncPending: false, syncError: false });
       saveStoredQuota(nextQuota);
-    }).catch(() => {});
+    }).catch(() => { if (alive) setQuota(current => ({ ...current, syncPending: false, syncError: true })); });
     return () => {
       alive = false;
     };
