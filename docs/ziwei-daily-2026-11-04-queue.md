@@ -5,7 +5,7 @@
 | 顺序 | 状态 | slug | 待复核问题 |
 |---|---|---|---|
 | 01 | 已发布 2026-11-04 11:03 https://yuetianai.com/articles/ziwei-tianzhai-zinvgong-sandai-tongzhu-kongjian.html / https://yuetianai.com/articles/en/ziwei-tianzhai-zinvgong-sandai-tongzhu-kongjian.html | ziwei-tianzhai-zinvgong-sandai-tongzhu-kongjian | 田宅宫与子女宫同动，三代同住该先谈哪种空间冲突？ | 宫位组合 |
-| 02 | 待发布 | ziwei-fuqi-huaji-duonian-guanxi-zeren-yilai | 夫妻宫化忌却多年未分，怎样区分责任与关系依赖？ | 婚恋与关系 |
+| 02 | 已发布 2026-11-04 16:03 https://yuetianai.com/articles/ziwei-fuqi-huaji-duonian-guanxi-zeren-yilai.html / https://yuetianai.com/articles/en/ziwei-fuqi-huaji-duonian-guanxi-zeren-yilai.html | ziwei-fuqi-huaji-duonian-guanxi-zeren-yilai | 夫妻宫化忌却多年未分，怎样区分责任与关系依赖？ | 婚恋与关系 |
 | 03 | 待发布 | ziwei-kongming-jieqianyi-neibu-waibu-zhuangang | 命宫空宫借迁移，内部转岗和外部邀约先比什么？ | 看盘方法 |
 | 04 | 待发布 | ziwei-changqu-kongjie-jiaogao-jiaodui-jiedian | 文昌文曲遇空劫，交稿前该怎样安排校对节点？ | 宫位组合 |
 | 05 | 待次日研究复核，未发布 | ziwei-fuqi-guanlu-caibo-huangang-tanpan | 夫妻、官禄、财帛同时牵动，换岗先谈什么？ |
