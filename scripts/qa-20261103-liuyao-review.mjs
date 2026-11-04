@@ -43,6 +43,17 @@ assert.equal(quotaUi.formatQuotaTagText({ ...quota, syncPending: true }), '次�
 assert(quotaUi.formatQuotaDetailText({ limit: 3, used: 3, remaining: 0 }).includes('北京时间次日0点重置'));
 assert(quotaUi.normalizeQuota({ testingUnlimited: true, syncPending: true }).syncPending);
 assert(source.includes('refreshRemoteQuota(null)'), 'initial authoritative server response must not merge stale account/day usage');
+context.C = {};
+context.React = { createElement: (type, props, ...children) => ({ type, props: props || {}, children }) };
+vm.runInContext(source.slice(source.indexOf('function QuestionStep('), source.indexOf('/* ─── Trigram mark')), context);
+const flatten = node => !node || typeof node !== 'object' ? [] : [node, ...node.children.flatMap(flatten)];
+const retry = () => {};
+const failedUi = flatten(context.QuestionStep({ question: '', quota: { ...quota, syncError: true }, onQuotaRetry: retry }));
+const retryButton = failedUi.find(node => node.type === 'button');
+assert.equal(retryButton.props.disabled, false, 'failed quota checks must offer a usable retry without deleting the question');
+assert.equal(retryButton.props.onClick, retry, 'retry only checks quota; it must not submit or consume a cast');
+const exhaustedUi = flatten(context.QuestionStep({ question, quota: { limit: 3, used: 3, remaining: 0 } }));
+assert(exhaustedUi.some(node => node.type === 'button' && node.props.disabled), 'exhausted submit remains visible and disabled');
 vm.runInContext(fs.readFileSync('pages/liuyao-data.js', 'utf8'), context);
 vm.runInContext(source.slice(source.indexOf('const LIUYAO_TYPE_TEXT ='), source.indexOf('function flattenReadingResponse(')), context);
 vm.runInContext(source.slice(source.indexOf('function makeLiuyaoFollowupContext('), source.indexOf('function ResultStep(')), context);

@@ -110,7 +110,7 @@ function formatQuotaDetailText(raw) {
   const quota = normalizeQuota(raw);
   const isEn = new URLSearchParams(window.location.search).get('lang') === 'en' || localStorage.getItem('wentian-app-language-v1') === 'en';
   if (quota.syncPending) return isEn ? 'Checking today’s uses before you submit.' : '正在核对今日次数，完成后即可提交。';
-  if (quota.syncError) return isEn ? 'Could not check your uses. Reload the page to retry.' : '暂时无法核对次数，请刷新页面重试。';
+  if (quota.syncError) return isEn ? 'Could not check your uses. Retry below; your question is kept.' : '暂时无法核对次数，请点下方重试，已写的问题会保留。';
   if (quota.testingUnlimited) return formatQuotaTagText(quota);
   return isEn
     ? `Used ${quota.used}/${quota.limit} today · ${quota.remaining} left. Resets at 00:00 Beijing time.`
@@ -260,7 +260,7 @@ async function refreshRemoteQuota(currentQuota) {
       type: 'liuyao_quota',
       clientId
     }
-  }, 6000);
+  }, 15000);
   if (data?.ok === false || !data?.quota) throw new Error('Quota temporarily unavailable');
   return data?.quota ? mergeQuota(currentQuota, data.quota) : normalizeQuota(currentQuota);
 }
@@ -743,13 +743,14 @@ function QuestionStep({
   question,
   setQuestion,
   onSubmit,
+  onQuotaRetry,
   reviewing,
   gateMessage,
   quota
 }) {
   const valid = question.trim().length >= 4;
   const quotaInfo = normalizeQuota(quota);
-  const disabled = !valid || reviewing || quotaInfo.syncPending || quotaInfo.syncError || quotaInfo.remaining <= 0;
+  const disabled = reviewing || quotaInfo.syncPending || (!quotaInfo.syncError && (!valid || quotaInfo.remaining <= 0));
   return /*#__PURE__*/React.createElement("div", {
     style: {
       flex: 1,
@@ -832,7 +833,7 @@ function QuestionStep({
   }, /*#__PURE__*/React.createElement("span", {
     className: "liuyao-thinking-dot"
   }), "\u5927\u6A21\u578B\u6B63\u5728\u5BA1\u9898\uFF0C\u8BF7\u7A0D\u5019") : gateMessage?.text || formatQuotaDetailText(quotaInfo)), /*#__PURE__*/React.createElement("button", {
-    onClick: onSubmit,
+    onClick: quotaInfo.syncError ? onQuotaRetry : onSubmit,
     disabled: disabled,
     style: {
       width: '100%',
@@ -859,7 +860,7 @@ function QuestionStep({
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "liuyao-review-spinner"
-  }), "\u5BA1\u9898\u4E2D") : quotaInfo.syncPending ? '正在核对次数' : quotaInfo.syncError ? '请刷新重试' : quotaInfo.remaining <= 0 ? '今日已用完，明天再来' : '提交占问'));
+  }), "\u5BA1\u9898\u4E2D") : quotaInfo.syncPending ? '正在核对次数' : quotaInfo.syncError ? '重试次数同步' : quotaInfo.remaining <= 0 ? '今日已用完，明天再来' : '提交占问'));
 }
 
 /* ─── Trigram mark ─── */
@@ -2725,6 +2726,16 @@ function App() {
   useEffect(() => {
     setQuestionGate(null);
   }, [question]);
+  const handleQuotaRetry = useCallback(async () => {
+    setQuota(current => ({ ...current, syncPending: true, syncError: false }));
+    try {
+      const nextQuota = await refreshRemoteQuota(null);
+      setQuota({ ...nextQuota, syncPending: false, syncError: false });
+      saveStoredQuota(nextQuota);
+    } catch {
+      setQuota(current => ({ ...current, syncPending: false, syncError: true }));
+    }
+  }, []);
   const enableShake = useCallback(async () => {
     try {
       window.DivinationAudio?.unlock?.();
@@ -2877,6 +2888,7 @@ function App() {
     question: question,
     setQuestion: setQuestion,
     onSubmit: handleQuestionSubmit,
+    onQuotaRetry: handleQuotaRetry,
     reviewing: reviewing,
     quota: quota,
     gateMessage: questionGate ? {
