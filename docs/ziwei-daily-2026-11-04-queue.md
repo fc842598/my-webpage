@@ -14,10 +14,10 @@
 | 08 | 已发布 2026-11-04 21:11 https://yuetianai.com/articles/ziwei-zuoyou-shengyue-shichen-fenbie-hedui.html / https://yuetianai.com/articles/en/ziwei-zuoyou-shengyue-shichen-fenbie-hedui.html | ziwei-zuoyou-shengyue-shichen-fenbie-hedui | 左辅右弼不随时辰变，为什么还要核出生月？ |
 | 09 | 已发布 2026-11-04 21:15 https://yuetianai.com/articles/ziwei-xiongdijiaoyou-hehuo-guquan-zhouzhuan.html / https://yuetianai.com/articles/en/ziwei-xiongdijiaoyou-hehuo-guquan-zhouzhuan.html | ziwei-xiongdijiaoyou-hehuo-guquan-zhouzhuan | 兄弟宫与交友宫看合伙，股权和周转款先分什么？ | 财运事业 |
 | 10 | 已发布 2026-11-04 21:15 https://yuetianai.com/articles/ziwei-fumugong-guanlu-shangsi-mohu-fankui.html / https://yuetianai.com/articles/en/ziwei-fumugong-guanlu-shangsi-mohu-fankui.html | ziwei-fumugong-guanlu-shangsi-mohu-fankui | 父母宫与官禄宫同看，主管反馈模糊时怎样问清验收？ | 财运事业 |
-| 11 | 待次日研究复核，未发布 | ziwei-taiyang-wenchang-gongkai-neibu-huibao | 太阳会文昌，公开发言和内部汇报怎么分开看？ |
+| 11 | 已发布 2026-11-04 21:19 https://yuetianai.com/articles/ziwei-taiyang-wenchang-gongkai-neibu-huibao.html / https://yuetianai.com/articles/en/ziwei-taiyang-wenchang-gongkai-neibu-huibao.html | ziwei-taiyang-wenchang-gongkai-neibu-huibao | 太阳会文昌，公开发言和内部汇报怎么分开看？ | 财运事业 |
 | 12 | 已发布 2026-11-04 21:11 https://yuetianai.com/articles/ziwei-tanlang-wenchang-yingxiao-chengnuo.html / https://yuetianai.com/articles/en/ziwei-tanlang-wenchang-yingxiao-chengnuo.html | ziwei-tanlang-wenchang-yingxiao-chengnuo | 贪狼会文昌，营销话术何时会偏离产品承诺？ |
-| 13 | 待次日研究复核，未发布 | ziwei-zinvgong-dai-xinren-peiyang-jihua | 子女宫看带新人，培养计划要核哪些现实条件？ |
-| 14 | 待次日研究复核，未发布 | ziwei-zinvgong-konggong-zuopin-fuhua-duigong | 子女宫空宫，作品孵化为什么还要看对宫？ |
+| 13 | 待发布 | ziwei-changqu-guanlu-zige-kaoshi-gongzuo-shuxie | 昌曲落官禄，资格考试和日常工作写作能等同吗？ | 看盘方法 |
+| 14 | 待发布 | ziwei-konggong-jieduigong-laiyingong-qubie | 空宫借对宫与来因宫，为什么不是同一种起点？ | 看盘方法 |
 | 15 | 待次日研究复核，未发布 | ziwei-liuyue-caibogong-jiating-yusuan-fupan | 流月轮到财帛宫，家庭预算该怎样做月度复盘？ |
 | 16 | 待次日研究复核，未发布 | ziwei-liuyue-fuqigong-guanxi-shijian-cengci | 流月轮到夫妻宫，关系议题为何不能只看一个月？ |
 | 17 | 已发布 2026-11-04 21:11 https://yuetianai.com/articles/ziwei-guanlu-tanlang-huoke-liuke.html / https://yuetianai.com/articles/en/ziwei-guanlu-tanlang-huoke-liuke.html | ziwei-guanlu-tanlang-huoke-liuke | 官禄宫贪狼，获客与留客为何要分两张表？ |
