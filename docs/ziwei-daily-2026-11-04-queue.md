@@ -15,7 +15,7 @@
 | 09 | 待次日研究复核，未发布 | ziwei-zinvgong-ziwei-haizi-mubiao-shicuo | 子女宫紫微，给孩子设目标怎样留试错空间？ |
 | 10 | 待次日研究复核，未发布 | ziwei-zinvgong-ziwei-chuangzuo-jiezhiri | 子女宫紫微，创作项目该先定品质还是截止日？ |
 | 11 | 待次日研究复核，未发布 | ziwei-taiyang-wenchang-gongkai-neibu-huibao | 太阳会文昌，公开发言和内部汇报怎么分开看？ |
-| 12 | 待发布 | ziwei-tanlang-wenchang-yingxiao-chengnuo | 贪狼会文昌，营销话术何时会偏离产品承诺？ |
+| 12 | 已发布 2026-11-04 21:11 https://yuetianai.com/articles/ziwei-tanlang-wenchang-yingxiao-chengnuo.html / https://yuetianai.com/articles/en/ziwei-tanlang-wenchang-yingxiao-chengnuo.html | ziwei-tanlang-wenchang-yingxiao-chengnuo | 贪狼会文昌，营销话术何时会偏离产品承诺？ |
 | 13 | 待次日研究复核，未发布 | ziwei-zinvgong-dai-xinren-peiyang-jihua | 子女宫看带新人，培养计划要核哪些现实条件？ |
 | 14 | 待次日研究复核，未发布 | ziwei-zinvgong-konggong-zuopin-fuhua-duigong | 子女宫空宫，作品孵化为什么还要看对宫？ |
 | 15 | 待次日研究复核，未发布 | ziwei-liuyue-caibogong-jiating-yusuan-fupan | 流月轮到财帛宫，家庭预算该怎样做月度复盘？ |
