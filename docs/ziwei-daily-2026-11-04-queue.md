@@ -19,7 +19,7 @@
 | 13 | 已发布 2026-11-04 21:19 https://yuetianai.com/articles/ziwei-changqu-guanlu-zige-kaoshi-gongzuo-shuxie.html / https://yuetianai.com/articles/en/ziwei-changqu-guanlu-zige-kaoshi-gongzuo-shuxie.html | ziwei-changqu-guanlu-zige-kaoshi-gongzuo-shuxie | 昌曲落官禄，资格考试和日常工作写作能等同吗？ | 看盘方法 |
 | 14 | 已发布 2026-11-04 21:19 https://yuetianai.com/articles/ziwei-konggong-jieduigong-laiyingong-qubie.html / https://yuetianai.com/articles/en/ziwei-konggong-jieduigong-laiyingong-qubie.html | ziwei-konggong-jieduigong-laiyingong-qubie | 空宫借对宫与来因宫，为什么不是同一种起点？ | 看盘方法 |
 | 15 | 已发布 2026-11-04 21:22 https://yuetianai.com/articles/ziwei-liuyue-caibogong-jiating-yusuan-fupan.html / https://yuetianai.com/articles/en/ziwei-liuyue-caibogong-jiating-yusuan-fupan.html | ziwei-liuyue-caibogong-jiating-yusuan-fupan | 流月轮到财帛宫，家庭预算该怎样做月度复盘？ | 财运事业 |
-| 16 | 待发布 | ziwei-liuyue-fuqigong-guanxi-shijian-cengci | 流月轮到夫妻宫，关系议题为何不能只看一个月？ | 婚恋与关系 |
+| 16 | 待发布 | ziwei-liuyue-fuqigong-guanxi-shijian-cengci | 流月轮到夫妻宫，关系议题为何不能只看一个月？ | 宫位组合 |
 | 17 | 已发布 2026-11-04 21:11 https://yuetianai.com/articles/ziwei-guanlu-tanlang-huoke-liuke.html / https://yuetianai.com/articles/en/ziwei-guanlu-tanlang-huoke-liuke.html | ziwei-guanlu-tanlang-huoke-liuke | 官禄宫贪狼，获客与留客为何要分两张表？ |
 | 18 | 待发布 | ziwei-guanlu-tanlang-fuqi-hehuo-fengong | 官禄宫贪狼对夫妻宫，合伙人分工怎么读？ | 财运事业 |
 | 19 | 已发布 2026-11-04 21:12 https://yuetianai.com/articles/ziwei-liunian-guanlu-gangwei-zhize-touxian.html / https://yuetianai.com/articles/en/ziwei-liunian-guanlu-gangwei-zhize-touxian.html | ziwei-liunian-guanlu-gangwei-zhize-touxian | 流年官禄有变化，岗位调整先看职责还是头衔？ |
