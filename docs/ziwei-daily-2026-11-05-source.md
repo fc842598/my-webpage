@@ -238,22 +238,65 @@ A student attending a one-year program in a nearby province may focus on a housi
 Read course requirements and payment deadlines. If possible, visit briefly, speak with current students, and record commute, sleep, food, and study conditions. Review the first term against the plan. Read Life and Migration, then Wellbeing, Wealth, Career, and the time layer; decide with school documents and a real budget.
 
 ---
-## 09. 父母宫看上司，公开表扬后新增责任该怎样确认？
-slug：`ziwei-fumugong-shangsi-biaoyang-hou-zeren`
-来源：2026-11-04，https://guidingstar.ai/ziwei/palace/parents 。角度：表扬与授权分开；与已发主管模糊反馈验收题不同。
-中文草稿：主管在会上表扬一个项目，不代表正式授予下一项目的预算与人手。父母宫可提醒自己如何接收权威评价，官禄宫仍要核岗位职责。若随表扬而来的新任务需要带队，问清目标、授权、考核和资源。把掌声当成职位变动，会让责任先到、支持却没到。
-English draft: Public praise from a manager does not automatically bring budget or staff. The Parents Palace can frame the response to authority, while Career keeps the focus on the role. If a new team task follows the praise, confirm its goals, approval rights, resources, and evaluation. Recognition and authority are separate facts.
+## 09. 财帛宫见化禄，为什么合同尾款还不能算已到账？
+slug：`ziwei-caibo-hualu-hetong-weikuan`
+来源：2026-11-05，https://www.fateclick.com.tw/blog/2027-wealth-caibo-guide 。角度：财帛宫的收入机会与合同尾款入账分开记录；区别于站内泛论财帛化禄及客户咨询转化。仅供编辑，不引用来源中的流曜计算。
+正文草稿：
+财帛宫见化禄，接到一笔项目单，能否直接把全额写进本月收入？不能。化禄可帮助讨论资源和机会，但合同金额、验收条件、开票与真正到账之间有时间差。把盘面解释成“这笔钱已经到手”，不仅误读星曜，也会让经营预算提前透支。
+
+### 宫位只给提问方向
+先看财帛宫主星与化禄如何配合，再连官禄宫确认工作能否完成，迁移宫看客户与外部市场，田宅宫看长期积累。若官禄有交付压力，化禄可能伴随更多工作量；若客户在外地，还要核跨境付款或汇率成本。四化要看落宫与组合，不是给银行流水盖章。流年提示某段时间更值得追踪财务，但不替代财务凭据。
+
+### 两笔尾款的风险不同
+设计师签了十万元项目，首款三万元已收，尾款需客户验收后付。她可以把三万元列入已到账，把七万元列入应收，并标验收日期。另一位设备商合同价相同，但尾款要等安装后三个月的稳定运行报告。其应收周期更长，不能照搬设计师的现金计划。两人的财帛宫即使都见化禄，实际现金安全垫也不一样。
+
+### 用四列账本复核
+每个项目单独记合同总额、已开票金额、已收金额和下一付款条件；再列最晚付款日与追款负责人。排盘先看本命财帛与官禄，再看大限、流年有没有强化同一议题，最后回到合同、验收材料和银行记录。若某项尾款有争议，先解决交付范围与签收，而不是用命盘猜对方何时付款。机会可以乐观，现金预算仍须按已到账数安排。
+英文标题：Wealth Palace Hua Lu and Contract Payments in Zi Wei Dou Shu
+英文描述：A favorable Wealth Palace transformation is not money in the bank. Separate contract value, acceptance, invoices, and cash received.
+英文正文：
+Hua Lu in the Wealth Palace may prompt a useful discussion about income opportunities. It cannot turn the full value of a signed contract into cash on hand. Acceptance, invoicing, and payment may happen months apart. A chart reading should preserve those distinctions.
+
+### Connect opportunity with delivery
+Read Wealth with Career for the work required, Migration for the client setting, and Property for longer-term accumulation. A promising project may also require more labor or a longer collection cycle. Transformations describe a question to examine, not a bank statement.
+
+### Compare two final payments
+A designer receives the first thirty percent of a project and will receive the rest after client acceptance. An equipment supplier receives a final payment only after a three-month operating report. Their contracts may have the same value, but the cash available this month is different.
+
+### Keep four ledger columns
+Record contract value, invoiced amount, received amount, and the next payment condition. Add acceptance dates and the person responsible for follow-up. Read natal Wealth and Career before time layers, then verify each conclusion with the contract, acceptance record, and bank account.
 
 ---
 
-## 10. 父母宫看上司，坏消息怎样先书面说明再开会？
-slug：`ziwei-fumugong-shangsi-huaixiaoxi-huibao`
-来源：2026-11-04，https://guidingstar.ai/ziwei/palace/parents 。角度：负面项目消息的上报顺序；与已发设计稿或报表模糊反馈不同。
-中文草稿：项目延期时，有人因害怕上司责备而拖到开会才说。父母宫可作为这种权威压力的观察入口，官禄宫提醒交付责任。先用书面说明事实、影响、已做补救和需要的决定，再安排会议讨论方案。文字记录不是推卸，而是让管理者有时间核资源。
-English draft: Fear of a manager's reaction can delay bad news. The Parents Palace can frame that response; Career concerns the work owed. Send a short written note covering the facts, impact, mitigation, and decision needed before the meeting. The record gives everyone a common starting point and makes resource requests clearer.
+## 10. 官禄宫有忌想辞职，先分任务冲突还是长期岗位不合？
+slug：`ziwei-guanlu-huaji-cizhi-renwu-gangwei`
+来源：2026-11-05，https://www.starkami.com/articles/ziwei-job-change 。角度：离职冲动时区分可修的任务冲突与长期岗位错配；区别于站内通用转职时机、试用期条款与官禄化忌压力题。仅供编辑。
+正文草稿：
+官禄宫出现化忌，工作又很烦，是否立刻辞职？化忌可提示责任、流程或能力使用上的阻滞，但不能单独回答离职时机。先把不满拆成两类：某个项目的任务冲突，还是岗位长期要求与个人能力、生活条件不合。两者的解决路径差别很大。
+
+### 用时间层判断问题持续多久
+本命官禄看长期做事方式，大限看十年阶段中的岗位与资源，流年官禄把今年的压力带到前台。若只在一个月的项目中集中出错，先核职责和交付节点，不能把短期冲突写成一生不适合这行。若几次换项目仍重复出现相同的能力缺口，再考虑职业训练或岗位调整。流年化忌也不保证辞职后就会顺利，外部条件仍要看迁移宫。
+
+### 两位员工各自先做什么
+产品经理连续三周与设计团队争验收标准，但职位本身仍匹配；可以先让双方写清功能范围、决策人和截止日。另一位夜班主管长期因轮班睡眠不足，岗位调整请求也无结果；要核合同、储蓄、替代岗位和健康状况，不能只靠“再忍一阵”。前者优先修任务，后者可能需要有计划地离开。盘面相似，现实限制不同。
+
+### 做一张离职前核对表
+列出冲突发生频率、是否只涉及某个人、可否通过书面分工解决、下一岗位的技能证据，以及没有收入时能维持几个月。排盘先看本命官禄和命宫，再读大限、流年，最后连迁移和财帛核外部岗位与现金缓冲。若压力已影响睡眠或身体，应及时寻求专业帮助。命盘可以整理选择，不能替代劳动合同、实际岗位信息或个人健康判断。
+英文标题：Career Palace Hua Ji: Task Conflict or a Poor Long-Term Role Fit?
+英文描述：Before quitting over a Career Palace Hua Ji, separate a fixable project dispute from a lasting role mismatch and check cash reserves.
+英文正文：
+Hua Ji in the Career Palace does not set a resignation date. It may raise a question about blocked responsibility or workflow, but a frustrating project and a long-term mismatch need different responses. Describe the problem before choosing an exit.
+
+### Ask how long the pattern has lasted
+Natal Career frames a longer working style, a decade cycle adds the career stage, and the annual layer highlights this year's pressure. A dispute limited to one short project may be repairable. A repeated skill gap across several roles may call for training or a different position. Migration helps examine the external job market.
+
+### Compare two workers
+A product manager arguing with designers over acceptance criteria may need written scope, an approver, and a deadline. A night-shift supervisor with sustained sleep disruption and no workable schedule change needs to assess contract terms, savings, alternatives, and health. The first should try to repair a task; the second may need a planned transition.
+
+### Check before resigning
+Record how often conflict occurs, whether responsibilities can be clarified, what evidence supports the next role, and how many months of expenses savings cover. Read Career and Life, then decade and annual cycles, with Migration and Wealth for alternatives and cash. Seek appropriate help if work is affecting health. Make the decision from actual conditions and agreements.
 
 ---
-
 ## 11. 夫妻宫巨门化忌，争论时怎样分清事实和解释？
 slug：`ziwei-jumen-huaji-guanxi-shishi-jieshi`
 来源：2026-11-04，https://ziweiai.com/zh-TW/notes/couple-palace-jumen-huaji-emotional-challenges 。角度：一段争执拆为可核事实与个人推断；与已发长期责任依赖及月度安排题不同。

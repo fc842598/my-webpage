@@ -12,8 +12,8 @@
 | 06 | 已发布 2026-11-05 09:05 https://yuetianai.com/articles/ziwei-shiyiyue-jieqi-liuyue-bianjie.html / https://yuetianai.com/articles/en/ziwei-shiyiyue-jieqi-liuyue-bianjie.html | ziwei-shiyiyue-jieqi-liuyue-bianjie | 十一月月运从哪天算，节气月和紫微流月为何不能混用？ |
 | 07 | 已发布 2026-11-05 09:06 https://yuetianai.com/articles/ziwei-minggong-konggong-jiexing-biaozhu.html / https://yuetianai.com/articles/en/ziwei-minggong-konggong-jiexing-biaozhu.html | ziwei-minggong-konggong-jiexing-biaozhu | 命宫空宫借迁移宫，教学示例怎样标清星曜原位？ |
 | 08 | 已发布 2026-11-05 09:07 https://yuetianai.com/articles/ziwei-qianyi-yidi-qiuxue-fude-chengben.html / https://yuetianai.com/articles/en/ziwei-qianyi-yidi-qiuxue-fude-chengben.html | ziwei-qianyi-yidi-qiuxue-fude-chengben | 异地求学看迁移宫，为什么还要核福德宫的适应成本？ |
-| 09 | 待次日研究复核，未发布 | ziwei-fumugong-shangsi-biaoyang-hou-zeren | 父母宫看上司，公开表扬后新增责任该怎样确认？ |
-| 10 | 待次日研究复核，未发布 | ziwei-fumugong-shangsi-huaixiaoxi-huibao | 父母宫看上司，坏消息怎样先书面说明再开会？ |
+| 09 | 已发布 2026-11-05 09:08 https://yuetianai.com/articles/ziwei-caibo-hualu-hetong-weikuan.html / https://yuetianai.com/articles/en/ziwei-caibo-hualu-hetong-weikuan.html | ziwei-caibo-hualu-hetong-weikuan | 财帛宫见化禄，为什么合同尾款还不能算已到账？ |
+| 10 | 待发布 | ziwei-guanlu-huaji-cizhi-renwu-gangwei | 官禄宫有忌想辞职，先分任务冲突还是长期岗位不合？ |
 | 11 | 待次日研究复核，未发布 | ziwei-jumen-huaji-guanxi-shishi-jieshi | 夫妻宫巨门化忌，争论时怎样分清事实和解释？ |
 | 12 | 待次日研究复核，未发布 | ziwei-jumen-huaji-gongxiang-richeng-wuhui | 巨门化忌碰上共享日程，漏填和失约为何不能混谈？ |
 | 13 | 待次日研究复核，未发布 | ziwei-changqu-mianshi-bishi-koushi | 文昌文曲与求职，笔试和口试要用同一套准备法吗？ |
