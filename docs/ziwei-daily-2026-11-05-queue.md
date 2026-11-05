@@ -4,8 +4,8 @@
 
 | 顺序 | 状态 | slug | 待复核问题 |
 |---|---|---|---|
-| 01 | 待次日研究复核，未发布 | ziwei-tianzhai-zaoyin-zufang | 田宅宫谈居住安全感，租房噪声该怎样和生活习惯分开？ |
-| 02 | 待次日研究复核，未发布 | ziwei-tianzhai-qianyi-kuacheng-shizhu | 迁移与田宅同动，跨城搬家为什么先试住再签长期合同？ |
+| 01 | 已发布 2026-11-05 09:00 https://yuetianai.com/articles/ziwei-qianyi-kuashiqu-kehu-jiaofu.html / https://yuetianai.com/articles/en/ziwei-qianyi-kuashiqu-kehu-jiaofu.html | ziwei-qianyi-kuashiqu-kehu-jiaofu | 迁移宫看跨时区客户，交付窗口和出差怎么分？ |
+| 02 | 待发布 | ziwei-jiaoyougong-ziwei-shihe-sanxiang | 交友宫紫微带来人脉，试合作先核哪三件事？ |
 | 03 | 待次日研究复核，未发布 | ziwei-fuqi-huaji-zhaohu-feiyong-fengong | 夫妻宫有忌，共同照护的费用与出力怎样分开谈？ |
 | 04 | 待次日研究复核，未发布 | ziwei-fuqi-huaji-gongtong-zhanghu-tuichu | 夫妻宫化忌，共同账户的退出规则为什么要事先写？ |
 | 05 | 待次日研究复核，未发布 | ziwei-qianyi-konggong-jie-minggong-yidi-kehu | 迁移宫空宫借命宫，异地客户项目先核什么？ |

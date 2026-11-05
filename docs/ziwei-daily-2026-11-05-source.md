@@ -2,22 +2,65 @@
 
 依据 2026-11-04 已完成交接的 10 篇同行正文形成 20 个不同的本站搜索问题。研究来源 10 篇，不称 20 篇。以下只是选题与中英文初稿，未做 11 月 5 日研究映射、正式扩写或发布；不生成公开页。次日必须先通过当日研究交接，再对每篇查标题、开头、例子和搜索意图。来源及与旧文差异仅供编辑记录，不进入正文。
 
-## 01. 田宅宫谈居住安全感，租房噪声该怎样和生活习惯分开？
-slug：`ziwei-tianzhai-zaoyin-zufang`
-来源：2026-11-04，https://www.mingliway.com/blog/ziwei-tianzhai-palace-home-property 。角度：租房噪声的可核居住条件；与已发三代同住空间冲突不同。
-中文草稿：田宅宫可以帮助列出对居住环境的需求，却不能说明噪声来自命盘。租客睡不好时，先分清楼外施工、邻居作息和自己轮班三种原因。看田宅与疾厄的生活承载，也看迁移是否涉及换住处；实地在不同时段听噪声、查租约退租条款，再谈是否搬家。
-English draft: The Property Palace can frame what a household needs from its space. It cannot measure noise. A tenant should distinguish construction, neighbors, and a shifting work schedule, then visit at different hours and read the lease exit terms. The chart organizes the question; observations and the contract guide the move.
+## 01. 迁移宫看跨时区客户，交付窗口和出差怎么分？
+slug：`ziwei-qianyi-kuashiqu-kehu-jiaofu`
+来源：2026-11-05，https://oracleeast.com/ziwei-migration-palace-overseas-development/ 。角度：跨时区远程项目的交付安排；区别于站内迁移宫远程获客、口碑及一般搬家题。仅作编辑记录。
+正文草稿：
+客户在海外，自己仍住在原城市，紫微斗数的迁移宫要不要看？要看的是工作进入外部场域后的条件，而不是先猜会不会搬家。跨时区合作最容易混淆平时远程交付与确需到场的节点。把它们分开，才知道机会是否接得住。
+
+### 迁移宫先问外部条件
+迁移宫描述离开熟悉环境后的互动。外地客户、国外平台、短期驻场都可成为问题，但同一宫位不能直接给出“适合出国”的结论。先核命宫与迁移的对照：本人擅长独立完成，还是需要面对面取得信息？再看官禄宫能否承接专业任务，财帛宫的收费与回款是否覆盖额外成本。若迁移宫见化禄，可能提示外部资源值得问询，也不能把咨询量算成已签订单。
+
+### 两种项目不能混成一种
+上海的设计师为纽约客户制作网页，每周固定两次线上会议，交付物是可审阅的文件。重点是时区重叠、修改轮次与验收人，不必因为客户在海外就先租当地房子。另一位设备顾问要去现场测量三天，合同却只写“远程支持”。这时先核出差天数、签证或准入、保险、差旅报销及现场延误责任。两人都与外部环境打交道，但迁移宫提示的问题落在不同成本上。
+
+### 把盘面问题写进交付表
+先用本命官禄和迁移确定长期的工作方式，再看大限、流年是否让外部合作成为眼前任务。实际决策要另列一张表：工作时段、现场次数、文件版本、验收日期、币种和付款节点。若对方要求凌晨即时响应，就把值班费与替班机制谈清；若只是月度评审，异步更新也许足够。排盘顺序是命迁轴、官禄与财帛、时间层，最后回到合同和日程，不能让一个宫位代替交付安排。
+英文标题：Zi Wei Dou Shu Migration Palace for Cross-Time-Zone Client Work
+英文描述：Read the Migration, Career, and Wealth Palaces when an overseas client needs remote delivery or an on-site visit.
+英文正文：
+An overseas client does not automatically mean a move abroad. In Zi Wei Dou Shu, the Migration Palace can frame how work changes in an unfamiliar external setting. The first practical question is whether the assignment is truly remote or includes a site visit.
+
+### Read the external setting with the work
+Compare the Life and Migration Palaces, then read Career for the work you can deliver and Wealth for payment and added costs. A favorable transformation may make external opportunities worth exploring, but an inquiry is not a signed contract.
+
+### Compare two assignments
+A designer in Shanghai preparing files for a New York client needs agreed meeting hours, revision rounds, and a named approver. A machine consultant visiting a factory for three days needs site access, travel coverage, and responsibility for delays. Both work with a distant client; only one needs travel.
+
+### Use a delivery sheet
+List time-zone overlap, visits, document versions, acceptance dates, currency, and payment milestones. Read the natal Life and Migration axis first, add Career and Wealth, then use longer and annual cycles for timing. Decide against the actual schedule and written terms.
 
 ---
 
-## 02. 迁移与田宅同动，跨城搬家为什么先试住再签长期合同？
-slug：`ziwei-tianzhai-qianyi-kuacheng-shizhu`
-来源：2026-11-04，https://www.mingliway.com/blog/ziwei-tianzhai-palace-home-property 。角度：短租试住验证通勤与家庭需求；与站内买房时机总览不同。
-中文草稿：迁移宫提示外部变化，田宅宫提醒落脚后能否生活，并不能单独回答“该买还是该租”。跨城换岗的人可先用短租观察上下班时长、孩子接送和周末补给，再谈长期合同。财帛宫补看押金、搬运与重复房租；试住记录比一次看房的印象稳妥。
-English draft: Travel and Property raise different questions during a move. A short rental can test commute time, childcare routes, and everyday services before a long lease. Wealth adds deposits and overlap rent. Keep a trial log and compare it with the contract rather than treating the chart as a buy or rent verdict.
+## 02. 交友宫紫微带来人脉，试合作先核哪三件事？
+slug：`ziwei-jiaoyougong-ziwei-shihe-sanxiang`
+来源：2026-11-05，https://starnum.com.tw/blog/zh-TW/ziwei-friends-palace-complete 。角度：有头衔的人脉转成试合作时的资源、授权、交付三项核对；区别于站内泛泛交友宫及合伙股权文章。仅作编辑记录。
+正文草稿：
+交友宫见紫微，认识有地位的人，就一定能得到合作机会吗？星曜可以提示关系中的秩序与角色感，却不能替对方承诺资源。名片上的头衔、会议上的支持和实际可调动的人手，是三种不同事实。要判断能否合作，先做一个边界清楚的小项目。
+
+### 先看关系落在哪一层
+交友宫着重外部团队、同事和合作对象。紫微在此，讨论关系如何围绕中心人物组织；再看辅弼、魁钺与四化是否改变协作方式。若只看到“有贵人”，就跳过官禄的专业交付和财帛的报酬，容易把社交热度当作经营能力。交友宫化权也不等于有签字权；真实授权要从文件和对方组织架构确认。
+
+### 用两种邀请检验承诺
+摄影师受知名品牌经理邀请拍活动，经理能介绍团队，却未必有采购审批权。试合作应先确认预算持有人、样片标准和付款日期。软件工程师被朋友拉进创业群，大家称他“技术负责人”，但没人决定需求范围。先挑一个两周功能试点，写明接口、测试人和停止条件，比立即谈长期股权更能检验协作。两例都可能有人脉，能否交付却要看不同证据。
+
+### 三项核对后再扩合作
+第一，资源：谁提供预算、资料与人员？第二，授权：谁批准改动和签署合同？第三，交付：谁验收、何时付款、未达标如何结束？排盘时先记交友宫的主辅星及四化，再连官禄、财帛与迁移，看关系怎样落到工作、钱和外部平台。试项目结束再复盘沟通、实际支出和完成率。宫位帮助提出问题，是否继续合作仍由记录与双方协议决定。
+英文标题：Zi Wei Dou Shu Friends Palace and a Small Partnership Trial
+英文描述：A prominent contact is not the same as usable support. Frame a small partnership trial with the Friends, Career, and Wealth Palaces.
+英文正文：
+Zi Wei in the Friends Palace may draw attention to status and order in a network. It cannot show that a well-known contact will supply a budget or sign a contract. A title, a friendly introduction, and an approved purchase are different things. A small trial makes the difference visible.
+
+### Locate the working relationship
+Read Friends for the outside team and cooperation pattern, then look at supporting stars and transformations. Connect it with Career for the work and Wealth for payment. Hua Quan is not legal signature authority; check the organization's written approval route.
+
+### Test two invitations
+A photographer invited by a brand manager should ask who owns the budget, who approves sample images, and when payment is due. A software engineer offered the informal title of technical lead should start with a two-week feature, a defined scope, and a person who will test it. Neither invitation proves a durable partnership.
+
+### Check three things before expanding
+Name the resources, decision authority, and delivery standard. Record who provides staff and data, who can change the scope, and who accepts the result. Read Friends, Career, Wealth, and Migration, then compare the chart questions with the trial results and what both sides agreed in writing.
 
 ---
-
 ## 03. 夫妻宫有忌，共同照护的费用与出力怎样分开谈？
 slug：`ziwei-fuqi-huaji-zhaohu-feiyong-fengong`
 来源：2026-11-04，https://www.dcard.tw/f/fortune_telling/p/255221669 。角度：照护钱与时间两种贡献分账；与已发多年关系依赖及单月排班题不同。
