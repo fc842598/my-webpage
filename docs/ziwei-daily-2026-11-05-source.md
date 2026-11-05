@@ -414,22 +414,65 @@ A research supervisor may grade a project against published criteria but cannot 
 Record criteria, advice, the student's response, and the next review date. If the same task remains difficult, check the task level and the clarity of examples. Read Children with Career and Wellbeing, then return to actual work and learning records rather than labeling a student's character.
 
 ---
-## 15. 昌曲空劫两张盘，教学示例怎样标清计算假设？
-slug：`ziwei-changqu-kongjie-liangpan-biaozhu`
-来源：2026-11-04，https://little-yin.com/2021/11/05/secondary1/ 。角度：演示盘的参数和不确定性标注；与今日四星校时文章区别在教学材料质量。
-中文草稿：两张示范盘若时辰、时区和换日规则不同，学生无法判断昌曲空劫为何移宫。教学材料应列输入、软件版本、安星法及四星对照表，再说明哪些是计算结果、哪些只是解释。示范盘不是某人的人生证据；把假设写明，读者才能复算并发现规则差异。
-English draft: Two teaching charts cannot be compared fairly if their hour, time zone, or date boundary differs. A good example lists inputs, software method, and the four star placements, then separates calculation from interpretation. A demonstration chart is not evidence about a real person's life. Clear assumptions make the lesson reproducible.
+## 15. 外地实习看迁移宫，接受录用前该核哪几笔生活费？
+slug：`ziwei-qianyi-yidi-shixi-shenghuofei`
+来源：2026-11-05，https://oracleeast.com/ziwei-migration-palace-overseas-development/ 。角度：短期异地实习的住宿与收入错位；区别于站内迁移宫远程客户、异地求学适应和跨城搬家题。仅供编辑。
+正文草稿：
+收到外地实习录用，迁移宫看起来活跃，就说明这趟一定划算吗？迁移宫提示外部环境值得观察，不替实习生支付押金和通勤费。短期实习与长期搬家不同，最容易漏算的是第一笔补贴到账之前的现金缺口，以及离开时能否退租。
+
+### 先把机会与成本分开
+迁移宫看陌生城市、团队和工作场域；官禄宫看实习岗位能否提供真实训练，财帛宫看补贴、交通和生活费。即使迁移有化禄，也不能把口头承诺当成已付款。看命迁轴时，还要问本人能否适应现场沟通，而不是只按城市远近判断。大限与流年可以补背景，但三个月实习的合同条件更直接。
+
+### 两种录用的现金缺口
+甲同学拿到每月固定补贴，但首月月底才发，入职前要付两个月押金和交通。乙同学补贴更高，却按出勤天数结算，还需自付周末住宿。只看补贴数字会误判；把到手日期、押金、房租、餐费、返乡车票写成逐周现金表，才知道能否撑到发薪。若学校另有实习学分要求，还要核证明材料与导师签字，不让住处问题遮住学业安排。
+
+### 合同和排盘怎样一起用
+先核实习起止日、每周在岗时间、导师和补贴结算方式；再确认住房退租条款、通勤路线和紧急联系人。排盘顺序是本命命迁轴、官禄与财帛、流年时间层，最后回到纸面预算。若总成本超过可承受范围，可询问远程阶段、住宿支持或其他岗位。命盘不能代替劳动安排，也不能保证实习后的正式录用。
+英文标题：Migration Palace and the Cash Gap Before an Out-of-Town Internship
+英文描述：Before accepting an internship away from home, compare training value with deposits, living costs, and the first payment date.
+英文正文：
+An internship in another city is a Migration Palace question, but an active palace does not pay the housing deposit. Separate the outside opportunity from the cash needed before the first allowance arrives. A short placement has different costs from a permanent move.
+
+### Read opportunity with cost
+Migration concerns the new setting, Career the training offered, and Wealth the allowance and expenses. A promising transformation is not a paid invoice. Compare the Life and Migration axis with the actual tasks and city conditions.
+
+### Compare two offers
+One student receives a fixed monthly allowance at the end of the month but must pay a deposit first. Another receives a higher allowance based on attendance and pays for weekend housing. A weekly cash table makes the difference visible. Include travel home and any school paperwork.
+
+### Check the offer in writing
+Confirm start and end dates, supervisor, working hours, payment method, lease exit terms, and commuting route. Read Life and Migration, then Career, Wealth, and the annual layer. Decide with the written offer and a budget; the chart cannot promise a full-time job afterward.
 
 ---
 
-## 16. 出生时辰不确定，四星落宫差异怎样写进看盘记录？
-slug：`ziwei-shichen-buque-dingxing-jilu`
-来源：2026-11-04，https://little-yin.com/2021/11/05/secondary1/ 。角度：给客户的读盘记录保留不确定性；与今日四星两盘核对方法不同。
-中文草稿：若出生时间只知大约，不能在报告里只留一张确定盘。记录时间来源、可能时辰、两盘文昌文曲地空地劫的不同宫位，以及哪些判断因此需要保留。对未受影响的宫位可正常讨论；受影响处写两套假设与待补证据，不用性格吻合度强行定时。
-English draft: An approximate birth time should remain visible in the reading. Record its source, the possible hour range, the four changed placements, and which conclusions depend on them. Questions unaffected by the boundary can still be discussed. For affected palaces, keep both hypotheses and name the evidence that could resolve them.
+## 16. 财帛宫看收入，福德宫看花钱：自动续费该怎样复盘？
+slug：`ziwei-caibo-fude-zidong-xufei`
+来源：2026-11-05，https://www.fateclick.com.tw/blog/2027-wealth-caibo-guide 。角度：财帛收入方式与福德消费习惯分工，聚焦自动续费；区别于站内财运总览与现金流文章。仅供编辑。
+正文草稿：
+收入增加，账上却总没剩钱，紫微斗数只看财帛宫够吗？不够。财帛宫可讨论收入来源和收款节奏，福德宫可补花钱时的心理需求，田宅宫再看是否形成稳定积累。自动续费是一个适合核对的具体场景：单笔很小，全年合计却可能侵蚀储蓄。
+
+### 三宫各问一件事
+先看财帛主星与四化，辨收入是稳定工资、项目款还是季节性提成；福德宫再问消费是否真的带来使用价值，田宅宫看住房与储蓄目标。财帛见化禄不等于花钱没有上限，福德见忌也不等于必须停止娱乐。宫位关系只帮助找到预算中的盲点，不是金融产品选择建议。
+
+### 两个人的订阅表不同
+自由职业者同时订了设计软件、云盘和三个很少打开的学习平台。前两项支撑交付，后面三项可能只是“以后会学”的安慰。另一位上班族订阅运动课程，每周稳定使用，也有明确健康目标；即使价格较高，不该只按费用否决。把每项服务的月费、使用次数、工作关联和取消日列出来，才能区分必要工具与惯性消费。
+
+### 每季度做一次复盘
+先从账单导出全部自动扣款，按生产工具、生活服务和娱乐分类；再核近三个月使用记录、续约日期及退款规则。设一个年度总额上限，而不只盯每月几十元。排盘先看财帛、福德与田宅的组合，再看大限流年是否让收入和支出结构变化，最后按实际现金流调整。命盘不会替你取消订阅，也不能证明某项服务一定有用。
+英文标题：Wealth and Wellbeing Palaces for Reviewing Automatic Subscriptions
+英文描述：Read income through Wealth and spending motives through Wellbeing, then audit renewals against use and savings goals.
+英文正文：
+Income can rise while savings do not. The Wealth Palace may frame how money arrives, Wellbeing how spending feels, and Property whether resources accumulate. Automatic renewals make the distinction concrete: a small monthly charge can become a large annual cost.
+
+### Give each palace a question
+Wealth concerns salary, project payments, or irregular commissions. Wellbeing asks whether a purchase serves a real need, while Property brings in savings and housing goals. Hua Lu in Wealth is not an unlimited spending budget.
+
+### Compare two subscribers
+A freelancer may need design software and cloud storage while paying for three unused learning platforms. An employee may use a more expensive exercise membership every week. Compare each service's cost, usage, work value, and cancellation date instead of rejecting it by price alone.
+
+### Review each quarter
+Export recurring charges, group them by purpose, check three months of use, and set an annual cap. Read Wealth, Wellbeing, and Property with the time layers, then adjust against actual cash flow. A chart cannot cancel a subscription or prove that a service is useful.
 
 ---
-
 ## 17. 昌曲看职业发展，作品集与资格证书怎样各自证明能力？
 slug：`ziwei-changqu-zuopinji-zige-zhengshu`
 来源：2026-11-04，https://www.ososn.com/zh-TW/insights/ziwei-wenchang-wenqu-study 。角度：不同能力凭证的用途；与今日资格考试和岗位写作文章不同。
