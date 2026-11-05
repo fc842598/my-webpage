@@ -21,6 +21,6 @@
 | 15 | 已发布 2026-11-05 09:15 https://yuetianai.com/articles/ziwei-qianyi-yidi-shixi-shenghuofei.html / https://yuetianai.com/articles/en/ziwei-qianyi-yidi-shixi-shenghuofei.html | ziwei-qianyi-yidi-shixi-shenghuofei | 外地实习看迁移宫，接受录用前该核哪几笔生活费？ |
 | 16 | 已发布 2026-11-05 09:15 https://yuetianai.com/articles/ziwei-caibo-fude-zidong-xufei.html / https://yuetianai.com/articles/en/ziwei-caibo-fude-zidong-xufei.html | ziwei-caibo-fude-zidong-xufei | 财帛宫看收入，福德宫看花钱：自动续费该怎样复盘？ |
 | 17 | 已发布 2026-11-05 09:16 https://yuetianai.com/articles/ziwei-xiaoxian-liunian-tonggong-sihua.html / https://yuetianai.com/articles/en/ziwei-xiaoxian-liunian-tonggong-sihua.html | ziwei-xiaoxian-liunian-tonggong-sihua | 小限与流年落同宫，为什么不能把四化计算两次？ |
-| 18 | 待发布 | ziwei-liunian-guanlu-huaquan-daili-renqi | 流年官禄化权接临时代理岗位，先核任期还是签字权限？ |
+| 18 | 已发布 2026-11-05 09:17 https://yuetianai.com/articles/ziwei-liunian-guanlu-huaquan-daili-renqi.html / https://yuetianai.com/articles/en/ziwei-liunian-guanlu-huaquan-daili-renqi.html | ziwei-liunian-guanlu-huaquan-daili-renqi | 流年官禄化权接临时代理岗位，先核任期还是签字权限？ |
 | 19 | 待次日研究复核，未发布 | ziwei-caibo-tianzhai-yajin-tuihuan | 财帛连田宅，租房押金返还为何要单独记账？ |
 | 20 | 待次日研究复核，未发布 | ziwei-guanlu-qianyi-yidi-xiangmu-hetong | 官禄连迁移，接异地项目先核交付还是差旅？ |
