@@ -120,22 +120,65 @@ An administrator preparing for a data certificate could practice twice a week an
 Check birth details and the calculation method. Read natal Career, the decade cycle, and annual transformations before the Minor Limit. Give each goal a start date, time budget, work sample, and review point. Add Wealth if study costs affect cash flow. The chart does not guarantee an exam result or promotion.
 
 ---
-## 05. 迁移宫空宫借命宫，异地客户项目先核什么？
-slug：`ziwei-qianyi-konggong-jie-minggong-yidi-kehu`
-来源：2026-11-04，https://xingge.tw/en/learn/c1-empty 。角度：异地项目用借对宫补读外部条件；与已发命宫空宫内部转岗题换了问题与宫位。
-中文草稿：迁移宫无主星不是不能接外地客户。借对宫命宫时仍要保留迁移本宫辅煞，再看官禄交付和财帛回款。顾问接跨城项目，先问现场次数、远程验收和差旅报销；自由译者则可能只需确认时区与文件交接。两人都要看合同，不该用同一句“借命宫”代替。
-English draft: An empty Travel Palace does not rule out clients elsewhere. Borrow the opposite Life Palace as context while keeping Travel's own supporting stars in view. A consultant may need site visits and travel reimbursement; a remote translator may need time zone and file handoff terms. Check Career, Wealth, and the contract.
+## 05. 交友宫化忌却仍有人跟随，为什么不能只按宫名断人缘？
+slug：`ziwei-jiaoyou-huaji-rengyou-tuandui`
+来源：2026-11-05，https://www.victortaichung.com/files/magazingimages/54ec36ca3d71c6b8dc0a922198b869e7.pdf 。角度：交友宫名称与团队实际协作的差异；区别于站内交友宫化忌谈借款、协议与合伙损失。仅供编辑。
+正文草稿：
+交友宫有化忌，就一定没有人愿意帮忙吗？不能这样读。古称仆役宫，现代常叫交友宫或人际宫；名称变化容易让人以为它直接测量情商和朋友数量。化忌提示某段协作中可能有卡点，究竟卡在权责、资源还是沟通，需要回到本宫、三方与真实团队任务。
+
+### 宫名不是性格评分
+交友宫讨论的是与外部人员、下属、合作对象的关系位置。化忌落此，不等于所有人都会离开。先看主星、辅星与四化怎样相遇，再看命宫的做事方式和官禄宫的工作要求。若负责人的任务艰难，团队仍可能认可其专业，只是对工期或分配不满。把“协作不顺”写成“没有人缘”，会漏掉能够处理的具体问题。
+
+### 两个团队为什么结果不同
+餐饮主管有稳定老员工，却常因临时改班被抱怨。人没有散，问题是排班通知太晚；应记录换班次数和补偿规则。另一位项目经理人脉很广，会议也有人参加，但任务没人认领，问题在责任与验收人缺失。前者要改排班，后者要写任务表。两人即使盘上同见交友宫忌，也不该用同一个“朋友背离”的判断。
+
+### 用记录核对协作
+排盘先辨认本宫名称与星曜，再看命宫、官禄、财帛能否解释工作和利益如何流动。现实里列出谁提供资料、谁批准变更、谁负责验收，以及最近三次争议的事实。若看见团队留存稳定但抱怨增加，先修工作流程；若成员退出集中在付款之后，先核财务和合同。宫位帮助定位问题，不能替代员工访谈与实际记录，更不能凭星曜决定对人的评价。若争议集中在同一位负责人身上，还应把匿名反馈与公开会议纪要分开看，避免把一次情绪冲突写成团队整体态度。
+英文标题：Friends Palace Hua Ji Does Not Mean Nobody Will Follow You
+英文描述：A Hua Ji in the Friends Palace calls for a closer look at team duties and evidence, not a verdict on popularity.
+英文正文：
+A Hua Ji in the Friends Palace does not prove that nobody will work with you. This palace has also been called the Servants or Social Palace. Its changing name can tempt readers to turn a working relationship into a popularity score. The chart instead gives a place to ask where cooperation gets stuck.
+
+### Read the work around the palace
+Look at the main and supporting stars with the transformation, then compare Life for the person's working style and Career for the task. A capable manager can retain a team while still causing frustration over schedules or responsibility.
+
+### Compare two teams
+A restaurant supervisor keeps experienced staff but changes shifts with little warning. The issue is notice and compensation. A project manager draws a full meeting room, yet nobody owns the final deliverable. That issue is assignment and acceptance. The same palace concern leads to different repairs.
+
+### Verify the relationship
+List who provides information, who approves changes, and who signs off. Review the last three disputes and check staff retention, payment, and actual duties. Read Friends alongside Life, Career, and Wealth, then test the interpretation against interviews and records rather than judging a person's character from one chart symbol.
 
 ---
 
-## 06. 空宫借对宫时，本宫辅星为什么不能略过？
-slug：`ziwei-konggong-duigong-bengong-shunxu`
-来源：2026-11-04，https://xingge.tw/en/learn/c1-empty 。角度：本宫辅煞与对宫主星的读取顺序；与已发空宫和来因宫术语区分题不同。
-中文草稿：空宫是没有主星，不是本宫没有任何信息。借对宫前先记本宫辅星、煞星与四化，再参考对宫主星及三方。问合作时，同一个借星可能在兄弟宫与财帛宫提出不同问题。把借来的星直接写成本宫坐星，会漏掉原位置；看盘记录应分别标注本宫与参考宫。
-English draft: An empty palace has no main star, but it can still contain supporting stars and transformations. Record those first, then consult the opposite main stars and wider palace links. A borrowed star has not moved. Label the original and reference palaces separately so the chart question does not lose its location.
+## 06. 十一月月运从哪天算，节气月和紫微流月为何不能混用？
+slug：`ziwei-shiyiyue-jieqi-liuyue-bianjie`
+来源：2026-11-05，https://www.sohu.com/a/1096409170_100262664 。角度：2026年十一月节气窗口与个人流月起法的区别；区别于站内流月四化和同月命宫差异题。仅供编辑，本文不复述来源预测。
+正文草稿：
+看到“十一月月运”，先问十一月从哪一天开始。公历十一月一日、立冬后的节气月和个人紫微流月，可能是三种不同窗口。若边界不说清，十一月初的工作决定可能被套进尚未开始的月份。月份名称只是标签，排盘规则和实际日期才决定这一层能不能比较。
+
+### 三种月界各有用途
+公历月便于做预算、工资和合同统计；节气月以节气交接为界，不能直接写成整个公历十一月。紫微斗数流月还要依所用流派的起月与斗君方法定位个人宫位，并核出生月、时辰与农历月份。看到文章列“立冬至大雪”，应明白它选的是节气窗口，而不是证明所有人的流月命宫相同。不同系统的四化也不能未经核算就叠在一起。
+
+### 日期写错会改变问题
+某人十一月五日签新岗位协议，另一个人十一月十日才开始试用。若所读的是立冬后窗口，第一件事不能自动归入同一节气月。又如团队按公历十一月核奖金，但个人流月关注迁移宫的出差，奖金和出差成本应分两张表。先把日期、月界和所用盘层写在旁边，才不会把工资账期误当成命盘变化。
+
+### 读盘和行动的先后
+先确认本命宫位，再读大限与流年的长期背景；要缩小到本月时，注明流月算法与开始结束日期。对于签约，核文件版本和生效日；对于月度预算，按实际账期记录现金流。若软件显示的流月与文章的节气月不同，先查规则而不是挑喜欢的结论。月运可以帮助整理近期问题，不能替代合同日期、排班或账本。向别人解释自己的月运时，最好同时给出所用历法和日期范围；只说“这个月”而不说起止日，容易让双方讨论的根本不是同一段时间。
+英文标题：November Zi Wei Dou Shu Monthly Reading: Which Month Boundary?
+英文描述：Calendar November, a solar-term month, and an individual Zi Wei Dou Shu monthly palace can have different boundaries.
+英文正文：
+Before using a “November forecast,” identify its starting date. Calendar November, a month defined by solar terms, and a personal Zi Wei Dou Shu monthly palace need not share a boundary. A date early in November can therefore fall outside a forecast that starts at the next solar term.
+
+### Name the calendar in use
+A calendar month suits payroll and budgets. A solar-term window begins and ends at the stated terms. A personal monthly palace depends on the chart method, birth details, and the rule used to start the month. Do not treat a published solar-term window as proof that everyone has the same monthly palace.
+
+### Compare dated decisions
+A job agreement signed on November 5 and a trial beginning on November 10 may fall on opposite sides of a solar-term boundary. A team may also calculate bonuses by calendar month while a person's chart raises a travel question. Write the dates and rule beside each question before comparing them.
+
+### Return to the actual task
+Read natal, decade, and annual layers before narrowing to a month. For a contract, check version and effective date; for a budget, use the actual accounting period. If a chart app and an article show different monthly positions, check their calculation rules instead of selecting the more appealing forecast.
 
 ---
-
 ## 07. 兄弟与交友宫看合作，采购审批为何要分两级？
 slug：`ziwei-xiongdijiaoyou-hehuo-caigou-shenpi`
 来源：2026-11-04，https://xuebz.com/baike/ziwei-gongwei/xiong-di-gong 。角度：采购提议与授权分离；与第09篇股权和借款边界不同。
