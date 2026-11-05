@@ -9,7 +9,7 @@
 | 03 | 已发布 2026-11-05 09:02 https://yuetianai.com/articles/ziwei-zinv-shixisheng-kehu-goutong.html / https://yuetianai.com/articles/en/ziwei-zinv-shixisheng-kehu-goutong.html | ziwei-zinv-shixisheng-kehu-goutong | 子女宫看带实习生，何时交出客户沟通权？ |
 | 04 | 已发布 2026-11-05 09:02 https://yuetianai.com/articles/ziwei-xiaoxian-duili-sihua-niandu-jihua.html / https://yuetianai.com/articles/en/ziwei-xiaoxian-duili-sihua-niandu-jihua.html | ziwei-xiaoxian-duili-sihua-niandu-jihua | 小限没有独立四化，年度计划为何不能只看小限？ |
 | 05 | 已发布 2026-11-05 09:05 https://yuetianai.com/articles/ziwei-jiaoyou-huaji-rengyou-tuandui.html / https://yuetianai.com/articles/en/ziwei-jiaoyou-huaji-rengyou-tuandui.html | ziwei-jiaoyou-huaji-rengyou-tuandui | 交友宫化忌却仍有人跟随，为什么不能只按宫名断人缘？ |
-| 06 | 待发布 | ziwei-shiyiyue-jieqi-liuyue-bianjie | 十一月月运从哪天算，节气月和紫微流月为何不能混用？ |
+| 06 | 已发布 2026-11-05 09:05 https://yuetianai.com/articles/ziwei-shiyiyue-jieqi-liuyue-bianjie.html / https://yuetianai.com/articles/en/ziwei-shiyiyue-jieqi-liuyue-bianjie.html | ziwei-shiyiyue-jieqi-liuyue-bianjie | 十一月月运从哪天算，节气月和紫微流月为何不能混用？ |
 | 07 | 待次日研究复核，未发布 | ziwei-xiongdijiaoyou-hehuo-caigou-shenpi | 兄弟与交友宫看合作，采购审批为何要分两级？ |
 | 08 | 待次日研究复核，未发布 | ziwei-xiongdijiaoyou-qinqi-jiekuan-zengyu | 兄弟宫涉及亲戚借钱，借款和赠与怎样分清？ |
 | 09 | 待次日研究复核，未发布 | ziwei-fumugong-shangsi-biaoyang-hou-zeren | 父母宫看上司，公开表扬后新增责任该怎样确认？ |
