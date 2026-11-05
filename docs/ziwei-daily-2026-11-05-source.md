@@ -297,14 +297,35 @@ A product manager arguing with designers over acceptance criteria may need writt
 Record how often conflict occurs, whether responsibilities can be clarified, what evidence supports the next role, and how many months of expenses savings cover. Read Career and Life, then decade and annual cycles, with Migration and Wealth for alternatives and cash. Seek appropriate help if work is affecting health. Make the decision from actual conditions and agreements.
 
 ---
-## 11. 夫妻宫巨门化忌，争论时怎样分清事实和解释？
-slug：`ziwei-jumen-huaji-guanxi-shishi-jieshi`
-来源：2026-11-04，https://ziweiai.com/zh-TW/notes/couple-palace-jumen-huaji-emotional-challenges 。角度：一段争执拆为可核事实与个人推断；与已发长期责任依赖及月度安排题不同。
-中文草稿：对方晚回一小时消息是事实，“他不在乎我”是解释。巨门化忌可提醒在关系里检查语言如何放大分歧，不能用来给人贴多疑标签。先确认实际约定和发生时间，再说自己的感受与需要；若多次失约，另谈边界。把事实与判断分栏，争论才有落点。
-English draft: “The reply came an hour later” is an observation; “you do not care” is an interpretation. Ju Men Hua Ji can prompt a review of how words escalate a conflict, not label either person. Check the agreed expectation and actual timing, then state the feeling and need. Repeated broken agreements require a separate boundary conversation.
+## 11. 英文紫微盘写 Career 或 Profession，怎样确认是官禄宫？
+slug：`ziwei-guanlu-english-career-profession`
+来源：2026-11-05，https://ezfate.com/en/zi-wei-dou-shu/palaces 。角度：英文译名差异下的宫位定位；区别于站内十二宫入门和官禄职业解释。仅供编辑。
+正文草稿：
+英文紫微斗数资料把官禄宫写成 Career Palace，有的软件又写 Profession Palace。读者能否只凭英文词把它们当成两处宫位？不能。译名是说明功能的标签，宫位在具体命盘上的位置要靠排盘规则和宫位顺序确认。先找中文官禄宫，再看英文标签，不要反过来推星曜落点。
+
+### 标签不同，盘格不会多出一个
+十二宫沿固定次序排列，英文资料还可能把交友宫写成 Friends 或旧名。翻译的目标是帮助理解，并不会增加第十三宫。核对时先确认出生资料、命宫所在格与十二宫排列，再数到官禄宫，最后对照软件的英文名称。若两张截图星曜位置不同，先查时区、出生时辰与排盘设置，不能只怪译名。
+
+### 两份英文报告如何对照
+求职者收到一份报告说 Career Palace 有化权，另一份说 Profession Palace 有化忌。他以为两个宫位给出相反结论，其实可能是一份看本命、一份看流年。把每份报告的出生资料、盘层、宫位格子和四化来源写成四列。若同一盘层同一位置仍不同，再查软件所用规则。另一位读者把 Work 一词当成官禄，但原文只是泛指工作主题，也要回到实际宫名核实。
+
+### 解释官禄仍要连别宫
+确认位置后，官禄宫才用于讨论岗位职责和做事方式；财帛宫补收入节奏，迁移宫补外部客户，命宫看本人如何承接。星曜强弱和四化也要落在实际宫位里读。排盘顺序是核输入、定位十二宫、确认本命或流年层、再分析组合。英文译名可以作索引，不能替代这四步，更不能凭一个 Career 字样断定职业结果。
+英文标题：Career or Profession Palace in an English Zi Wei Dou Shu Chart?
+英文描述：Career and Profession can label the same 官禄宫. Verify chart position and time layer before interpreting stars.
+英文正文：
+One English Zi Wei Dou Shu chart says Career Palace; another says Profession Palace. These can be translations of the same 官禄宫, not two extra palaces. Placement comes from the chart calculation and the order of twelve palaces.
+
+### Find the position before translating
+Check birth details, the Life Palace position, and the palace sequence. Then locate 官禄宫 and compare the English label. A translated name does not change the chart grid.
+
+### Compare reports carefully
+One job seeker sees Hua Quan under Career in a natal report and Hua Ji under Profession in an annual report. The apparent conflict may come from different time layers. Put birth inputs, layer, palace position, and transformation source in four columns. If those match, investigate the calculation settings.
+
+### Read the work question
+After locating Career, connect it with Wealth for income, Migration for outside clients, and Life for the person's role. Use the translation as a signpost, then interpret chart structure and the actual job question.
 
 ---
-
 ## 12. 巨门化忌碰上共享日程，漏填和失约为何不能混谈？
 slug：`ziwei-jumen-huaji-gongxiang-richeng-wuhui`
 来源：2026-11-04，https://ziweiai.com/zh-TW/notes/couple-palace-jumen-huaji-emotional-challenges 。角度：关系里的共享日程机制；与已发夫妻宫月度安排的时间层不同。
