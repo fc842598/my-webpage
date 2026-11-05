@@ -16318,6 +16318,15 @@ html[lang="en"] [data-node-id="source-31-vip-v2"] {
   width: 168px !important;
 }
 
+/* Account eligibility is a rule, not decorative one-line metadata. */
+[data-node-id="source-31-vip-v2"] {
+  width: 236px !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  overflow: visible !important;
+  line-height: 1.35 !important;
+}
+
 /* Keep the mobile chart legible without changing star positions or animations. */
 html:not([lang="en"]) .wentian-native-mingpan { height: 650px; }
 html:not([lang="en"]) .wentian-native-mingpan .fc-grid { aspect-ratio: 1 / 1.65; }

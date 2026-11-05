@@ -10308,12 +10308,14 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
     setWentianFinalText(root, '[data-node-id="wt22-bind-title-clean"]', "Bind Invite Code");
   }
   const inviteCode = account.loggedIn && isWentianInviteCode(invite.inviteCode) ? invite.inviteCode : "";
-  const memberLine = member.isMember
-    ? `Valid until ${formatWentianMemberDate(wentianMemberState?.quota?.memberExpiresAt) || "the current cycle"}`
+  const memberLine = member.campaignActive
+    ? "Free after sign-in"
+    : member.isMember ? `Valid until ${formatWentianMemberDate(wentianMemberState?.quota?.memberExpiresAt) || "the current cycle"}`
     : (account.loggedIn ? "Free plan, upgrade anytime" : "Not signed in yet");
   setWentianFinalText(root, '[data-node-id="wt34-copy-invite"]', inviteCode ? `Invite code: ${inviteCode}` : "Sign in to generate your invite code");
   setWentianFinalText(root, '[data-node-id="source-31-vip"]', memberLine);
   setWentianFinalText(root, '[data-node-id="source-31-vip-v2"]', memberLine);
+  if (account.loggedIn) setWentianFinalText(root, '[data-node-id="source-31-email-v2"]', getWentianLinkedEmail() ? "Email linked for sign-in" : "Signed in · No email linked");
   setWentianFinalText(root, '[data-node-id="source-31-login-badge-text"]', member.isMember ? "Member" : (account.loggedIn ? "Account" : "Sign In"));
   setWentianFinalText(root, '[data-node-id="source-31-login-badge-text-v2"]', member.isMember ? "Member" : (account.loggedIn ? "Account" : "Sign In"));
   setWentianFinalText(root, '[data-node-id="source-31-plan-banner-title-v2"]', "Yuetian Plan");
@@ -10342,7 +10344,7 @@ function finalizeWentianLanguageText(root = view, code = getWentianLanguageCode(
   setWentianFinalText(root, '[data-node-id="source-login-method-badge-text-2"]', "Editable");
   setWentianFinalText(root, '[data-node-id="source-login-action-label-1"]', member.isMember ? "Renew Membership" : "Upgrade Plan");
   setWentianFinalText(root, '[data-node-id="source-login-note-title"]', "Account Notes");
-  setWentianFinalText(root, '[data-node-id="source-login-note-text"]', "This account is already linked. Password updates, renewals, and order checks are all available from the entries above.");
+  setWentianFinalText(root, '[data-node-id="source-login-note-text"]', getWentianAccountBindingNote(true));
   setWentianFinalText(root, '[data-node-id="source-password-tip-text"]', "1. Use 6+ characters with letters and numbers.\n2. Google, email, and phone sign-in still work.\n3. Existing charts and reports stay unchanged.");
   setWentianFinalText(root, '[data-node-id="wt48-title"]', "Orders");
   setWentianFinalText(root, '[data-node-id="wt48-right"]', "Sync");
@@ -10912,6 +10914,18 @@ function getWentianAuthDisplay() {
     email: label,
     initial: (nickname || label || "问").slice(0, 1),
   };
+}
+
+function getWentianLinkedEmail(user = wentianAuthSession?.user) {
+  const email = String(user?.email || "").trim();
+  // Phone-password accounts use an internal identifier, not a real mailbox.
+  return email.includes("@") && !/@[^@]*\.local$/i.test(email) ? email : "";
+}
+
+function getWentianAccountBindingNote(isEn = isWentianEnglishUi()) {
+  return getWentianLinkedEmail()
+    ? (isEn ? "An email address is linked. Manage your password and orders above." : "当前账号已绑定邮箱，可通过上方入口管理密码与订单。")
+    : (isEn ? "No email address is linked. Keep your sign-in details safe; a phone sign-in identifier is not an email inbox." : "尚未绑定邮箱。请妥善保管登录资料；手机号账号的内部标识不是真实邮箱。");
 }
 
 function getWentianCompactAccountTitle(account = {}) {
@@ -12745,14 +12759,9 @@ function normalizeWentianQuota(quota) {
 }
 
 function getWentianChartUsageForDisplay(quota, isGuest) {
-  const serverUsed = Number(quota.chartUsage?.used);
-  if (!isGuest && Number.isFinite(serverUsed) && serverUsed >= 0) return serverUsed;
-  const claimed = new Set(readWentianChartPersonClaims());
-  getWentianArchiveList().forEach((archive) => {
-    const id = archive.chartRecordId || archive.chartData?.chartRecordId || archive.id;
-    if (id) claimed.add(String(id));
-  });
-  return Math.max(claimed.size, Number.isFinite(serverUsed) ? serverUsed : 0);
+  // This display describes saved charts, not the separate entitlement claim log.
+  // Use the same account-scoped, deduplicated list as the Archives screen.
+  return getWentianArchiveList().length;
 }
 
 function getWentianMemberSnapshot() {
@@ -14277,26 +14286,23 @@ function sourceMineScreenV2(screen) {
   const memberDailyText = formatWentianQuotaTextForUi(member.daily, isEn);
   const memberDailyLimitText = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
   const accountTitle = account.loggedIn ? getWentianCompactAccountTitle(account) : "\u767B\u5F55 / \u6CE8\u518C";
-  const statusText = member.isMember
-    ? member.subtitle
+  const statusText = member.campaignActive
+    ? (isEn ? "Free after sign-in" : "注册账号限时免费")
+    : member.isMember ? member.subtitle
     : (account.loggedIn ? "\u514D\u8D39\u7528\u6237" : "\u672A\u767B\u5F55");
   const loginBadgeText = member.isMember ? "月卡" : (account.loggedIn ? "\u8D26\u53F7" : "\u767B\u5F55");
-  const accountIdentity = String(account.email || "").trim();
   const accountDetailText = !account.loggedIn
     ? "\u767B\u5F55\u540E\u540C\u6B65\u4F1A\u5458\u548C\u8BA2\u5355"
-    : (/^1\d{10}$/.test(accountIdentity)
-      ? "手机号已绑定，可用于登录"
-      : (accountIdentity.includes("@") ? "邮箱已绑定，可用于登录" : "账号已登录，资料已同步"));
-  const chartCountText = member.chartLimit == null
-    ? `${member.chartUsed}/${isEn ? "\u221E" : "不限"}`
-    : `${member.chartUsed}/${member.chartLimit}`;
+    : (getWentianLinkedEmail()
+      ? "邮箱已绑定，可用于登录"
+      : "账号已登录 · 尚未绑定邮箱");
   const statCards = [
     [isEn ? (member.quotaMode === "daily" ? "Today" : "Remaining") : member.quotaLabel, memberDailyText, 16, "screen-33"],
     [isEn ? (member.quotaMode === "daily" ? "Daily limit" : "Total") : member.limitLabel, memberDailyLimitText, 139, "screen-33"],
-    [isEn ? "Profiles" : "命主人数", chartCountText, 262, "screen-33"]
+    [isEn ? "Saved charts" : "已建命盘", String(member.chartUsed), 262, "screen-25"]
   ];
   const listRows = [
-    ["\u25A4", "\u6211\u7684\u62A5\u544A", "", 400, "screen-27"],
+    ["\u25A4", isEn ? "Recent Chart" : "最近命盘", "", 400, "screen-27"],
     ["\u25A6", "\u8BA2\u5355\u8BB0\u5F55", "", 449, "screen-48"],
     ["\u2667", "\u9080\u8BF7\u597D\u53CB", "", 498, "screen-22"],
     ["\u6587", "\u8BED\u8A00\u8BBE\u7F6E", languageLabel, 547, "screen-37"],
@@ -14483,7 +14489,7 @@ function sourceLoginMethodsScreen() {
       ${figText("source-login-logout-text", "退出登录", 42, 600, 306, 14, "#9f3d2e", 900, "center")}
       ${figBox("source-login-note", 24, 658, 342, 84, "", "border-radius:18px;background:#fffaf2;border:1px solid #ead9bd;box-shadow:0 6px 16px rgba(74,55,32,.04);")}
       ${figText("source-login-note-title", "账号说明", 46, 678, 90, 15, "#25211d", 900)}
-      ${figText("source-login-note-text", "当前账号已绑定邮箱。改密码、续费或查订单，都可以直接点上方入口。", 46, 704, 286, 12, "#756d63", 700, "left", "line-height:1.5;")}
+      ${figText("source-login-note-text", escapeHtml(getWentianAccountBindingNote()), 46, 704, 286, 12, "#756d63", 700, "left", "line-height:1.5;")}
     `;
   }
   return `
