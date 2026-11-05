@@ -86,3 +86,36 @@ resolveStatus({ quota: { remaining: 101, quotaMode: 'daily' } });
 await pending;
 assert.equal(ctx.wentianMemberState.quota.remaining, 90, 'late status must not overwrite a send response');
 console.log('QA_QUOTA_ORDER_OK: no stale alias or late status overwrite');
+
+ctx.wentianPointerRouteSuppressUntil = Date.now() + 350;
+load('beginWentianPointerGesture', ctx);
+load('shouldSuppressWentianRouteClick', ctx);
+assert.equal(ctx.shouldSuppressWentianRouteClick({ detail: 1 }), true, 'same-gesture trailing click is blocked');
+assert.equal(ctx.shouldSuppressWentianRouteClick({ detail: 0 }), false, 'keyboard activation is not blocked');
+ctx.beginWentianPointerGesture();
+assert.equal(ctx.shouldSuppressWentianRouteClick({ detail: 1 }), false, 'next independent press is accepted immediately');
+assert(source.includes('document.addEventListener("pointerdown", beginWentianPointerGesture, true)'));
+console.log('QA_CLICK_GESTURE_OK: suppress trailing click, accept the next pointer or keyboard action');
+
+ctx.getWentianAuthDisplay = () => ({ loggedIn: false });
+load('getWentianShortScreenLayoutOptions', ctx);
+const options = ctx.getWentianShortScreenLayoutOptions(5);
+assert(options.extraSelectors.includes('.wentian-archive-confirm'));
+const nav = { style: { top: '755' } };
+const background = { style: {} };
+const sheet = { dataset: { nodeId: 'source-5-sheet' }, classList: { contains: () => false }, bottom: 670 };
+const confirm = { bottom: 742 };
+const phone = {
+  style: {},
+  querySelector: () => background,
+  querySelectorAll: selector => selector === '[data-node-id]' ? [sheet]
+    : selector === '.wentian-archive-confirm' ? [confirm]
+    : selector === '.wentian-archive-list' || selector === '.wentian-archive-exit' ? [] : [nav],
+};
+ctx.view = { querySelector: () => phone };
+ctx.getWentianNodeBottomWithinPhone = (_phone, node) => node.bottom;
+load('compactWentianShortFigScreenLayout', ctx);
+ctx.compactWentianShortFigScreenLayout(5, options);
+assert.equal(nav.style.top, '768px', 'bottom navigation must sit below the actual confirm control');
+assert.equal(phone.style.height, '857px');
+console.log('QA_ARCHIVE_NAV_LAYOUT_OK: native controls reserve space during short-page compaction');

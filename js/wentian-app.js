@@ -700,7 +700,13 @@ function getWentianShortScreenLayoutOptions(screenNo) {
     case 3:
       return { minNavY: 560, gap: 28 };
     case 5:
-      return { minNavY: 560, gap: 26, bgSelector: '[data-node-id="source-5-bg"]' };
+      return {
+        minNavY: 560,
+        gap: 26,
+        bgSelector: '[data-node-id="source-5-bg"]',
+        // These controls have no data-node-id, but must still reserve space.
+        extraSelectors: [".wentian-archive-list", ".wentian-archive-exit", ".wentian-archive-confirm"]
+      };
     case 22:
       return {
         minNavY: account.loggedIn ? 620 : 580,
@@ -10572,6 +10578,16 @@ function navigateWentianClickRoute(route) {
     clearWentianArchiveEditContext();
   }
   navigate(route);
+}
+
+function beginWentianPointerGesture() {
+  // Suppress only the trailing click after a pointerup navigation. A new press
+  // is an independent user action, even when it starts within 350 milliseconds.
+  wentianPointerRouteSuppressUntil = 0;
+}
+
+function shouldSuppressWentianRouteClick(event) {
+  return event.detail !== 0 && Date.now() < wentianPointerRouteSuppressUntil;
 }
 
 function handleWentianRoutePointerCapture(event) {
@@ -23829,6 +23845,7 @@ function renderPay() {
   `;
 }
 
+document.addEventListener("pointerdown", beginWentianPointerGesture, true);
 document.addEventListener("pointerup", handleWentianRoutePointerCapture, true);
 document.addEventListener("pointerdown", handleLiuyaoSwipePointerDown);
 document.addEventListener("pointermove", handleLiuyaoSwipePointerMove);
@@ -23882,7 +23899,7 @@ document.addEventListener("click", (event) => {
     }
     return;
   }
-  if (Date.now() < wentianPointerRouteSuppressUntil) {
+  if (shouldSuppressWentianRouteClick(event)) {
     event.preventDefault();
     event.stopPropagation();
     return;
