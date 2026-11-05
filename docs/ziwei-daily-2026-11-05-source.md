@@ -473,22 +473,65 @@ A freelancer may need design software and cloud storage while paying for three u
 Export recurring charges, group them by purpose, check three months of use, and set an annual cap. Read Wealth, Wellbeing, and Property with the time layers, then adjust against actual cash flow. A chart cannot cancel a subscription or prove that a service is useful.
 
 ---
-## 17. 昌曲看职业发展，作品集与资格证书怎样各自证明能力？
-slug：`ziwei-changqu-zuopinji-zige-zhengshu`
-来源：2026-11-04，https://www.ososn.com/zh-TW/insights/ziwei-wenchang-wenqu-study 。角度：不同能力凭证的用途；与今日资格考试和岗位写作文章不同。
-中文草稿：资格证书证明达到统一门槛，作品集展示面对真实问题的过程。昌曲与官禄相连时，先问岗位看重的是合规资格、表达成果还是两者兼需。咨询岗位可能要证照与案例，设计岗位更重作品过程；按岗位要求准备证据，不用一颗文星概括全部能力。
-English draft: A credential shows that someone met a common standard; a portfolio shows how they handled real work. When writing stars connect to Career, ask which kind of proof a role requires. Consulting may need both certification and cases; design may prioritize the process behind samples. Prepare evidence for the employer's criteria.
+## 17. 小限与流年落同宫，为什么不能把四化计算两次？
+slug：`ziwei-xiaoxian-liunian-tonggong-sihua`
+来源：2026-11-05，https://docs.iztro.com/learn/horoscope 。角度：软件同宫显示导致的四化重复计数；区别于站内小限年度计划与运限入门文章。仅供编辑。
+正文草稿：
+排盘软件显示小限和流年都落官禄宫，就意味着今年事业压力要“加倍”吗？不能这么算。同宫是两个时间标记在同一宫位相遇，不是自动出现两套流年四化。小限没有独立流曜，把同一组化忌读两次，会夸大原本只有一次的盘面信息。
+
+### 先认清每个符号的来源
+本命盘记录长期结构，大限给十年背景，流年按年度规则带来宫位与四化，小限补个人这一岁的关注点。软件可能用两种颜色画在同一格，视觉上显得很密。先看图例，记下每颗流曜及四化是依哪一层安放的；同一颗星旁边若出现两个标签，不等于星曜真的复制。没有来源标记时，应换一个能显示详细规则的盘核对。
+
+### 两个工作案例的读法
+一名员工今年流年官禄化权，小限也到官禄。他被安排带新人，重点是具体授权、培训时间与考核，不必再虚构一次“小限化权”。另一人流年官禄化忌且小限同宫，项目延期已给他压力；若再把同一个忌叠加一遍，就可能误判成必然失业。应查延期原因、资源和下一节点，而不是把显示次数当严重程度。
+
+### 记录一张层级表
+把本命、大限、流年、小限分成四列，写每层的宫位、星曜来源和能回答的问题。先读本命官禄与命宫，再看大限和流年四化，最后用小限提醒是否漏掉本人投入。若判断涉及辞职或签约，仍须核合同、现金储备与岗位实际。盘面层次可以相互参照，不能用重复计数制造确定感。
+英文标题：Minor Limit and Annual Palace in the Same Zi Wei Dou Shu Position
+英文描述：When Minor Limit and annual markers meet in one palace, do not count the same annual transformation twice.
+英文正文：
+If a chart app places the Minor Limit and annual Career Palace in the same box, that does not double the pressure. Two time markers can share a position without creating two sets of annual transformations. The Minor Limit has no separate annual moving-star set.
+
+### Trace each symbol
+Natal placements form the base. A decade cycle adds context, the annual layer brings yearly transformations, and the Minor Limit adds a personal question. Chart colors can make one box look crowded. Use the legend to label the source of each displayed symbol.
+
+### Compare two workers
+One employee has annual Hua Quan in Career while the Minor Limit also points there. A new mentoring duty calls for clear authority and time, not a second invented Hua Quan. Another has a delayed project and annual Hua Ji; counting that Ji twice could turn a repairable delay into an unfounded job-loss prediction.
+
+### Use a layer table
+Record the palace, symbol source, and question for natal, decade, annual, and Minor Limit layers. Read the base and annual transformations first, then use the Minor Limit to check personal attention. Verify any decision against contract terms, savings, and actual work.
 
 ---
 
-## 18. 昌曲与年度学习，证照目标怎样拆成季度练习？
-slug：`ziwei-changqu-niandu-xuexi-jihua`
-来源：2026-11-04，https://www.ososn.com/zh-TW/insights/ziwei-wenchang-wenqu-study 。角度：学习目标的季度训练与流年分层；与站内文星考试结果题不同。
-中文草稿：流年若让学习或证照议题显眼，文昌文曲也不能替人安排复习。先确认考试日期与报名资格，再把全年拆成基础、应用、模拟和查漏四段。每季留一份作品或模考成绩，按反馈调节工时；财帛宫还要核报名与培训成本。星曜只是提醒资源怎么配置。
-English draft: An annual learning emphasis and writing stars cannot create a study schedule by themselves. Confirm eligibility and the exam date, then plan foundation work, application, mock practice, and gap repair by quarter. Keep a sample or score from each stage and budget for fees. Adjust from evidence rather than a yearly label.
+## 18. 流年官禄化权接临时代理岗位，先核任期还是签字权限？
+slug：`ziwei-liunian-guanlu-huaquan-daili-renqi`
+来源：2026-11-05，https://www.starkami.com/articles/ziwei-job-change 。角度：短期代理岗位的职责、期限与授权；区别于站内流年官禄试用期和长期升职总览。仅供编辑。
+正文草稿：
+流年官禄化权，主管让你临时代理部门负责人，是不是升职已经确定？化权可以提示责任和决定需求增加，却不能把代理变成正式任命。首先分清三件事：代理多久、能签哪些文件、谁为最终结果负责。头衔若先到了，授权和资源却没到，压力往往比机会更快出现。
+
+### 官禄宫看岗位怎样承担
+先看本命官禄的长期工作方式，再看大限是否正处于扩责阶段，最后看流年化权落到哪类任务。若只在官禄见化权而不看财帛，可能漏掉津贴和加班成本；不看迁移，可能漏掉对外代表单位的责任。化权不等于可以独自审批预算，公司的授权表才决定签字范围。
+
+### 两种代理安排不同
+一位组长代理两周，原负责人休假，工作只涉及排班与例会；他应拿到交接清单、紧急联系人和回岗日期。另一位经理代理半年，要谈预算、人事评价与客户合同，却只收到口头通知；她应先取得书面任期、审批上限及上级复核机制。两人都称“代理负责人”，实际风险和需要的补偿完全不同。
+
+### 接任前做四项确认
+写下任期起止、职责边界、签字权限与资源支持，再补一项退出和交接方式。重要决策要保存审批记录，不能让责任留在代理人而权力留在别人手里。排盘先核本命官禄与命宫，再叠大限流年，连财帛和迁移，最后对照正式任命或代理文件。是否接任，应由实际权限、能力和个人安排决定，不靠一颗化权保证前途。
+英文标题：Annual Career Hua Quan and a Temporary Acting Role
+英文描述：A temporary acting title is not a confirmed promotion. Check term, signature authority, resources, and accountability.
+英文正文：
+Annual Hua Quan in the Career Palace may raise a question about growing responsibility. It does not turn a temporary acting assignment into a permanent promotion. Ask how long the assignment lasts, what can be signed, and who remains accountable.
+
+### Read responsibility with authority
+Start with natal Career, add the decade stage, and then locate annual Hua Quan. Wealth brings in allowance and extra work; Migration may involve representing the organization outside. Formal approval limits come from company documents, not the chart.
+
+### Compare two acting roles
+A team lead covering a two-week vacation needs a handoff list, emergency contact, and return date. A manager acting for six months while handling budgets and client contracts needs written approval limits, review routes, and pay terms. The title is similar; the duties are not.
+
+### Confirm before accepting
+Write down the term, duties, signature rights, resources, and exit handoff. Keep approval records. Read Career with Wealth and Migration, then compare the chart question with the appointment letter, capacity, and personal constraints.
 
 ---
-
 ## 19. 财帛连田宅，租房押金返还为何要单独记账？
 slug：`ziwei-caibo-tianzhai-yajin-tuihuan`
 来源：2026-11-04，https://mingming3.com/cn/ziwei/articles/ziwei_practical 。角度：押金不等于月度可花收入；与今日家庭预算复盘及买租房总览不同。
