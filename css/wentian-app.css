@@ -3434,6 +3434,8 @@ html[lang="en"] .wentian-native-mingpan .fc-center-btn {
   width: 362px;
   height: 452px;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
   padding: 2px 0 16px;
 }
 

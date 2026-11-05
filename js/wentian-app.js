@@ -1682,7 +1682,7 @@ function sourceAiChatScreen(screen) {
         <em>${escapeHtml(contextTitle)}${contextSummary ? ` · ${escapeHtml(contextSummary)}` : ""}</em>
       </div>
     ` : ""}
-    <div id="wentian-chat-messages" class="wentian-chat-log ${chatContext ? "is-with-context" : ""}" aria-live="polite"></div>
+    <div id="wentian-chat-messages" class="wentian-chat-log ${chatContext ? "is-with-context" : ""}" tabindex="0" role="log" aria-label="${isWentianEnglishUi() ? "Conversation, scroll to read earlier messages" : "对话记录，可上下滚动查看"}" aria-live="polite"></div>
     <button id="wentian-chat-scroll-bottom" class="wentian-chat-scroll-bottom" type="button" data-action="wentian-chat-scroll-bottom">回到底部</button>
     ${figText("source-4-faq-title", faqTitle, 16, 580, 96, 14, "#25211d", 800, "left", faqMode === "compact" ? "display:none;" : "")}
     <div class="wentian-chat-starters is-mode-${faqMode}${faqMode === "compact" ? " is-compact" : ""}" data-wentian-faq-mode="${faqMode}" aria-label="常见问题分类">
@@ -6659,8 +6659,13 @@ function getWentianBackendAiModule(moduleKey) {
   return moduleKey === "xiaoxian_liunian" ? "liunian_year" : moduleKey;
 }
 
-function getWentianAiLanguageParams() {
-  const code = getWentianLanguageCode();
+function getWentianAiLanguageParams(question = "") {
+  let code = getWentianLanguageCode();
+  const text = String(question || "").trim();
+  if (/(?:answer|reply|respond|write)\s+in\s+English\b|(?:请|請|用|使用).{0,8}(?:英文|英语|英語)/i.test(text)
+    || (/[A-Za-z]{2}/.test(text) && !/[\u3400-\u9fff]/.test(text))) code = "en";
+  if (/(?:answer|reply|respond|write)\s+in\s+traditional Chinese\b|(?:请|請|用|使用).{0,8}(?:繁体|繁體)/i.test(text)) code = "zh-Hant";
+  else if (/(?:answer|reply|respond|write)\s+in\s+(?:simplified Chinese|Chinese)\b|(?:请|請|用|使用).{0,8}(?:简体|簡體|中文)/i.test(text)) code = "zh-Hans";
   if (code === "en") {
     return {
       responseLanguage: "en",
@@ -12170,9 +12175,13 @@ function syncWentianChatFaqLayout() {
   scheduleWentianPhoneFit();
 }
 
+let wentianQuotaRevision = 0;
 function setWentianQuota(quota) {
   const el = document.querySelector('[data-node-id="source-4-left"]');
-  if (quota) wentianMemberState.quota = normalizeWentianQuota({ ...(wentianMemberState.quota || {}), ...quota });
+  if (quota) {
+    wentianQuotaRevision += 1;
+    wentianMemberState.quota = normalizeWentianQuota(quota);
+  }
   if (!el || !quota) return;
   const normalized = wentianMemberState.quota || normalizeWentianQuota(quota);
   const remainingValue = getWentianQuotaRemaining(normalized, "--");
@@ -12180,6 +12189,9 @@ function setWentianQuota(quota) {
   el.textContent = isWentianEnglishUi()
     ? (remaining === "--" ? "Quota" : `${remaining} left`)
     : `余${remaining}次`;
+  el.title = getWentianQuotaMode(normalized) === "daily"
+    ? "当前账号共用额度，每日北京时间0点刷新，不随命盘切换重置"
+    : "累计额度，不随命盘切换重置";
 }
 
 function splitWentianLongSentence(sentence, maxLength = 58) {
@@ -12327,12 +12339,17 @@ function bindWentianChatScrollBox() {
   if (!box || box.dataset.scrollBound === "1") return;
   box.dataset.scrollBound = "1";
   box.addEventListener("scroll", syncWentianChatScrollState, { passive: true });
+  const pauseFollowing = () => { wentianXuChat.autoScroll = false; wentianXuChat.userPinned = true; };
+  box.addEventListener("wheel", (event) => { if (event.deltaY < 0) pauseFollowing(); }, { passive: true });
+  box.addEventListener("touchstart", pauseFollowing, { passive: true });
+  box.addEventListener("keydown", (event) => { if (["PageUp", "Home", "ArrowUp"].includes(event.key)) pauseFollowing(); });
 }
 
 function renderWentianMessages(options = {}) {
   const box = document.getElementById("wentian-chat-messages");
   if (!box) return;
-  const shouldStick = options.forceScroll || wentianXuChat.autoScroll || isWentianChatNearBottom(box);
+  const previousTop = box.scrollTop;
+  const shouldStick = options.forceScroll || (!wentianXuChat.userPinned && (wentianXuChat.autoScroll || isWentianChatNearBottom(box)));
   box.innerHTML = wentianXuChat.messages.map((message) => {
     const role = message.role === "user" ? "user" : message.role === "system" ? "system" : "assistant";
     const avatar = role === "user" ? ` data-avatar="${escapeHtml(getWentianChatUserAvatarText())}"` : "";
@@ -12341,7 +12358,7 @@ function renderWentianMessages(options = {}) {
   }).join("");
   bindWentianChatScrollBox();
   if (shouldStick) scrollWentianChatToBottom(!!options.forceScroll);
-  else updateWentianChatScrollButton();
+  else { box.scrollTop = previousTop; updateWentianChatScrollButton(); }
 }
 
 function finishWentianTyping(render = true) {
@@ -12558,7 +12575,7 @@ async function sendWentianXuChat(promptText = "") {
   try {
     await ensureWentianXuSession({ silent: false });
     if (!isCurrent()) return;
-    const languageParams = getWentianAiLanguageParams();
+    const languageParams = getWentianAiLanguageParams(message);
     const data = await wentianPostJson("/api/ai/chat/send", {
       chartRecordId: payload.chartRecordId,
       message: outboundMessage,
@@ -12792,7 +12809,7 @@ function getWentianMemberSnapshot() {
     quotaMode,
     daily: quotaPending ? "同步中" : `${remaining}/${limit}`,
     dailyLimit: quotaPending ? "同步中" : `${limit}次${quotaMode === "daily" ? "/天" : ""}`,
-    quotaLabel: quotaMode === "daily" ? "今日追问" : "可用追问",
+    quotaLabel: quotaMode === "daily" ? "今日剩余" : "累计剩余",
     limitLabel: quotaMode === "daily" ? "每日次数" : "全部次数",
     chartLimit,
     chartUsed,
@@ -12918,6 +12935,7 @@ async function hydrateWentianMemberStatus(options = {}) {
   if (wentianMemberStatusPromise && !options.force) return wentianMemberStatusPromise;
   if (wentianMemberState.loaded && !options.force) return null;
   const chartRecordId = getWentianChartPayload().chartRecordId;
+  const quotaRevisionAtStart = wentianQuotaRevision;
   const before = JSON.stringify({
     quota: wentianMemberState.quota,
     product: wentianMemberState.product,
@@ -12926,7 +12944,8 @@ async function hydrateWentianMemberStatus(options = {}) {
   wentianMemberStatusPromise = wentianFetchJson(`/api/payments/member-status?chartRecordId=${encodeURIComponent(chartRecordId)}`)
     .then((data) => {
       wentianMemberState.loaded = true;
-      if (data.quota) wentianMemberState.quota = normalizeWentianQuota({ ...data.quota, chartUsage: data.chartUsage || null });
+      // A status request started before a send must not overwrite its newer quota.
+      if (data.quota && quotaRevisionAtStart === wentianQuotaRevision) setWentianQuota({ ...data.quota, chartUsage: data.chartUsage || null });
       if (data.product) wentianMemberState.product = data.product;
       wentianMemberState.campaign = data.campaign || null;
       if (Array.isArray(data.providers)) wentianMemberState.providers = data.providers;
@@ -13600,9 +13619,16 @@ function getWentianChartFormData() {
   };
 }
 
+let wentianChartSubmitting = false;
 async function submitWentianChartForm() {
+  if (wentianChartSubmitting) return;
+  wentianChartSubmitting = true;
+  const buttons = [...document.querySelectorAll('[data-action="wentian-chart-submit"]')];
+  buttons.forEach(button => { button.disabled = true; button.setAttribute("aria-busy", "true"); });
   try {
     setWentianChartStatus("正在排盘...");
+    // Let the pending state paint before the synchronous chart calculation.
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     const norm = getWentianChartFormData();
     const lib = getWentianIztroLib();
     if (!lib) throw new Error("排盘模块未加载，请刷新后重试");
@@ -13672,6 +13698,9 @@ async function submitWentianChartForm() {
     else navigate("screen-27");
   } catch (error) {
     setWentianChartStatus(error.message || "排盘失败，请检查出生信息", "error");
+  } finally {
+    wentianChartSubmitting = false;
+    buttons.forEach(button => { button.disabled = false; button.removeAttribute("aria-busy"); });
   }
 }
 
