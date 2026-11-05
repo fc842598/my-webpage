@@ -61,22 +61,65 @@ A photographer invited by a brand manager should ask who owns the budget, who ap
 Name the resources, decision authority, and delivery standard. Record who provides staff and data, who can change the scope, and who accepts the result. Read Friends, Career, Wealth, and Migration, then compare the chart questions with the trial results and what both sides agreed in writing.
 
 ---
-## 03. 夫妻宫有忌，共同照护的费用与出力怎样分开谈？
-slug：`ziwei-fuqi-huaji-zhaohu-feiyong-fengong`
-来源：2026-11-04，https://www.dcard.tw/f/fortune_telling/p/255221669 。角度：照护钱与时间两种贡献分账；与已发多年关系依赖及单月排班题不同。
-中文草稿：夫妻宫有忌不等于两人必分开，但也不能把长期失衡解释成“有缘”。两人照顾家人时，一方支付费用、一方请假陪诊，应分别记金额、时数和替班机会。读夫妻宫的责任互动，再看财帛与官禄的现实限制；每月复盘一次，避免只争谁付出更多。
-English draft: Hua Ji in the Relationship Palace is not a verdict on a couple. When two people share caregiving, money and time are different contributions. Record bills, hours, and missed work separately. Relationship, Wealth, and Career can frame the discussion, while a regular review keeps the workload visible.
+## 03. 子女宫看带实习生，何时交出客户沟通权？
+slug：`ziwei-zinv-shixisheng-kehu-goutong`
+来源：2026-11-05，https://myluckyfate.com/articles/ziwei-zinv-gong.html 。角度：长期培养新人时的授权边界；区别于站内子女宫带新人培养计划总览。仅供编辑。
+正文草稿：
+实习生能独立回复客户的那一天，不能从子女宫直接算出。子女宫可帮助观察带人、培育与放手的关系；官禄宫看工作流程，交友宫看团队支持。把“新人能做什么”拆成可观察的能力，比把一颗星解释为听话或叛逆更可靠。
+
+### 子女宫谈培育，不代替能力测评
+子女宫的核心仍是亲子关系，带学生或实习生只是有持续教导责任时的延伸应用。若只参加一次培训，就不能借此推断师徒关系。看本宫主星、辅星与四化后，要问的是带教者会不会过早替新人做决定，或把错误全推给新人。再看官禄宫是否有明确流程，让授权不靠个人好恶。
+
+### 两个场景的放手幅度不同
+设计工作室的实习生已经能整理需求，但没有独立报价经验，可以先负责会议纪要，报价仍由项目经理审核。客服团队的新人熟悉退换货规则，却遇到大额退款争议，应先按权限表升级，不宜独自承诺补偿。前者需要练习提问，后者需要识别风险；同样是“交出客户沟通权”，实际权限不一样。子女宫见化权也不等于把所有决定权交给新人。
+
+### 用三次复盘逐步授权
+第一周让新人旁听并复述客户需求，第二周由其起草回复并接受校对，第三周只在已约定范围内独立答复。每次记录事实错误、超范围承诺与客户反馈。排盘先看子女宫的培育方式，再连官禄宫的岗位要求、交友宫的团队承接，最后用真实表现调整授权。命盘不能替代客户同意、保密义务和公司的审批规定。
+英文标题：Zi Wei Dou Shu Children Palace When Training an Intern
+英文描述：Use the Children Palace to frame mentorship, then set client communication authority from skills, role rules, and observed work.
+英文正文：
+A chart cannot tell you the date when an intern is ready to speak for a team. The Children Palace can frame a sustained mentoring relationship. Career describes the job process, while Friends points to the team that supports the new worker. Authority still has to follow observable skills.
+
+### Mentoring is a limited extension
+The Children Palace primarily concerns children and long-term care. It can extend to teaching someone over time, but a one-off training session is not the same relationship. Read its stars and transformations, then ask whether the mentor gives enough room to learn and whether Career supplies a clear workflow.
+
+### Give different permissions for different tasks
+An intern at a design studio might summarize a client meeting while the project manager still approves prices. A new support agent might answer standard return questions but escalate an unusually large refund. Both communicate with clients, yet the risk and approval route differ.
+
+### Review before expanding authority
+Start with observation, then a drafted reply, then limited independent replies. Keep a record of factual errors, promises outside the role, and customer feedback. Read Children with Career and Friends, but make permission decisions from real work, confidentiality rules, and the team's approval policy.
 
 ---
 
-## 04. 夫妻宫化忌，共同账户的退出规则为什么要事先写？
-slug：`ziwei-fuqi-huaji-gongtong-zhanghu-tuichu`
-来源：2026-11-04，https://www.dcard.tw/f/fortune_telling/p/255221669 。角度：共同账户的边界与退出；区别于站内夫妻宫化忌争吵叙事。
-中文草稿：共同账户是支付工具，不等于关系承诺的证明。夫妻宫化忌若让人关注难说清的责任，可把财帛宫一起看：谁存钱、谁有付款权限、分开居住或用途改变时余额如何处理。先列固定费用和紧急支出，再写退出与对账规则；命盘不能替代双方同意或银行手续。
-English draft: A shared account is a payment arrangement, not proof of commitment. If Relationship and Wealth become the chart question, clarify contributions, payment authority, and what happens when living arrangements change. Record fixed costs, emergency use, and an exit procedure. Both people must agree to the actual banking terms.
+## 04. 小限没有独立四化，年度计划为何不能只看小限？
+slug：`ziwei-xiaoxian-duili-sihua-niandu-jihua`
+来源：2026-11-05，https://docs.iztro.com/learn/horoscope 。角度：区分小限主题与流年四化，落到年度学习计划；区别于站内大限流年流月总览。仅供编辑。
+正文草稿：
+有人在排盘软件里看到小限落官禄，就把今年的工作决定全压在这一个宫位上。问题是：小限用来提示个人这一岁的关注点，并没有一套独立于流年的四化可直接当作第二张年度盘。要做年度计划，先分清本命、十年大限和流年，再让小限补充提问。
+
+### 先分清每层回答的问题
+本命官禄说明长期工作方式，大限看这十年岗位与资源如何变化，流年则把今年触动的宫位和四化带进来。小限可以提醒“我今年特别在意哪一块”，却不能覆盖流年已经显示的环境变化。软件若把小限宫位画得很醒目，也不代表它的证据权重最高。看盘前记下排盘规则，避免把流年四化误写成“小限四化”。
+
+### 学习计划要接工作需求
+例如，行政人员准备考数据分析证书，本命官禄显示其长期擅长协调，流年官禄有新系统上线任务，小限关注学习。计划可写成每周两次练习、每月做一份业务报表，再用主管反馈核对是否真的改善岗位表现。另一位设计师的小限也落学习相关宫位，但大限正推动客户沟通，培训重点应改成提案说明与预算协商。相同的小限提示，不会产生相同课程表。
+
+### 排盘后怎样落地
+先核出生资料和起限方法，记录本命官禄、财帛与命宫；再读大限和流年的官禄及四化，最后把小限放回具体年度目标。为每个目标写开始日期、投入时间、作品证据和复盘点。若学习影响现金流，还要把财帛宫与实际预算一起看。小限适合帮助检查遗漏，不负责保证考试通过或职位变化。
+英文标题：Zi Wei Dou Shu Minor Limit and Annual Learning Plans
+英文描述：The Minor Limit has no separate set of annual transformations. Read natal, decade, and annual layers before planning training.
+英文正文：
+A Minor Limit landing in the Career Palace should not carry an entire work plan. It can point to a personal concern for the year, but it has no independent set of annual transformations. Keep it separate from the annual chart when reading Zi Wei Dou Shu.
+
+### Give each time layer a job
+Natal Career describes a longer work pattern. The decade cycle adds a stage of responsibilities and resources. The annual chart identifies this year's triggers and transformations. The Minor Limit can add a question without replacing those layers or creating a second annual transformation set.
+
+### Compare two learners
+An administrator preparing for a data certificate could practice twice a week and build one monthly business report if the workplace is introducing a new system. A designer facing more client proposals may need presentation and budgeting practice instead. The same Minor Limit theme does not produce the same course plan.
+
+### Turn the reading into a plan
+Check birth details and the calculation method. Read natal Career, the decade cycle, and annual transformations before the Minor Limit. Give each goal a start date, time budget, work sample, and review point. Add Wealth if study costs affect cash flow. The chart does not guarantee an exam result or promotion.
 
 ---
-
 ## 05. 迁移宫空宫借命宫，异地客户项目先核什么？
 slug：`ziwei-qianyi-konggong-jie-minggong-yidi-kehu`
 来源：2026-11-04，https://xingge.tw/en/learn/c1-empty 。角度：异地项目用借对宫补读外部条件；与已发命宫空宫内部转岗题换了问题与宫位。
