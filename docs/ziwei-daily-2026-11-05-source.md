@@ -355,22 +355,65 @@ Two editors working as peers need a named final editor and an evidence standard 
 List each person's role, reporting line, signature authority, and payment relationship. If a friend is also a supervisor, separate personal help from job evaluation. Read Friends with the relevant palaces, then verify conclusions against actual duties and written decisions.
 
 ---
-## 13. 文昌文曲与求职，笔试和口试要用同一套准备法吗？
-slug：`ziwei-changqu-mianshi-bishi-koushi`
-来源：2026-11-04，https://www.mczwl.cn/article/tianji-wenchang-wenqu-shishenme-yisi 。角度：招聘两种评价媒介；与已发资格考试和工作写作题不同。
-中文草稿：笔试能重读题目并修改答案，口试则要当场澄清提问。昌曲可提示书面组织与表达，但不能保证两关都顺利。求职者先看官禄目标岗位，再分别用限时试题与模拟问答练习。若口试总偏题，记录追问和回答长度；别用笔试成绩代替口头表现。
-English draft: A written hiring test allows rereading and revision; an interview requires clarification in real time. Wen Chang and Wen Qu can frame structure and expression but cannot guarantee either result. Use timed practice for the test and recorded mock questions for the interview. Review where answers drift from the question.
+## 13. 子女宫看作品，上线之后的维护责任该怎样分？
+slug：`ziwei-zinv-zuopin-shangxian-weihu`
+来源：2026-11-05，https://myluckyfate.com/articles/ziwei-zinv-gong.html 。角度：作品作为长期培育的辅助比喻，聚焦上线后的维护分工；区别于站内子女宫看创作成果与产品发布题。仅供编辑。
+正文草稿：
+一个作品上线，不代表创作责任结束。子女宫可以借来讨论长期培育、修正与放手，但它的核心仍是亲子关系，不能把产品销量或用户数量从命盘中算出来。若把作品当作延伸应用，最有用的问题是：发布后谁接反馈，谁决定修改，谁为后续成本负责？
+
+### 子女宫只提示培育方式
+先看子女宫的主星、辅曜和四化，讨论作者是否愿意持续照顾成果，或是否过度控制每次改动。再连官禄宫看工作流程、财帛宫看维护经费、交友宫看协作团队。若子女宫见化权，可问谁握有版本决定权，不等于所有用户都会服从；见化禄也不能保证销量。宫位给出提问结构，市场数据另行核查。
+
+### 两类作品的维护不同
+独立作者发布电子课程后，最重要的可能是每月纠错、答疑和替换失效链接，收入按订阅周期确认。小团队发布预约软件后，必须安排故障响应、隐私问题和版本回退。前者的维护偏内容，后者偏服务承诺。两者都可用子女宫谈长期投入，但官禄交付和财帛预算完全不同，不能用同一句“作品有缘”解释。
+
+### 发布前就写维护表
+列出反馈渠道、负责人、响应期限、更新频率和停更条件。首月按真实问题分类：文字错误、功能缺陷、需求变化分别处理；不要把每条批评都当成作品失败。排盘先确认现实主题确实是持续培养的成果，再看子女宫与官禄、财帛、交友的组合，最后用用户反馈和成本表调整计划。命盘不会替代产品测试，也不能直接评价作品质量。
+英文标题：Children Palace and Maintenance After a Creative Work Launches
+英文描述：The Children Palace can frame long-term care of a project, but post-launch roles, budget, and user feedback need real records.
+英文正文：
+Launching a creative work does not end the responsibility for it. The Children Palace can be an analogy for sustained care, though its primary meaning concerns children. It cannot predict sales or user growth. Ask who will receive feedback, approve changes, and pay for maintenance.
+
+### Keep the analogy bounded
+Read the palace's stars and transformations for questions about care and control. Connect Career with the delivery process, Wealth with the budget, and Friends with the team. Hua Quan may prompt a question about version authority; it does not give the creator authority over users.
+
+### Compare two works
+An independent course creator may need monthly corrections, learner replies, and replacement links. A small team launching booking software needs incident response, privacy handling, and a rollback plan. Both involve maintenance, but their workload and costs differ.
+
+### Write a maintenance table
+Name the feedback channel, owner, response time, update rhythm, and stopping condition. Sort early reports into content errors, defects, and changed needs. Read the chart after defining the real project, then judge the plan with testing, feedback, and cost records.
 
 ---
 
-## 14. 昌曲与备考，错题该按知识缺口还是表达失误分类？
-slug：`ziwei-changqu-beikao-cuowu-fenlei`
-来源：2026-11-04，https://www.mczwl.cn/article/tianji-wenchang-wenqu-shishenme-yisi 。角度：可改进的错题分类；与站内有无文昌文曲能否考好不同。
-中文草稿：同样扣五分，有人是不懂法规，有人懂却漏写限定条件。昌曲若用来讨论学习与表达，要让错题本分成知识、审题、时间和表述四类。每类选择不同训练：补概念、划关键词、限时做题或练简答。宫位只能指向需要检查的能力，不能替代评分标准。
-English draft: Losing five points can reflect a missing concept or an answer that omits a crucial condition. If Wen Chang and Wen Qu frame learning and expression, sort errors into knowledge, reading, timing, and wording. Each calls for a different drill. The actual rubric and practice results tell you whether the plan works.
+## 14. 子女宫看带学生，导师评分与学生选择权为什么要分开？
+slug：`ziwei-zinv-daixuesheng-pingfen-xuanze`
+来源：2026-11-05，https://myluckyfate.com/articles/ziwei-zinv-gong.html 。角度：持续带学生时的教学反馈和选择边界；区别于站内子女宫亲子总览及实习生客户沟通授权题。仅供编辑。
+正文草稿：
+导师教了学生半年，学生没有照建议选课，就说明子女宫关系不好吗？不能。子女宫可以帮助讨论持续教导的方式，但学生的选择权和成绩不属于导师命盘。导师有责任提供清楚反馈，也要允许学生根据能力、兴趣和现实条件作决定；把不服从当成星曜结果，会遮住真正的教学问题。
+
+### 从亲子本义谨慎延伸
+子女宫的核心是与子女、晚辈的长期关系。带学生只有在持续指导、跟踪和承担责任时，才适合借作延伸问题。先看宫内主辅星与四化，询问导师倾向直接给答案，还是让学生尝试后再纠错。再连官禄宫看教学职责，福德宫看双方是否有稳定的复盘空间。一次讲座不能拿来断长期师生关系。
+
+### 评分和选择是两张表
+一位导师负责研究项目评分，必须按公开标准给分，却不能要求学生未来继续做同一主题。另一位职业教练只提供练习反馈，学员是否报名考试由本人决定。前者有正式评估权，后者主要提供建议。子女宫见化权也不等于可以替学生选路；现实中的权力范围应写在课程说明和指导协议中。
+
+### 用可观察反馈代替贴标签
+把评分依据、改进建议、学生回应和下一次复盘时间分别记录。若学生总在同类任务上卡住，先查任务难度、示范是否足够和反馈是否具体，再考虑换方法。排盘先确认这确实是长期培养关系，再看子女宫与官禄、福德的组合，最后回到真实作品和学习记录。宫位可以帮助导师反思，不适合给学生贴能力或性格标签。
+英文标题：Children Palace, Student Feedback, and Choice in Zi Wei Dou Shu
+英文描述：Mentoring can extend the Children Palace as an analogy, but grades, feedback, and a student's decisions require separate boundaries.
+英文正文：
+A student choosing a different course from a mentor's recommendation does not prove a poor Children Palace relationship. The palace can frame sustained teaching as a limited extension of its primary family meaning. The mentor can give clear feedback while the student keeps the right to choose a path.
+
+### Use the extension carefully
+Read the palace's stars and transformations to ask how the mentor teaches and corrects. Connect Career with formal teaching duties and Wellbeing with the capacity for regular review. A one-time lecture is not a long mentoring relationship.
+
+### Separate grading from choice
+A research supervisor may grade a project against published criteria but cannot require a student to stay in the same field. A career coach may give practice feedback without deciding whether a learner sits an exam. Authority comes from the real role, not a transformation in the chart.
+
+### Keep observable feedback
+Record criteria, advice, the student's response, and the next review date. If the same task remains difficult, check the task level and the clarity of examples. Read Children with Career and Wellbeing, then return to actual work and learning records rather than labeling a student's character.
 
 ---
-
 ## 15. 昌曲空劫两张盘，教学示例怎样标清计算假设？
 slug：`ziwei-changqu-kongjie-liangpan-biaozhu`
 来源：2026-11-04，https://little-yin.com/2021/11/05/secondary1/ 。角度：演示盘的参数和不确定性标注；与今日四星校时文章区别在教学材料质量。
