@@ -326,14 +326,35 @@ One job seeker sees Hua Quan under Career in a natal report and Hua Ji under Pro
 After locating Career, connect it with Wealth for income, Migration for outside clients, and Life for the person's role. Use the translation as a signpost, then interpret chart structure and the actual job question.
 
 ---
-## 12. 巨门化忌碰上共享日程，漏填和失约为何不能混谈？
-slug：`ziwei-jumen-huaji-gongxiang-richeng-wuhui`
-来源：2026-11-04，https://ziweiai.com/zh-TW/notes/couple-palace-jumen-huaji-emotional-challenges 。角度：关系里的共享日程机制；与已发夫妻宫月度安排的时间层不同。
-中文草稿：一方没把聚会写进共享日程，另一方以为对方已经答应接孩子。漏填信息和明知约定却不履行，是两类问题。巨门化忌若引出反复争辩，先回看日程、消息和确认语句。约定“重要事项需双方确认”并指定提醒时点，比争谁记性差更有用。
-English draft: An event missing from a shared calendar is different from knowingly breaking an agreed pickup plan. If Ju Men Hua Ji raises a communication question, check the calendar, messages, and confirmation. Agree which plans require both people to acknowledge them and when reminders should appear. Fix the process before assigning motive.
+## 12. 交友宫谈团队，同事与直接下属能用同一套读法吗？
+slug：`ziwei-jiaoyou-tongshi-xiashu-zeren`
+来源：2026-11-05，https://www.victortaichung.com/files/magazingimages/54ec36ca3d71c6b8dc0a922198b869e7.pdf 。角度：现代团队里平级与管理责任的区别；区别于站内交友宫含义总览。仅供编辑。
+正文草稿：
+交友宫常被拿来谈团队，但它不能让所有同事自动变成同一种关系。平级同事、直接下属、外包成员的授权和责任不同。读宫位前先说清现实中的角色，再看主星、辅星与四化如何改变协作方式，避免用“人缘好坏”概括工作问题。
+
+### 先确认谁对谁负责
+交友宫是团队互动入口，兄弟宫可补平级协作，官禄宫看岗位职责，财帛宫看报酬与费用。若交友宫见紫微，可讨论关系中的中心人物和秩序；若见忌，也只提示某些环节值得检查。谁批准休假、签验收、处理投诉，要看组织结构和合同，不能从一颗星直接指定。
+
+### 两种团队不能照读
+编辑与同事共同审稿，彼此没有管理权。遇到修改意见分歧，应标清最终定稿人与证据标准。另一名主管带三位实习生，他要安排培训、审核公开发布内容，并承担升级处理。两者都涉及交友宫，却不能用“朋友不合”解释所有问题。前者是平级决策，后者含管理义务；化权的解释也应随任务位置而改变。
+
+### 画一张责任图再看盘
+在团队图上列岗位、汇报线、签字权和付款关系，再把交友、兄弟、官禄的线索分别标出。若一个人既是朋友又是直属主管，私人互助与岗位考核要分两栏。排盘先核本宫星曜与四化，再连相关宫位，最后逐条用真实职责核对。宫位帮助找到讨论入口，不能取代授权文件或清楚的团队沟通。
+英文标题：Friends Palace: Coworkers and Direct Reports in Zi Wei Dou Shu
+英文描述：Separate peer work from management duties before using the Friends Palace to discuss a team.
+英文正文：
+The Friends Palace can frame teamwork, but it does not make every coworker the same kind of relationship. Peers, direct reports, and outside contractors have different duties. Name the real role before reading stars or transformations.
+
+### Identify responsibility
+Read Friends for team interaction, Siblings for peer cooperation, Career for formal duties, and Wealth for payment. A star does not grant legal authority. Check who approves leave, accepts work, and handles complaints.
+
+### Compare two teams
+Two editors working as peers need a named final editor and an evidence standard for revisions. A supervisor training three interns needs review steps and escalation rules. Both work with people, but only one has formal management duties.
+
+### Draw a responsibility map
+List each person's role, reporting line, signature authority, and payment relationship. If a friend is also a supervisor, separate personal help from job evaluation. Read Friends with the relevant palaces, then verify conclusions against actual duties and written decisions.
 
 ---
-
 ## 13. 文昌文曲与求职，笔试和口试要用同一套准备法吗？
 slug：`ziwei-changqu-mianshi-bishi-koushi`
 来源：2026-11-04，https://www.mczwl.cn/article/tianji-wenchang-wenqu-shishenme-yisi 。角度：招聘两种评价媒介；与已发资格考试和工作写作题不同。

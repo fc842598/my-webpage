@@ -15,7 +15,7 @@
 | 09 | 已发布 2026-11-05 09:08 https://yuetianai.com/articles/ziwei-caibo-hualu-hetong-weikuan.html / https://yuetianai.com/articles/en/ziwei-caibo-hualu-hetong-weikuan.html | ziwei-caibo-hualu-hetong-weikuan | 财帛宫见化禄，为什么合同尾款还不能算已到账？ |
 | 10 | 已发布 2026-11-05 09:08 https://yuetianai.com/articles/ziwei-guanlu-huaji-cizhi-renwu-gangwei.html / https://yuetianai.com/articles/en/ziwei-guanlu-huaji-cizhi-renwu-gangwei.html | ziwei-guanlu-huaji-cizhi-renwu-gangwei | 官禄宫有忌想辞职，先分任务冲突还是长期岗位不合？ |
 | 11 | 已发布 2026-11-05 09:11 https://yuetianai.com/articles/ziwei-guanlu-english-career-profession.html / https://yuetianai.com/articles/en/ziwei-guanlu-english-career-profession.html | ziwei-guanlu-english-career-profession | 英文紫微盘写 Career 或 Profession，怎样确认是官禄宫？ |
-| 12 | 待次日研究复核，未发布 | ziwei-jumen-huaji-gongxiang-richeng-wuhui | 巨门化忌碰上共享日程，漏填和失约为何不能混谈？ |
+| 12 | 已发布 2026-11-05 09:11 https://yuetianai.com/articles/ziwei-jiaoyou-tongshi-xiashu-zeren.html / https://yuetianai.com/articles/en/ziwei-jiaoyou-tongshi-xiashu-zeren.html | ziwei-jiaoyou-tongshi-xiashu-zeren | 交友宫谈团队，同事与直接下属能用同一套读法吗？ |
 | 13 | 待次日研究复核，未发布 | ziwei-changqu-mianshi-bishi-koushi | 文昌文曲与求职，笔试和口试要用同一套准备法吗？ |
 | 14 | 待次日研究复核，未发布 | ziwei-changqu-beikao-cuowu-fenlei | 昌曲与备考，错题该按知识缺口还是表达失误分类？ |
 | 15 | 待次日研究复核，未发布 | ziwei-changqu-kongjie-liangpan-biaozhu | 昌曲空劫两张盘，教学示例怎样标清计算假设？ |
