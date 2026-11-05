@@ -4,6 +4,7 @@ import path from "node:path";
 import { assertProductionPublishWindow } from "./article-publish-time-gate.mjs";
 import { appendArticleCollections } from "./append-article-collections.mjs";
 import { assertReadyPeerResearch } from "./check-daily-peer-research.mjs";
+import { normalizeEnglishZiweiTerms } from "./english-ziwei-terminology.mjs";
 
 const site = "https://yuetianai.com";
 const defaultImage = `${site}/images/home2/triad-tian-bg.webp`;
@@ -200,7 +201,7 @@ for (const [index, article] of articles.entries()) {
   if (existsSync(zhPath) && !overwriteExisting) fail(`Article already exists: ${zhPath}`);
   if (existsSync(enPath) && !overwriteExisting) fail(`English article already exists: ${enPath}`);
   writeFileSync(zhPath, chinesePage(article, time), "utf8");
-  writeFileSync(enPath, englishPage(article, time), "utf8");
+  writeFileSync(enPath, normalizeEnglishZiweiTerms(englishPage(article, time)), "utf8");
   generatedArticlePaths.add(`articles/${article.slug}.html`);
   generatedArticlePaths.add(`articles/en/${article.slug}.html`);
 }
@@ -2420,8 +2421,8 @@ function regenerateFeedsAndSitemaps(changedArticles) {
   const enArticles = allEnglishArticles();
   regenerateTopicHubs(zhArticles, changedArticles);
   writeFileSync(path.join(root, "feed.xml"), zhFeed(zhArticles), "utf8");
-  writeFileSync(path.join(root, "articles", "en", "feed.xml"), enFeed(enArticles), "utf8");
-  writeFileSync(path.join(root, "articles", "en", "index.html"), enIndex(enArticles), "utf8");
+  writeFileSync(path.join(root, "articles", "en", "feed.xml"), normalizeEnglishZiweiTerms(enFeed(enArticles)), "utf8");
+  writeFileSync(path.join(root, "articles", "en", "index.html"), normalizeEnglishZiweiTerms(enIndex(enArticles)), "utf8");
   writeFileSync(path.join(root, "sitemap.xml"), mainSitemap(zhArticles), "utf8");
   writeFileSync(path.join(root, "sitemap-articles.xml"), articlesSitemap(zhArticles), "utf8");
   writeFileSync(path.join(root, "sitemap-en.xml"), enSitemap(enArticles), "utf8");

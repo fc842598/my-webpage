@@ -1,5 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { normalizeEnglishZiweiTerms } from "./english-ziwei-terminology.mjs";
 
 if (process.argv.includes("--repair-legacy-links")) {
   await import("./repair-legacy-article-links.mjs");
@@ -650,13 +651,13 @@ function addIndexHreflang() {
 }
 
 for (const article of articles) {
-  writeFileSync(path.join(outDir, article.slug), articlePage(article), "utf8");
+  writeFileSync(path.join(outDir, article.slug), normalizeEnglishZiweiTerms(articlePage(article)), "utf8");
   addHreflangToChinese(article);
 }
 
 addIndexHreflang();
-writeFileSync(path.join(outDir, "index.html"), indexPage(), "utf8");
-writeFileSync(path.join(outDir, "feed.xml"), feedXml(), "utf8");
+writeFileSync(path.join(outDir, "index.html"), normalizeEnglishZiweiTerms(indexPage()), "utf8");
+writeFileSync(path.join(outDir, "feed.xml"), normalizeEnglishZiweiTerms(feedXml()), "utf8");
 writeFileSync(path.join(root, "sitemap-en.xml"), sitemapXml(), "utf8");
 
 console.log(`Generated ${articles.length} English articles.`);
