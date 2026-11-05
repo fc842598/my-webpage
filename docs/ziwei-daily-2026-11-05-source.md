@@ -179,22 +179,65 @@ A job agreement signed on November 5 and a trial beginning on November 10 may fa
 Read natal, decade, and annual layers before narrowing to a month. For a contract, check version and effective date; for a budget, use the actual accounting period. If a chart app and an article show different monthly positions, check their calculation rules instead of selecting the more appealing forecast.
 
 ---
-## 07. 兄弟与交友宫看合作，采购审批为何要分两级？
-slug：`ziwei-xiongdijiaoyou-hehuo-caigou-shenpi`
-来源：2026-11-04，https://xuebz.com/baike/ziwei-gongwei/xiong-di-gong 。角度：采购提议与授权分离；与第09篇股权和借款边界不同。
-中文草稿：合伙人都能提采购需求，不代表都能签长期合同。兄弟宫可讨论平级分担，交友宫涉及团队执行，财帛宫看付款。小工作室可约定项目负责人提需求、另一名合伙人核价格，超过阈值两人共同批准。宫位只提示合作环节，授权和票据仍须写进制度。
-English draft: Every partner can request a purchase, but that does not mean everyone may sign a long contract. Siblings can frame peer duties, Friends the team, and Wealth payment. A small studio might separate the request, price check, and final approval, with a higher threshold requiring two signatures. The policy creates the control.
+## 07. 命宫空宫借迁移宫，教学示例怎样标清星曜原位？
+slug：`ziwei-minggong-konggong-jiexing-biaozhu`
+来源：2026-11-05，https://fateclear.com/learn/ziwei/ming-gong-zen-me-kan 。角度：教学盘明确本宫与借看的对宫，避免学习者以为主星真的移位；区别于站内空宫定义和三方总览。仅供编辑。
+正文草稿：
+命宫没有主星，借看对宫迁移宫时，能否把对宫主星直接抄进命宫？不能。借看是解释上的参照，星曜在盘上的位置没有改变。初学者若只看一张转写表，容易把“借来的信息”误当成本宫坐星，后面再读财帛、官禄和流年时就会连错位置。
+
+### 先把原位写完整
+在示例盘上给命宫画一个框，记录本宫辅星、煞星、四化和宫干，标注“无主星”；再给对宫迁移另画一个框，写明其主星。命宫虽空，本宫仍可能有重要条件。对宫的主星可帮助理解命迁轴，却不能遮住命宫自己的辅曜或忽略迁移宫的外部环境含义。若排盘软件自动填入借星，要核图例是否说明来源。
+
+### 两种提问需要不同标记
+求职者问自己在面试中怎样表达，命宫空宫借迁移时，可参考对宫主星，但还要把官禄的岗位能力另列。另一个人问是否适合外地驻场，重点已转到迁移宫本身，再看官禄交付和财帛报销。若把对宫主星复制成命宫坐星，两问看起来会变成同一件事，实则一个关乎自我呈现，一个关乎外部工作条件。
+
+### 给教学盘加三栏
+第一栏写本宫实际星曜，第二栏写借看的对宫及其原位，第三栏写财帛、官禄等三方与提问有关的线索。每次推论都在旁边标“本宫”或“参考”，避免学生只记住一句断语。排盘顺序是先核输入和宫位、再看本宫、再借对宫、最后连三方和现实证据。没有完整出生时辰时，更要把不确定性写在表上，不要用借星掩盖输入误差。若两套时辰盘的命宫不同，教学示例应同时保留两张原始盘，分别标记借星来源，而不是拼成一张看似完整的盘。
+英文标题：Empty Life Palace: How to Label Borrowed Stars in a Zi Wei Dou Shu Example
+英文描述：When the Life Palace is empty, label the original Migration Palace location of borrowed stars instead of moving them on the chart.
+英文正文：
+An empty Life Palace has no main star, but borrowing from the opposite Migration Palace does not move that star. In a teaching chart, a copied star can make readers confuse a reference with an actual placement. Keep the two locations visible.
+
+### Record the original positions
+Mark the Life Palace as lacking a main star and list any supporting stars and transformations it still has. In a separate box, name the opposite Migration Palace and its main stars. Check the chart application's legend if it fills borrowed stars automatically.
+
+### Match the location to the question
+An applicant asking how to present herself in an interview may use the opposite palace as context while checking Career for skill evidence. A consultant asking about a job on site needs to read Migration directly, then Career for delivery and Wealth for expenses. These are different questions even if the same stars appear in the discussion.
+
+### Use three columns
+Label actual Life placements, opposite-palace references, and relevant links to Career and Wealth. Mark every interpretation as original or borrowed. Verify birth details first, then read the palace, borrow as context, and compare the result with the real question and available evidence.
 
 ---
 
-## 08. 兄弟宫涉及亲戚借钱，借款和赠与怎样分清？
-slug：`ziwei-xiongdijiaoyou-qinqi-jiekuan-zengyu`
-来源：2026-11-04，https://xuebz.com/baike/ziwei-gongwei/xiong-di-gong 。角度：家庭资金往来的法律与情感边界；与合伙公司周转款不同。
-中文草稿：亲戚说“先拿去用”，双方可能把它理解成借款、赠与或投资。兄弟宫讨论平辈关系，财帛宫讨论资金压力；两宫都不能定义这笔钱的性质。转账前写金额、期限、用途及是否计息，另谈无法偿还时怎样沟通。关系越亲近，越要避免只靠口头默契。
-English draft: “Use this for now” can mean a loan, gift, or investment to different relatives. Siblings may frame the peer relationship and Wealth the cash concern, but neither defines the transfer. Write the amount, purpose, repayment date, and interest terms before money moves. Clarity protects the relationship as well as the ledger.
+## 08. 异地求学看迁移宫，为什么还要核福德宫的适应成本？
+slug：`ziwei-qianyi-yidi-qiuxue-fude-chengben`
+来源：2026-11-05，https://oracleeast.com/ziwei-migration-palace-overseas-development/ 。角度：异地求学把外部机会与心理适应成本分别核查；区别于站内迁移宫搬家、远程工作与留学预测题。仅供编辑。
+正文草稿：
+拿到外地学校的录取通知，迁移宫看起来不错，是否就该立刻搬？迁移宫能提示进入陌生环境后的互动，不能替学生评估课程、财务和适应成本。读盘时把外部机会与每天的生活负担分开看：学校给什么资源，自己又需要什么支持。
+
+### 迁移和福德问不同的问题
+迁移宫涉及离开熟悉圈子后的环境、平台和人际接触；福德宫可补看个人恢复精力、休息和承受变化的方式。若迁移宫有化禄，也只能说明值得核外部资源，不等于奖学金已经到账；若福德宫有忌，也不能直接断言无法适应。再连财帛宫看学费、押金和生活费，官禄宫看课程与未来职业训练如何衔接。
+
+### 两位学生的成本表不同
+一位学生去邻省读一年制课程，每周可回家，最需要比较住宿押金、往返交通和实习安排。另一位出国读两年，语言和签证合规之外，还要核医疗、假期住所与家庭联系时差。前者的主要压力可能在预算，后者可能在长期支持网络。相同的迁移机会，不会对应同一份行动清单；要把可核项目写在录取文件旁。
+
+### 先试可逆安排
+确认课程要求和缴费截止日，再安排线上交流、短住或开学前探访，记录通勤、睡眠、餐食与学习环境。若条件不允许试住，就至少与在读学生核对真实日常，并给第一学期设复盘点。排盘先看命迁轴与福德，再看财帛、官禄和流年时间层，最后以学校文件和个人预算决定。命盘不会替学生完成学籍手续，也不能单独决定去留。若学校允许延期入学，还可把延期成本与直接入学的预算并列，让选择有可逆余地。
+英文标题：Zi Wei Dou Shu Migration and Wellbeing for Study Away From Home
+英文描述：A school offer away from home involves opportunity, daily adjustment, tuition, and support. Read Migration with Wellbeing and Wealth.
+英文正文：
+An offer from a school in another city may raise a Migration Palace question, but the chart cannot choose the school for a student. Separate the external opportunity from the cost of adapting to daily life. What resources does the program provide, and what support does the student need?
+
+### Read two palaces for different concerns
+Migration covers the unfamiliar setting and outside contacts. Wellbeing can frame recovery, rest, and tolerance for change. A favorable transformation does not prove that a scholarship will be paid. Read Wealth for tuition and living costs and Career for the training the course actually provides.
+
+### Compare two students
+A student attending a one-year program in a nearby province may focus on a housing deposit, travel home, and internships. Someone studying abroad for two years must also check language, visa conditions, healthcare, holiday housing, and time zones for family contact. The two decisions need different budgets and support plans.
+
+### Test a reversible arrangement
+Read course requirements and payment deadlines. If possible, visit briefly, speak with current students, and record commute, sleep, food, and study conditions. Review the first term against the plan. Read Life and Migration, then Wellbeing, Wealth, Career, and the time layer; decide with school documents and a real budget.
 
 ---
-
 ## 09. 父母宫看上司，公开表扬后新增责任该怎样确认？
 slug：`ziwei-fumugong-shangsi-biaoyang-hou-zeren`
 来源：2026-11-04，https://guidingstar.ai/ziwei/palace/parents 。角度：表扬与授权分开；与已发主管模糊反馈验收题不同。
