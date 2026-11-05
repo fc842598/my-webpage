@@ -17,7 +17,7 @@
 | 11 | 已发布 2026-11-05 09:11 https://yuetianai.com/articles/ziwei-guanlu-english-career-profession.html / https://yuetianai.com/articles/en/ziwei-guanlu-english-career-profession.html | ziwei-guanlu-english-career-profession | 英文紫微盘写 Career 或 Profession，怎样确认是官禄宫？ |
 | 12 | 已发布 2026-11-05 09:11 https://yuetianai.com/articles/ziwei-jiaoyou-tongshi-xiashu-zeren.html / https://yuetianai.com/articles/en/ziwei-jiaoyou-tongshi-xiashu-zeren.html | ziwei-jiaoyou-tongshi-xiashu-zeren | 交友宫谈团队，同事与直接下属能用同一套读法吗？ |
 | 13 | 已发布 2026-11-05 09:13 https://yuetianai.com/articles/ziwei-zinv-zuopin-shangxian-weihu.html / https://yuetianai.com/articles/en/ziwei-zinv-zuopin-shangxian-weihu.html | ziwei-zinv-zuopin-shangxian-weihu | 子女宫看作品，上线之后的维护责任该怎样分？ |
-| 14 | 待发布 | ziwei-zinv-daixuesheng-pingfen-xuanze | 子女宫看带学生，导师评分与学生选择权为什么要分开？ |
+| 14 | 已发布 2026-11-05 09:13 https://yuetianai.com/articles/ziwei-zinv-daixuesheng-pingfen-xuanze.html / https://yuetianai.com/articles/en/ziwei-zinv-daixuesheng-pingfen-xuanze.html | ziwei-zinv-daixuesheng-pingfen-xuanze | 子女宫看带学生，导师评分与学生选择权为什么要分开？ |
 | 15 | 待次日研究复核，未发布 | ziwei-changqu-kongjie-liangpan-biaozhu | 昌曲空劫两张盘，教学示例怎样标清计算假设？ |
 | 16 | 待次日研究复核，未发布 | ziwei-shichen-buque-dingxing-jilu | 出生时辰不确定，四星落宫差异怎样写进看盘记录？ |
 | 17 | 待次日研究复核，未发布 | ziwei-changqu-zuopinji-zige-zhengshu | 昌曲看职业发展，作品集与资格证书怎样各自证明能力？ |
