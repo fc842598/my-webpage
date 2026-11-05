@@ -7,7 +7,7 @@
 | 01 | 已发布 2026-11-05 09:00 https://yuetianai.com/articles/ziwei-qianyi-kuashiqu-kehu-jiaofu.html / https://yuetianai.com/articles/en/ziwei-qianyi-kuashiqu-kehu-jiaofu.html | ziwei-qianyi-kuashiqu-kehu-jiaofu | 迁移宫看跨时区客户，交付窗口和出差怎么分？ |
 | 02 | 已发布 2026-11-05 09:00 https://yuetianai.com/articles/ziwei-jiaoyougong-ziwei-shihe-sanxiang.html / https://yuetianai.com/articles/en/ziwei-jiaoyougong-ziwei-shihe-sanxiang.html | ziwei-jiaoyougong-ziwei-shihe-sanxiang | 交友宫紫微带来人脉，试合作先核哪三件事？ |
 | 03 | 已发布 2026-11-05 09:02 https://yuetianai.com/articles/ziwei-zinv-shixisheng-kehu-goutong.html / https://yuetianai.com/articles/en/ziwei-zinv-shixisheng-kehu-goutong.html | ziwei-zinv-shixisheng-kehu-goutong | 子女宫看带实习生，何时交出客户沟通权？ |
-| 04 | 待发布 | ziwei-xiaoxian-duili-sihua-niandu-jihua | 小限没有独立四化，年度计划为何不能只看小限？ |
+| 04 | 已发布 2026-11-05 09:02 https://yuetianai.com/articles/ziwei-xiaoxian-duili-sihua-niandu-jihua.html / https://yuetianai.com/articles/en/ziwei-xiaoxian-duili-sihua-niandu-jihua.html | ziwei-xiaoxian-duili-sihua-niandu-jihua | 小限没有独立四化，年度计划为何不能只看小限？ |
 | 05 | 待次日研究复核，未发布 | ziwei-qianyi-konggong-jie-minggong-yidi-kehu | 迁移宫空宫借命宫，异地客户项目先核什么？ |
 | 06 | 待次日研究复核，未发布 | ziwei-konggong-duigong-bengong-shunxu | 空宫借对宫时，本宫辅星为什么不能略过？ |
 | 07 | 待次日研究复核，未发布 | ziwei-xiongdijiaoyou-hehuo-caigou-shenpi | 兄弟与交友宫看合作，采购审批为何要分两级？ |
