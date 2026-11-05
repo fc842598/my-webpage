@@ -532,16 +532,60 @@ A team lead covering a two-week vacation needs a handoff list, emergency contact
 Write down the term, duties, signature rights, resources, and exit handoff. Keep approval records. Read Career with Wealth and Migration, then compare the chart question with the appointment letter, capacity, and personal constraints.
 
 ---
-## 19. 财帛连田宅，租房押金返还为何要单独记账？
-slug：`ziwei-caibo-tianzhai-yajin-tuihuan`
-来源：2026-11-04，https://mingming3.com/cn/ziwei/articles/ziwei_practical 。角度：押金不等于月度可花收入；与今日家庭预算复盘及买租房总览不同。
-中文草稿：退租押金还在房东手里，不能把它当成下月一定到账的现金。田宅宫提示居住交接，财帛宫提示回款时间。签退租单时拍照记录房况、水电和钥匙数量，列扣款争议与约定返还日。预算里把“应收押金”和“已到账”分两栏，避免同时付新房押金时现金短缺。
-English draft: A rental deposit held by a landlord is a receivable, not cash already available for the next home. Property frames the handover and Wealth the payment timing. Photograph the condition, meter readings, and keys, then record deductions and the promised return date. Keep “deposit expected” separate from “cash received” in the moving budget.
+## 19. 七杀坐命遇不同辅煞，初学者怎样避免一星定性？
+slug：`ziwei-qisha-zuoming-fusha-jilu`
+来源：2026-11-05，https://fateclear.com/learn/ziwei/ming-gong-zen-me-kan 。角度：用两张教学盘对照同一主星的不同条件；区别于站内七杀星性总览与七杀格局断语。仅供编辑。
+正文草稿：
+两张命盘都写“七杀坐命”，能否用同一句话判断两个人的工作风格？不能。主星提供观察起点，落宫、亮度、辅星、煞星与四化会改变用法，三方四正还会把财帛、官禄、迁移连进来。初学者最容易犯的错，就是看见七杀便直接写“敢冲”，忽略了资源和约束。
+
+### 先把命宫条件列完整
+记录七杀坐在哪一宫、是否会到辅弼、魁钺或煞曜，再标化禄、化权、化科、化忌来自哪一层。亮度与庙陷也按所用排盘规则记下，不要只用一个“强”字覆盖所有条件。随后看官禄宫的岗位结构、财帛宫的收入承受力，以及迁移宫的外部环境。即使同星同宫，时间层不同也不能混成一张盘。
+
+### 两张教学盘的提问
+甲的七杀命宫会到支持性辅曜，官禄有清楚授权，财帛还有稳定工资。讨论换项目时，可以问他是否愿意承担新责任，以及培训与团队资源够不够。乙也七杀坐命，却有较多煞曜牵动，工作同时靠短期合同与出差。重点变成风险缓冲、交付边界和睡眠安排。不能说甲必成领导、乙必失败；教学盘只用来说明相同主星在不同组合下要问不同问题。
+
+### 写结论时保留条件
+把“主星观察”“宫位组合”“现实证据”分成三栏，任何判断都写成条件句。例如“若岗位授权明确，再考虑接更大项目”，而不是“七杀一定适合创业”。先核出生资料，再看命宫实际星曜与辅煞，接着连命财官迁和时间层，最后对照工作记录。星曜不能代替能力评估，更不能凭一星给人贴永久性格标签。
+英文标题：Qi Sha in the Life Palace: Why Supporting Stars Change the Question
+英文描述：Two charts with Qi Sha in Life need different questions when supporting stars, Career, Wealth, and Migration differ.
+英文正文：
+Two Zi Wei Dou Shu charts can both show Qi Sha in the Life Palace without describing the same work pattern. The main star is a starting point. Supporting and challenging stars, transformations, brightness, and links to other palaces change what should be examined.
+
+### Record the conditions
+Write the actual Life Palace position and its supporting stars. Mark the source of each transformation, then read Career for duties, Wealth for financial capacity, and Migration for the outside setting. Do not reduce every combination to one word such as “bold.”
+
+### Compare two teaching charts
+One illustrative chart has helpful support and clear job authority; the person may ask whether training and team resources match a larger project. Another has more difficult combinations and relies on short contracts and travel. That chart calls for a cash buffer and delivery boundaries. Neither teaching example predicts a person's outcome.
+
+### Keep conclusions conditional
+Use three columns for the main star, palace links, and real evidence. Verify birth details and time layers before comparing charts. Write what would need to be true for an interpretation to matter. A single star cannot replace skill assessment or define permanent character.
 
 ---
 
-## 20. 官禄连迁移，接异地项目先核交付还是差旅？
-slug：`ziwei-guanlu-qianyi-yidi-xiangmu-hetong`
-来源：2026-11-04，https://mingming3.com/cn/ziwei/articles/ziwei_practical 。角度：异地项目的岗位交付与外部移动成本拆账；与今日转岗匹配和迁移空宫题不同。
-中文草稿：异地项目报酬看似高，差旅、驻场天数和远程验收可能吃掉利润。官禄宫先问要交什么，迁移宫问往返与客户现场，财帛宫才看净回款。签约前列交付范围、修改次数、差旅报销与付款节点。设计师每月去现场两次和长期驻场，报价不该相同；命盘只能帮助列问题。
-English draft: A well paid out of town project may become less attractive after travel and on site time. Career frames the deliverable, Travel the client location and trips, and Wealth the net cash. List scope, revision rounds, reimbursement, and payment dates before signing. Two monthly visits and a long placement need different prices.
+## 20. 年终奖金到账后，财帛、田宅、福德怎样分开看？
+slug：`ziwei-nianzhong-jiangjin-caibo-tianzhai-fude`
+来源：2026-11-05，https://www.fateclick.com.tw/blog/2027-wealth-caibo-guide 。角度：已到账奖金分配到住房储备与消费目标；区别于站内流年财运总览、合同尾款和订阅复盘题。仅供编辑。
+正文草稿：
+年终奖金到账了，财帛宫见化禄，是否该一次把钱花在奖励自己上？财帛宫可讨论收入方式，但奖金已经到账后，重点转成分配。田宅宫帮助整理居住与长期积累，福德宫帮助看休息、兴趣和消费满足。三宫不是三个独立钱包，必须回到一笔真实到账的钱和已有支出计划。
+
+### 先确认“到账”二字
+口头通知、工资单预估和银行入账是不同阶段。只有实收金额才能作为本轮预算起点；税费、欠款和必须支付的账单先扣掉。财帛宫即使有化禄，也不能把预计奖金额外加一次。再看田宅宫是否有押金、维修或住房储备需求，福德宫的消费则要问是否真正改善生活，而非用购物消解短期压力。
+
+### 两种分配例子
+甲拿到三万元奖金，房屋空调需要更换，已有六个月生活费储备。他可先核维修报价，再决定旅行与储蓄比例。乙同样拿三万元，却有高息债务、下季度房租和未缴保险；先处理确定义务比买设备更稳妥。相同的财帛入账，田宅负担与福德需求不同，分配顺序也不同。命盘不能给出所有人通用的百分比。
+
+### 做一张能复核的表
+把实收奖金、必须支出、住房需求、储备目标和自由消费列成五栏，设一个月后的复盘日。排盘先看本命财帛与田宅、福德的关系，再核大限流年是否触及同一议题，最后用账本决定数额。若还没有实际到账，先记预计日期和不确定性，不提前花。星曜用于整理选择，具体分配仍由合同、家庭义务和本人预算决定。
+英文标题：Zi Wei Dou Shu Wealth, Property, and Wellbeing After a Year-End Bonus
+英文描述：Once a bonus arrives, separate actual cash, housing needs, reserves, and discretionary spending across three palace questions.
+英文正文：
+A year-end bonus creates a different question after the money reaches the bank. Wealth can frame the income path, Property the housing and savings needs, and Wellbeing the value of rest or discretionary spending. These are questions about one real sum, not three separate wallets.
+
+### Start with received cash
+An announced bonus, a payslip estimate, and a bank deposit are different stages. Use the net amount received. Subtract taxes already due, debts, and fixed bills before planning optional purchases. Hua Lu in Wealth does not add the expected amount a second time.
+
+### Compare two households
+One person receives a bonus and needs to replace an air conditioner but already has six months of savings. Another receives the same sum while owing expensive debt and next quarter's rent. They need different allocations despite similar income. The chart cannot set one universal percentage.
+
+### Use a five-column budget
+List cash received, required payments, housing needs, savings goals, and free spending. Set a review date. Read Wealth with Property and Wellbeing, then any relevant time layer, before returning to the household ledger and actual obligations.
