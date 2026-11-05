@@ -23,4 +23,4 @@
 | 17 | 已发布 2026-11-05 09:16 https://yuetianai.com/articles/ziwei-xiaoxian-liunian-tonggong-sihua.html / https://yuetianai.com/articles/en/ziwei-xiaoxian-liunian-tonggong-sihua.html | ziwei-xiaoxian-liunian-tonggong-sihua | 小限与流年落同宫，为什么不能把四化计算两次？ |
 | 18 | 已发布 2026-11-05 09:17 https://yuetianai.com/articles/ziwei-liunian-guanlu-huaquan-daili-renqi.html / https://yuetianai.com/articles/en/ziwei-liunian-guanlu-huaquan-daili-renqi.html | ziwei-liunian-guanlu-huaquan-daili-renqi | 流年官禄化权接临时代理岗位，先核任期还是签字权限？ |
 | 19 | 已发布 2026-11-05 09:18 https://yuetianai.com/articles/ziwei-qisha-zuoming-fusha-jilu.html / https://yuetianai.com/articles/en/ziwei-qisha-zuoming-fusha-jilu.html | ziwei-qisha-zuoming-fusha-jilu | 七杀坐命遇不同辅煞，初学者怎样避免一星定性？ |
-| 20 | 待发布 | ziwei-nianzhong-jiangjin-caibo-tianzhai-fude | 年终奖金到账后，财帛、田宅、福德怎样分开看？ |
+| 20 | 已发布 2026-11-05 09:18 https://yuetianai.com/articles/ziwei-nianzhong-jiangjin-caibo-tianzhai-fude.html / https://yuetianai.com/articles/en/ziwei-nianzhong-jiangjin-caibo-tianzhai-fude.html | ziwei-nianzhong-jiangjin-caibo-tianzhai-fude | 年终奖金到账后，财帛、田宅、福德怎样分开看？ |
