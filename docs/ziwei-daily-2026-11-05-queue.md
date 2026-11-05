@@ -11,7 +11,7 @@
 | 05 | 已发布 2026-11-05 09:05 https://yuetianai.com/articles/ziwei-jiaoyou-huaji-rengyou-tuandui.html / https://yuetianai.com/articles/en/ziwei-jiaoyou-huaji-rengyou-tuandui.html | ziwei-jiaoyou-huaji-rengyou-tuandui | 交友宫化忌却仍有人跟随，为什么不能只按宫名断人缘？ |
 | 06 | 已发布 2026-11-05 09:05 https://yuetianai.com/articles/ziwei-shiyiyue-jieqi-liuyue-bianjie.html / https://yuetianai.com/articles/en/ziwei-shiyiyue-jieqi-liuyue-bianjie.html | ziwei-shiyiyue-jieqi-liuyue-bianjie | 十一月月运从哪天算，节气月和紫微流月为何不能混用？ |
 | 07 | 已发布 2026-11-05 09:06 https://yuetianai.com/articles/ziwei-minggong-konggong-jiexing-biaozhu.html / https://yuetianai.com/articles/en/ziwei-minggong-konggong-jiexing-biaozhu.html | ziwei-minggong-konggong-jiexing-biaozhu | 命宫空宫借迁移宫，教学示例怎样标清星曜原位？ |
-| 08 | 待发布 | ziwei-qianyi-yidi-qiuxue-fude-chengben | 异地求学看迁移宫，为什么还要核福德宫的适应成本？ |
+| 08 | 已发布 2026-11-05 09:07 https://yuetianai.com/articles/ziwei-qianyi-yidi-qiuxue-fude-chengben.html / https://yuetianai.com/articles/en/ziwei-qianyi-yidi-qiuxue-fude-chengben.html | ziwei-qianyi-yidi-qiuxue-fude-chengben | 异地求学看迁移宫，为什么还要核福德宫的适应成本？ |
 | 09 | 待次日研究复核，未发布 | ziwei-fumugong-shangsi-biaoyang-hou-zeren | 父母宫看上司，公开表扬后新增责任该怎样确认？ |
 | 10 | 待次日研究复核，未发布 | ziwei-fumugong-shangsi-huaixiaoxi-huibao | 父母宫看上司，坏消息怎样先书面说明再开会？ |
 | 11 | 待次日研究复核，未发布 | ziwei-jumen-huaji-guanxi-shishi-jieshi | 夫妻宫巨门化忌，争论时怎样分清事实和解释？ |
