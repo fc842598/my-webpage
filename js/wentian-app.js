@@ -12205,9 +12205,7 @@ function setWentianQuota(quota) {
   el.textContent = isWentianEnglishUi()
     ? (remaining === "--" ? "Quota" : `${remaining} left`)
     : `余${remaining}次`;
-  el.title = getWentianQuotaMode(normalized) === "daily"
-    ? "当前账号共用额度，每日北京时间0点刷新，不随命盘切换重置"
-    : "累计额度，不随命盘切换重置";
+  el.title = getWentianQuotaScopeText(normalized);
 }
 
 function splitWentianLongSentence(sentence, maxLength = 58) {
@@ -12752,6 +12750,16 @@ function getWentianQuotaValue(key, fallback = "--") {
 
 function getWentianQuotaMode(quota = wentianMemberState.quota || {}) {
   return quota.quotaMode || (quota.isMember ? "daily" : "lifetime");
+}
+
+function getWentianQuotaScopeText(quota = wentianMemberState.quota, isEn = isWentianEnglishUi()) {
+  if (!quota) return isEn ? "Syncing quota rules…" : "正在同步额度规则…";
+  const guest = quota.plan === "guest" || !getWentianAuthDisplay().loggedIn;
+  const scope = isEn ? (guest ? "Shared guest quota" : "Shared account quota")
+    : (guest ? "本机共用额度" : "账号共用额度");
+  return getWentianQuotaMode(quota) === "daily"
+    ? `${scope} · ${isEn ? "Resets at 00:00 Beijing" : "北京时间每日0点重置"}`
+    : `${scope} · ${isEn ? "No daily reset" : "累计使用，不按天重置"}`;
 }
 
 function getWentianQuotaLimit(quota = wentianMemberState.quota || {}, fallback = "--") {
@@ -14358,7 +14366,7 @@ function sourceMineScreenV2(screen) {
   const planBannerText = member.isMember ? "\u67E5\u770B\u6743\u76CA" : "\u7ACB\u5373\u67E5\u770B";
   return `
     ${figText("source-31-title-v2", "\u6211\u7684", 18, 58, 150, 30, "#26211c", 800)}
-    ${figText("source-31-sub-v2", "\u8D26\u6237\u4E0E\u504F\u597D\u8BBE\u7F6E", 18, 101, 180, 14, "#8f857a")}
+    ${figText("source-31-sub-v2", escapeHtml(getWentianQuotaScopeText()), 18, 101, 354, 12, "#756d63", 500, "left", "line-height:1.3;white-space:normal;overflow:visible;")}
     ${figBox("source-31-gear-v2", 338, 56, 38, 38, "", "border-radius:19px;background:#fff;box-shadow:0 5px 14px rgba(80,55,28,.10);")}
     ${figText("source-31-gear-text-v2", "\u2699", 338, 64, 38, 18, "#b88c33", 700, "center")}
     ${figButton("source-31-gear-hit-v2", 336, 54, 42, 42, 'data-route="screen-38" aria-label="账户设置"', "", "z-index:36;")}

@@ -119,3 +119,13 @@ ctx.compactWentianShortFigScreenLayout(5, options);
 assert.equal(nav.style.top, '768px', 'bottom navigation must sit below the actual confirm control');
 assert.equal(phone.style.height, '857px');
 console.log('QA_ARCHIVE_NAV_LAYOUT_OK: native controls reserve space during short-page compaction');
+
+load('getWentianQuotaMode', ctx);
+load('getWentianQuotaScopeText', ctx);
+ctx.getWentianAuthDisplay = () => ({ loggedIn: true });
+assert.match(ctx.getWentianQuotaScopeText({ quotaMode: 'daily' }, false), /账号共用.*每日0点重置/);
+assert.equal(ctx.getWentianQuotaScopeText({ quotaMode: 'lifetime' }, true), 'Shared account quota · No daily reset');
+ctx.getWentianAuthDisplay = () => ({ loggedIn: false });
+assert.match(ctx.getWentianQuotaScopeText({ plan: 'guest', quotaMode: 'lifetime' }, false), /本机共用.*不按天重置/);
+assert.equal(ctx.getWentianQuotaScopeText(null, true), 'Syncing quota rules…');
+console.log('QA_QUOTA_SCOPE_OK: visible localized account/guest and daily/lifetime rules');
