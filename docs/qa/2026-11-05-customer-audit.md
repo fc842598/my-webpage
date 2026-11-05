@@ -51,3 +51,10 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - https://yuetianai.com/articles/en/ziwei-lianzhen-tianxiang-zai-minggong.html
 
 回滚仅revert对应提交并push；无数据迁移，不改客户档案和实际次数。
+
+## 17:10 线上复核补充
+
+- 第二批前端HTML/JS/CSS、英文示例文章、Feed、sitemap均HTTP200，内容与本地换行标准化后完全一致。远端master与本地ed02b6f0一致。
+- 线上浏览器已确认示例标题与正文使用Life Palace、concern about appearances，并保留2026-11-03首发时间，显示2026-11-05更新时间。
+- 人工读示例时又发现同义硬翻proud of face及Put down face and overcaution；继续定点修订10篇（其中8篇与第一批重合，累计23篇），没有扩展成未经人工审查的全库改写。
+- 英文规则新增对应自然措辞；未使用含“凑”字的未证实报告来批量删除正文。
