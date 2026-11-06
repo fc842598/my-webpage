@@ -57,3 +57,6 @@ schema, not just deployment hashes:
 
 This catches stale or double-escaped summaries even when the article itself is
 already corrected and the collection file matches what was deployed.
+
+Eight foundation pages were then reviewed for naming, unrelated template cases,
+and misleading literal claims. The raw Chinese-text scan now flags 43 files.
