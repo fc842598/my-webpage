@@ -8,7 +8,7 @@
 | 02 | 已发布 2026-11-06 11:32 https://yuetianai.com/articles/ziwei-kuacheng-banjia-huan-bangongshi-tianzhai.html / https://yuetianai.com/articles/en/ziwei-kuacheng-banjia-huan-bangongshi-tianzhai.html | ziwei-kuacheng-banjia-huan-bangongshi-tianzhai | 跨城搬家和换办公室，田宅宫怎么分开看？ |
 | 03 | 已发布 2026-11-06 11:33 https://yuetianai.com/articles/ziwei-zinv-daitudi-yanghaizi-zuopin.html / https://yuetianai.com/articles/en/ziwei-zinv-daitudi-yanghaizi-zuopin.html | ziwei-zinv-daitudi-yanghaizi-zuopin | 带徒弟、养孩子、做作品，子女宫哪些能类比？ |
 | 04 | 已发布 2026-11-06 11:34 https://yuetianai.com/articles/ziwei-guanlu-tongyizu-xing-duiying-gangwei.html / https://yuetianai.com/articles/en/ziwei-guanlu-tongyizu-xing-duiying-gangwei.html | ziwei-guanlu-tongyizu-xing-duiying-gangwei | 同一组官禄星，为什么能对应不同岗位？ |
-| 05 | 待发布 | ziwei-jie-konggong-zhuguan-cuijindu | 空宫疾厄遇主管催进度，休息被挤压怎么看？ |
+| 05 | 已发布 2026-11-06 11:34 https://yuetianai.com/articles/ziwei-jie-konggong-zhuguan-cuijindu.html / https://yuetianai.com/articles/en/ziwei-jie-konggong-zhuguan-cuijindu.html | ziwei-jie-konggong-zhuguan-cuijindu | 空宫疾厄遇主管催进度，休息被挤压怎么看？ |
 | 06 | 待发布 | ziwei-shouru-zhang-cunbuxia-caibo-tianzhai | 收入涨了却存不下钱，财帛和田宅差在哪？ |
 | 07 | 待发布 | ziwei-huhe-he-delai-hetong-zhixing | 合伙前怎么分开问“合得来”和“合同能执行”？ |
 | 08 | 待发布 | ziwei-tongyi-zhuguan-butong-ren-zhichi | 同一主管对不同人支持不同，怎样提可观察的问题？ |
