@@ -111,3 +111,11 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - 生产 /api/ping 正常。合成 member-status 返回 guest / lifetime / limit 3 / chartLimit null（旧生产为 1），证明后台修复确已生效，不再停留在 GitHub。
 - 线上浏览器在现有合成女档案提问明确 Please answer in English 后，未再出现一位命主拦截，发送有等待/禁用反馈，随后收到英文回应。内容为简短通用事业财运建议，没有按要求展开八段/三个宫位；因此不能把它认作完整高质量模型解读通过。次数仍余3，尚不能证明正常成功扣次或账号切换不回涨。
 - 后续仍须验证已登录账号 7 份计数、正常成功问答扣次与刷新、长回答完整流程，并定位本次通用回应是否来自恢复兜底。目标继续 active，未标记全部完成。
+
+## 11-06 英文套话/退款路径实证及修复
+
+- 用既有合成数据生成器的完整接口字段做单次诊断（脚本 `scripts/qa-live-chat-probe.mjs`，无真实账号/资料）。原生产返回 HTTP200，`incompleteReplyRepair=true`、`hardCompleteFallback=true`、`quotaCharged=false`、`quotaCompensated=true`、remaining=3；正文与内置英文模板完全一致。这是修复失败后的固定兜底，不是正常按命盘生成的回答。
+- 后台 `7d545c2b60e07f8a86d8268f17ae8d79b3e54dbf` 已推 main 并部署原项目，deployment `dpl_H5p2hwMRYbehHxxvKxNT7etCuhYY`，生产域名仍为 api.yuetianai.com。
+- 现在最终修复失败/空回答不会把固定模板写入聊天记录或冒充成功解读，而是 HTTP503 / CHAT_REPLY_INCOMPLETE；中英错误文案对应语言，保留失败退款，不额外赠次数；退款未完成时显式标记 quotaSyncFailed。恢复、语言、会员测试及生产构建通过。
+- 同一个合成诊断再次在线验证：HTTP503，CHAT_REPLY_INCOMPLETE，quotaCharged=false，remaining=3。未出现3→更多的额外补偿增长。
+- 仍未解决：上游为何持续产生不完整正文、正常成功回复扣次、真正长回答、注册用户现场验证。此次只是消除了虚假成功套话，不能把服务不可用本身说成已恢复。
