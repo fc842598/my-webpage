@@ -31,3 +31,7 @@ specific reviewed bad phrases):
 On 2026-11-06, 4,046 English HTML files were scanned. After two reviewed page
 revisions, 165 files still contain flags requiring individual review. This is
 not a claim that every flag is a translation defect or that the site is cleared.
+
+A subsequent fixed-scope revision corrected untranslated palace-domain summaries
+on 35 existing pages. The same scan then flagged 130 files. Article bodies were
+not fully rewritten in that batch; only complete palace names were standardized.

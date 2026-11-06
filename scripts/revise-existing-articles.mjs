@@ -35,6 +35,9 @@ for (const item of revisions) {
   assert(articlePattern.test(html), "Article body not found");
   html = html.replace(articlePattern, (_, start, end) => `${start}\n${item.body}\n      ${end}`);
   for (const [from, to] of Object.entries(item.links || {})) html = html.replaceAll(`href="${from}"`, `href="${to}"`);
+  for (const [from, to] of Object.entries(item.navigationLabels || {})) {
+    html = html.replaceAll(`>${escape(from)}</a>`, `>${escape(to)}</a>`);
+  }
   html = html.replaceAll(escape(old.description), escape(item.description)).replaceAll(escape(old.title), escape(item.title));
   html = html.replace(/(<p class="detail-subtitle">)[\s\S]*?(<\/p>)/, (_, start, end) => start + escape(item.description) + end);
   html = html.replace(ldPattern, (block, json) => {
