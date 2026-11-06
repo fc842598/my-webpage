@@ -13,4 +13,4 @@
 | 07 | 已发布 2026-11-06 11:34 https://yuetianai.com/articles/ziwei-huhe-he-delai-hetong-zhixing.html / https://yuetianai.com/articles/en/ziwei-huhe-he-delai-hetong-zhixing.html | ziwei-huhe-he-delai-hetong-zhixing | 合伙前怎么分开问“合得来”和“合同能执行”？ |
 | 08 | 已发布 2026-11-06 11:35 https://yuetianai.com/articles/ziwei-tongyi-zhuguan-butong-ren-zhichi.html / https://yuetianai.com/articles/en/ziwei-tongyi-zhuguan-butong-ren-zhichi.html | ziwei-tongyi-zhuguan-butong-ren-zhichi | 同一主管对不同人支持不同，怎样提可观察的问题？ |
 | 09 | 已发布 2026-11-06 11:35 https://yuetianai.com/articles/ziwei-maifang-chengjiao-tianzhai-fenceng.html / https://yuetianai.com/articles/en/ziwei-maifang-chengjiao-tianzhai-fenceng.html | ziwei-maifang-chengjiao-tianzhai-fenceng | 想买房和真能成交，命理上怎么分层问？ |
-| 10 | 待发布 | ziwei-pinfan-huan-didian-banjia-tianzhai | 频繁换工作地点和频繁搬家，是同一田宅问题吗？ |
+| 10 | 已发布 2026-11-06 11:35 https://yuetianai.com/articles/ziwei-pinfan-huan-didian-banjia-tianzhai.html / https://yuetianai.com/articles/en/ziwei-pinfan-huan-didian-banjia-tianzhai.html | ziwei-pinfan-huan-didian-banjia-tianzhai | 频繁换工作地点和频繁搬家，是同一田宅问题吗？ |
