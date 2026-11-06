@@ -63,3 +63,9 @@ and misleading literal claims. The raw Chinese-text scan now flags 43 files.
 
 Ten people/work-related pages were then revised (eight bodies and two summaries).
 The raw scan flags 33 files; metadata-only edits are not full prose approval.
+
+Four relationship pages were then fully edited: reconciliation, Hua Quan and
+boundaries, relationship distance, and rapid commitment. Use Spouse Palace,
+Life Palace, Inner Life Palace, and Migration Palace consistently. Do not render
+Hua Ji as "Jealousy" or Fu De Gong as "Karma" in these explanations. The raw
+scan now flags 29 files, including intentional explained Chinese terminology.

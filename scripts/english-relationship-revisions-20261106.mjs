@@ -1,0 +1,48 @@
+import { readFileSync } from "node:fs";
+import assert from "node:assert/strict";
+
+export const modified = "2026-11-06T15:20:00+08:00";
+const pages = [
+  ["ziwei-fuhe-kenengxing-daxian-fuqi", "Reconciliation and the Spouse Palace: What a Timing Reading Can Tell You",
+    "Read natal, ten-year, and annual relationship themes separately. A favorable Spouse Palace theme cannot confirm an ex-partner's intentions or decide whether to reunite.",
+    "A reconciliation question contains two different questions: does the chart emphasize relationships at this stage, and have the reasons for the breakup actually changed? Zi Wei Dou Shu can offer a symbolic framework for the first. The second requires information from both people, not a favorable marker in one person's chart.", [
+      ["Identify the Timing Layer", "Start with the natal Spouse Palace and its major stars, then locate the ten-year and annual Spouse palaces. They are different layers, even when they overlap. Record which layer a transformation belongs to rather than calling every favorable placement a 'reconciliation signal.'"],
+      ["Explain the Transformation Without Predicting a Reunion", "Hua Lu can introduce themes of attraction, involvement, or increased attention; Hua Ke can introduce recognition or a more measured presentation. The host star and palace relationship matter. Neither transformation identifies an old partner rather than a new connection, and neither proves that a conversation will be welcomed. Hong Luan and Tian Xi are also context, not confirmation of a reunion."],
+      ["Compare the Reading With What Changed", "For example, a couple separated by distance may now live in the same city, but still need to discuss expectations. A couple who repeatedly disagreed about commitment needs more than renewed contact. Ask what caused the separation, what has changed in practice, and whether both people freely want further contact. Do not approach someone who has asked not to be contacted on the strength of a chart reading."],
+      ["Use a Clear Reading Order", "Describe the natal pattern, state the current ten-year theme, and only then add the annual emphasis. Keep that interpretation separate from the evidence about this particular relationship. The useful conclusion is a question to discuss or a condition to clarify, not a promised return date or an instruction to wait for an ex-partner."],
+    ]],
+  ["ziwei-ganqing-kongzhiyu-huaquan-fuqi", "Hua Quan in the Spouse Palace: Responsibility, Influence, and Boundaries",
+    "Hua Quan in the Spouse Palace can frame questions about initiative and decision-making. It does not prove controlling behavior or justify restricting a partner's autonomy.",
+    "Hua Quan is commonly explained through authority, initiative, and the wish to influence an outcome. In a relationship reading, that makes decision-making an important topic. It does not mean the chart owner or their partner must be controlling, and it does not establish the reason behind anyone's behavior.", [
+      ["Read the Star That Actually Carries Hua Quan", "A transformation modifies a star; it is not an independent personality label. Identify the host star, the palace, and whether the marker is natal, ten-year, annual, or a palace-stem transformation. Do not attach Hua Quan to a star simply to complete a personality list: the available transformations depend on the calculation table being used."],
+      ["Distinguish Taking Responsibility From Taking Over", "One person coordinating a shared task can be helpful when both people agree on the arrangement. One person deciding everything despite objections is a different situation. Ask who can make which decisions, how disagreement is handled, and whether either person can say no. The chart cannot answer those factual questions for them."],
+      ["Compare Two Concrete Situations", "A partner who organizes a move while regularly checking the other's preferences is exercising agreed responsibility. A partner who demands access to private messages is restricting privacy. Calling both situations 'strong Hua Quan' hides the distinction. A star placement is not an excuse for surveillance, intimidation, or pressure."],
+      ["Connect the Palace to the Whole Chart", "Read the Life Palace alongside the Spouse Palace to keep the chart owner's perspective visible. Add the related palaces and the timing layer before discussing recurring themes. End with a specific question about shared decisions or boundaries, rather than assigning a supposedly suitable submissive partner or diagnosing insecurity from a symbol."],
+    ]],
+  ["ziwei-hunyin-juandaiqi-xinhao-xiufu", "Relationship Distance: Reading the Spouse and Inner Life Palaces",
+    "Use the Spouse and Inner Life palaces to organize questions about expectations and connection. The chart cannot determine whether a relationship is over or must be repaired.",
+    "When a relationship feels flat or distant, 'Is this just a phase?' is an understandable question. A chart reading should not claim to identify a relationship's expiry date. Separate what the partners are experiencing from the symbolic themes used to discuss it.", [
+      ["Give the Two Palaces Different Jobs", "The Spouse Palace frames relationship expectations and interaction. The Inner Life Palace frames the chart owner's sense of ease, satisfaction, and inner experience. Inner Life Palace is the term used here for Fu De Gong, not 'Karma.' Reading both can broaden the discussion without treating one palace as a thermometer that measures a marriage."],
+      ["Describe the Distance Before Explaining It", "Less time together during a demanding work period is different from a disagreement that neither person can discuss. Ask what changed, when it changed, and whether both people describe the problem in the same way. Do not use a challenging star or Hua Ji to announce lost love, an affair, or inevitable separation."],
+      ["Add Timing Without Promising an End Date", "Compare the natal arrangement with the current ten-year and annual layers. State exactly which palace or star is emphasized. An annual theme can provide a subject for reflection, but it does not establish how long a disagreement will last or whether another person will change. A favorable layer does not cancel an unresolved practical problem."],
+      ["Turn the Interpretation Into a Specific Conversation", "For a couple missing shared time, the next question may be what time they can realistically protect. For repeated disagreements about responsibilities, it may be how those responsibilities are agreed and reviewed. These are different responses, not a universal instruction to work harder on the relationship. Neither person is obliged to stay because of a chart, and ongoing harm should not be reframed as a necessary relationship lesson."],
+    ]],
+  ["ziwei-shanhun-shanli-fengxian", "A Fast Commitment: Relationship Timing Without Predicting Divorce",
+    "Separate attraction and commitment themes from what partners know about shared life. Zi Wei Dou Shu cannot certify compatibility or predict a quick divorce from a star list.",
+    "A relationship that moves quickly is not automatically a mistake, and a long courtship is not a guarantee of compatibility. The useful question is what the couple has had time to learn about each other. A chart can structure a discussion of pace and expectations; it cannot insure a marriage against difficulty.", [
+      ["Separate Attraction From a Decision", "Traditional readings may discuss attraction through romance stars or Hua Lu, and change through combinations involving stars such as Tan Lang or Po Jun. Those are interpretive themes, not evidence that someone is impulsive or destined to divorce. A single placement cannot tell whether a particular commitment is thoughtful."],
+      ["Read the Relevant Palaces Together", "Use the Life Palace for the chart owner's approach, the Spouse Palace for relationship expectations, and the Inner Life Palace for their experience of closeness and everyday life. The Migration Palace may add context about life outside a familiar setting. Avoid translating this into a rule that distance creates an unreal relationship or that one star requires a particular type of partner."],
+      ["Ask About Ordinary Life, Not Just Intensity", "Have both people discussed where they want to live, how they share responsibilities, their expectations around children, and how they handle disagreement? A couple who already knows each other's routines has different information from a couple who has only spent holidays together. Neither scenario is settled by comparing two charts."],
+      ["Keep Timing in Its Proper Place", "Identify natal, ten-year, and annual markers separately before discussing why commitment is a current topic. Hong Luan or Tian Xi does not set a marriage deadline; Hua Ji does not announce a divorce. The final decision should reflect mutual consent, observed behavior, and the matters the couple still needs to clarify, rather than urgency created by an auspicious or difficult year."],
+    ]],
+];
+
+export const revisions = pages.map(([slug, title, description, lead, sections]) => {
+  const file = `articles/en/${slug}.html`;
+  assert(readFileSync(file, "utf8").includes('id="article-start"'), file);
+  const body = `<p class="article-lead">${lead}</p>\n` + sections.map(([heading, paragraph], index) =>
+    `        <h2 id="section-${index + 1}">${heading}</h2>\n        <p>${paragraph}</p>`).join("\n");
+  assert(!/[\u3400-\u9fff]/.test(title + description + body), file);
+  return { file, title, description, body };
+});
+assert.equal(revisions.length, 4);
