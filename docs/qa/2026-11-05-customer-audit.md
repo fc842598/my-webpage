@@ -101,3 +101,13 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - 浏览器实际引用 `20261106-account-controls`；screen-31 `.flow-hotspot` 数量为 0，无此前的重复套餐/登录/导航原型入口。
 - “我的”显示已建命盘 4，单击后进入档案页，显示全部 4 份；只涉及原有合成测试档案。
 - 完整目标仍未完成：后台正式部署、已登录用户的配额递减/刷新、显式英文模型回答、真实长回答全链路及注册账号 7 份场景尚待验证。没有据此宣布第 7–16 项全部修复。
+
+## 2026-11-06 后台正式发布
+
+- Vercel 设备授权已成功；whoami 为 aa15989267747-lang，project inspect 确认原项目 ID prj_AhSjZMSyHKFzckVbte9P3HFMumIB，未新建项目、未改域名、未新增 GitHub 仓库授权。
+- 上线前审计发现旧依赖 4 项告警。依据官方 GHSA-2464-fhr4-w9xw / GHSA-673q-mjm6-r5xr，Next 固定到 16.4.1，并更新兼容的传递依赖；npm audit 结果为 0 vulnerabilities。没有升级 React 主版本或改业务权限。
+- 后台提交 e25bd694729183c21c4029d86ecf123032918bc9 已推 main，远端相同；语言 9 例、AI_RECOVERY_OK、会员规则、安全边界测试、生产构建均通过。构建有 React 18 弃用警告（不是构建失败），本轮未跨版本升级 React。
+- 已部署原项目生产环境，deployment dpl_HVAMeDVG6xFUTzkmMZv8guuLXWPp，readyState READY，原 api.yuetianai.com 已绑定。检查页：https://vercel.com/xies-projects-1c1bb37a/ai-piming-backend/HVAMeDVG6xFUTzkmMZv8guuLXWPp 。
+- 生产 /api/ping 正常。合成 member-status 返回 guest / lifetime / limit 3 / chartLimit null（旧生产为 1），证明后台修复确已生效，不再停留在 GitHub。
+- 线上浏览器在现有合成女档案提问明确 Please answer in English 后，未再出现一位命主拦截，发送有等待/禁用反馈，随后收到英文回应。内容为简短通用事业财运建议，没有按要求展开八段/三个宫位；因此不能把它认作完整高质量模型解读通过。次数仍余3，尚不能证明正常成功扣次或账号切换不回涨。
+- 后续仍须验证已登录账号 7 份计数、正常成功问答扣次与刷新、长回答完整流程，并定位本次通用回应是否来自恢复兜底。目标继续 active，未标记全部完成。
