@@ -86,7 +86,10 @@ for (const item of replacements) {
   const index = item.file.includes("/en/") ? "articles/en/index.html" : "articles/index.html";
   const sitemap = item.file.includes("/en/") ? "sitemap-en.xml" : "sitemap-articles.xml";
   assert(read(index).includes(item.title), `Missing index title: ${item.file}`);
-  assert(read(sitemap).includes(`<loc>${item.url}</loc><lastmod>${modified}</lastmod>`), `Missing sitemap date: ${item.file}`);
+  const matchingUrls = [...read(sitemap).matchAll(/<url>[\s\S]*?<\/url>/g)]
+    .map(match => match[0]).filter(block => block.includes(`<loc>${item.url}</loc>`));
+  assert.equal(matchingUrls.length, 1, `Missing or duplicate sitemap URL: ${item.file}`);
+  assert(matchingUrls[0].includes(`<lastmod>${modified}</lastmod>`), `Missing sitemap date: ${item.file}`);
 }
 // Validate the whole proposed set before any writes. No removals, adds, commits or pushes.
 const apply = process.argv.includes("--apply");
