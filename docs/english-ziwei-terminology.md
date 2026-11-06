@@ -35,3 +35,6 @@ not a claim that every flag is a translation defect or that the site is cleared.
 A subsequent fixed-scope revision corrected untranslated palace-domain summaries
 on 35 existing pages. The same scan then flagged 130 files. Article bodies were
 not fully rewritten in that batch; only complete palace names were standardized.
+
+Nine older AI Q&A pages were then rewritten to remove untranslated questions and
+keywords. The remaining scan count is 121 flagged files, still requiring review.
