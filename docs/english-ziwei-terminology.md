@@ -38,3 +38,6 @@ not fully rewritten in that batch; only complete palace names were standardized.
 
 Nine older AI Q&A pages were then rewritten to remove untranslated questions and
 keywords. The remaining scan count is 121 flagged files, still requiring review.
+
+A further 25 reviewed paragraph corrections reduced the flagged count to 96.
+This count does not certify the unflagged prose as fully edited English.

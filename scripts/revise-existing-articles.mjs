@@ -39,6 +39,17 @@ for (const item of revisions) {
     html = html.replaceAll(`>${escape(from)}</a>`, `>${escape(to)}</a>`);
   }
   html = html.replaceAll(escape(old.description), escape(item.description)).replaceAll(escape(old.title), escape(item.title));
+  // Some legacy files used backslash-escaped quotes in HTML attributes. Replace
+  // whole metadata elements from reviewed data, rather than retaining a broken
+  // attribute because its old serialized value no longer matches the schema.
+  const oldPageTitle = html.match(/<title>([\s\S]*?)<\/title>/)?.[1] || "";
+  const brandAt = oldPageTitle.lastIndexOf(" | ");
+  const brand = brandAt >= 0 ? oldPageTitle.slice(brandAt) : "";
+  html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(item.title)}${brand}</title>`)
+    .replace(/<h1\b([^>]*)>[\s\S]*?<\/h1>/, (_, attrs) => `<h1${attrs}>${escape(item.title)}</h1>`)
+    .replace(/<meta\s+name="description"\s+content="[^>]*>/, `<meta name="description" content="${escape(item.description)}">`)
+    .replace(/<meta\s+property="og:title"\s+content="[^>]*>/, `<meta property="og:title" content="${escape(item.title)}">`)
+    .replace(/<meta\s+property="og:description"\s+content="[^>]*>/, `<meta property="og:description" content="${escape(item.description)}">`);
   html = html.replace(/(<p class="detail-subtitle">)[\s\S]*?(<\/p>)/, (_, start, end) => start + escape(item.description) + end);
   html = html.replace(ldPattern, (block, json) => {
     let data = JSON.parse(json);
@@ -68,7 +79,25 @@ for (const dir of ["articles", "articles/en"]) {
     let html = read(file);
     if (schemas(html).some(value => value["@type"] === "Article")) continue;
     for (const item of replacements) {
+      if (file.startsWith("articles/en/") !== item.file.startsWith("articles/en/")) continue;
       html = html.replaceAll(escape(item.old.description), escape(item.description)).replaceAll(escape(item.old.title), escape(item.title));
+      const slug = item.file.split("/").at(-1);
+      html = html.replace(/<article\b[^>]*>[\s\S]*?<\/article>/g, block => {
+        if (!block.includes(`href="${slug}"`) && !block.includes(`href="${item.url}"`)) return block;
+        return block.replace(/<h3\b([^>]*)>[\s\S]*?<\/h3>/, (_, attrs) => `<h3${attrs}>${escape(item.title)}</h3>`)
+          .replace(/<p\b([^>]*)>[\s\S]*?<\/p>/, (_, attrs) => `<p${attrs}>${escape(item.description)}</p>`);
+      });
+      html = html.replace(ldPattern, (block, json) => {
+        let changed = false;
+        const data = JSON.parse(json, (_, value) => {
+          if (value && typeof value === "object" && value.url === item.url && value["@type"] === "ListItem" && value.name !== item.title) {
+            value.name = item.title;
+            changed = true;
+          }
+          return value;
+        });
+        return changed ? block.replace(json, `\n${JSON.stringify(data, null, 2)}\n`) : block;
+      });
     }
     schemas(html);
     put(file, html);
@@ -88,7 +117,7 @@ for (const file of ["feed.xml", "articles/en/feed.xml", "sitemap.xml", "sitemap-
 for (const item of replacements) {
   const index = item.file.includes("/en/") ? "articles/en/index.html" : "articles/index.html";
   const sitemap = item.file.includes("/en/") ? "sitemap-en.xml" : "sitemap-articles.xml";
-  assert(read(index).includes(item.title), `Missing index title: ${item.file}`);
+  assert(read(index).includes(escape(item.title)), `Missing index title: ${item.file}`);
   const matchingUrls = [...read(sitemap).matchAll(/<url>[\s\S]*?<\/url>/g)]
     .map(match => match[0]).filter(block => block.includes(`<loc>${item.url}</loc>`));
   assert.equal(matchingUrls.length, 1, `Missing or duplicate sitemap URL: ${item.file}`);
