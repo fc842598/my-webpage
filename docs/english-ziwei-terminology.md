@@ -49,3 +49,11 @@ contained incorrect transformation claims, corrected against the site engine.
 Batch C corrected 23 further pages. The raw scan now flags 51 files. One known
 candidate explains the Chinese name of the Career Palace for English readers;
 that intentional explained term must not be deleted merely to reduce a count.
+
+For revised articles, also check their collection cards against the Article
+schema, not just deployment hashes:
+
+`node scripts/check-english-collection-cards.mjs articles/en/example.html`
+
+This catches stale or double-escaped summaries even when the article itself is
+already corrected and the collection file matches what was deployed.
