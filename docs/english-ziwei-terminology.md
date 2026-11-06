@@ -60,3 +60,6 @@ already corrected and the collection file matches what was deployed.
 
 Eight foundation pages were then reviewed for naming, unrelated template cases,
 and misleading literal claims. The raw Chinese-text scan now flags 43 files.
+
+Ten people/work-related pages were then revised (eight bodies and two summaries).
+The raw scan flags 33 files; metadata-only edits are not full prose approval.
