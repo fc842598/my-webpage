@@ -13,6 +13,7 @@ meaning in ordinary English rather than alternating labels without context.
 | 迁移宫 | Migration Palace |
 | 田宅宫 | Property Palace |
 | 福德宫 | Inner Life Palace |
+| 自化忌 | Zi Hua Ji; self-transformation into Hua Ji |
 
 Do not use Self Palace as a substitute for Life Palace. Do not translate ordinary
 phrases word-for-word: explain concern about appearances, asking for support,
@@ -44,3 +45,7 @@ This count does not certify the unflagged prose as fully edited English.
 
 The next 22-page batch reduced the flagged count to 74. One Po Jun article also
 contained incorrect transformation claims, corrected against the site engine.
+
+Batch C corrected 23 further pages. The raw scan now flags 51 files. One known
+candidate explains the Chinese name of the Career Palace for English readers;
+that intentional explained term must not be deleted merely to reduce a count.
