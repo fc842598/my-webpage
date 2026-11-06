@@ -121,6 +121,7 @@ assert.equal(phone.style.height, '857px');
 console.log('QA_ARCHIVE_NAV_LAYOUT_OK: native controls reserve space during short-page compaction');
 
 load('getWentianQuotaMode', ctx);
+ctx.getWentianGenerationSafety = () => null;
 load('getWentianQuotaScopeText', ctx);
 ctx.getWentianAuthDisplay = () => ({ loggedIn: true });
 assert.match(ctx.getWentianQuotaScopeText({ quotaMode: 'daily' }, false), /账号共用.*每日0点重置/);
@@ -136,3 +137,37 @@ load('getScreenFlowHotspots', ctx);
 assert.equal(ctx.getScreenFlowHotspots(31).length, 0, 'account V2 must not emit stale prototype controls');
 assert.equal(ctx.getScreenFlowHotspots(26).length, 1, 'other screens retain their existing hotspot handling');
 console.log('QA_ACCOUNT_CONTROLS_OK: no duplicate legacy keyboard or coordinate targets');
+
+let safetyScope = 'guest';
+const safetyStorage = new Map();
+ctx.getWentianScopedLocalStorageItem = key => safetyStorage.get(`${safetyScope}:${key}`);
+ctx.setWentianScopedLocalStorageItem = (key, value) => safetyStorage.set(`${safetyScope}:${key}`,value);
+load('getWentianGenerationSafety', ctx);
+load('rememberWentianGenerationSafety', ctx);
+ctx.rememberWentianGenerationSafety({blocked:true,resetsAt:new Date(Date.now()+3600000).toISOString()});
+assert.equal(ctx.getWentianGenerationSafety().blocked,true);
+assert.match(ctx.getWentianQuotaScopeText({},false),/问答额度保留/);
+safetyScope='signed-in-account';
+assert.equal(ctx.getWentianGenerationSafety(),null,'guest safety state must not affect a signed-in account');
+ctx.rememberWentianGenerationSafety({blocked:true,resetsAt:new Date(Date.now()-1000).toISOString()});
+assert.equal(ctx.getWentianGenerationSafety(),null,'expired limits are not restored');
+ctx.rememberWentianGenerationSafety({blocked:true,resetsAt:new Date(Date.now()+172800000).toISOString()});
+assert.equal(ctx.getWentianGenerationSafety(),null,'reject unexpected multi-day local locks');
+console.log('QA_GENERATION_STATUS_OK: scoped persistent daily pause without changing credits');
+
+ctx.AbortController=AbortController;
+ctx.setTimeout=setTimeout;
+ctx.clearTimeout=clearTimeout;
+ctx.getWentianClientHeaders=()=>({});
+ctx.getWentianAuthToken=async()=>null;
+ctx.getWentianApiBase=()=> 'https://synthetic.invalid';
+ctx.fetch=async()=>({ok:false,status:429,headers:{get:()=> 'application/json'},json:async()=>({
+  error:'Daily safety cap reached',code:'AI_DAILY_GENERATION_LIMIT',
+  generationSafety:{blocked:true,resetsAt:new Date(Date.now()+3600000).toISOString()},quota:{remaining:3},
+})});
+const postStart = source.indexOf('async function wentianPostJsonOnce(');
+const postEnd = source.indexOf('\nasync function wentianPostJson(',postStart);
+vm.runInContext(source.slice(postStart,postEnd),ctx);
+await assert.rejects(ctx.wentianPostJsonOnce('/synthetic',{},1000),error=>error.status===429
+  && error.code==='AI_DAILY_GENERATION_LIMIT' && error.generationSafety.blocked && error.quota.remaining===3);
+console.log('QA_CHAT_ERROR_METADATA_OK: preserve authoritative error status, safety reset and unchanged credit snapshot');

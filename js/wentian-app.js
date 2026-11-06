@@ -1668,7 +1668,7 @@ function sourceAiChatScreen(screen) {
     ? getWentianQuotaRemaining(wentianMemberState.quota, String(memberSnapshot.daily || "--").split("/")[0] || "--")
     : "--";
   const onlineLabel = isWentianEnglishUi() ? "Online" : "在线";
-  const quotaLabel = isWentianEnglishUi()
+  const quotaLabel = getWentianGenerationSafety() ? getWentianGenerationSafetyLabel() : isWentianEnglishUi()
     ? (quotaRemaining === "--" ? "Quota" : `${quotaRemaining} left`)
     : `余${quotaRemaining}次`;
   return `
@@ -11668,7 +11668,14 @@ async function wentianPostJsonOnce(path, payload, timeoutMs) {
     const data = contentType.includes("application/json")
       ? await response.json()
       : { error: await response.text() };
-    if (!response.ok || data.error) throw new Error(data.error || `许大师服务异常 ${response.status}`);
+    if (!response.ok || data.error) {
+      const error = new Error(data.error || `许大师服务异常 ${response.status}`);
+      error.status = response.status;
+      error.code = data.code || "";
+      error.quota = data.quota;
+      error.generationSafety = data.generationSafety;
+      throw error;
+    }
     return data;
   } finally {
     clearTimeout(timer);
@@ -12192,6 +12199,24 @@ function syncWentianChatFaqLayout() {
 }
 
 let wentianQuotaRevision = 0;
+function getWentianGenerationSafety() {
+  try {
+    const value = JSON.parse(getWentianScopedLocalStorageItem("wentian-generation-safety") || "null");
+    if (value?.blocked === true && Date.parse(value.resetsAt) > Date.now()) return value;
+  } catch (_err) {}
+  return null;
+}
+
+function rememberWentianGenerationSafety(value) {
+  const expires = Date.parse(value?.resetsAt);
+  if (value?.blocked !== true || !Number.isFinite(expires) || expires <= Date.now() || expires > Date.now() + 86400000) return;
+  try { setWentianScopedLocalStorageItem("wentian-generation-safety", JSON.stringify({blocked:true,resetsAt:value.resetsAt})); } catch (_err) {}
+}
+
+function getWentianGenerationSafetyLabel(isEn = isWentianEnglishUi()) {
+  return isEn ? "Daily cap reached" : "今日生成已满";
+}
+
 function setWentianQuota(quota) {
   const el = document.querySelector('[data-node-id="source-4-left"]');
   if (quota) {
@@ -12202,7 +12227,7 @@ function setWentianQuota(quota) {
   const normalized = wentianMemberState.quota || normalizeWentianQuota(quota);
   const remainingValue = getWentianQuotaRemaining(normalized, "--");
   const remaining = remainingValue === null || remainingValue === undefined || remainingValue === "" ? "--" : remainingValue;
-  el.textContent = isWentianEnglishUi()
+  el.textContent = getWentianGenerationSafety() ? getWentianGenerationSafetyLabel() : isWentianEnglishUi()
     ? (remaining === "--" ? "Quota" : `${remaining} left`)
     : `余${remaining}次`;
   el.title = getWentianQuotaScopeText(normalized);
@@ -12577,7 +12602,9 @@ async function sendWentianXuChat(promptText = "") {
   ensureWentianXuPayloadRuntime(payload);
   const generation = wentianXuChat.generation;
   const payloadKey = wentianXuChat.payloadKey;
-  const isCurrent = () => generation === wentianXuChat.generation && getWentianXuPayloadKey(getWentianXuChatPayload()) === payloadKey;
+  const requestScope = getWentianArchiveStorageScopeId();
+  const isCurrent = () => requestScope === getWentianArchiveStorageScopeId()
+    && generation === wentianXuChat.generation && getWentianXuPayloadKey(getWentianXuChatPayload()) === payloadKey;
   const outboundMessage = buildWentianXuOutboundMessage(message, payload.divinationContext);
   window.yuetianTrack?.("ai_question_submit", { surface: "wentian_mobile", chat_mode: payload.mode || "chart" });
   wentianXuChat.autoScroll = true;
@@ -12614,6 +12641,9 @@ async function sendWentianXuChat(promptText = "") {
   } catch (error) {
     if (!isCurrent()) return;
     wentianXuChat.messages.pop();
+    if (error.code === "AI_DAILY_GENERATION_LIMIT") rememberWentianGenerationSafety(error.generationSafety);
+    if (error.quota) setWentianQuota(error.quota);
+    else if (getWentianGenerationSafety()) setWentianQuota(wentianMemberState.quota);
     setWentianChatStatus("发送未完成", "error");
     addWentianMessage("system", getWentianFriendlyError(error));
   } finally {
@@ -12753,6 +12783,7 @@ function getWentianQuotaMode(quota = wentianMemberState.quota || {}) {
 }
 
 function getWentianQuotaScopeText(quota = wentianMemberState.quota, isEn = isWentianEnglishUi()) {
+  if (getWentianGenerationSafety()) return isEn ? "Credits kept · Generation resumes after Beijing midnight" : "问答额度保留 · 北京时间0点后恢复生成";
   if (!quota) return isEn ? "Syncing quota rules…" : "正在同步额度规则…";
   const guest = quota.plan === "guest" || !getWentianAuthDisplay().loggedIn;
   const scope = isEn ? (guest ? "Shared guest quota" : "Shared account quota")
@@ -14336,7 +14367,8 @@ function sourceMineScreenV2(screen) {
   const member = getWentianMemberSnapshot();
   const account = getWentianAuthDisplay();
   const isEn = isWentianEnglishUi();
-  const memberDailyText = formatWentianQuotaTextForUi(member.daily, isEn);
+  const generationLimited = !!getWentianGenerationSafety();
+  const memberDailyText = generationLimited ? (isEn ? "Paused" : "今日暂停") : formatWentianQuotaTextForUi(member.daily, isEn);
   const memberDailyLimitText = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
   const accountTitle = account.loggedIn ? getWentianCompactAccountTitle(account) : "\u767B\u5F55 / \u6CE8\u518C";
   const statusText = member.campaignActive
@@ -14350,7 +14382,7 @@ function sourceMineScreenV2(screen) {
       ? "邮箱已绑定，可用于登录"
       : "账号已登录 · 尚未绑定邮箱");
   const statCards = [
-    [isEn ? (member.quotaMode === "daily" ? "Today" : "Remaining") : member.quotaLabel, memberDailyText, 16, "screen-33"],
+    [generationLimited ? (isEn ? "Generation" : "生成状态") : isEn ? (member.quotaMode === "daily" ? "Today" : "Remaining") : member.quotaLabel, memberDailyText, 16, "screen-33"],
     [isEn ? (member.quotaMode === "daily" ? "Daily limit" : "Total") : member.limitLabel, memberDailyLimitText, 139, "screen-33"],
     [isEn ? "Saved charts" : "已建命盘", String(member.chartUsed), 262, "screen-25"]
   ];
