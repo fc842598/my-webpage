@@ -41,3 +41,6 @@ keywords. The remaining scan count is 121 flagged files, still requiring review.
 
 A further 25 reviewed paragraph corrections reduced the flagged count to 96.
 This count does not certify the unflagged prose as fully edited English.
+
+The next 22-page batch reduced the flagged count to 74. One Po Jun article also
+contained incorrect transformation claims, corrected against the site engine.
