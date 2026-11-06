@@ -6,7 +6,7 @@
 |---|---|---|---|
 | 01 | 已发布 2026-11-06 11:30 https://yuetianai.com/articles/ziwei-chusheng-shichen-cha-yige-anxing.html / https://yuetianai.com/articles/en/ziwei-chusheng-shichen-cha-yige-anxing.html | ziwei-chusheng-shichen-cha-yige-anxing | 出生时辰错一格，盘上哪些星先变？ |
 | 02 | 已发布 2026-11-06 11:32 https://yuetianai.com/articles/ziwei-kuacheng-banjia-huan-bangongshi-tianzhai.html / https://yuetianai.com/articles/en/ziwei-kuacheng-banjia-huan-bangongshi-tianzhai.html | ziwei-kuacheng-banjia-huan-bangongshi-tianzhai | 跨城搬家和换办公室，田宅宫怎么分开看？ |
-| 03 | 待发布 | ziwei-zinv-daitudi-yanghaizi-zuopin | 带徒弟、养孩子、做作品，子女宫哪些能类比？ |
+| 03 | 已发布 2026-11-06 11:33 https://yuetianai.com/articles/ziwei-zinv-daitudi-yanghaizi-zuopin.html / https://yuetianai.com/articles/en/ziwei-zinv-daitudi-yanghaizi-zuopin.html | ziwei-zinv-daitudi-yanghaizi-zuopin | 带徒弟、养孩子、做作品，子女宫哪些能类比？ |
 | 04 | 待发布 | ziwei-guanlu-tongyizu-xing-duiying-gangwei | 同一组官禄星，为什么能对应不同岗位？ |
 | 05 | 待发布 | ziwei-jie-konggong-zhuguan-cuijindu | 空宫疾厄遇主管催进度，休息被挤压怎么看？ |
 | 06 | 待发布 | ziwei-shouru-zhang-cunbuxia-caibo-tianzhai | 收入涨了却存不下钱，财帛和田宅差在哪？ |
