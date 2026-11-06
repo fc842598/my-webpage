@@ -119,3 +119,12 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - 现在最终修复失败/空回答不会把固定模板写入聊天记录或冒充成功解读，而是 HTTP503 / CHAT_REPLY_INCOMPLETE；中英错误文案对应语言，保留失败退款，不额外赠次数；退款未完成时显式标记 quotaSyncFailed。恢复、语言、会员测试及生产构建通过。
 - 同一个合成诊断再次在线验证：HTTP503，CHAT_REPLY_INCOMPLETE，quotaCharged=false，remaining=3。未出现3→更多的额外补偿增长。
 - 仍未解决：上游为何持续产生不完整正文、正常成功回复扣次、真正长回答、注册用户现场验证。此次只是消除了虚假成功套话，不能把服务不可用本身说成已恢复。
+
+## 11-06 09:15 后续诊断与限流语言
+
+- 后台 870ab417cc8be53030bef97a80f7b1df97675a3b 已发布，仅增加 stage/model/finishReason/textChars/reasoningChars/outputTokens 诊断字段，不记录正文、问题或命盘。诊断版本健康检查正常。
+- 新的一次接口诊断为429；正常浏览器随后也明确显示“今天的 AI 生成次数已达安全上限”。并非瞬时突发限流，不能靠等待一分钟解决。
+- 原因在 lib/ai/requestGuard.js：游客聊天 guestDailyLimit=3，guestIpDailyLimit=3；这是单独的生成请求安全计数，失败退款不会恢复这个安全计数。因此界面生命周期剩余3，与今日生成安全上限耗尽同时存在，仍有口径解释缺口。没有修改安全上限、清计数或更换身份绕过。
+- 已请求用户在 Chrome 登录网站现有测试账号，不索取密码、不新建账号、不购买会员，待验证注册账号7份、正常成功扣次和实际模型输出。未把Vercel账号当作网站已登录会话。
+- 正常浏览器另确认，明确要求英文时安全错误仍用中文。后台 ca01f8656975d5aa4b4012c50307ba05e31dc254 修复仅传递规范化语言到限流错误展示，未改任何限制或认证判断。恢复/安全边界测试和构建通过，原项目生产部署 dpl_5FYCdYii3nTuTdK8cumZjtmtzJ45。
+- 线上浏览器单次语言回归返回 `The daily AI generation safety limit has been reached. Please try again tomorrow.`，输入恢复可用；修复已生效。此请求被上限拦截，没有模型调用诊断数据，故正文不完整的上游根因仍未确认。
