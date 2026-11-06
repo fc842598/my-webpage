@@ -10,7 +10,7 @@
 | 04 | 已发布 2026-11-06 11:34 https://yuetianai.com/articles/ziwei-guanlu-tongyizu-xing-duiying-gangwei.html / https://yuetianai.com/articles/en/ziwei-guanlu-tongyizu-xing-duiying-gangwei.html | ziwei-guanlu-tongyizu-xing-duiying-gangwei | 同一组官禄星，为什么能对应不同岗位？ |
 | 05 | 已发布 2026-11-06 11:34 https://yuetianai.com/articles/ziwei-jie-konggong-zhuguan-cuijindu.html / https://yuetianai.com/articles/en/ziwei-jie-konggong-zhuguan-cuijindu.html | ziwei-jie-konggong-zhuguan-cuijindu | 空宫疾厄遇主管催进度，休息被挤压怎么看？ |
 | 06 | 已发布 2026-11-06 11:34 https://yuetianai.com/articles/ziwei-shouru-zhang-cunbuxia-caibo-tianzhai.html / https://yuetianai.com/articles/en/ziwei-shouru-zhang-cunbuxia-caibo-tianzhai.html | ziwei-shouru-zhang-cunbuxia-caibo-tianzhai | 收入涨了却存不下钱，财帛和田宅差在哪？ |
-| 07 | 待发布 | ziwei-huhe-he-delai-hetong-zhixing | 合伙前怎么分开问“合得来”和“合同能执行”？ |
+| 07 | 已发布 2026-11-06 11:34 https://yuetianai.com/articles/ziwei-huhe-he-delai-hetong-zhixing.html / https://yuetianai.com/articles/en/ziwei-huhe-he-delai-hetong-zhixing.html | ziwei-huhe-he-delai-hetong-zhixing | 合伙前怎么分开问“合得来”和“合同能执行”？ |
 | 08 | 待发布 | ziwei-tongyi-zhuguan-butong-ren-zhichi | 同一主管对不同人支持不同，怎样提可观察的问题？ |
 | 09 | 待发布 | ziwei-maifang-chengjiao-tianzhai-fenceng | 想买房和真能成交，命理上怎么分层问？ |
 | 10 | 待发布 | ziwei-pinfan-huan-didian-banjia-tianzhai | 频繁换工作地点和频繁搬家，是同一田宅问题吗？ |
