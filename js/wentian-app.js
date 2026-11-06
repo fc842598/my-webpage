@@ -20981,6 +20981,9 @@ function isWentianBackHotspot(x, y, w, h) {
 }
 
 function getScreenFlowHotspots(screenNo) {
+  // The account V2 screen has complete native buttons. Prototype coordinates
+  // describe its old card layout and otherwise add duplicate keyboard targets.
+  if (Number(screenNo) === 31) return [];
   return (screenFlowHotspots[screenNo] || []).filter(([x, y, w, h]) => !isWentianBackHotspot(x, y, w, h));
 }
 

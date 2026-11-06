@@ -129,3 +129,10 @@ ctx.getWentianAuthDisplay = () => ({ loggedIn: false });
 assert.match(ctx.getWentianQuotaScopeText({ plan: 'guest', quotaMode: 'lifetime' }, false), /本机共用.*不按天重置/);
 assert.equal(ctx.getWentianQuotaScopeText(null, true), 'Syncing quota rules…');
 console.log('QA_QUOTA_SCOPE_OK: visible localized account/guest and daily/lifetime rules');
+
+ctx.screenFlowHotspots = {31: [[1, 2, 3, 4, 'old-route']], 26: [[5, 6, 7, 8, 'screen-1']]};
+ctx.isWentianBackHotspot = () => false;
+load('getScreenFlowHotspots', ctx);
+assert.equal(ctx.getScreenFlowHotspots(31).length, 0, 'account V2 must not emit stale prototype controls');
+assert.equal(ctx.getScreenFlowHotspots(26).length, 1, 'other screens retain their existing hotspot handling');
+console.log('QA_ACCOUNT_CONTROLS_OK: no duplicate legacy keyboard or coordinate targets');
