@@ -1,0 +1,143 @@
+# 2026-11-10 中英文待复核备稿
+
+**状态：待次日研究复核，未发布。** 本文件是 2026-11-09 已核验研究后的编辑备稿，未生成公开 HTML。下面“参考”仅供编辑核对，正文不得带入来源痕迹；2026-11-10 须先完成当天同行检索交接，再复核题目、站内标题/开头/例子/搜索意图，扩写和逐篇审核。以下中英文均为初稿，不得直接改队列状态上线。
+
+## 01 2027年与家人共住，田宅宫怎样核对公共空间分工？
+slug：`ziwei-2027-tianzhai-gongju-kongjian`
+参考日期与原文 URL：2026-11-09 https://xingge.tw/zh-hant/notes/2027-liunian-tianzhai
+角度与区别：聚焦共住时的公共空间使用权；不同于 11/09 的续租与装修。
+中文草稿：流年田宅有动，不等于一家人必须换房。三代同住时，谁用客厅工作、谁需要安静睡眠、储物区怎样分配，往往比房产归属更急。先看本命田宅对长期居住需求的提示，再看流年是否让共同空间成为今年的议题；若父母宫也被牵动，应另问长辈的使用习惯。一位远程办公者需要白天安静，另一位家人要在客厅照顾孩子，争议其实是时段安排。把房间、时间和费用写成可协商清单，再回盘核对，不用一颗星替家人作决定。
+English draft: A busy annual Property Palace does not require a family to move. In a shared home, the practical question may be who uses the living room for work, who needs quiet sleep, and when children can play. Read the natal living pattern first, then the annual focus. If the Parents Palace is involved, ask about older relatives' needs separately. Write a room and time schedule before deciding whether the chart points to a housing change.
+
+## 02 2027年为长辈调整卧室，田宅与父母宫各看什么？
+slug：`ziwei-2027-tianzhai-changbei-woshi`
+参考日期与原文 URL：2026-11-09 https://xingge.tw/zh-hant/notes/2027-liunian-tianzhai
+角度与区别：聚焦代际空间调整；不同于 11/09 的装修预算及照护排班。
+中文草稿：给长辈换到一楼卧室，表面是田宅宫的空间问题，也涉及父母宫所指的代际关系和照护期待。若流年田宅出现调整信号，先列楼梯、采光、卫生间距离与个人意愿，再核谁承担搬动和后续费用。父母宫不能替长辈表达想法，疾厄宫也不能诊断身体状况。例如家人以为一楼方便，长辈却更在意熟悉的房间和隐私。先听本人需求，再用命盘检查有没有遗漏的关系和责任问题。
+English draft: Moving an older relative to a downstairs bedroom is partly a Property Palace question and partly a family agreement. A yearly housing signal can focus attention on access, privacy, cost, and who will do the work. The Parents Palace can frame expectations between generations; it cannot speak for the person involved. Compare the room's actual features and ask the relative what matters before making changes.
+
+## 03 2027年朋友总替伴侣做决定，夫妻与交友宫如何分辨？
+slug：`ziwei-2027-fuqi-jiaoyou-jianyi-bianjie`
+参考日期与原文 URL：2026-11-09 https://www.shenjige.cn/details/jup8Py45s.html
+角度与区别：处理第三方建议的权限；不同于 11/09 的旧争议核实。
+中文草稿：伴侣讨论是否搬家，朋友不断提供意见，真正要分清的是“听建议”和“交出决定权”。夫妻宫看两人的协商方式，交友宫看外部关系怎样进入议题；它们不能证明某位朋友有恶意。若巨门化忌牵动谈话，可先记录哪些信息来自朋友、哪些是双方已经同意的条件。例如朋友建议换城市，但伴侣一方有固定照护责任，决定应回到双方的预算和时间表。读盘先核本命关系模式，再叠流年，最后把建议者与决策者分开。
+English draft: Friends can help a couple compare options, but they should not silently become the decision makers. In Zi Wei Dou Shu, the Spouse Palace frames the couple's negotiation, while the Friends Palace points to outside voices. If a difficult communication pattern appears, list which facts came from friends and which terms the partners have actually accepted. Return to the couple's budget, care duties, and timeline before reading the annual layer.
+
+## 04 2027年伴侣对生活阶段看法不同，夫妻与子女宫怎么读？
+slug：`ziwei-2027-fuqi-ziinv-shenghuo-jieduan`
+参考日期与原文 URL：2026-11-09 https://www.shenjige.cn/details/jup8Py45s.html
+角度与区别：聚焦是否进入下一生活阶段的时间表；不同于共同养育责任分配。
+中文草稿：一方想先稳定工作，另一方希望明年改变共同生活安排。夫妻宫可帮助提问双方怎样达成协议，子女宫可以延伸到共同计划与长期投入，但不能把它直接读成生育结果。若流年把两个宫位都带进讨论，先问目标是什么、何时复盘、需要哪些资源。比如同居后是否保留各自工作空间，和孩子议题是两件不同事。把愿望、条件与不能妥协的边界写清，再看大限是否支持长期安排，避免拿年度信号催促对方。
+English draft: Partners may agree on a relationship while disagreeing about the next stage. The Spouse Palace can guide questions about negotiation; the Children Palace can also describe shared projects and sustained commitments. Neither palace guarantees a particular family outcome. Separate the goal, the resources needed, and a date to revisit the plan. Read the natal pattern and longer cycle before using a yearly signal to discuss timing.
+
+## 05 大限适合长期学习，流年考试不顺时怎样安排节奏？
+slug：`ziwei-daxian-xuexi-liunian-kaoshi`
+参考日期与原文 URL：2026-11-09 https://ziwei.ist/en/learn/horoscope-cycles
+角度与区别：长期技能积累对照一次考试；不同于 11/09 的转职方向。
+中文草稿：一次考试失利不能抹掉十年学习方向。大限用来观察较长阶段的资源和重心，流年提示这一年的实际阻力；再细到月份时，不应把单日波动写成命运结论。比如有人准备专业证照，第一次考试没通过，但工作中持续使用所学，长期收益未必消失。先核考试成绩、错题类型和可用学习时数，再看盘中官禄、福德与相关四化如何提示投入方式。给下一次考试留足复习周期，比反复挑“幸运日”更可执行。
+English draft: One failed exam does not erase a decade of skill building. A ten-year cycle describes a broad direction, while an annual layer may highlight a difficult test period. A candidate for a professional license can still use the knowledge at work while preparing for a retake. Review scores, error patterns, and available study hours first. Use the chart to ask how effort is organized, then set a realistic revision schedule.
+
+## 06 流年有工作机会，面试月份要怎样避免过度解读？
+slug：`ziwei-liunian-yuefen-mianshi-shijian`
+参考日期与原文 URL：2026-11-09 https://ziwei.ist/en/learn/horoscope-cycles
+角度与区别：控制年月层的判断精度；不同于转职是否合适。
+中文草稿：流年官禄出现机会，只说明这一年值得留意工作议题，不等于某个月的面试必成。月盘要放在本命、大限、流年之后读，也要知道出生时刻与排盘口径是否可靠。两家公司在同月发来面试邀请，真正可比较的是岗位职责、薪酬构成、团队和回信期限。把每次申请、面试、反馈记下来，检验判断是否总在事后改说法。若资料不足，就只使用年层作计划，不把月层细节包装成确定日期。
+English draft: An annual Career Palace signal can justify paying attention to job openings; it cannot guarantee a successful interview in a chosen month. Read a monthly layer only after the natal chart and longer cycles, and check the birth data. For two interviews in the same month, compare duties, pay, team, and response deadlines. Keep an application log so the interpretation can be checked against real events rather than rewritten afterward.
+
+## 07 去外地参加行业展会，迁移宫比官禄宫多看什么？
+slug：`ziwei-qianyi-hangye-zhanhui`
+参考日期与原文 URL：2026-11-09 https://amlichvietnam.vn/kien-thuc/tu-vi/cung-thien-di
+角度与区别：短期行业接触；不同于 11/09 的跨境客户和外派训练。
+中文草稿：去展会三天，不是“适合异地发展”的长期判断。迁移宫可用于问外部场景、陌生人和行程中的适应，官禄宫则看此行与职业目标是否相连。若带着新品寻找经销商，先核参展成本、约见名单和后续跟进能力；若只是听讲座，重点可能是知识更新。别把展会中一次热情谈话当成合作承诺。排盘时先定此行目的，再看迁移与官禄的组合，最后用实际联系人和后续行动验证收获。
+English draft: A three-day trade show is an outside environment, not a verdict on relocation. The Travel Palace can frame adaptation to unfamiliar people and settings, while the Career Palace asks whether the trip serves a professional goal. A founder looking for distributors needs a meeting list, travel budget, and follow-up plan. A visitor attending talks needs a different measure of value. Check actual contacts after the event before claiming an opportunity appeared.
+
+## 08 双城通勤没有搬家，迁移宫怎样与田宅宫配合？
+slug：`ziwei-qianyi-shuangcheng-tongqin`
+参考日期与原文 URL：2026-11-09 https://amlichvietnam.vn/kien-thuc/tu-vi/cung-thien-di
+角度与区别：固定往返与住处稳定性；不同于 11/09 的跨境项目和半年海外合同。
+中文草稿：每周在两城之间往返，迁移宫的外部环境与田宅宫的居住基础会同时被触及。迁移有动不一定要搬家，也可能是通勤消耗持续增加。先算车票、住宿、延误风险和实际在家时间，再问工作安排能否调整。比如每周三天到另一城开会的人，如果必须清晨赶车，体力成本可能比租第二间房更重要。命盘可提醒观察流动与安定之间的张力，但是否改变住处，要依据账单、工作制度和家人协商。
+English draft: Regular travel between two cities affects both the external world and the home base. A Travel Palace signal need not mean a move; it may point to the cost of repeated journeys. Calculate tickets, temporary lodging, delays, and time at home. A worker who must attend meetings three days a week may need a schedule change before a second apartment. Compare practical options, then read Travel and Property together.
+
+## 09 疾厄宫与官禄宫同时受压，怎样建立工作边界？
+slug：`ziwei-jiee-guanlu-gongzuo-bianjie`
+参考日期与原文 URL：2026-11-09 https://insightapp.life/blog/en/ziwei-palace-08-ji-e-gong-health-constitution
+角度与区别：任务边界和工作量协商；不同于 11/09 的作息记录。
+中文草稿：官禄宫显示责任增加，疾厄宫提示身体负担时，不宜直接断言工作必然伤身。更有用的问题是任务是否有截止时间、哪些要求可以推迟、谁能提供支援。一个项目经理同时负责交付与新员工培训，可把“本周必须完成”和“可交接”分成两栏，与主管确认优先级。若已出现持续不适，应按现实情况求助专业人员，不用命盘判断病因。读盘先分事业责任与个人承受，再用工作记录检验是否需要重新分配任务。
+English draft: A demanding Career Palace and a strained Health Palace can prompt a workload review, not a diagnosis. List deadlines, tasks that can move, and help available from colleagues. A project manager handling delivery and training can ask a supervisor to rank those demands. Record hours and handoffs to see whether the plan works. Persistent symptoms call for appropriate professional care; the chart cannot identify their cause.
+
+## 10 疾厄宫提示消耗时，福德宫怎样帮助安排休息？
+slug：`ziwei-jiee-fude-xiuxi-jihua`
+参考日期与原文 URL：2026-11-09 https://insightapp.life/blog/en/ziwei-palace-08-ji-e-gong-health-constitution
+角度与区别：可用休息时间及恢复偏好；不同于作息日志和父母照护分担。
+中文草稿：疾厄宫涉及承受与消耗，福德宫可以帮助提问一个人怎样真正放松，但两者不能代替健康评估。有人周末安排满聚会，觉得热闹是休息，周一反而更累；另一人独处一晚后更能工作。先列一周可支配时段、必要家务与睡眠，再尝试安排不同形式的休息，记录感受。若流年疾厄被触动，不要将任何疲惫都归因于星曜。排盘可帮助问对问题，具体安排仍要看本人感受与现实时间。
+English draft: The Health Palace can raise a question about strain, while the Fortune Palace may help explore what rest actually feels restorative. A full weekend of social events suits some people and exhausts others. List work, chores, sleep, and free hours, then try a realistic rest plan. Notice the result without treating a star as a medical explanation. A chart can structure reflection, but personal experience determines the schedule.
+
+## 11 收入每月不同，财帛宫怎样配合固定支出预算？
+slug：`ziwei-caibo-budingqi-shouru-yusuan`
+参考日期与原文 URL：2026-11-09 https://www.tuvithayton.vn/cung-tai-bach-trong-tu-vi
+角度与区别：不规则收入与固定支出；不同于回款周期和订阅支出。
+中文草稿：自由职业者的收入高低波动，财帛宫再好也不能把上个月的高收入当成本月固定现金。先计算房租、保险、税费等最低支出，再用过去六个月的实际入账估计保守预算。财帛宫看收入取得与钱的流动，官禄宫看工作是否持续提供项目，福德宫可帮助审视消费习惯。例如旺季收入翻倍，却有两个月空档，就要先保留缓冲资金。读盘先分赚钱能力和可支配现金，再谈长期积累。
+English draft: Variable income needs a budget based on actual deposits, not the best recent month. Start with rent, insurance, taxes, and other fixed costs, then review six months of receipts. The Wealth Palace can frame cash flow; the Career Palace asks whether work keeps coming. A strong season does not remove the risk of a quiet period. Keep a buffer and separate earning potential from money that is available today.
+
+## 12 接项目先垫钱，财帛和官禄宫各要核对什么？
+slug：`ziwei-caibo-xiangmu-dianzi`
+参考日期与原文 URL：2026-11-09 https://www.tuvithayton.vn/cung-tai-bach-trong-tu-vi
+角度与区别：项目垫资及合同条件；不同于口碑与应收账款的时间差。
+中文草稿：一个项目报价很高，却要求先替客户支付设备和交通费用，不能只看合同总额。官禄宫提示项目与职业路线是否匹配，财帛宫则要问现金何时出去、何时回来。先列垫付上限、预付款、验收标准和逾期处理，尽量以书面约定。摄影师接大型活动，设备租金已经占报价三成，若尾款要等两个月，实际风险大于表面利润。命盘可以提醒核对钱的路径，合约和收款记录才是判断依据。
+English draft: A project with a high fee can still strain cash if the contractor pays equipment and travel costs first. The Career Palace asks whether the work fits the professional path; the Wealth Palace draws attention to when money leaves and returns. Record an advance, spending cap, acceptance criteria, and payment date in the contract. Compare the expected margin with the amount tied up before accepting the job.
+
+## 13 兄弟宫见天机，熟人共用设备如何定使用规则？
+slug：`ziwei-xiongdi-gongyong-shebei`
+参考日期与原文 URL：2026-11-09 https://ziwei.typedstar.com/essays/knowledge-235-64056326
+角度与区别：共用有形资产；不同于 11/09 的合伙方案变更和成员边界。
+中文草稿：兄弟宫可延伸到平辈合作者，天机强调安排会调整，却不能推断对方一定善变。两位设计师共用一台打印设备，真正容易争执的是谁先用、耗材谁买、损坏怎样处理。把预约、保养和费用分摊写入共享记录，临时改动也要留下确认。若交友宫又涉及外围使用者，更要限定借用范围。排盘先分关系对象，再看星曜与三方，最后用明确规则承接变化，而非用命盘替合同做担保。
+English draft: The Siblings Palace can describe peer collaborators, and Tian Ji can invite attention to changing arrangements. It does not prove that a partner is unreliable. Two designers sharing a printer need rules for bookings, supplies, repairs, and outside borrowers. Keep a written log for changes. Read the relationship pattern and supporting palaces, then use a practical agreement to manage the equipment.
+
+## 14 同辈朋友借钱，兄弟与交友宫能提醒哪些边界？
+slug：`ziwei-xiongdi-jiaoyou-jiekuan`
+参考日期与原文 URL：2026-11-09 https://ziwei.typedstar.com/essays/knowledge-235-64056326
+角度与区别：借款条件和关系范围；不同于团队责任分工。
+中文草稿：熟人借款时，先确认对方是长期共同承担责任的平辈伙伴，还是一般社交关系。兄弟宫与交友宫帮助区分关系结构，财帛宫提醒看自己可承担的金额；任何组合都不能预测必定还钱或失信。比如朋友短期周转，需要写清借款额、用途、还款日期与无法按期还款的处理。自己若必须动用房租或应急资金，就应降低金额或拒绝。先做现实预算，再用命盘检查自己是否因关系压力忽略边界。
+English draft: A loan to a peer or friend starts with affordability and clear terms. The Siblings and Friends Palaces can help frame the type of relationship; the Wealth Palace can prompt a review of one's own cash needs. No star guarantees repayment. Write down the amount, purpose, date, and what happens if payment is late. If lending would use rent or emergency money, set a smaller limit or decline.
+
+## 15 想进外企，官禄宫怎样对应试用期的具体目标？
+slug：`ziwei-guanlu-waizi-shiyongqi-mubiao`
+参考日期与原文 URL：2026-11-09 https://starqode.com/%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E8%81%B7%E6%B6%AF%E5%88%86%E6%9E%90%E6%8C%87%E5%8D%97%EF%BC%9A%E4%BD%95%E6%99%82%E8%B7%B3%E6%A7%BD%E5%A4%96%E8%B3%87%E4%BC%81%E6%A5%AD%E6%9C%80%E7%90%86%E6%83%B3/
+角度与区别：入职后的岗位验收；不同于 11/09 的语言培训成本。
+中文草稿：转进外企并不是收到录用信就结束。官禄宫可帮助核对岗位责任是否符合长期方向，流年提示这一阶段的具体机会，但试用期能否留下还要看书面目标。入职前问清前三个月的交付物、直属主管、反馈频率和绩效口径。假如岗位叫“区域负责人”，实际只有执行权限而无预算权，头衔并不等于成长空间。先把职责与授权写明，再观察大限是否支持长期投入，不把某年化禄读成试用期保证。
+English draft: A job offer is the start of a trial period, not proof of a lasting career step. The Career Palace can frame long-term fit, while an annual signal may describe timing. Ask for deliverables, supervisor, feedback dates, and performance measures for the first three months. A regional title without budget authority may offer less growth than it sounds. Use written job terms before making a chart claim.
+
+## 16 跨语言团队沟通不顺，官禄与迁移宫怎么分工？
+slug：`ziwei-guanlu-qianyi-yuyan-goutong`
+参考日期与原文 URL：2026-11-09 https://starqode.com/%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E8%81%B7%E6%B6%AF%E5%88%86%E6%9E%90%E6%8C%87%E5%8D%97%EF%BC%9A%E4%BD%95%E6%99%82%E8%B7%B3%E6%A7%BD%E5%A4%96%E8%B3%87%E4%BC%81%E6%A5%AD%E6%9C%80%E7%90%86%E6%83%B3/
+角度与区别：跨语言团队内部流程；不同于对外跨境客户交付。
+中文草稿：团队开会都用第二语言，沟通卡住不一定是个人能力不足。官禄宫看岗位任务与组织分工，迁移宫可关注在陌生文化和规则中的适应。先收集误解发生在哪些环节：需求文档、会议纪要还是审批流程。例如设计师口头听懂需求，却没有确认交付格式，返工多次。可约定书面摘要、关键术语表与责任人，再用两周复盘实际返工数。命盘帮助定位问题类别，流程改进要靠团队共同执行。
+English draft: Misunderstanding in a multilingual team is not always a personal language problem. The Career Palace asks about duties and workflow; the Travel Palace can frame adaptation to an unfamiliar setting. Find where errors occur: briefs, meetings, or approvals. A designer may understand the discussion but miss the required file format. Confirm decisions in writing and track rework for two weeks before drawing a conclusion.
+
+## 17 老出生记录遇到夏令时，排盘前怎样核对原始时间？
+slug：`ziwei-lishi-xialingshi-chushengji`
+参考日期与原文 URL：2026-11-09 https://9zi.ai/tw/guide/calculation-conventions/
+角度与区别：历史出生记录的证据链；不同于真太阳时交界双盘。
+中文草稿：一张旧出生证明只写了钟表时间，不能立刻知道它是否已包含当地夏令时。先核出生地点、日期、当时法定时区与记录来源，再决定排盘软件的设置。若家人口述时间与医院记录不同，应分别标记可信度，不要随意加减一小时得到偏好的盘。接近时辰边界时，还需明确软件是否自动处理历史时制。先把原始资料保存，再比较候选盘，不能倒过来用盘象“证明”出生记录错误。
+English draft: An old birth certificate may record local clock time without explaining daylight saving rules. Before creating a Zi Wei Dou Shu chart, confirm the birthplace, date, legal time convention, and source of the record. Keep family recollections separate from hospital documents. Check whether the chart app handles historical time changes automatically. Preserve the original data before comparing candidate charts; do not alter the time to obtain a preferred reading.
+
+## 18 接近午夜出生，子时跨日争议先准备哪些记录？
+slug：`ziwei-zishi-kuari-rili-jilu`
+参考日期与原文 URL：2026-11-09 https://9zi.ai/tw/guide/calculation-conventions/
+角度与区别：跨午夜的原始日期记录；不同于 11/09 的年界与闰月软件设置。
+中文草稿：出生记录写着23点多，两个排盘工具却给出不同日期，先别判断哪张盘“更像自己”。要核医院记录使用的日期、地点、时区、是否跨午夜转床，以及软件对子时归日的规则。家人记得“夜里出生”，不足以精确到日期边界。可做一张对照表，列出原始钟表时间、各工具的换日规则与输出差异。只在规则可复现后比较盘面，不把个性描述当成校时证据。
+English draft: A birth time near 11 p.m. can produce different chart dates when apps use different day-boundary rules. Start with the hospital's recorded date, place, time zone, and original clock time. Then list each app's Zi-hour rule and its output. A relative's memory of a late-night birth may be useful context but may not settle the boundary. Compare charts only after the calculation settings are documented.
+
+## 19 职位头衔变了而工作没变，官禄宫该看什么？
+slug：`ziwei-guanlu-zhize-touxian`
+参考日期与原文 URL：2026-11-09 https://fortune.report/learn/ziwei-wealth-career
+角度与区别：职位名与实际授权错位；不同于佣金回款和多收入主线。
+中文草稿：从专员改叫经理，却仍做同样的任务，不能只凭头衔判断事业升级。官禄宫看职责、平台与发展方向；财帛宫要另核薪酬是否跟着变。先列团队人数、决策权限、预算和绩效责任，再比较改名前后的实际差异。若承担了更多结果责任却没有相应授权，谈判重点是资源与职责对齐。排盘先看本命官禄的长期模式，再叠流年观察是否进入调整期，不把名称变化当成成就已经兑现。
+English draft: A new job title does not necessarily mean a new role. The Career Palace can frame responsibility and direction; the Wealth Palace separately asks whether compensation changed. Compare team size, decision authority, budget, and measured outcomes before and after the promotion. If accountability rises without authority, the practical discussion is about resources. Read the natal pattern and annual layer after those facts are clear.
+
+## 20 一次性奖金增加，财帛宫为什么不能当长期收入读？
+slug：`ziwei-caibo-yicixing-jiangjin`
+参考日期与原文 URL：2026-11-09 https://fortune.report/learn/ziwei-wealth-career
+角度与区别：一次性奖金与稳定收入分离；不同于多渠道收入主线。
+中文草稿：项目完成拿到一笔奖金，财帛宫可以提示今年钱的流入，却不能保证明年仍有同额收入。先把基本工资、绩效奖金与报销分开，核奖金的税后金额、支付条件和下一次发生概率。若官禄宫显示项目责任加重，还要问新增工作是否可持续。有人把一次性奖金用于提高固定租金，第二年奖金消失便出现现金缺口。排盘时先看收入性质，再看财帛与官禄的组合；预算要按可重复的收入制定。
+English draft: A large project bonus is a real inflow, but it should not be treated as permanent monthly income. Separate base pay, performance pay, and reimbursements, then check the net amount and conditions for another bonus. The Wealth Palace can frame cash movement; the Career Palace asks whether the extra work is repeatable. Base fixed commitments on reliable pay, and use the chart to ask clearer questions about income quality.
