@@ -12,7 +12,7 @@
 | 06 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-2027-tianzhai-zhuangxiu-yusuan.html / https://yuetianai.com/articles/en/ziwei-2027-tianzhai-zhuangxiu-yusuan.html | ziwei-2027-tianzhai-zhuangxiu-yusuan | 2027年想装修，田宅动象与实际预算怎么对照？ | 大限流年 |
 | 07 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-2027-zinv-gongtong-yangyu-jihua.html / https://yuetianai.com/articles/en/ziwei-2027-zinv-gongtong-yangyu-jihua.html | ziwei-2027-zinv-gongtong-yangyu-jihua | 2027年讨论共同养育，子女宫能回答什么？ | 大限流年 |
 | 08 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-liuri-chusheng-shichen-wucha.html / https://yuetianai.com/articles/en/ziwei-liuri-chusheng-shichen-wucha.html | ziwei-liuri-chusheng-shichen-wucha | 出生时辰不准，流日判断为什么更容易偏？ | 看盘方法 |
-| 09 | 待发布 | ziwei-qianyi-xinren-waipai-peixun | 新人外派先看迁移宫，还是先看官禄的训练期？ | 宫位组合 |
+| 09 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-qianyi-xinren-waipai-peixun.html / https://yuetianai.com/articles/en/ziwei-qianyi-xinren-waipai-peixun.html | ziwei-qianyi-xinren-waipai-peixun | 新人外派先看迁移宫，还是先看官禄的训练期？ | 宫位组合 |
 | 10 | 待发布 | ziwei-jiee-yali-rizhi-fupan | 疾厄宫提示压力，怎样做一份可核实的作息记录？ | 看盘方法 |
 | 11 | 待发布 | ziwei-fumu-jiee-zhaohu-fendan | 照护父母影响工作时，父母、疾厄、官禄怎样分工？ | 宫位组合 |
 | 12 | 待发布 | ziwei-caibo-fude-dingyue-zhichu | 订阅支出慢慢增加，财帛和福德宫各看什么？ | 财运事业 |
