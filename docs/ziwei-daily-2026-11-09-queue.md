@@ -9,7 +9,7 @@
 | 03 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-benm-daxian-liunian-zhuanzhi.html / https://yuetianai.com/articles/en/ziwei-benm-daxian-liunian-zhuanzhi.html | ziwei-benm-daxian-liunian-zhuanzhi | 流年官禄利于转职，大限方向却保守时怎么判断？ | 大限流年 |
 | 04 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-qianyi-kuajing-yuancheng-kehu.html / https://yuetianai.com/articles/en/ziwei-qianyi-kuajing-yuancheng-kehu.html | ziwei-qianyi-kuajing-yuancheng-kehu | 人没搬家却接跨境客户，迁移宫要看什么？ | 宫位组合 |
 | 05 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-caibo-huake-huikuan-zhouqi.html / https://yuetianai.com/articles/en/ziwei-caibo-huake-huikuan-zhouqi.html | ziwei-caibo-huake-huikuan-zhouqi | 财帛宫化科有口碑，为什么回款周期仍要单独核？ | 财运事业 |
-| 06 | 待发布 | ziwei-2027-tianzhai-zhuangxiu-yusuan | 2027年想装修，田宅动象与实际预算怎么对照？ | 大限流年 |
+| 06 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-2027-tianzhai-zhuangxiu-yusuan.html / https://yuetianai.com/articles/en/ziwei-2027-tianzhai-zhuangxiu-yusuan.html | ziwei-2027-tianzhai-zhuangxiu-yusuan | 2027年想装修，田宅动象与实际预算怎么对照？ | 大限流年 |
 | 07 | 待发布 | ziwei-2027-zinv-gongtong-yangyu-jihua | 2027年讨论共同养育，子女宫能回答什么？ | 大限流年 |
 | 08 | 待发布 | ziwei-liuri-chusheng-shichen-wucha | 出生时辰不准，流日判断为什么更容易偏？ | 看盘方法 |
 | 09 | 待发布 | ziwei-qianyi-xinren-waipai-peixun | 新人外派先看迁移宫，还是先看官禄的训练期？ | 宫位组合 |
