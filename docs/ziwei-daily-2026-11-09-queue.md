@@ -5,7 +5,7 @@
 | 顺序 | 状态 | slug | 搜索问题 | 分类 |
 |---|---|---|---|---|
 | 01 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-2027-tianzhai-xuyue-jiating-fengong.html / https://yuetianai.com/articles/en/ziwei-2027-tianzhai-xuyue-jiating-fengong.html | ziwei-2027-tianzhai-xuyue-jiating-fengong | 2027年租约到期，流年田宅与本命官禄怎么分开看？ | 大限流年 |
-| 02 | 待发布 | ziwei-2027-fuqi-jumen-ji-jiuzhang | 2027年巨门化忌牵动夫妻宫，翻旧账前先核哪三件事？ | 大限流年 |
+| 02 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-2027-fuqi-jumen-ji-jiuzhang.html / https://yuetianai.com/articles/en/ziwei-2027-fuqi-jumen-ji-jiuzhang.html | ziwei-2027-fuqi-jumen-ji-jiuzhang | 2027年巨门化忌牵动夫妻宫，翻旧账前先核哪三件事？ | 大限流年 |
 | 03 | 待发布 | ziwei-benm-daxian-liunian-zhuanzhi | 流年官禄利于转职，大限方向却保守时怎么判断？ | 大限流年 |
 | 04 | 待发布 | ziwei-qianyi-kuajing-yuancheng-kehu | 人没搬家却接跨境客户，迁移宫要看什么？ | 宫位组合 |
 | 05 | 待发布 | ziwei-caibo-huake-huikuan-zhouqi | 财帛宫化科有口碑，为什么回款周期仍要单独核？ | 财运事业 |
