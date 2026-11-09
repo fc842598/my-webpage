@@ -14,7 +14,7 @@
 | 08 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-liuri-chusheng-shichen-wucha.html / https://yuetianai.com/articles/en/ziwei-liuri-chusheng-shichen-wucha.html | ziwei-liuri-chusheng-shichen-wucha | 出生时辰不准，流日判断为什么更容易偏？ | 看盘方法 |
 | 09 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-qianyi-xinren-waipai-peixun.html / https://yuetianai.com/articles/en/ziwei-qianyi-xinren-waipai-peixun.html | ziwei-qianyi-xinren-waipai-peixun | 新人外派先看迁移宫，还是先看官禄的训练期？ | 宫位组合 |
 | 10 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-jiee-yali-rizhi-fupan.html / https://yuetianai.com/articles/en/ziwei-jiee-yali-rizhi-fupan.html | ziwei-jiee-yali-rizhi-fupan | 疾厄宫提示压力，怎样做一份可核实的作息记录？ | 看盘方法 |
-| 11 | 待发布 | ziwei-fumu-jiee-zhaohu-fendan | 照护父母影响工作时，父母、疾厄、官禄怎样分工？ | 宫位组合 |
+| 11 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-fumu-jiee-zhaohu-fendan.html / https://yuetianai.com/articles/en/ziwei-fumu-jiee-zhaohu-fendan.html | ziwei-fumu-jiee-zhaohu-fendan | 照护父母影响工作时，父母、疾厄、官禄怎样分工？ | 宫位组合 |
 | 12 | 待发布 | ziwei-caibo-fude-dingyue-zhichu | 订阅支出慢慢增加，财帛和福德宫各看什么？ | 财运事业 |
 | 13 | 待发布 | ziwei-xiongdi-tianji-hehuo-fangan | 天机落兄弟宫，合伙方案常变时先谈哪些规则？ | 宫位组合 |
 | 14 | 待发布 | ziwei-xiongdi-jiaoyou-huoli-biandi | 熟人团队同时涉及兄弟和交友宫，如何划分责任边界？ | 宫位组合 |
