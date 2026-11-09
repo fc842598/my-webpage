@@ -20,7 +20,7 @@
 | 14 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-xiongdi-jiaoyou-huoli-biandi.html / https://yuetianai.com/articles/en/ziwei-xiongdi-jiaoyou-huoli-biandi.html | ziwei-xiongdi-jiaoyou-huoli-biandi | 熟人团队同时涉及兄弟和交友宫，如何划分责任边界？ | 宫位组合 |
 | 15 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-guanlu-waizi-peixun-chengben.html / https://yuetianai.com/articles/en/ziwei-guanlu-waizi-peixun-chengben.html | ziwei-guanlu-waizi-peixun-chengben | 想转外企，官禄宫之外为何还要算培训成本？ | 财运事业 |
 | 16 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-qianyi-haiwai-hetong-qixian.html / https://yuetianai.com/articles/en/ziwei-qianyi-haiwai-hetong-qixian.html | ziwei-qianyi-haiwai-hetong-qixian | 海外工作合约只有半年，迁移宫怎样和大限一起读？ | 大限流年 |
-| 17 | 待发布 | ziwei-zhentaiyangshi-linshichen-liangpan | 真太阳时落在时辰交界，两个命盘怎样比较？ | 看盘方法 |
+| 17 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-zhentaiyangshi-linshichen-liangpan.html / https://yuetianai.com/articles/en/ziwei-zhentaiyangshi-linshichen-liangpan.html | ziwei-zhentaiyangshi-linshichen-liangpan | 真太阳时落在时辰交界，两个命盘怎样比较？ | 看盘方法 |
 | 18 | 待发布 | ziwei-runyu-nianjie-paipan-duizhao | 排盘软件的闰月与年界设置不同，先核什么？ | 看盘方法 |
 | 19 | 待发布 | ziwei-guanlu-qiang-caibo-huikuan | 官禄宫事业责任强，财帛宫却回款慢怎么办？ | 财运事业 |
 | 20 | 待发布 | ziwei-caibo-duoqudao-guanlu-zhuxian | 收入渠道很多，官禄宫怎样辨认事业主线？ | 财运事业 |
