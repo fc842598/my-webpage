@@ -11,7 +11,7 @@
 | 05 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-caibo-huake-huikuan-zhouqi.html / https://yuetianai.com/articles/en/ziwei-caibo-huake-huikuan-zhouqi.html | ziwei-caibo-huake-huikuan-zhouqi | 财帛宫化科有口碑，为什么回款周期仍要单独核？ | 财运事业 |
 | 06 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-2027-tianzhai-zhuangxiu-yusuan.html / https://yuetianai.com/articles/en/ziwei-2027-tianzhai-zhuangxiu-yusuan.html | ziwei-2027-tianzhai-zhuangxiu-yusuan | 2027年想装修，田宅动象与实际预算怎么对照？ | 大限流年 |
 | 07 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-2027-zinv-gongtong-yangyu-jihua.html / https://yuetianai.com/articles/en/ziwei-2027-zinv-gongtong-yangyu-jihua.html | ziwei-2027-zinv-gongtong-yangyu-jihua | 2027年讨论共同养育，子女宫能回答什么？ | 大限流年 |
-| 08 | 待发布 | ziwei-liuri-chusheng-shichen-wucha | 出生时辰不准，流日判断为什么更容易偏？ | 看盘方法 |
+| 08 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-liuri-chusheng-shichen-wucha.html / https://yuetianai.com/articles/en/ziwei-liuri-chusheng-shichen-wucha.html | ziwei-liuri-chusheng-shichen-wucha | 出生时辰不准，流日判断为什么更容易偏？ | 看盘方法 |
 | 09 | 待发布 | ziwei-qianyi-xinren-waipai-peixun | 新人外派先看迁移宫，还是先看官禄的训练期？ | 宫位组合 |
 | 10 | 待发布 | ziwei-jiee-yali-rizhi-fupan | 疾厄宫提示压力，怎样做一份可核实的作息记录？ | 看盘方法 |
 | 11 | 待发布 | ziwei-fumu-jiee-zhaohu-fendan | 照护父母影响工作时，父母、疾厄、官禄怎样分工？ | 宫位组合 |
