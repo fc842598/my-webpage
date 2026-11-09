@@ -22,5 +22,5 @@
 | 16 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-qianyi-haiwai-hetong-qixian.html / https://yuetianai.com/articles/en/ziwei-qianyi-haiwai-hetong-qixian.html | ziwei-qianyi-haiwai-hetong-qixian | 海外工作合约只有半年，迁移宫怎样和大限一起读？ | 大限流年 |
 | 17 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-zhentaiyangshi-linshichen-liangpan.html / https://yuetianai.com/articles/en/ziwei-zhentaiyangshi-linshichen-liangpan.html | ziwei-zhentaiyangshi-linshichen-liangpan | 真太阳时落在时辰交界，两个命盘怎样比较？ | 看盘方法 |
 | 18 | 已发布 2026-11-09 09:14 https://yuetianai.com/articles/ziwei-runyu-nianjie-paipan-duizhao.html / https://yuetianai.com/articles/en/ziwei-runyu-nianjie-paipan-duizhao.html | ziwei-runyu-nianjie-paipan-duizhao | 排盘软件的闰月与年界设置不同，先核什么？ | 看盘方法 |
-| 19 | 待发布 | ziwei-guanlu-qiang-caibo-huikuan | 官禄宫事业责任强，财帛宫却回款慢怎么办？ | 财运事业 |
+| 19 | 已发布 2026-11-09 09:14 https://yuetianai.com/articles/ziwei-guanlu-qiang-caibo-huikuan.html / https://yuetianai.com/articles/en/ziwei-guanlu-qiang-caibo-huikuan.html | ziwei-guanlu-qiang-caibo-huikuan | 官禄宫事业责任强，财帛宫却回款慢怎么办？ | 财运事业 |
 | 20 | 待发布 | ziwei-caibo-duoqudao-guanlu-zhuxian | 收入渠道很多，官禄宫怎样辨认事业主线？ | 财运事业 |
