@@ -17,7 +17,7 @@
 | 11 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-fumu-jiee-zhaohu-fendan.html / https://yuetianai.com/articles/en/ziwei-fumu-jiee-zhaohu-fendan.html | ziwei-fumu-jiee-zhaohu-fendan | 照护父母影响工作时，父母、疾厄、官禄怎样分工？ | 宫位组合 |
 | 12 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-caibo-fude-dingyue-zhichu.html / https://yuetianai.com/articles/en/ziwei-caibo-fude-dingyue-zhichu.html | ziwei-caibo-fude-dingyue-zhichu | 订阅支出慢慢增加，财帛和福德宫各看什么？ | 财运事业 |
 | 13 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-xiongdi-tianji-hehuo-fangan.html / https://yuetianai.com/articles/en/ziwei-xiongdi-tianji-hehuo-fangan.html | ziwei-xiongdi-tianji-hehuo-fangan | 天机落兄弟宫，合伙方案常变时先谈哪些规则？ | 宫位组合 |
-| 14 | 待发布 | ziwei-xiongdi-jiaoyou-huoli-biandi | 熟人团队同时涉及兄弟和交友宫，如何划分责任边界？ | 宫位组合 |
+| 14 | 已发布 2026-11-09 09:13 https://yuetianai.com/articles/ziwei-xiongdi-jiaoyou-huoli-biandi.html / https://yuetianai.com/articles/en/ziwei-xiongdi-jiaoyou-huoli-biandi.html | ziwei-xiongdi-jiaoyou-huoli-biandi | 熟人团队同时涉及兄弟和交友宫，如何划分责任边界？ | 宫位组合 |
 | 15 | 待发布 | ziwei-guanlu-waizi-peixun-chengben | 想转外企，官禄宫之外为何还要算培训成本？ | 财运事业 |
 | 16 | 待发布 | ziwei-qianyi-haiwai-hetong-qixian | 海外工作合约只有半年，迁移宫怎样和大限一起读？ | 大限流年 |
 | 17 | 待发布 | ziwei-zhentaiyangshi-linshichen-liangpan | 真太阳时落在时辰交界，两个命盘怎样比较？ | 看盘方法 |
