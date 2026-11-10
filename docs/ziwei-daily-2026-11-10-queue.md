@@ -23,6 +23,6 @@
 | 17 | 已发布 2026-11-10 10:23 https://yuetianai.com/articles/ziwei-lishi-xialingshi-chushengji.html / https://yuetianai.com/articles/en/ziwei-lishi-xialingshi-chushengji.html | ziwei-lishi-xialingshi-chushengji | 老出生记录遇到夏令时，排盘前怎样核对原始时间？ | 9 | 历史时间记录核验，不写真太阳时双盘 |
 | 18 | 已发布 2026-11-10 10:23 https://yuetianai.com/articles/ziwei-zishi-kuari-rili-jilu.html / https://yuetianai.com/articles/en/ziwei-zishi-kuari-rili-jilu.html | ziwei-zishi-kuari-rili-jilu | 接近午夜出生，子时跨日争议先准备哪些记录？ | 9 | 原始日期证据，不写闰月年界设置 |
 | 19 | 已发布 2026-11-10 10:23 https://yuetianai.com/articles/ziwei-guanlu-zhize-touxian.html / https://yuetianai.com/articles/en/ziwei-guanlu-zhize-touxian.html | ziwei-guanlu-zhize-touxian | 职位头衔变了而工作没变，官禄宫该看什么？ | 10 | 责任与头衔错位，不写佣金回款 |
-| 20 | 待发布 | ziwei-caibo-yicixing-jiangjin | 一次性奖金增加，财帛宫为什么不能当长期收入读？ | 10 | 一次性与持续收入分离，不写多渠道主线 |
+| 20 | 已发布 2026-11-10 10:23 https://yuetianai.com/articles/ziwei-caibo-yicixing-jiangjin.html / https://yuetianai.com/articles/en/ziwei-caibo-yicixing-jiangjin.html | ziwei-caibo-yicixing-jiangjin | 一次性奖金增加，财帛宫为什么不能当长期收入读？ | 10 | 一次性与持续收入分离，不写多渠道主线 |
 
 各篇的草稿和编辑说明见 `docs/ziwei-daily-2026-11-10-source.md`。未完成复核的条目不得发布。
