@@ -9537,6 +9537,11 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "后天": "Acquired",
   "流年": "Annual",
   "看前半生与命中本象": "Read early-life pattern and natal image",
+  "看后半生与人生转化": "Later-life themes and change",
+  "看当年应期与动静": "Current-year themes and timing",
+  "易经推命切换": "Choose a Yijing timing view",
+  "命盘更多操作": "More chart actions",
+  "AI 命盘解读": "AI Chart Reading",
   "水天需": "Water over Heaven Xu",
   "天泽履": "Heaven over Lake Lü",
   "泽天夬": "Lake over Heaven Guai",
@@ -9548,8 +9553,8 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "如果你算这个人的先天卦，是水天需，天跑到水下面去了，父先丧失，爸爸先走，母独养成，这是先天卦": "In this innate hexagram, Water over Heaven Xu, heaven falls beneath water: the father image weakens first and the mother raises the child.",
   "如果你算这个人的先天卦，是水天需，天跑到水下面去了，父先丧失，爸爸先走，母独养成，这是先天卦。所以这个小孩子一排出来先天卦是水天需，马上要看他父亲，懂不懂，糟糕，人中那么多，哪里破格，八字拿出来一看，再一看阳宅，厨房在西北角。攀龙附凤，居于尾，五岁之前，有凶事。二十日大人入土中。墓啊，本身就是日入草下地中，这句话，临床是这样子，他爸爸过世了，只剩下他妈妈，带着他，妈妈养他比较辛苦，后来就跟另外一个人结婚，第二个有钱啊，对他跟自己孩子一样…": "In this innate hexagram, Water over Heaven Xu, heaven is below water, so the father image weakens first and the mother raises the child. When this appears, first check the father line, then compare the Bazi and home layout. If the kitchen is in the northwest, the classical image points to an early family loss before age five and a later change in the mother's household.",
   "先天卦": "Innate Hexagram",
-  "财帛 · 对宫福德": "Wealth · Opposite Fortune",
-  "小限 财帛；对宫 福德": "Minor limit: Wealth; opposite: Fortune",
+  "财帛 · 对宫福德": "Wealth · Opposite Inner Life",
+  "小限 财帛；对宫 福德": "Minor limit: Wealth; opposite: Inner Life",
   "今日剩余 8/8 · 每日额度 8次/天": "Today remaining 8/8 · Daily quota 8/day",
   "适合连续追问、复盘命盘、做阶段规划。": "For follow-ups, chart review, and planning.",
   "按日刷新，不设月额度": "Resets daily, no monthly quota",
@@ -9594,7 +9599,8 @@ const WENTIAN_I18N_EN_STEM_BRANCH = {
 
 const WENTIAN_I18N_EN_TERM_MAP = {
   "天同": "Tian Tong", "禄存": "Lu Cun", "武曲": "Wu Qu", "天府": "Tian Fu", "擎羊": "Qing Yang", "左辅": "Zuo Fu", "太阳": "Tai Yang", "太阴": "Tai Yin", "地劫": "Di Jie", "贪狼": "Tan Lang", "天马": "Tian Ma", "右弼": "You Bi", "破军": "Po Jun", "陀罗": "Tuo Luo", "天机": "Tian Ji", "巨门": "Ju Men", "火星": "Huo Xing", "天钺": "Tian Yue", "地空": "Di Kong", "紫微": "Zi Wei", "天相": "Tian Xiang", "廉贞": "Lian Zhen", "文昌": "Wen Chang", "七杀": "Qi Sha", "文曲": "Wen Qu", "天梁": "Tian Liang", "铃星": "Ling Xing", "天魁": "Tian Kui",
-  "子女": "Children", "夫妻": "Spouse", "兄弟": "Siblings", "命宫": "Life Palace", "财帛": "Wealth", "父母": "Parents", "疾厄": "Health", "福德": "Fortune", "迁移": "Travel", "仆役": "Friends", "官禄": "Career", "田宅": "Property", "身宫": "Body Palace", "得": "Gain", "大子": "D.Child", "大夫": "D.Spouse", "大兄": "D.Sibling", "大命": "D.Life", "大财": "D.Wealth", "大父": "D.Parent", "大疾": "D.Health", "大福": "D.Fortune", "大迁": "D.Travel", "大仆": "D.Friends", "大官": "D.Career", "大田": "D.Property",
+  "命宫": "Life Palace", "身宫": "Body Palace", "兄弟宫": "Siblings Palace", "夫妻宫": "Spouse Palace", "子女宫": "Children Palace", "财帛宫": "Wealth Palace", "疾厄宫": "Health Palace", "迁移宫": "Migration Palace", "仆役宫": "Friends Palace", "交友宫": "Friends Palace", "官禄宫": "Career Palace", "事业宫": "Career Palace", "田宅宫": "Property Palace", "福德宫": "Inner Life Palace", "父母宫": "Parents Palace",
+  "子女": "Children", "夫妻": "Spouse", "兄弟": "Siblings", "财帛": "Wealth", "父母": "Parents", "疾厄": "Health", "福德": "Inner Life", "迁移": "Migration", "仆役": "Friends", "交友": "Friends", "官禄": "Career", "事业": "Career", "田宅": "Property", "得": "Gain", "大子": "D.Child", "大夫": "D.Spouse", "大兄": "D.Sibling", "大命": "D.Life", "大财": "D.Wealth", "大父": "D.Parent", "大疾": "D.Health", "大福": "D.Inner Life", "大迁": "D.Migration", "大仆": "D.Friends", "大官": "D.Career", "大田": "D.Property",
   "巽": "SE", "离": "S", "坤": "SW", "震": "E", "兑": "W", "艮": "NE", "坎": "N", "乾": "NW", "东南": "SE", "正南": "S", "西南": "SW", "正东": "E", "正西": "W", "东北": "NE", "正北": "N", "西北": "NW",
   "长女位": "1st Daughter", "二女位": "2nd Daughter", "母亲位": "Mother", "长子位": "1st Son", "三女位": "3rd Daughter", "三子位": "3rd Son", "二子位": "2nd Son", "父亲位": "Father", "长女": "1st Daughter", "二女": "2nd Daughter", "母亲": "Mother", "长子": "1st Son", "三女": "3rd Daughter", "三子": "3rd Son", "二子": "2nd Son", "父亲": "Father",
   "厨房": "Kitchen", "厕所": "Bathroom", "客厅": "Living Room", "厨": "Kit.", "厕": "Bath", "厅": "LR", "长": "1st", "父": "F", "母": "M"
@@ -21835,17 +21841,17 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}, source
   const metaTextEn = [
     chart?.fiveElementsClass || chartData?.fiveElementsClass ? translateWentianText(chart?.fiveElementsClass || chartData?.fiveElementsClass || "", "en") : "",
     zodiacEn,
-  ].filter(Boolean).join(" 路 ");
+  ].filter(Boolean).join(" · ");
   const timeLabelEn = timeName ? `${translateWentianText(timeName, "en").replace(/\?/g, "")} Hour` : "";
-  const lunarTextEn = translateWentianText(chart?.lunarDate || chart?.chineseDate || "鈥?", "en");
-  const liunianBaseEn = translateWentianText(yijing.results.liunian?.name || selectedXiao?.liunianGuaName || "鈥?", "en").replace(/\bText\b\s*/gi, "").trim();
-  const liunianNameEn = selectedXiao?.age ? `Age ${selectedXiao.age} 路 ${liunianBaseEn}` : liunianBaseEn;
+  const lunarTextEn = translateWentianText(chart?.lunarDate || chart?.chineseDate || "—", "en");
+  const liunianBaseEn = translateWentianText(yijing.results.liunian?.name || selectedXiao?.liunianGuaName || "—", "en").replace(/\bText\b\s*/gi, "").trim();
+  const liunianNameEn = selectedXiao?.age ? `Age ${selectedXiao.age} · ${liunianBaseEn}` : liunianBaseEn;
   const trueSolarDisplayEn = (() => {
     const trueSolarClock = formatWentianCenterClock(chartData.trueSolarTime || chartData.solarTime || "");
     const localClock = formatWentianCenterClock(chartData.localTime || chartData.birthDate || dateText || "");
     const diffRaw = String(chartData.trueSolarDiff || "").trim().replace(/分钟/g, " min").replace(/鍒嗛挓/g, " min");
     if (trueSolarClock) return diffRaw ? `${trueSolarClock} (${diffRaw})` : trueSolarClock;
-    return localClock ? `${localClock} (Not corrected)` : "鈥?";
+    return localClock ? `${localClock} (Not corrected)` : "—";
   })();
   const liunianName = selectedXiao?.age ? `${selectedXiao.age}岁 · ${selectedXiao.liunianGuaName || yijing.results.liunian?.name || "—"}` : (yijing.results.liunian?.name || "—");
   const columns = [
@@ -21863,14 +21869,14 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}, source
           <div class="fc-center-row"><span class="fc-center-lbl">Solar</span><span class="fc-center-val">${escapeHtml([dateText, timeLabelEn].filter(Boolean).join(" "))}</span></div>
           <div class="fc-center-row"><span class="fc-center-lbl">Lunar</span><span class="fc-center-val">${escapeHtml(lunarTextEn)}</span></div>
           <div class="fc-center-row"><span class="fc-center-lbl">True Solar</span><span class="fc-center-val">${escapeHtml(trueSolarDisplayEn)}</span></div>
-          <div class="fc-center-row"><span class="fc-center-lbl">Chart Hour</span><span class="fc-center-val">${escapeHtml(timeLabelEn || "鈥?")}</span></div>
+          <div class="fc-center-row"><span class="fc-center-lbl">Chart Hour</span><span class="fc-center-val">${escapeHtml(timeLabelEn || "—")}</span></div>
           <div class="fc-center-row fc-center-sizhu-row"><span class="fc-center-lbl">Pillars</span><div class="fc-sizhu">
             ${columns.map(([stem, branch, color]) => (stem || branch) ? `<div class="fc-sizhu-col" style="color:${color}"><span>${escapeHtml(stem || "?")}</span><span>${escapeHtml(branch || "?")}</span></div>` : "").join("")}
           </div></div>
         </div>
         <div class="fc-gua-rows">
-          ${renderWentianClassicGuaRow("Innate Hexagram", translateWentianText(yijing.results.xiantian?.name || "鈥?", "en"))}
-          ${renderWentianClassicGuaRow("Acquired Hexagram", translateWentianText(yijing.results.houtian?.name || "鈥?", "en"))}
+          ${renderWentianClassicGuaRow("Innate Hexagram", translateWentianText(yijing.results.xiantian?.name || "—", "en"))}
+          ${renderWentianClassicGuaRow("Acquired Hexagram", translateWentianText(yijing.results.houtian?.name || "—", "en"))}
           ${renderWentianClassicGuaRow("Annual Hexagram", liunianNameEn)}
         </div>
         ${renderWentianClassicXiaoLianPicker(selectedXiao, options)}
@@ -22330,6 +22336,7 @@ function renderWentianYijingLines(result) {
 }
 
 function renderWentianMobileYijingPanel(saved) {
+  const isEn = isWentianEnglishUi();
   const ctx = getWentianYijingContext(saved);
   const activeKey = getWentianYijingActiveKey();
   const result = ctx.results[activeKey] || ctx.results.xiantian || ctx.results.houtian || ctx.results.liunian;
@@ -22358,7 +22365,10 @@ function renderWentianMobileYijingPanel(saved) {
       <div class="wentian-yijing-tabs" role="tablist" aria-label="易经推命切换">
         ${tabRows.map(([key, item]) => {
           const itemMeta = getWentianYijingTabMeta(key);
-          return `<button type="button" class="${key === activeKey ? "is-active" : ""}" data-action="wentian-yijing-tab" data-yijing-tab="${key}" aria-label="${escapeHtml(`${itemMeta.label} ${itemMeta.note} ${item?.name || ""}`.trim())}">
+          const tabLabel = isEn
+            ? [itemMeta.label, itemMeta.note, item?.name || ""].map((part) => translateWentianText(part, "en")).filter(Boolean).join(" · ")
+            : `${itemMeta.label} ${itemMeta.note} ${item?.name || ""}`.trim();
+          return `<button type="button" class="${key === activeKey ? "is-active" : ""}" data-action="wentian-yijing-tab" data-yijing-tab="${key}" aria-label="${escapeHtml(tabLabel)}">
             <span>${escapeHtml(itemMeta.label)}</span>
             <small>${escapeHtml(itemMeta.note)}</small>
           </button>`;

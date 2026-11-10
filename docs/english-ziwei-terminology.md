@@ -13,12 +13,18 @@ meaning in ordinary English rather than alternating labels without context.
 | 迁移宫 | Migration Palace |
 | 田宅宫 | Property Palace |
 | 福德宫 | Inner Life Palace |
+| 事业宫 | Career Palace (alias of 官禄宫) |
+| 交友宫 / 仆役宫 | Friends Palace |
 | 自化忌 | Zi Hua Ji; self-transformation into Hua Ji |
 
 Do not use Self Palace as a substitute for Life Palace. Do not translate ordinary
 phrases word-for-word: explain concern about appearances, asking for support,
 or practical experience in context. Do not remove Chinese characters blindly;
 a flag can be a properly explained quotation or a genuine untranslated fragment.
+
+The mobile chart may omit "Palace" in compact grid labels, but must keep the same
+domain name (Migration, Inner Life, Career, Wealth). Full names and aliases must
+not fall through to single-character pinyin such as "Shi Palace" or "Palace".
 
 Read-only backlog scan:
 

@@ -232,3 +232,10 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - 注册账号7份档案显示、登录账号跨命盘连续扣次、真实小屏设备和剩余英文候选仍未全验收，目标保持active。手机号邮箱条件文案仍以现有回归为证，未用真实客户账号冒测。
 - 前端本轮提交a2a0100b515e9df09714b221862e46749bd1f188：先fetch发现远端11月10日文章更新，确认无手机脚本差异后将专用修复rebase到origin/master，保留所有同期文章。push后远端一致；初次资源仍旧，20秒后js/wentian-app.js与pages/wentian-app.html均HTTP200且与本地完全一致。
 - 真实浏览器重新加载，实际脚本为wentian-app.js?v=20261110-english-paragraphs；进入对话记录再返回，同一既有英文回答呈现4个p（原27个），未再次调用模型，额度保持2。更新后scrollHeight2436/clientHeight452，PageUp从1984降至1588.8，overflowY=auto。此证据证明新渲染生效与此条真实长回答可滚动，不等同全设备无缺陷。
+
+### 2026-11-10：英文界面宫名与辅助说明
+
+- 按实际translateWentianText复现：事业宫→Shi Palace，交友宫→Palace，福德宫→Fortune Palace，迁移宫→Travel Palace。扩展已有英文回归，先失败后修复；新增完整宫名和事业/交友别名，短盘面标签保留简短而统一的Inner Life/Migration，未修改宫位计算。
+- 本地真实浏览器创建本地合成2000-01-01 12:00档案，英文盘面发现两条易经切换说明漏译成拼音、按钮组合aria-label误变Regenerate in English、AI标题/更多操作漏译，以及中宫分隔符错误编码“路”被显示为Text。补齐5条明确静态翻译，组合aria-label按部件翻译后拼接，中宫英文分隔符/空值恢复正常Unicode。
+- 重载本地实际盘面确认12宫标签含Inner Life、Migration、Career、Wealth；meta为Earth Fifth Bureau · Rabbit，无Text；更多操作More chart actions；三条切换按钮说明为英文，aria-label不再要求重新生成；document横向无溢出。没有进行AI生成、支付或注册。
+- 既有英文导航/头部与新增宫名/说明回归通过，chat段落测试、账号/额度9组回归和JS语法通过。旧卦名自动回退仍有NW Heaven等不完整名称，古籍英文仍存在待审核内容；不能据此次修复宣布整站英文完成。文章原始扫描29份候选仍待逐一核对。
