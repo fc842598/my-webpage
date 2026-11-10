@@ -331,7 +331,7 @@ Record each application, interview round, feedback date, and reason for a reject
 
 ## 07. 去外地参加行业展会，迁移宫比官禄宫多看什么？
 slug：`ziwei-qianyi-hangye-zhanhui`
-来源：2026-11-10 同行宫位系统与官禄研究
+来源：2026-11-10 https://docs.iztro.com/en_US/learn/palace
 角度及旧文区别：聚焦短期行业交流，区别于跨境客户、外派训练与海外合同。今日研究复核后重写。
 正文草稿：
 去外地参加三天行业展会，是一次进入陌生环境的短期行程，而不是“适合异地发展”的长期判断。迁移宫帮助提问外部场景、陌生人和行程中的适应，官禄宫则看这趟行程与职业目标是否相连。先定此行的目的，再决定用什么标准衡量收获，才不会把一次热闹的谈话误当成合作承诺。
@@ -359,7 +359,7 @@ Treat warm conversations as leads rather than promises, record each contact and 
 
 ## 08. 双城通勤没有搬家，迁移宫怎样与田宅宫配合？
 slug：`ziwei-qianyi-shuangcheng-tongqin`
-来源：2026-11-10 同行田宅与宫位系统研究
+来源：2026-11-10 https://destiny.afei-tw.com/articles/ziwei-tianzhai-palace/
 角度及旧文区别：聚焦固定往返与住处稳定，区别于跨境项目、半年海外合同与新人外派。今日研究复核后重写。
 正文草稿：
 每周在两个城市之间往返，迁移宫的外部环境和田宅宫的居住基础会同时被触及。迁移宫有动，不一定意味着要搬家，也可能是通勤的消耗在持续增加。先算清车票、住宿、延误和实际在家时间，再判断是调整工作安排，还是改变住处，才不会把“奔波”直接读成“迁居”。
@@ -387,7 +387,7 @@ Explore whether meetings can be concentrated, moved online, or scheduled off-pea
 
 ## 09. 疾厄宫与官禄宫同时受压，怎样建立工作边界？
 slug：`ziwei-jiee-guanlu-gongzuo-bianjie`
-来源：2026-11-10 同行工作压力与官禄研究
+来源：2026-11-10 https://starnum.com.tw/blog/zh-TW/palace-fude-anxiety-pattern-short
 角度及旧文区别：聚焦可执行的任务边界与工作量协商，区别于作息记录。今日研究复核后重写。
 正文草稿：
 官禄宫显示责任增加，疾厄宫提示身体负担，这并不等于可以直接断言工作必然伤身。更有用的问题是任务有没有截止时间、哪些要求可以推迟、谁能提供支援。把模糊的“压力大”拆成可以协商的任务清单，工作边界才真正建立得起来。
@@ -415,7 +415,7 @@ Discuss which targets stay, which move, and what support is needed, then verify 
 
 ## 10. 疾厄宫提示消耗时，福德宫怎样帮助安排休息？
 slug：`ziwei-jiee-fude-xiuxi-jihua`
-来源：2026-11-10 同行福德宫焦虑模式研究
+来源：2026-11-10 https://starnum.com.tw/blog/zh-TW/palace-fude-anxiety-pattern-short
 角度及旧文区别：聚焦可用休息时间与恢复方式，区别于作息日志和父母照护分担。今日研究复核后重写。
 正文草稿：
 疾厄宫涉及承受与消耗，福德宫帮助提问一个人怎样才能真正放松，但两宫都不能代替健康评估。有人把周末排满聚会，觉得热闹就是休息，周一反而更累；也有人独处一晚后更能投入工作。先看清自己的恢复方式，再安排休息，比照搬别人的放松方法更有效。
@@ -443,7 +443,7 @@ Try one social weekend and one quieter weekend, then record sleep and the follow
 
 ## 11. 收入每月不同，财帛宫怎样配合固定支出预算？
 slug：`ziwei-caibo-budingqi-shouru-yusuan`
-来源：2026-11-10 同行财帛官禄错配与现金流研究
+来源：2026-11-10 https://zwds.naassh.com/zh-hant/blog/ziwei-wealth-analysis
 角度及旧文区别：聚焦不规则收入与固定支出的缓冲，区别于回款周期和订阅支出。今日研究复核后重写。
 正文草稿：
 自由职业者的收入高低波动，财帛宫再好，也不能把上个月的高收入当成本月固定会到账的现金。先把房租、保险、税费等最低支出算清，再用过去几个月的实际入账估计一个保守预算，才能在空档月份不被固定开销逼到措手不及。
@@ -471,7 +471,7 @@ If strong seasons alternate with months of little work, keep a buffer that cover
 
 ## 12. 接项目先垫钱，财帛和官禄宫各要核对什么？
 slug：`ziwei-caibo-xiangmu-dianzi`
-来源：2026-11-10 同行现金流与官禄研究
+来源：2026-11-10 https://zwds.naassh.com/zh-hant/blog/ziwei-wealth-analysis
 角度及旧文区别：聚焦项目垫资与合同条件，区别于口碑、订阅费与应收账款时间差。今日研究复核后重写。
 正文草稿：
 一个项目报价很高，却要求先替客户支付设备和交通费用，这时不能只看合同总额。官禄宫提示这个项目与职业路线是否匹配，财帛宫则要追问现金什么时候出去、什么时候回来。先把钱的路径核清楚，再决定接不接，才不会被表面利润套住现金流。
@@ -499,7 +499,7 @@ List expected margin and occupied capital separately, and keep evidence of every
 
 ## 13. 兄弟宫见天机，熟人共用设备如何定使用规则？
 slug：`ziwei-xiongdi-gongyong-shebei`
-来源：2026-11-10 同行兄弟宫同辈合作研究
+来源：2026-11-10 https://ppstar-astrology.com/learn/palace/siblings
 角度及旧文区别：聚焦共用有形资产的使用权，区别于合伙方案变更和成员边界。今日研究复核后重写。
 正文草稿：
 兄弟宫可以延伸到平辈合作者，天机强调安排容易调整，但这并不能推断对方一定善变。两位设计师共用一台打印设备，真正容易起争执的是谁先用、耗材谁买、损坏怎样处理。把规则写清楚，共用设备才不会因为临时变动而反复扯皮。
@@ -527,7 +527,7 @@ Clarify who may borrow equipment, whether there is a charge, and how damage is h
 
 ## 14. 同辈朋友借钱，兄弟与交友宫能提醒哪些边界？
 slug：`ziwei-xiongdi-jiaoyou-jiekuan`
-来源：2026-11-10 同行兄弟宫与交友范围研究
+来源：2026-11-10 https://ppstar-astrology.com/learn/palace/siblings
 角度及旧文区别：聚焦借款条件与关系范围，区别于团队责任分工。今日研究复核后重写。
 正文草稿：
 熟人来借钱，先确认对方是长期共同承担责任的平辈伙伴，还是一般社交关系。兄弟宫与交友宫帮助区分关系结构，财帛宫提醒核对自己能承担的金额，任何组合都不能预测对方必定还钱或失信。先做现实的预算和条款，再谈借不借。
@@ -555,7 +555,7 @@ Even with someone you know, record the amount, purpose, repayment date, and what
 
 ## 15. 想进外企，官禄宫怎样对应试用期的具体目标？
 slug：`ziwei-guanlu-waizi-shiyongqi-mubiao`
-来源：2026-11-10 同行官禄授权与职责研究
+来源：2026-11-10 https://mxziwei.com/knowledge/ziwei/career
 角度及旧文区别：聚焦入职后的岗位验收目标，区别于语言培训成本。今日研究复核后重写。
 正文草稿：
 转进外企并不是收到录用信就结束。官禄宫帮助核对岗位责任是否符合长期方向，流年提示这一阶段的机会，但试用期能否留下，还要看书面的目标和反馈。把关注点从“能不能进”转到“进去后怎么验收”，准备才真正落到实处。
@@ -583,7 +583,7 @@ Record duties, authority, and review standards, then check deliverables against 
 
 ## 16. 跨语言团队沟通不顺，官禄与迁移宫怎么分工？
 slug：`ziwei-guanlu-qianyi-yuyan-goutong`
-来源：2026-11-10 同行宫位系统与官禄研究
+来源：2026-11-10 https://mxziwei.com/knowledge/ziwei/career
 角度及旧文区别：聚焦跨语言团队内部流程，区别于对外跨境客户交付。今日研究复核后重写。
 正文草稿：
 团队开会都用第二语言，沟通卡住并不一定是个人语言能力不足。官禄宫看岗位任务和组织分工，迁移宫关注在陌生文化和规则中的适应。先定位误解发生在哪个环节，再决定改流程还是补语言，才不会把流程问题误当成个人问题。
@@ -611,7 +611,7 @@ Agree on written summaries, a shared terminology list, and clear owners, then co
 
 ## 17. 老出生记录遇到夏令时，排盘前怎样核对原始时间？
 slug：`ziwei-lishi-xialingshi-chushengji`
-来源：2026-11-10 同行时间校正方法研究
+来源：2026-11-10 https://9zi.ai/en/guide/true-solar-time/
 角度及旧文区别：聚焦历史出生记录的证据链，区别于真太阳时交界双盘。今日研究复核后重写。
 正文草稿：
 一张旧出生证明只写了钟表时间，并不能立刻知道它是否已经包含当地当时的夏令时。先核对出生地点、日期、当时的法定时区和记录来源，再决定排盘软件怎么设置，而不是凭印象加减一小时。
@@ -639,7 +639,7 @@ Confirm whether the chart software applies historical daylight saving automatica
 
 ## 18. 接近午夜出生，子时跨日争议先准备哪些记录？
 slug：`ziwei-zishi-kuari-rili-jilu`
-来源：2026-11-10 同行时间校正与边界研究
+来源：2026-11-10 https://9zi.ai/en/guide/true-solar-time/
 角度及旧文区别：聚焦跨午夜的原始日期证据，区别于年界与闰月软件设置。今日研究复核后重写。
 正文草稿：
 出生记录写着二十三点多，两个排盘工具却给出不同日期，先别急着判断哪张盘“更像自己”。要核对医院记录使用的日期、地点、时区和是否跨午夜，以及软件对子时归日的规则，把可核对的资料备齐，再比较盘面。
@@ -667,7 +667,7 @@ List how each app assigns the Zi hour and what it outputs for the same input, co
 
 ## 19. 职位头衔变了而工作没变，官禄宫该看什么？
 slug：`ziwei-guanlu-zhize-touxian`
-来源：2026-11-10 同行官禄授权与错配研究
+来源：2026-11-10 https://mxziwei.com/knowledge/ziwei/career
 角度及旧文区别：聚焦职位名与实际授权错位，区别于佣金回款和多收入主线。今日研究复核后重写。
 正文草稿：
 从专员改叫经理，却仍在做同样的任务，不能只凭头衔判断事业升级。官禄宫看职责、平台和发展方向，财帛宫要另外核对薪酬有没有跟着变。先比较改名前后的实际差异，才能判断这是真正的晋升，还是只是名称调整。
@@ -695,7 +695,7 @@ Title and pay are different questions, so confirm whether salary and performance
 
 ## 20. 一次性奖金增加，财帛宫为什么不能当长期收入读？
 slug：`ziwei-caibo-yicixing-jiangjin`
-来源：2026-11-10 同行收入错配与现金流研究
+来源：2026-11-10 https://zwds.naassh.com/zh-hant/blog/ziwei-wealth-analysis
 角度及旧文区别：聚焦一次性奖金与稳定收入分离，区别于多渠道收入主线。今日研究复核后重写。
 正文草稿：
 项目完成后拿到一笔奖金，财帛宫可以提示今年有一笔钱流入，却不能保证明年还有同额收入。先把基本工资、绩效奖金和报销分开，核对奖金的税后金额和发生条件，再决定怎么花，才不会把偶发收入当成长期保障。
