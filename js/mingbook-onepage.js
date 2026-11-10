@@ -145,9 +145,10 @@
   const unifiedAuthStorageKey = 'wentian-app-auth-session-v1';
 
   const desktopFreeDailyLimit = 8;
-  const desktopPaidDailyLimit = 30;
-  const desktopPaidProductName = '三人深度月卡';
-  const desktopPaidProductDesc = '31天内可保存3位命主，查看完整解读，每天可追问30次。';
+  // 2026-11-10 价格体系重构：全站统一 19.9 深度解读月卡，不限命主、每天100次追问。
+  const desktopPaidDailyLimit = 100;
+  const desktopPaidProductName = '阅天AI深度解读月卡';
+  const desktopPaidProductDesc = '基础排盘免费看；开通后31天内不限命主人数，深度解读全解锁，每天可追问100次。';
   const desktopPaymentPollMs = 3000;
   const desktopPaymentState = {
     open: false,

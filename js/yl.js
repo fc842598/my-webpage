@@ -12,24 +12,15 @@
   var PAYMENT_HANDOFF_KEY = "yuetian-payment-handoff-v2";
   var MEMBER_RETURN_KEY = "yuetian-member-return-v1";
   var MEMBER_RETURN_TTL_MS = 2 * 60 * 60 * 1000;
+  // 2026-11-10 价格体系重构：全站只保留一个商品 —— 19.9 深度解读月卡。
+  // 基础排盘免费，深度解读按 31 天开通；不再售卖三人卡/无限卡。
   var MEMBER_PRODUCTS = {
     monthly_member: {
       productKey: "monthly_member",
-      name: "三人深度月卡",
-      nameEn: "Three-Profile Monthly Pass",
+      name: "阅天AI深度解读月卡",
+      nameEn: "Yuetian Deep Reading Monthly Pass",
       amountYuan: "19.90",
       paypalAmount: "4.99",
-      chartLimit: 3,
-      dailyChatLimit: 30,
-      chartText: "可保存3位命主",
-      chartTextEn: "Save up to 3 profiles"
-    },
-    unlimited_member: {
-      productKey: "unlimited_member",
-      name: "无限畅享月卡",
-      nameEn: "Unlimited Monthly Pass",
-      amountYuan: "69.90",
-      paypalAmount: "14.99",
       chartLimit: null,
       dailyChatLimit: 100,
       chartText: "不限命主人数",
@@ -1059,10 +1050,10 @@
     var accountTitle = $("#ylCheckoutAccountSummary > div > span");
     if (pickerTitle) pickerTitle.textContent = active
       ? (IS_ENGLISH_CHECKOUT ? "Regular plans" : "原套餐价格")
-      : (IS_ENGLISH_CHECKOUT ? "Choose a Monthly Pass" : "选择月卡");
+      : (IS_ENGLISH_CHECKOUT ? "Unlock deep readings" : "开通深度解读");
     if (pickerNote) pickerNote.textContent = active
       ? (IS_ENGLISH_CHECKOUT ? "Unlimited access during the campaign" : "活动期间统一享受不限人数权益")
-      : (IS_ENGLISH_CHECKOUT ? "Both passes are valid for 31 days" : "两种月卡均按31天计算");
+      : (IS_ENGLISH_CHECKOUT ? "Basic chart free · deep readings for 31 days" : "基础排盘免费看，深度解读按31天开通");
     if (accountTitle) accountTitle.textContent = active
       ? (IS_ENGLISH_CHECKOUT ? "Your account" : "体验账号")
       : (IS_ENGLISH_CHECKOUT ? "Payment account" : "付款账号");

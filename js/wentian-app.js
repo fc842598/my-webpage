@@ -8,9 +8,8 @@ const reports = [
 const profiles = [];
 
 const plans = [
-  ["免费用户", "共8次追问", "可保存1位命主"],
-  ["三人深度月卡", "30次/天", "31天内可保存3位命主"],
-  ["无限畅享月卡", "100次/天", "31天内不限命主人数"]
+  ["免费用户", "共8次追问", "基础排盘免费看"],
+  ["阅天AI深度解读月卡", "100次/天", "31天内不限命主人数，深度解读全解锁"]
 ];
 
 const convertedScreens = [
@@ -41,7 +40,7 @@ const convertedScreens = [
   { no: 30, title: "月卡支付", active: "我的", cards: [["订单信息", "支付金额"]], button: ["继续支付", "screen-31"] },
   { no: 31, title: "我的", active: "我的", mine: true },
   { no: 32, title: "账户设置", active: "我的", list: [["基本信息", "", "screen-39"], ["登录方式", "", "screen-40"], ["设置密码", "", "screen-41"], ["退出登录", "", "screen-31"]] },
-  { no: 33, title: "月卡与权益", active: "我的", cards: [["免费用户", "共8次追问"], ["三人深度月卡", "30次/天"], ["无限畅享月卡", "100次/天"]], button: ["选择月卡", "screen-30"] },
+  { no: 33, title: "月卡与权益", active: "我的", cards: [["免费用户", "共8次追问"], ["阅天AI深度解读月卡", "100次/天，¥19.90/31天"]], button: ["开通深度解读", "screen-30"] },
   { no: 34, title: "分享阅天AI", active: "我的", modalTitle: "分享阅天AI", modalItems: ["分享文本", "邀请码：8R7U58ZW", "微信好友 / 朋友圈 / 复制链接"], next: "screen-31" },
   { no: 35, title: "联系我们", active: "我的", list: [["电子邮箱", "", ""]] },
   { no: 36, title: "关于我们", active: "我的", cards: [["阅天AI v1.0.3199", "阅天AI是一款命理排盘、合盘与AI解读工具。"], ["隐私协议", ""], ["用户协议", ""], ["检查更新", ""]] },
@@ -1981,9 +1980,10 @@ const WENTIAN_FREE_LIFETIME_LIMIT = 8;
 const WENTIAN_THREE_CHART_DAILY_LIMIT = 30;
 const WENTIAN_UNLIMITED_DAILY_LIMIT = 100;
 const WENTIAN_FREE_DAILY_LIMIT = WENTIAN_FREE_LIFETIME_LIMIT;
-const WENTIAN_PAID_DAILY_LIMIT = WENTIAN_THREE_CHART_DAILY_LIMIT;
-const WENTIAN_PAID_PRODUCT_NAME = "三人深度月卡";
-const WENTIAN_PAID_PRODUCT_DESC = "31天内可保存3位命主，查看完整解读，每天可追问30次。";
+// 2026-11-10 价格体系重构：全站统一为 19.9 深度解读月卡，不再区分三人卡/无限卡。
+const WENTIAN_PAID_DAILY_LIMIT = WENTIAN_UNLIMITED_DAILY_LIMIT;
+const WENTIAN_PAID_PRODUCT_NAME = "阅天AI深度解读月卡";
+const WENTIAN_PAID_PRODUCT_DESC = "基础排盘免费看；开通后31天内不限命主人数，深度解读全解锁，每天可追问100次。";
 const WENTIAN_PAYMENT_POLL_MS = 3500;
 const WENTIAN_GOOGLE_ENABLED = true;
 const WENTIAN_CHART_AI_STORAGE_KEY = "wentian-app-chart-ai-v2";
@@ -3841,8 +3841,7 @@ function populateWentianChartSelects() {
       + Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${isEn ? solarMonthLabels[i] : `${i + 1}月`}</option>`).join("");
   }
   if (lunarMonth && !lunarMonth.options.length) {
-    lunarMonth.innerHTML = `<option value="">${isEn ? "Month" : "月"}</option>`
-      + ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"].map((name, i) => `<option value="${i + 1}">${isEn ? `M${i + 1}` : name}</option>`).join("");
+    populateWentianLunarMonthOptions(lunarMonth, getWentianNumber("wentian-chart-lunar-year"));
   }
   if (hour && !hour.options.length) {
     hour.innerHTML = `<option value="">${isEn ? "Hour" : "时"}</option>`
@@ -3869,15 +3868,16 @@ function updateWentianChartDayOptions(dayEl, year, month, forcedMax) {
 function syncWentianChartCalendarFields(nextMode) {
   const isLunarTarget = nextMode === "lunar";
   const sourceYear = getWentianNumber(isLunarTarget ? "wentian-chart-year" : "wentian-chart-lunar-year");
-  const sourceMonth = getWentianNumber(isLunarTarget ? "wentian-chart-month" : "wentian-chart-lunar-month");
+  const sourceMonthRaw = getWentianNumber(isLunarTarget ? "wentian-chart-month" : "wentian-chart-lunar-month");
   const sourceDay = getWentianNumber(isLunarTarget ? "wentian-chart-day" : "wentian-chart-lunar-day");
+  const sourceMonth = isLunarTarget ? sourceMonthRaw : parseWentianLunarMonthValue(sourceMonthRaw).month;
   if (!sourceYear && !sourceMonth && !sourceDay) return;
 
   const targetYear = document.getElementById(isLunarTarget ? "wentian-chart-lunar-year" : "wentian-chart-year");
   const targetMonth = document.getElementById(isLunarTarget ? "wentian-chart-lunar-month" : "wentian-chart-month");
   const targetDay = document.getElementById(isLunarTarget ? "wentian-chart-lunar-day" : "wentian-chart-day");
   const year = sourceYear || getWentianNumber(targetYear?.id || "");
-  const month = sourceMonth || getWentianNumber(targetMonth?.id || "");
+  const month = sourceMonth || parseWentianLunarMonthValue(getWentianNumber(targetMonth?.id || "")).month;
   if (targetYear && year) targetYear.value = String(year);
   if (targetMonth && month) targetMonth.value = String(month);
 
@@ -3935,6 +3935,35 @@ const WENTIAN_LUNAR_MONTH_NAMES = ["正月", "二月", "三月", "四月", "五�
 
 function getWentianLunarMonthName(month) {
   return WENTIAN_LUNAR_MONTH_NAMES[Number(month) - 1] || `${month}月`;
+}
+
+// 根据年份动态填充农历月份下拉，若该年有闰月则追加"闰X月"选项（P0-5）
+function populateWentianLunarMonthOptions(monthEl, year) {
+  if (!monthEl) return;
+  const isEn = isWentianEnglishUi();
+  const previous = monthEl.value || "";
+  const leapMonth = year ? getWentianLunarLeapMonth(year) : 0;
+  const leapValue = 100 + leapMonth; // 闰月用 100+序号 编码，与正常月份区分
+  let html = `<option value="">${isEn ? "Month" : "月"}</option>`;
+  WENTIAN_LUNAR_MONTH_NAMES.forEach((name, i) => {
+    const m = i + 1;
+    html += `<option value="${m}">${isEn ? `M${m}` : name}</option>`;
+    if (leapMonth === m) {
+      const leapName = isEn ? `Leap M${m}` : `閏${name}`;
+      html += `<option value="${leapValue}">${leapName}</option>`;
+    }
+  });
+  monthEl.innerHTML = html;
+  // 尽量保留之前的选中值
+  monthEl.value = previous;
+}
+
+// 解析农历月份下拉的值：返回 { month, isLeap }
+function parseWentianLunarMonthValue(rawValue) {
+  const v = Number(rawValue);
+  if (!v) return { month: 0, isLeap: false };
+  if (v > 100) return { month: v - 100, isLeap: true };
+  return { month: v, isLeap: false };
 }
 
 function getWentianLunarLeapMonth(year) {
@@ -4127,15 +4156,19 @@ function getWentianChartDateParts() {
 
   if (mode === "lunar") {
     year = getWentianNumber("wentian-chart-lunar-year");
-    month = getWentianNumber("wentian-chart-lunar-month");
+    const rawMonth = getWentianNumber("wentian-chart-lunar-month");
+    const parsedMonth = parseWentianLunarMonthValue(rawMonth);
+    month = parsedMonth.month;
     day = getWentianNumber("wentian-chart-lunar-day");
     if (!year || !month || !day) throw new Error("请填写完整的农历出生年月日");
     if (typeof lunarToSolar !== "function") throw new Error("农历转换模块未加载，请刷新后重试");
-    const isLeap = autoLeapMonth && getWentianLunarLeapMonth(year) === month;
+    const leapMonthOfYear = getWentianLunarLeapMonth(year);
+    // 用户显式选了"闰X月"，或勾选了自动闰月且当前月恰好是闰月
+    const isLeap = parsedMonth.isLeap || (autoLeapMonth && leapMonthOfYear === month);
     const solar = lunarToSolar(year, month, day, isLeap);
     if (!solar) throw new Error("农历日期无效或超出支持范围");
     date = new Date(solar.getFullYear(), solar.getMonth(), solar.getDate(), hour, minute);
-    lunar = { year, month, day, isLeap, leapMonth: getWentianLunarLeapMonth(year) };
+    lunar = { year, month, day, isLeap, leapMonth: leapMonthOfYear };
     leapMonthRule = getWentianLeapMonthRuleInfo(lunar, autoLeapMonth);
     calModeLabel = `${wentianChartCityScope === "global" ? "中国农历口径" : "农历"} ${formatWentianLunarRuleLabel(year, month, day, isLeap)}`;
   } else {
@@ -6753,6 +6786,8 @@ function refreshWentianChartAiScreen() {
 }
 
 async function decodeWentianChartAiModules(moduleKeys, options = {}) {
+  // 深度解读收费闸门：未开通会员时引导登录/开通，基础排盘不受影响。
+  if (!openWentianDeepReadingAccess()) return 0;
   syncWentianChartAiStateFromStorage();
   if (wentianChartAiState.status === "running") return;
   const chartData = getWentianChartPayload();
@@ -13164,12 +13199,19 @@ async function startWentianMemberPayment(options = {}) {
   openWentianUnifiedMemberPage(options);
 }
 
+function canWentianOpenDeepReading() {
+  const quota = wentianMemberState.quota || null;
+  // 会员状态还没同步回来时不拦截，避免误伤已付费用户（后端仍会按额度兜底）。
+  if (!quota) return true;
+  return !!(quota.isMember || quota.campaignActive);
+}
+
 function openWentianDeepReadingAccess() {
+  if (canWentianOpenDeepReading()) return true;
   const account = getWentianAuthDisplay();
-  if (wentianMemberState.quota?.isMember) return true;
   if (!account.loggedIn) {
     wentianAuthState.mode = "login";
-    wentianAuthState.error = "请先登录，登录后可查看完整基础解读。";
+    wentianAuthState.error = "基础排盘可免费查看；登录并开通深度解读月卡后，可解锁全部深度批命。";
     navigate("screen-40");
     return false;
   }
@@ -14080,7 +14122,7 @@ function sourceMembershipScreen() {
   const campaignMonth = wentianMemberState.campaign?.monthLabel || "本月";
   const buttonText = campaignActive
     ? (isEn ? "Sign in for free access" : "注册 / 登录后免费使用")
-    : (isEn ? "Choose a monthly pass" : "选择月卡");
+    : (isEn ? "Unlock deep readings · $4.99" : "开通深度解读 · ¥19.90");
   const currentQuota = formatWentianQuotaTextForUi(member.daily, isEn);
   const currentLimit = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
   return `
@@ -14093,27 +14135,33 @@ function sourceMembershipScreen() {
     ${figText("wt33-card-quota", campaignActive ? (isEn ? "Unlimited profiles · 100/day" : "不限命主人数 · 每天100次追问") : `${escapeHtml(currentQuota)} · ${escapeHtml(currentLimit)}`, 46, 174, 250, 11, "#cfc1a9", 700)}
     ${figText("wt33-card-chart", isEn ? `${member.chartUsed}/${member.chartLimit == null ? "∞" : member.chartLimit}` : escapeHtml(member.chartText), 258, 136, 82, 13, "#f4d293", 900, "right")}
 
-    ${figText("wt33-plan-title", isEn ? "Choose a pass" : "选择月卡", 24, 226, 120, 16, "#25211d", 900)}
-    ${figBox("wt33-three", 24, 258, 342, 104, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
-    ${figText("wt33-three-title", isEn ? "3-Profile Deep Pass" : "三人深度月卡", 44, 278, isEn ? 282 : 188, 16, "#8f3d30", 900)}
-    ${figText("wt33-three-price", isEn ? "$4.99 / 31 days" : "¥19.90 / 31天", isEn ? 44 : 208, isEn ? 303 : 274, isEn ? 180 : 132, 15, "#8f3d30", 900, isEn ? "left" : "right", campaignActive ? "text-decoration:line-through;text-decoration-thickness:2px;" : "")}
-    ${campaignActive ? figText("wt33-three-free", isEn ? "FREE NOW" : "限时免费", 246, 301, 94, 12, "#9d3325", 900, "right") : ""}
-    ${figText("wt33-three-desc", isEn ? "3 profiles · Full readings · 30/day" : "3位命主 · 深度解读 · 每天30次追问", 44, isEn ? 336 : (campaignActive ? 335 : 318), 282, 12, "#756d63", 800)}
+    ${figText("wt33-plan-title", isEn ? "Deep Reading Pass" : "开通深度解读", 24, 226, 160, 16, "#25211d", 900)}
+    ${figBox("wt33-plan", 24, 258, 342, 168, "", "border:1px solid #c8a65f;border-radius:16px;background:#fffaf0;box-shadow:0 8px 20px rgba(130,91,31,.08);")}
+    ${figText("wt33-plan-name", isEn ? "Yuetian Deep Reading Pass" : "阅天AI深度解读月卡", 44, 278, 250, 17, "#8f3d30", 900)}
+    ${figText("wt33-plan-price", isEn ? "$4.99 / 31 days" : "¥19.90 / 31天", isEn ? 44 : 178, isEn ? 304 : 297, isEn ? 180 : 168, 18, "#8f3d30", 900, isEn ? "left" : "right", campaignActive ? "text-decoration:line-through;text-decoration-thickness:2px;" : "")}
+    ${campaignActive ? figText("wt33-plan-free", isEn ? "FREE NOW" : "限时免费", 246, 298, 94, 12, "#9d3325", 900, "right") : ""}
+    ${figText("wt33-plan-desc", isEn ? "Basic chart free · All deep readings unlocked" : "基础排盘免费看 · 深度解读全解锁", 44, 328, 302, 12, "#756d63", 800)}
+    ${(() => {
+      const items = isEn
+        ? ["Unlimited chart profiles", "100 follow-ups per day", "Valid for 31 days after activation"]
+        : ["不限命主人数", "每天 100 次追问", "开通起 31 天有效"];
+      return items.map((text, i) => {
+        const y = 358 + i * 22;
+        return `
+          ${figBox(`wt33-plan-dot-${i}`, 46, y + 5, 6, 6, "", "border-radius:3px;background:#b98b45;")}
+          ${figText(`wt33-plan-item-${i}`, text, 62, y, 292, 12, "#5f5348", 800)}
+        `;
+      }).join("");
+    })()}
 
-    ${figBox("wt33-unlimited", 24, 378, 342, 104, "", "border:1px solid #eadfce;border-radius:16px;background:#fff;box-shadow:0 7px 18px rgba(70,45,25,.06);")}
-    ${figText("wt33-unlimited-title", isEn ? "Unlimited Profile Pass" : "无限畅享月卡", 44, 398, isEn ? 282 : 188, 16, "#25211d", 900)}
-    ${figText("wt33-unlimited-price", isEn ? "$14.99 / 31 days" : "¥69.90 / 31天", isEn ? 44 : 204, isEn ? 423 : 394, isEn ? 180 : 136, 15, "#8f3d30", 900, isEn ? "left" : "right", campaignActive ? "text-decoration:line-through;text-decoration-thickness:2px;" : "")}
-    ${campaignActive ? figText("wt33-unlimited-free", isEn ? "FREE NOW" : "限时免费", 246, 421, 94, 12, "#9d3325", 900, "right") : ""}
-    ${figText("wt33-unlimited-desc", isEn ? "All profiles · Full readings · 100/day" : "不限命主人数 · 深度解读 · 每天100次追问", 44, isEn ? 456 : (campaignActive ? 455 : 438), 282, 12, "#756d63", 800)}
+    ${figBox("wt33-free", 24, 444, 342, 66, "", "border:1px solid #eadfce;border-radius:14px;background:#fffdf8;")}
+    ${figText("wt33-free-title", campaignActive ? (isEn ? "Campaign access" : "活动资格") : (isEn ? "Free plan" : "免费可看"), 44, 462, 124, 13, "#25211d", 900)}
+    ${figText("wt33-free-desc", campaignActive ? (isEn ? "Registered accounts receive free access automatically" : "仅限注册账号，登录后自动生效") : (isEn ? "Basic chart reading free · 8 questions total" : "基础排盘完整免费看 · 共8次追问"), 44, 486, 300, 11, "#8d8377", 700)}
 
-    ${figBox("wt33-free", 24, 504, 342, isEn ? 88 : 66, "", "border:1px solid #eadfce;border-radius:14px;background:#fffdf8;")}
-    ${figText("wt33-free-title", campaignActive ? (isEn ? "Campaign access" : "活动资格") : (isEn ? "Without a pass" : "未开通月卡"), 44, 524, 124, 13, "#25211d", 900)}
-    ${figText("wt33-free-desc", campaignActive ? (isEn ? "Registered accounts receive free access automatically" : "仅限注册账号，登录后自动生效") : (isEn ? "1 profile · Full basic reading · 8 questions total" : "登录后：1位命主 · 完整基础解读 · 共8次追问"), 44, 548, 286, 11, "#8d8377", 700)}
-
-    ${figBox("wt33-submit", 42, 604, 306, 48, "", "border-radius:24px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.18);")}
-    ${figButton("wt33-submit-hit", 42, 604, 306, 48, `data-action="wentian-member-pay" aria-label="${escapeHtml(buttonText)}"`)}
-    ${figText("wt33-submit-text", buttonText, 42, 619, 306, 13, "#fffaf3", 900, "center")}
-    ${figText("wt33-submit-note", campaignActive ? (isEn ? "No payment is required during the campaign." : "活动期无需付款，原套餐价格保持不变") : (isEn ? "Choose your payment method on the next page." : "进入月卡页面后再选择支付方式"), 0, 670, 390, 11, "#9e968d", 700, "center")}
+    ${figBox("wt33-submit", 42, 536, 306, 48, "", "border-radius:24px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.18);")}
+    ${figButton("wt33-submit-hit", 42, 536, 306, 48, `data-action="wentian-member-pay" aria-label="${escapeHtml(buttonText)}"`)}
+    ${figText("wt33-submit-text", buttonText, 42, 551, 306, 13, "#fffaf3", 900, "center")}
+    ${figText("wt33-submit-note", campaignActive ? (isEn ? "No payment is required during the campaign." : "活动期无需付款，直接免费使用") : (isEn ? "Choose WeChat Pay or Alipay on the next page." : "支持微信支付 / 支付宝，进入下一步选择"), 0, 600, 390, 11, "#9e968d", 700, "center")}
   `;
 }
 
@@ -14204,7 +14252,7 @@ function sourceMembershipScreenPreview() {
 function sourcePaymentScreen() {
   const isEn = isWentianEnglishUi();
   const productName = wentianPaymentState.productName || WENTIAN_PAID_PRODUCT_NAME;
-  const productBenefit = /无限|Unlimited/i.test(productName)
+  const productBenefit = /深度解读|无限|Unlimited|Deep/i.test(productName)
     ? (isEn ? "Unlimited profiles · 100 questions/day · 31 days" : "不限命主人数 · 100次追问/天 · 有效期31天")
     : (isEn ? "3 profiles · 30 questions/day · 31 days" : "3位命主 · 30次追问/天 · 有效期31天");
   const rawMessage = wentianPaymentState.error || wentianPaymentState.message || (isEn ? "Complete payment to activate the selected pass." : "完成付款后自动开通所选月卡");
@@ -14452,7 +14500,7 @@ function sourceMineScreenV2(screen) {
     ${figBox("source-31-plan-banner-v2", 16, 330, 358, 66, "", "border-radius:22px;background:linear-gradient(135deg,#2e2937 0%,#1b1824 100%);box-shadow:0 12px 24px rgba(36,25,18,.15);")}
     ${figText("source-31-plan-banner-icon-v2", "\u265B", 34, 349, 24, 16, "#f4d59a", 700, "center")}
     ${figText("source-31-plan-banner-title-v2", member.isMember ? escapeHtml(member.title) : "月卡与权益", 68, 346, 150, 18, "#fff8ef", 800)}
-    ${figText("source-31-plan-banner-sub-v2", wentianMemberState.campaign?.active ? "注册登录，限时免费体验" : (member.isMember ? escapeHtml(member.subtitle) : "两种月卡，按需要选择"), 68, 369, 172, 12, "#d7cab8", 700)}
+    ${figText("source-31-plan-banner-sub-v2", wentianMemberState.campaign?.active ? "注册登录，限时免费体验" : (member.isMember ? escapeHtml(member.subtitle) : "¥19.90 开通深度解读"), 68, 369, 172, 12, "#d7cab8", 700)}
     ${figBox("source-31-plan-banner-cta-v2", 262, 344, 92, 38, "", "border-radius:19px;background:linear-gradient(180deg,#f6d8a3,#efc681);")}
     ${figText("source-31-plan-banner-cta-text-v2", planBannerText, 262, 355, 92, 13, "#2c211b", 800, "center")}
     ${figButton("source-31-plan-banner-hit-v2", 16, 330, 358, 66, 'data-route="screen-33" aria-label="月卡与权益"', "", "z-index:37;")}
@@ -24772,11 +24820,14 @@ document.addEventListener("input", (event) => {
       getWentianNumber("wentian-chart-month")
     );
   }
+  if (event.target.id === "wentian-chart-lunar-year") {
+    populateWentianLunarMonthOptions(document.getElementById("wentian-chart-lunar-month"), getWentianNumber("wentian-chart-lunar-year"));
+  }
   if (event.target.id === "wentian-chart-lunar-year" || event.target.id === "wentian-chart-lunar-month" || event.target.id === "wentian-chart-lunar-leap") {
     const lunarYear = getWentianNumber("wentian-chart-lunar-year");
-    const lunarMonth = getWentianNumber("wentian-chart-lunar-month");
-    const isLeap = document.getElementById("wentian-chart-lunar-leap")?.checked && getWentianLunarLeapMonth(lunarYear) === lunarMonth;
-    updateWentianChartDayOptions(document.getElementById("wentian-chart-lunar-day"), 0, 0, getWentianLunarMonthMax(lunarYear, lunarMonth, isLeap));
+    const parsedMonth = parseWentianLunarMonthValue(getWentianNumber("wentian-chart-lunar-month"));
+    const isLeap = parsedMonth.isLeap || (document.getElementById("wentian-chart-lunar-leap")?.checked && getWentianLunarLeapMonth(lunarYear) === parsedMonth.month);
+    updateWentianChartDayOptions(document.getElementById("wentian-chart-lunar-day"), 0, 0, getWentianLunarMonthMax(lunarYear, parsedMonth.month, isLeap));
   }
   updateWentianChartPreview();
 });
@@ -24797,11 +24848,14 @@ document.addEventListener("change", (event) => {
       getWentianNumber("wentian-chart-month")
     );
   }
+  if (event.target.id === "wentian-chart-lunar-year") {
+    populateWentianLunarMonthOptions(document.getElementById("wentian-chart-lunar-month"), getWentianNumber("wentian-chart-lunar-year"));
+  }
   if (event.target.id === "wentian-chart-lunar-year" || event.target.id === "wentian-chart-lunar-month" || event.target.id === "wentian-chart-lunar-leap") {
     const lunarYear = getWentianNumber("wentian-chart-lunar-year");
-    const lunarMonth = getWentianNumber("wentian-chart-lunar-month");
-    const isLeap = document.getElementById("wentian-chart-lunar-leap")?.checked && getWentianLunarLeapMonth(lunarYear) === lunarMonth;
-    updateWentianChartDayOptions(document.getElementById("wentian-chart-lunar-day"), 0, 0, getWentianLunarMonthMax(lunarYear, lunarMonth, isLeap));
+    const parsedMonth = parseWentianLunarMonthValue(getWentianNumber("wentian-chart-lunar-month"));
+    const isLeap = parsedMonth.isLeap || (document.getElementById("wentian-chart-lunar-leap")?.checked && getWentianLunarLeapMonth(lunarYear) === parsedMonth.month);
+    updateWentianChartDayOptions(document.getElementById("wentian-chart-lunar-day"), 0, 0, getWentianLunarMonthMax(lunarYear, parsedMonth.month, isLeap));
   }
   updateWentianChartPreview();
 });
