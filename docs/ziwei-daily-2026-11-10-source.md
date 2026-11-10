@@ -327,3 +327,394 @@ Two interviews in the same month may offer very different roles. Compare duties,
 
 ### Keep an application log
 Record each application, interview round, feedback date, and reason for a rejection when available. State a modest expectation before the month begins, then review it afterward. Read the natal Career Palace, longer cycle, annual layer, and only then the monthly chart. Use the record to improve the resume and interview practice rather than moving the prediction after the result.
+---
+
+## 07. 去外地参加行业展会，迁移宫比官禄宫多看什么？
+slug：`ziwei-qianyi-hangye-zhanhui`
+来源：2026-11-10 同行宫位系统与官禄研究
+角度及旧文区别：聚焦短期行业交流，区别于跨境客户、外派训练与海外合同。今日研究复核后重写。
+正文草稿：
+去外地参加三天行业展会，是一次进入陌生环境的短期行程，而不是“适合异地发展”的长期判断。迁移宫帮助提问外部场景、陌生人和行程中的适应，官禄宫则看这趟行程与职业目标是否相连。先定此行的目的，再决定用什么标准衡量收获，才不会把一次热闹的谈话误当成合作承诺。
+
+### 先分清这趟行程的目的
+如果带着新品寻找经销商，要核对的是参展成本、提前约好的见面名单、样品数量和回来后的跟进能力；如果主要是听讲座、看趋势，重点则是知识更新和同行交流，衡量标准完全不同。迁移宫描述在陌生场合的适应方式，见吉星可问是否容易建立联系，见煞星则留意行程延误、语言或文化上的摩擦，但这些都不能替代实际准备。官禄宫帮助判断这趟行程是否服务于职业路线，而不是为了出门而出门。
+
+### 别把热情谈话当成承诺
+展会上的交谈气氛往往热烈，口头表达的兴趣要回到后续的书面确认、样品测试和报价环节才算数。把每位联系人的姓名、需求、约定事项和跟进日期记下来，回来后按节点推进，用实际回应而不是现场感觉判断机会是否真实。盘上见化禄，可问资源和预算是否支持；见化忌，则查阻力是跟进人手不足、成本过高还是目标不清。
+
+### 排盘时先目的后宫位
+先明确这趟展会要达成什么，再合看迁移宫与官禄宫的组合，最后用实际联系到的人和后续行动验证收获。命盘帮助问对问题、提前准备，行程的价值仍取决于预算、名单和回来后的执行，而不是由迁移宫的星曜自动带来机会。
+英文标题：Zi Wei Dou Shu: A Trade Show and the Travel Palace
+英文描述：Use the Travel and Career Palaces to plan a short industry trip and measure real follow-up.
+英文正文：
+A three-day trade show in another city is a short visit to an unfamiliar environment, not a verdict on long-term relocation. The Travel Palace frames adaptation to new people and settings, while the Career Palace asks whether the trip serves a professional goal. Define the purpose first so the value of the visit can be measured.
+
+### Distinguish the goal
+A founder looking for distributors needs a budget, a meeting list, samples, and a follow-up plan. A visitor attending talks measures value through knowledge and contacts. The Travel Palace can suggest ease or friction in unfamiliar settings, but it does not replace preparation, and the Career Palace checks whether the trip fits the professional path.
+
+### Confirm interest after the event
+Treat warm conversations as leads rather than promises, record each contact and follow-up date, and verify interest through written confirmation. Read the Travel and Career Palaces after naming the goal; the real result depends on budget, the meeting list, and execution after returning home.
+
+---
+
+## 08. 双城通勤没有搬家，迁移宫怎样与田宅宫配合？
+slug：`ziwei-qianyi-shuangcheng-tongqin`
+来源：2026-11-10 同行田宅与宫位系统研究
+角度及旧文区别：聚焦固定往返与住处稳定，区别于跨境项目、半年海外合同与新人外派。今日研究复核后重写。
+正文草稿：
+每周在两个城市之间往返，迁移宫的外部环境和田宅宫的居住基础会同时被触及。迁移宫有动，不一定意味着要搬家，也可能是通勤的消耗在持续增加。先算清车票、住宿、延误和实际在家时间，再判断是调整工作安排，还是改变住处，才不会把“奔波”直接读成“迁居”。
+
+### 先把通勤的真实成本算出来
+统计每月车票、偶尔需要的临时住宿、平均延误时长，以及每周实际能在家的时间，再加上清晨赶车对睡眠的影响。比如每周三天到另一城开会、必须赶早班车的人，体力成本可能比租第二间房更值得先处理。迁移宫描述流动与适应，见煞星可留意行程延误和奔波中的摩擦，但不能据此断言必须搬家；田宅宫则看居住的稳定和休息质量，两宫要一起读。
+
+### 先试可调整的安排，再谈住处
+在考虑第二间房或搬家之前，先看工作制度能否调整，比如把会议集中到固定两天、部分安排改为线上、错峰出行。把每种方案的固定开销和一次性开销分开列，再比较实际在家时间的变化。盘上见化权，可问谁能决定排班；见化忌，则查阻力是制度限制、费用还是家人协商，而不是把星曜当成阻碍本身。
+
+### 排盘顺序与决定依据
+先看本命田宅对稳定居住的长期需求，再看迁移宫所提示的外部流动，最后叠流年，问今年通勤是否明显加重。是否改变住处，要依据账单、工作制度和家人协商，而不是由迁移宫的动静单独决定。命盘帮助识别流动与安定之间的张力，具体选择仍由现实成本和家庭安排承接。
+英文标题：Zi Wei Dou Shu: Two-City Commuting Without Moving
+英文描述：Use the Travel and Property Palaces to weigh commuting costs and home stability.
+英文正文：
+Regular travel between two cities touches both the outside world and the home base. An active Travel Palace does not necessarily mean a move; it may point to the rising cost of repeated journeys. Calculate tickets, lodging, delays, and time spent at home before deciding whether to adjust the schedule or the living situation.
+
+### Measure the real cost
+Count monthly travel costs, temporary lodging, average delays, and the effect of early departures on sleep. Someone attending meetings three days a week may need a schedule change before considering a second apartment. The Travel Palace describes movement and friction, while the Property Palace addresses stability and rest, so read them together.
+
+### Try adjustments before moving
+Explore whether meetings can be concentrated, moved online, or scheduled off-peak before taking on a second home. Separate fixed costs from one-time costs and compare time at home. Read the natal Property pattern, then the Travel Palace and annual layer; the final choice rests on bills, work rules, and family agreement rather than the chart alone.
+
+---
+
+## 09. 疾厄宫与官禄宫同时受压，怎样建立工作边界？
+slug：`ziwei-jiee-guanlu-gongzuo-bianjie`
+来源：2026-11-10 同行工作压力与官禄研究
+角度及旧文区别：聚焦可执行的任务边界与工作量协商，区别于作息记录。今日研究复核后重写。
+正文草稿：
+官禄宫显示责任增加，疾厄宫提示身体负担，这并不等于可以直接断言工作必然伤身。更有用的问题是任务有没有截止时间、哪些要求可以推迟、谁能提供支援。把模糊的“压力大”拆成可以协商的任务清单，工作边界才真正建立得起来。
+
+### 先把任务分成必须完成和可以交接
+一位项目经理同时负责项目交付和新员工培训，可以把“本周必须完成”和“可交接、可延后”分成两栏，连同每项的截止时间一起列出，再和主管确认优先级，而不是默默照单全收。官禄宫描述责任与岗位要求，见化权可问是否带来实际的决策权，见化忌则查卡点是资源不足、职责重叠还是时间冲突；疾厄宫提示承受和消耗，却不能用来判断具体病因，两宫同时出现，重点是促成一次工作量的现实对话。
+
+### 用协商和记录代替硬扛
+带着任务清单与主管谈，明确哪些目标保留、哪些顺延、需要哪些人手或权限，并把确认结果留痕。执行一段时间后，用实际加班时长、交接次数和完成情况检验安排是否有效，而不是凭感觉判断。若已经出现持续的身体不适，应按现实情况求助专业医疗人员，命盘不能替代诊断，也不能把症状归因于某颗星。
+
+### 排盘顺序
+先看本命官禄对事业责任的长期模式，再看疾厄宫对承受方式的提示，最后叠流年，问今年具体新增了哪些任务。命盘帮助把事业责任和个人承受分开提问，任务是否需要重新分配，仍要靠工作记录、协商和专业支持来落实。
+英文标题：Zi Wei Dou Shu: Work Boundaries When Health and Career Feel Strained
+英文描述：Use the Health and Career Palaces to turn workload pressure into a negotiable task list.
+英文正文：
+A demanding Career Palace and a strained Health Palace prompt a workload review rather than a diagnosis. The useful questions are which tasks have deadlines, which can be postponed, and who can provide support. Turning vague pressure into a concrete list is how a work boundary is actually built.
+
+### Separate urgent tasks from transferable ones
+A project manager handling delivery and training can list what must finish this week, what can be handed over, and each deadline, then ask a supervisor to confirm priorities. The Career Palace frames responsibility and decision authority, while the Health Palace signals strain without identifying a cause.
+
+### Negotiate and record rather than endure
+Discuss which targets stay, which move, and what support is needed, then verify the result using overtime and handoff records. Persistent physical symptoms call for appropriate professional medical care; the chart does not replace diagnosis. Read the natal Career pattern, then the Health Palace and annual layer, and resolve workload through real conversation and support.
+
+---
+
+## 10. 疾厄宫提示消耗时，福德宫怎样帮助安排休息？
+slug：`ziwei-jiee-fude-xiuxi-jihua`
+来源：2026-11-10 同行福德宫焦虑模式研究
+角度及旧文区别：聚焦可用休息时间与恢复方式，区别于作息日志和父母照护分担。今日研究复核后重写。
+正文草稿：
+疾厄宫涉及承受与消耗，福德宫帮助提问一个人怎样才能真正放松，但两宫都不能代替健康评估。有人把周末排满聚会，觉得热闹就是休息，周一反而更累；也有人独处一晚后更能投入工作。先看清自己的恢复方式，再安排休息，比照搬别人的放松方法更有效。
+
+### 先列出一周可支配的时间
+把工作、必要家务、睡眠和真正能自由安排的时段分开统计，再看剩下的时间有多少。疾厄宫提示消耗，福德宫描述偏好的精神状态，见不同星曜可问自己是在社交、独处还是动手做事中恢复，但这只是提问的入口，不是结论。例如连续社交后疲惫的人，需要的可能是安静的一晚，而不是再加一场聚会。
+
+### 用小试验找到有效的休息方式
+安排两种不同的周末方案，一种偏社交、一种偏独处或轻量活动，分别记录之后的睡眠和周一状态，用真实感受而不是流行说法判断哪种更恢复。若流年疾厄被牵动，不要把所有疲惫都归因于星曜，持续不适应按现实情况寻求专业医疗帮助。盘上见化忌，可查实际卡点是时间被切碎、休息安排无法落实还是心态难以放松。
+
+### 排盘顺序
+先看疾厄宫对消耗方式的提示，再看福德宫所描述的恢复偏好，最后叠流年，问今年休息时间是否被明显压缩。命盘帮助问对问题，具体的休息安排仍要结合本人的实际感受和可用时间来决定。
+英文标题：Zi Wei Dou Shu: Planning Rest With the Fortune Palace
+英文描述：Use the Health and Fortune Palaces to identify what kind of rest actually restores energy.
+英文正文：
+The Health Palace raises a question about strain, while the Fortune Palace helps explore what actually feels restorative. Neither replaces a health assessment. A full weekend of social events suits some people and exhausts others, so it helps to understand your own pattern before copying someone else's idea of rest.
+
+### Map the available hours
+Separate work, chores, sleep, and genuinely free time. The Health Palace signals strain and the Fortune Palace describes preferred mental states, offering a way to ask whether you recover through company, solitude, or activity rather than a fixed answer.
+
+### Test rest and notice the result
+Try one social weekend and one quieter weekend, then record sleep and the following Monday's energy. Do not attribute every tired feeling to a star; persistent symptoms warrant professional medical care. Read the Health and Fortune Palaces and the annual layer, then build the schedule around real experience and available time.
+
+---
+
+## 11. 收入每月不同，财帛宫怎样配合固定支出预算？
+slug：`ziwei-caibo-budingqi-shouru-yusuan`
+来源：2026-11-10 同行财帛官禄错配与现金流研究
+角度及旧文区别：聚焦不规则收入与固定支出的缓冲，区别于回款周期和订阅支出。今日研究复核后重写。
+正文草稿：
+自由职业者的收入高低波动，财帛宫再好，也不能把上个月的高收入当成本月固定会到账的现金。先把房租、保险、税费等最低支出算清，再用过去几个月的实际入账估计一个保守预算，才能在空档月份不被固定开销逼到措手不及。
+
+### 先保固定支出，再谈其他开销
+列出每月必须支付的房租、保险、税费和基本生活费用，得出一个无论收入多少都要覆盖的底线数字，再回看过去六个月的实际入账，用偏低而不是偏高的月份来估计保守收入。财帛宫看收入的取得方式和现金流动，官禄宫看工作是否持续提供项目，福德宫可帮助审视消费习惯，三宫分工，避免把“能赚钱”直接等同于“手头有钱”。
+
+### 为收入空档建立缓冲
+旺季收入可能翻倍，但如果一年里有两个月几乎没有项目，就要先留出能覆盖固定支出的缓冲资金，再安排非必要消费。把一次性的大额收入和可重复的月收入分开记账，才不会用偶发的高收入抬高长期开销。盘上见化禄，可问资源和机会是否到位；见化忌，则查卡点是预算过松、缓冲不足还是项目断档，逐项对应现金安排。
+
+### 排盘顺序
+先看本命财帛对赚钱方式的长期提示，再看官禄宫是否支持项目持续，最后叠流年，问今年收入波动是否加大。命盘帮助区分赚钱能力和当下可支配的现金，具体预算仍要按真实入账和固定支出制定。
+英文标题：Zi Wei Dou Shu: Budgeting With Irregular Monthly Income
+英文描述：Use the Wealth and Career Palaces to cover fixed costs and build a buffer when income varies.
+英文正文：
+When income fluctuates, even a strong Wealth Palace cannot turn last month's high earnings into guaranteed cash this month. Calculate the minimum fixed costs, such as rent, insurance, and taxes, then use actual deposits from lower months to set a conservative budget.
+
+### Protect fixed costs first
+List the expenses that must be covered regardless of income and review the past six months of deposits using a cautious figure. The Wealth Palace frames how money is earned and moves, the Career Palace asks whether work keeps coming, and the Fortune Palace helps examine spending habits.
+
+### Build a buffer for quiet months
+If strong seasons alternate with months of little work, keep a buffer that covers fixed costs before adding discretionary spending, and separate one-time income from repeatable income. Read the natal Wealth pattern, then the Career Palace and annual layer; the real budget still depends on actual deposits and fixed obligations.
+
+---
+
+## 12. 接项目先垫钱，财帛和官禄宫各要核对什么？
+slug：`ziwei-caibo-xiangmu-dianzi`
+来源：2026-11-10 同行现金流与官禄研究
+角度及旧文区别：聚焦项目垫资与合同条件，区别于口碑、订阅费与应收账款时间差。今日研究复核后重写。
+正文草稿：
+一个项目报价很高，却要求先替客户支付设备和交通费用，这时不能只看合同总额。官禄宫提示这个项目与职业路线是否匹配，财帛宫则要追问现金什么时候出去、什么时候回来。先把钱的路径核清楚，再决定接不接，才不会被表面利润套住现金流。
+
+### 先看清现金进出的时间差
+把垫付上限、预付款比例、验收标准和逾期处理逐项列出，尽量以书面合同约定，而不是停留在口头。官禄宫帮助判断项目是否符合长期方向，财帛宫关注现金的进出节奏，见化禄可问资源是否到位，见化忌则查卡点是回款太慢、垫资过高还是条款不清。例如摄影师接大型活动，设备租金已经占去报价三成，如果尾款还要等两个月，实际被占用的资金和风险，可能大于账面利润。
+
+### 用合同和收款记录而不是感觉判断
+把预计利润和被占用的资金分开列，比较不同项目的回款周期，再决定是否有能力同时承担多个需要垫资的工作。每一笔垫付和回款都留痕，用真实记录而不是客户的口头承诺评估风险。盘上见化权，可问自己对条款有没有谈判空间；若条款无法调整、垫资又超过可承受范围，就应降低规模或拒绝。
+
+### 排盘顺序
+先看本命官禄对职业路线的长期提示，再看财帛宫所描述的现金进出方式，最后叠流年，问今年这类项目是否增多。命盘帮助核对钱的路径，合约和收款记录才是判断依据。
+英文标题：Zi Wei Dou Shu: Checking a Project That Requires Upfront Costs
+英文描述：Use the Wealth and Career Palaces to examine cash timing, advances, and contract terms.
+英文正文：
+A high-fee project can still strain cash if the contractor pays equipment and travel costs first. The Career Palace asks whether the work fits the professional path, while the Wealth Palace draws attention to when money leaves and returns. Check the money route before accepting the job.
+
+### See the timing gap
+Record a spending cap, advance, acceptance criteria, and late-payment terms in writing. The Career Palace judges long-term fit and the Wealth Palace examines cash flow. If equipment rental already takes a large share of the fee and the final payment waits two months, the tied-up capital may outweigh the apparent profit.
+
+### Rely on contracts and payment records
+List expected margin and occupied capital separately, and keep evidence of every advance and repayment rather than relying on verbal promises. Read the natal Career pattern, then the Wealth Palace and annual layer; the contract and payment history remain the real basis for the decision.
+
+---
+
+## 13. 兄弟宫见天机，熟人共用设备如何定使用规则？
+slug：`ziwei-xiongdi-gongyong-shebei`
+来源：2026-11-10 同行兄弟宫同辈合作研究
+角度及旧文区别：聚焦共用有形资产的使用权，区别于合伙方案变更和成员边界。今日研究复核后重写。
+正文草稿：
+兄弟宫可以延伸到平辈合作者，天机强调安排容易调整，但这并不能推断对方一定善变。两位设计师共用一台打印设备，真正容易起争执的是谁先用、耗材谁买、损坏怎样处理。把规则写清楚，共用设备才不会因为临时变动而反复扯皮。
+
+### 先定使用和费用的规则
+把预约方式、使用时段、耗材采购、保养责任和损坏处理写成共享记录，临时改动也要留下确认，而不是凭默契。兄弟宫描述身边平辈伙伴的特质，天机提示安排会变化，见煞星可留意协作中的摩擦，但这些星曜不能用来判断某人是否可靠，更不能替合同做担保。
+
+### 限定借用范围，区分关系对象
+如果还有外围使用者通过朋友关系来借设备，更要明确哪些人可以借用、是否收费、损坏如何赔偿，避免亲近伙伴的关系被无限延伸。兄弟宫对应少数亲近的平辈，交友宫对应更广的社交圈，两宫区分清楚，规则才不会对所有人一概而论。盘上见化忌，可查实际卡点是记录缺失、责任不清还是费用分摊有争议。
+
+### 排盘顺序
+先看本命兄弟宫对平辈关系的长期提示，再看相关星曜与三方，最后叠流年，问今年共用安排是否出现变化。命盘帮助分关系对象，明确的使用规则和书面记录才是承接变化的依据。
+英文标题：Zi Wei Dou Shu: Sharing Equipment With a Peer
+英文描述：Use the Siblings Palace and practical rules to manage shared equipment, costs, and repairs.
+英文正文：
+The Siblings Palace can describe peer collaborators, and Tian Ji draws attention to arrangements that may change, but it does not prove that a partner is unreliable. Two designers sharing a printer need clear rules for booking, supplies, and damage.
+
+### Set usage and cost rules
+Write down booking, time slots, supplies, maintenance, and repair handling in a shared record, and confirm each temporary change. The Siblings Palace describes peer traits and the stars may suggest friction, but they do not judge whether someone is trustworthy or replace a contract.
+
+### Limit outside borrowers
+Clarify who may borrow equipment, whether there is a charge, and how damage is handled, distinguishing close peers from the wider social circle represented by the Friends Palace. Read the natal Siblings pattern, then the supporting palaces and annual layer; written rules remain the practical basis.
+
+---
+
+## 14. 同辈朋友借钱，兄弟与交友宫能提醒哪些边界？
+slug：`ziwei-xiongdi-jiaoyou-jiekuan`
+来源：2026-11-10 同行兄弟宫与交友范围研究
+角度及旧文区别：聚焦借款条件与关系范围，区别于团队责任分工。今日研究复核后重写。
+正文草稿：
+熟人来借钱，先确认对方是长期共同承担责任的平辈伙伴，还是一般社交关系。兄弟宫与交友宫帮助区分关系结构，财帛宫提醒核对自己能承担的金额，任何组合都不能预测对方必定还钱或失信。先做现实的预算和条款，再谈借不借。
+
+### 先分清关系，再看自己能否承担
+兄弟宫对应少数亲近的同辈，交友宫对应更广的社交圈，关系远近不同，借款的处理方式也应不同。财帛宫帮助核对自己的现金需求，先确认这笔钱借出去会不会动到房租或应急资金。没有任何星曜能保证还款，因此判断要建立在可承受范围而不是关系压力上。
+
+### 把条款写清楚
+即使是熟人，也应写清借款金额、用途、还款日期和无法按期还款时如何处理，双方留痕。如果借出这笔钱会动用房租或应急资金，就应降低金额或拒绝，而不是因为不好意思而勉强。盘上见化忌，可查实际卡点是自己预算紧张、条款模糊还是还款来源不清，逐项对应。
+
+### 排盘顺序
+先看本命兄弟宫与交友宫对关系范围的长期提示，再看财帛宫所描述的可承担金额，最后叠流年，问今年是否容易出现这类请求。命盘帮助检查自己是否因关系压力忽略了边界，现实预算和书面条款才是决定依据。
+英文标题：Zi Wei Dou Shu: Boundaries When a Peer Asks to Borrow Money
+英文描述：Use the Siblings, Friends, and Wealth Palaces to set affordable terms and clear relationship limits.
+英文正文：
+When someone asks for a loan, first clarify whether they are a close peer with shared responsibilities or a wider social contact. The Siblings and Friends Palaces frame the relationship structure, while the Wealth Palace prompts a review of what you can afford. No star guarantees repayment.
+
+### Check the relationship and affordability
+The Siblings Palace covers a small group of close peers and the Friends Palace the broader social circle. Confirm whether lending would touch rent or emergency funds, and base the decision on affordability rather than social pressure.
+
+### Put terms in writing
+Even with someone you know, record the amount, purpose, repayment date, and what happens if payment is late. If the loan would use rent or emergency money, reduce the amount or decline. Read the relationship palaces and the Wealth Palace, then the annual layer; the real decision rests on budget and written terms.
+
+---
+
+## 15. 想进外企，官禄宫怎样对应试用期的具体目标？
+slug：`ziwei-guanlu-waizi-shiyongqi-mubiao`
+来源：2026-11-10 同行官禄授权与职责研究
+角度及旧文区别：聚焦入职后的岗位验收目标，区别于语言培训成本。今日研究复核后重写。
+正文草稿：
+转进外企并不是收到录用信就结束。官禄宫帮助核对岗位责任是否符合长期方向，流年提示这一阶段的机会，但试用期能否留下，还要看书面的目标和反馈。把关注点从“能不能进”转到“进去后怎么验收”，准备才真正落到实处。
+
+### 先问清试用期的具体目标
+入职前问清前三个月的交付物、直属主管、反馈频率和绩效口径，最好拿到书面的岗位说明，而不是只凭面试时的印象。官禄宫描述职责与平台，见化权可问是否带来实际的决策和预算权限，见化忌则查卡点是职责不清、资源不足还是目标模糊。比如岗位叫“区域负责人”，实际只有执行权限而没有预算权，头衔并不等于成长空间。
+
+### 用书面条款而不是头衔判断
+把职责、授权和考核标准写明，再观察大限是否支持长期投入，不把某一年的化禄读成试用期必然通过的保证。进入试用期后，按约定的节点核对交付物和反馈，用实际记录而不是感觉判断自己是否达标。盘上见化科，可问怎样争取清晰的反馈和认可；若发现承诺与实际岗位不符，也依据书面条款沟通。
+
+### 排盘顺序
+先看本命官禄对职业方向的长期模式，再看流年所提示的阶段机会，最后参考大限判断长期投入。命盘帮助核对岗位与方向是否匹配，试用期能否留下仍取决于书面目标、实际交付和反馈。
+英文标题：Zi Wei Dou Shu: Probation Goals in a Foreign Company
+英文描述：Use the Career Palace to map written probation deliverables, authority, and feedback.
+英文正文：
+A job offer is the start of a probation period rather than proof of a lasting career step. The Career Palace frames long-term fit, while the annual layer may describe timing. Whether the role becomes permanent depends on written goals and feedback, so shift attention from getting the offer to meeting the probation standard.
+
+### Ask for concrete probation goals
+Before joining, clarify the first three months' deliverables, supervisor, feedback schedule, and performance measures, ideally in writing. The Career Palace frames responsibility and authority. A regional title without budget authority may offer less growth than it sounds.
+
+### Use written terms rather than the title
+Record duties, authority, and review standards, then check deliverables against the agreed schedule. Do not treat an annual favorable pattern as a guarantee of passing probation. Read the natal Career pattern, then the annual and longer cycles; actual results depend on written goals and real delivery.
+
+---
+
+## 16. 跨语言团队沟通不顺，官禄与迁移宫怎么分工？
+slug：`ziwei-guanlu-qianyi-yuyan-goutong`
+来源：2026-11-10 同行宫位系统与官禄研究
+角度及旧文区别：聚焦跨语言团队内部流程，区别于对外跨境客户交付。今日研究复核后重写。
+正文草稿：
+团队开会都用第二语言，沟通卡住并不一定是个人语言能力不足。官禄宫看岗位任务和组织分工，迁移宫关注在陌生文化和规则中的适应。先定位误解发生在哪个环节，再决定改流程还是补语言，才不会把流程问题误当成个人问题。
+
+### 先找出误解发生的环节
+收集一段时间里的返工和误会，看它们集中在需求文档、会议纪要还是审批流程，而不是笼统地说“沟通不好”。官禄宫描述岗位职责和工作流程，迁移宫帮助理解在陌生文化、术语和规则中的适应，见煞星可留意协作中的摩擦，但星曜不能替代对流程的实际排查。例如设计师口头听懂了需求，却没有确认交付文件的格式，结果反复返工，问题出在确认环节而不是语言水平。
+
+### 用流程工具降低误解
+约定会议后用书面摘要确认结论、建立关键术语表、明确每个事项的责任人，再用两周时间统计实际返工次数，用数据检验改进是否有效。盘上见化忌，可查卡点是记录缺失、责任不清还是术语不统一；见化科，则问怎样把规则和文档系统化。
+
+### 排盘顺序
+先看本命官禄对岗位与分工的长期提示，再看迁移宫所描述的跨文化适应，最后叠流年，问今年协作环境是否出现变化。命盘帮助定位问题类别，流程改进仍要靠团队共同执行。
+英文标题：Zi Wei Dou Shu: Communication in a Multilingual Team
+英文描述：Use the Career and Travel Palaces to locate workflow problems and reduce rework across languages.
+英文正文：
+When meetings run in a second language, communication problems are not always a personal language issue. The Career Palace addresses duties and workflow, while the Travel Palace frames adaptation to unfamiliar culture and rules. Locate where misunderstanding occurs before deciding whether to fix process or language.
+
+### Find the exact point of error
+Track rework and see whether it clusters in briefs, meeting notes, or approvals rather than labeling everything as poor communication. The Career Palace describes workflow and the Travel Palace covers adaptation. A designer may understand the discussion but miss the required file format, pointing to a confirmation problem rather than a language one.
+
+### Reduce misunderstanding through process
+Agree on written summaries, a shared terminology list, and clear owners, then count rework over two weeks to test the change. Read the natal Career pattern, then the Travel Palace and annual layer; the team still carries out the process improvement together.
+
+---
+
+## 17. 老出生记录遇到夏令时，排盘前怎样核对原始时间？
+slug：`ziwei-lishi-xialingshi-chushengji`
+来源：2026-11-10 同行时间校正方法研究
+角度及旧文区别：聚焦历史出生记录的证据链，区别于真太阳时交界双盘。今日研究复核后重写。
+正文草稿：
+一张旧出生证明只写了钟表时间，并不能立刻知道它是否已经包含当地当时的夏令时。先核对出生地点、日期、当时的法定时区和记录来源，再决定排盘软件怎么设置，而不是凭印象加减一小时。
+
+### 先建立原始资料的证据链
+确认出生地点、具体日期、当时实行的法定时区和夏令时规则，以及这份记录来自医院、户籍还是家人口述，分别标注可信度。家人口述与医院文件不一致时，要分开保存，不要随意加减一小时去凑出自己偏好的盘。只有在需要跨过时辰边界时，时间设置才可能改变宫位和主星布置，若出生在时辰中段，通常不必为几分钟的差异惊慌。
+
+### 明确软件如何处理历史时制
+核对排盘软件是否自动处理历史上的夏令时和时区变化，还是需要手动输入标准时间，把设置记录下来，保证结果可以复现。先保存原始资料，再比较候选盘，不能倒过来用盘象去“证明”某条出生记录是错的。盘上的差异应来自可核对的时间规则，而不是主观判断。
+
+### 排盘顺序
+先核对原始记录和当时的法定时制，再决定软件设置，最后才比较临界时辰可能出现的不同盘面。命盘帮助组织核对步骤，出生时间的证据仍要以原始文件和历史时制为准。
+英文标题：Zi Wei Dou Shu: Checking an Old Birth Record With Daylight Saving Time
+英文描述：Verify place, date, legal time rules, and source before setting up a chart with daylight saving history.
+英文正文：
+An old birth certificate may record clock time without explaining daylight saving rules. Before creating a Zi Wei Dou Shu chart, confirm the birthplace, date, legal time zone, and the source of the record rather than adding or subtracting an hour by assumption.
+
+### Build the evidence chain
+Identify the place, date, legal time and daylight saving rules, and whether the record comes from a hospital, registry, or family memory, marking each source's reliability. Keep family recollections separate from documents. Time settings change the chart mainly when they cross a two-hour palace boundary; a birth in the middle of a period usually needs no adjustment for a few minutes.
+
+### Check how the app handles historical time
+Confirm whether the chart software applies historical daylight saving automatically or requires standard time, and record the settings so the result can be reproduced. Preserve the original data before comparing candidate charts; the evidence remains the original document and the historical time rules.
+
+---
+
+## 18. 接近午夜出生，子时跨日争议先准备哪些记录？
+slug：`ziwei-zishi-kuari-rili-jilu`
+来源：2026-11-10 同行时间校正与边界研究
+角度及旧文区别：聚焦跨午夜的原始日期证据，区别于年界与闰月软件设置。今日研究复核后重写。
+正文草稿：
+出生记录写着二十三点多，两个排盘工具却给出不同日期，先别急着判断哪张盘“更像自己”。要核对医院记录使用的日期、地点、时区和是否跨午夜，以及软件对子时归日的规则，把可核对的资料备齐，再比较盘面。
+
+### 先固定原始记录
+核对医院记录上的日期、出生地点、时区和原始钟表时间，确认是否存在跨午夜转床、登记延后等情况。家人记得“是夜里出生”，可以作为背景，但不足以精确判定日期边界。把原始证据和口述信息分开标注，避免用模糊记忆替代书面记录。
+
+### 做一张工具规则对照表
+列出每个排盘软件对子时如何归日、是按二十三点换日还是零点换日，以及它们在相同输入下输出的差异，先确认规则是否可以复现，再比较盘面。不能把哪张盘的个性描述“更像自己”当成校时证据，那会陷入循环论证。盘上的差异应来自明确的换日规则，而不是偏好。
+
+### 排盘顺序
+先核对原始钟表时间、日期和时区，再整理各软件的换日规则，最后只在设置可复现后比较候选盘。命盘帮助组织核对步骤，日期边界仍要以原始记录和软件规则为准。
+英文标题：Zi Wei Dou Shu: Preparing Records for a Near-Midnight Birth
+英文描述：Verify the original date, time zone, and each app's Zi-hour rule before comparing near-midnight charts.
+英文正文：
+A birth time shortly after 11 p.m. can produce different chart dates when apps use different day-boundary rules. Start with the hospital's recorded date, place, time zone, and original clock time, and check how each software handles the Zi hour before comparing charts.
+
+### Fix the original record first
+Confirm the recorded date, place, time zone, and whether any late-night transfer or delayed registration occurred. A relative's memory of a late-night birth is useful context but may not settle the boundary, so keep written evidence and recollections separate.
+
+### Build a comparison of app rules
+List how each app assigns the Zi hour and what it outputs for the same input, confirming the rules are reproducible before comparing charts. Do not use which personality description feels more accurate as evidence, because that creates circular reasoning. The chart helps organize the check, while the original record and software rules determine the date.
+
+---
+
+## 19. 职位头衔变了而工作没变，官禄宫该看什么？
+slug：`ziwei-guanlu-zhize-touxian`
+来源：2026-11-10 同行官禄授权与错配研究
+角度及旧文区别：聚焦职位名与实际授权错位，区别于佣金回款和多收入主线。今日研究复核后重写。
+正文草稿：
+从专员改叫经理，却仍在做同样的任务，不能只凭头衔判断事业升级。官禄宫看职责、平台和发展方向，财帛宫要另外核对薪酬有没有跟着变。先比较改名前后的实际差异，才能判断这是真正的晋升，还是只是名称调整。
+
+### 先比较头衔背后的实际变化
+列出团队人数、决策权限、预算范围和绩效责任，逐项比较改名前后的差别，而不是停留在新名片上的称呼。官禄宫描述责任与平台，见化权可问是否带来实际权力，见化忌则查卡点是有责任无授权、资源不足还是职责模糊。如果承担了更多结果责任，却没有相应的人手和预算，谈判重点就应是资源与职责对齐。
+
+### 官禄与财帛分开核对
+头衔变化和薪酬变化是两件事，要单独确认工资、绩效和考核口径有没有跟着调整，避免把名称变化当成回报已经兑现。本命官禄看长期的职业模式，流年观察是否进入调整期，再用财帛宫核对实际收入，不把名称变化当成成就已经落袋。
+
+### 排盘顺序
+先看本命官禄对职责与方向的长期提示，再看财帛宫所描述的回报，最后叠流年，问今年是否出现头衔与授权的错位。命盘帮助识别“有位无权”的情况，实际判断仍要以职责、授权和薪酬的现实证据为准。
+英文标题：Zi Wei Dou Shu: When a Job Title Changes but the Work Does Not
+英文描述：Use the Career and Wealth Palaces to compare real authority, responsibility, and pay behind a new title.
+英文正文：
+A new title does not necessarily mean a new role. The Career Palace frames responsibility and direction, while the Wealth Palace separately asks whether compensation changed. Compare the actual differences before and after the name change to tell a real promotion from a relabeling.
+
+### Compare what lies behind the title
+List team size, decision authority, budget, and measured outcomes before and after the change. The Career Palace describes responsibility and platform, and if accountability rises without people or budget, the practical discussion is about aligning resources with duties.
+
+### Check Career and Wealth separately
+Title and pay are different questions, so confirm whether salary and performance measures actually changed. Read the natal Career pattern, then the Wealth Palace and annual layer; real judgment rests on duties, authority, and compensation rather than the name on a business card.
+
+---
+
+## 20. 一次性奖金增加，财帛宫为什么不能当长期收入读？
+slug：`ziwei-caibo-yicixing-jiangjin`
+来源：2026-11-10 同行收入错配与现金流研究
+角度及旧文区别：聚焦一次性奖金与稳定收入分离，区别于多渠道收入主线。今日研究复核后重写。
+正文草稿：
+项目完成后拿到一笔奖金，财帛宫可以提示今年有一笔钱流入，却不能保证明年还有同额收入。先把基本工资、绩效奖金和报销分开，核对奖金的税后金额和发生条件，再决定怎么花，才不会把偶发收入当成长期保障。
+
+### 先区分收入的性质
+把基本工资、绩效奖金和报销分开记账，核对这笔奖金的税后金额、支付条件和下一次出现的概率。财帛宫描述现金的流动，官禄宫帮助追问带来奖金的额外工作是否可以持续，见化禄可问资源是否到位，但不能据此推断同样的钱会重复发生。
+
+### 别让一次性收入抬高固定开销
+有人把一次性奖金用于提高租金、签下长期分期，第二年奖金不再出现，固定支出就压出了现金缺口。固定承诺要按可重复的收入制定，奖金更适合用于储蓄、偿还或一次性投入，而不是长期月供。盘上见化忌，可查卡点是预算过松、收入结构单一还是对未来过于乐观。
+
+### 排盘顺序
+先看收入性质，再合看财帛宫与官禄宫，最后叠流年，问今年这笔流入是否可持续。命盘帮助提问收入质量，预算仍要按可重复的收入制定。
+英文标题：Zi Wei Dou Shu: Why a One-Time Bonus Is Not Permanent Income
+英文描述：Use the Wealth and Career Palaces to separate a one-time bonus from reliable ongoing pay.
+英文正文：
+A large project bonus is a real inflow, but it should not be treated as permanent monthly income. Separate base pay, performance pay, and reimbursements, then check the net amount and the conditions under which another bonus could occur.
+
+### Identify the nature of the income
+Record the after-tax amount, payment conditions, and the likelihood of it repeating. The Wealth Palace frames cash movement and the Career Palace asks whether the extra work is sustainable, but the chart does not imply that the same amount will recur.
+
+### Do not let one-time income raise fixed costs
+Base fixed commitments on repeatable income, and use a bonus for savings, debt, or one-time spending rather than long-term monthly obligations. Read the Wealth and Career Palaces, then the annual layer; the budget should still be built on reliable pay.
