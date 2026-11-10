@@ -141,3 +141,65 @@ slug：`ziwei-caibo-yicixing-jiangjin`
 角度与区别：一次性奖金与稳定收入分离；不同于多渠道收入主线。
 中文草稿：项目完成拿到一笔奖金，财帛宫可以提示今年钱的流入，却不能保证明年仍有同额收入。先把基本工资、绩效奖金与报销分开，核奖金的税后金额、支付条件和下一次发生概率。若官禄宫显示项目责任加重，还要问新增工作是否可持续。有人把一次性奖金用于提高固定租金，第二年奖金消失便出现现金缺口。排盘时先看收入性质，再看财帛与官禄的组合；预算要按可重复的收入制定。
 English draft: A large project bonus is a real inflow, but it should not be treated as permanent monthly income. Separate base pay, performance pay, and reimbursements, then check the net amount and conditions for another bonus. The Wealth Palace can frame cash movement; the Career Palace asks whether the extra work is repeatable. Base fixed commitments on reliable pay, and use the chart to ask clearer questions about income quality.
+
+---
+
+## 01. 2027年与家人共住，田宅宫怎样核对公共空间分工？
+slug：`ziwei-2027-tianzhai-gongju-kongjian`
+来源：2026-11-10 https://destiny.afei-tw.com/articles/ziwei-tianzhai-palace/
+角度及与旧文区别：只处理共住的空间使用权和时段协商；区别于11/09续租、装修与买房选题。原始备稿参考11/09，今日研究复核后重写。
+正文草稿：
+三代同住，客厅白天是远程办公室，傍晚又要给孩子活动。有人看到2027流年田宅宫有动，便以为全家要搬。实际上眼前的问题是同一空间被多人在不同时间使用。田宅宫可提醒核对居住安排，不能替家人分配房间，更不能从一颗星推出搬家结论。
+
+### 先分清本命需求和年度变化
+本命田宅看较稳定的居住偏好：有人需要固定的安静角落，有人更在意家人相聚。大限若同时改变工作形态，空间需求可能持续数年；2027流年只提示今年哪处摩擦变得突出。先写下谁在何时使用房间，再比较过去与今年的差别。若只是每周两次视频会议增加，买更大的房子未必比预约使用时段更有效。盘上有化权，可问谁有决定权；见化忌，则查实际阻力是噪音、收纳还是费用，不能把星曜直接当成某个人的过错。
+
+### 将关系和费用分别核对
+父母宫被牵动时，要问长辈是否能接受改变熟悉的生活节奏；子女宫被牵动时，另看孩子的作息与照料。夫妻宫则关乎伴侣如何商量，不应把所有家人的需求都塞进田宅宫。比如远程办公者提出白天关客厅门，照护孩子的人可能因此失去活动位置。另一种方案是把卧室加隔音、会议集中到两天，先试行两周。若要添置桌椅或屏风，财帛宫提示核对预算，但购买前仍应量尺寸并确认谁付款。
+
+### 用可检验的安排代替断语
+把工作、睡眠、活动、储物四类需求写成一张时间表，标出不可重叠的时段。试用后记录实际冲突次数、谁经常让步以及是否影响休息。若协商仍无解，再比较换房、局部调整和外部工作空间的成本。一次争执不能证明田宅宫不好；一周平静也不表示长期问题消失。共同居住需要持续修订规则，尤其当轮班、照护或上学时间变动时。
+
+### 排盘顺序
+先看本命田宅及三方对居住方式的长期提示，再看大限是否改变家庭和工作结构，最后叠2027流年田宅，问今年新增了什么具体约束。记录实际空间和使用时间后再讨论方案。命盘帮助找问题，生活规则由同住的人共同决定。
+英文标题：Zi Wei Dou Shu in 2027: Sharing Space Through the Property Palace
+英文描述：Read natal and annual Property Palace themes while making a workable shared-home schedule.
+英文正文：
+Sharing a home with relatives can create a simple conflict: the living room is an office in the morning and a play area after school. An active annual Property Palace in 2027 does not require a move. In Zi Wei Dou Shu, it prompts a closer look at how the home is used.
+
+### Separate the time layers
+The natal Property Palace can frame lasting preferences for quiet, privacy, or family contact. A longer cycle may reflect a sustained change in work or care duties. The annual layer asks what changed this year. List who needs each room and at what time before treating a chart pattern as a housing decision.
+
+### Compare workable options
+A remote worker could book two meeting days, add a screen in a bedroom, or use an outside workspace. Ask older relatives and caregivers how each option affects them. Put purchase costs and recurring costs in different columns. Try a schedule for two weeks and record conflicts. Read the natal chart first, then the longer cycle and 2027 layer; let the residents agree on the rule.
+
+---
+
+## 02. 2027年为长辈调整卧室，田宅与父母宫各看什么？
+slug：`ziwei-2027-tianzhai-changbei-woshi`
+来源：2026-11-10 https://destiny.afei-tw.com/articles/ziwei-tianzhai-palace/
+角度及与旧文区别：聚焦长辈卧室的可达性、隐私和本人意愿；区别于11/09装修预算与照护排班。今日研究复核后重写。
+正文草稿：
+家人想把长辈的卧室换到一楼，理由是楼梯方便少走。长辈却舍不得原来的窗景，也不愿房门正对客厅。田宅宫讨论空间和居住感，父母宫帮助看代际期待如何进入决定。两宫同时被触动，并不能替长辈表态；先问本人愿意怎样住，才有讨论命盘的基础。
+
+### 田宅看房间是否真正可用
+不要只比较楼层。检查夜间去卫生间的距离、门槛、采光、通风、噪音和储物。若房间白天还被用作工作间，必须算上清空设备和搬动家具的时间。流年田宅见调整信号时，重点是今年要处理的实际变更，不能断定必须换房。田宅化忌可提示排查空间中的阻碍，不能指认谁会制造麻烦。先实测走动路线，必要时请合适的专业人员评估无障碍细节，别用星曜替代安全判断。
+
+### 父母宫看期待与责任，不替人说话
+父母宫牵涉与长辈的关系和承担方式。一位子女认为一楼更安全，另一位担心公共区域缺少隐私，长辈本人可能最在意熟悉的摆设。分别记录三方的理由，避免把“为你好”当成已经征得同意。若夫妻宫也有变化，夫妻双方还应谈清谁负责搬运、谁处理费用、后续谁来协调。照护责任与房间选择是两件事，不能仅凭父母宫一并决定。
+
+### 比较小调整和大调整
+先试可撤回的小措施，如改善夜灯、移动常用物品、调整床位或明确客厅安静时段。若要换卧室，再列搬动成本、原房间用途和一个月后重新评估的日期。比如长辈先在一楼住一周，发现夜里方便却白天太吵，就可以继续调整隔音，或回到原房并改善楼梯照明。试住结果比“田宅有动”四字更能说明哪种方案适合。出现身体不适应按现实情况求助专业人员，命盘不能作诊断。
+
+### 排盘时如何合看
+先读本命田宅的长期居住习惯，接着看父母宫所提示的关系期待，再看大限和2027流年是否让调整变得迫切。三方四正若牵到财帛，单独列预算；若牵到迁移，核对出入动线。最后拿实测、本人意愿和费用表作决定，不把某宫的强弱解释成对长辈的命令。
+英文标题：Zi Wei Dou Shu: A Bedroom Change for an Older Relative
+英文描述：Use the Property and Parents Palaces to frame a bedroom decision around access and consent.
+英文正文：
+A downstairs bedroom may look convenient, yet an older relative may prefer the light and privacy of the current room. The Property Palace in Zi Wei Dou Shu frames the space itself. The Parents Palace can raise questions about expectations between generations. Neither palace speaks on the relative's behalf.
+
+### Inspect the room before reading the signal
+Measure the route to the bathroom, thresholds, noise, storage, and access to common areas. An annual housing signal highlights a question for this year; it cannot prescribe a room. Ask the person who will live there which features matter most. Keep care duties and moving costs as separate decisions.
+
+### Try and review
+Small changes such as lighting or furniture placement may solve the immediate problem. If the family tries a new room, agree on a review date and allow the resident to change course. Read the natal Property pattern, then the Parents Palace and annual layer. Use the room's actual features and the resident's wishes to choose.

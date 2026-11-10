@@ -4,8 +4,8 @@
 
 | 顺序 | 状态 | slug | 原创搜索问题 | 当日来源序号 | 与 11/09 已发布内容区别 |
 |---|---|---|---|---|---|
-| 01 | 待次日研究复核，未发布 | ziwei-2027-tianzhai-gongju-kongjian | 2027年与家人共住，田宅宫怎样核对公共空间分工？ | 1 | 共住边界，不写续租或装修 |
-| 02 | 待次日研究复核，未发布 | ziwei-2027-tianzhai-changbei-woshi | 2027年为长辈调整卧室，田宅与父母宫各看什么？ | 1 | 代际空间安排，不写买房预算 |
+| 01 | 已发布 2026-11-10 09:00 https://yuetianai.com/articles/ziwei-2027-tianzhai-gongju-kongjian.html / https://yuetianai.com/articles/en/ziwei-2027-tianzhai-gongju-kongjian.html | ziwei-2027-tianzhai-gongju-kongjian | 2027年与家人共住，田宅宫怎样核对公共空间分工？ | 大限流年 |
+| 02 | 待发布 | ziwei-2027-tianzhai-changbei-woshi | 2027年为长辈调整卧室，田宅与父母宫各看什么？ | 宫位组合 |
 | 03 | 待次日研究复核，未发布 | ziwei-2027-fuqi-jiaoyou-jianyi-bianjie | 2027年朋友总替伴侣做决定，夫妻与交友宫如何分辨？ | 2 | 第三方意见边界，不写旧账沟通 |
 | 04 | 待次日研究复核，未发布 | ziwei-2027-fuqi-ziinv-shenghuo-jieduan | 2027年伴侣对生活阶段看法不同，夫妻与子女宫怎么读？ | 2 | 关系规划时间表，不写共同养育 |
 | 05 | 待次日研究复核，未发布 | ziwei-daxian-xuexi-liunian-kaoshi | 大限适合长期学习，流年考试不顺时怎样安排节奏？ | 3 | 学习投入与考试窗口，不写转职 |
