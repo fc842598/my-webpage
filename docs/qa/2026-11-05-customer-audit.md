@@ -240,3 +240,10 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - 重载本地实际盘面确认12宫标签含Inner Life、Migration、Career、Wealth；meta为Earth Fifth Bureau · Rabbit，无Text；更多操作More chart actions；三条切换按钮说明为英文，aria-label不再要求重新生成；document横向无溢出。没有进行AI生成、支付或注册。
 - 既有英文导航/头部与新增宫名/说明回归通过，chat段落测试、账号/额度9组回归和JS语法通过。旧卦名自动回退仍有NW Heaven等不完整名称，古籍英文仍存在待审核内容；不能据此次修复宣布整站英文完成。文章原始扫描29份候选仍待逐一核对。
 - 上线提交5dea72f433665f970ba794887f3c97ec1ee38fc3与GitHub master一致；首轮旧资源，20秒后HTML/JS均HTTP200并逐字匹配。线上浏览器既有合成命盘加载20261110-palace-terms，12宫含Inner Life/Migration/Career/Wealth，更多操作及三条易经按钮说明为英文，无横向溢出。英文“我的”页实际显示Remaining2/3、Shared guest quota · No daily reset、Saved charts4、Recent Chart。另看见合成档案中文姓名被自动翻成Text1103-Text，后续须按姓名数据保护而不是添加拼音词条修复。
+
+### 2026-11-10：英文界面姓名误译
+
+- 上轮线上已确认既有合成档案“夜检1103-测试女”被显示成Text1103-Text。姓名属于输入数据，不应靠词典逐字翻译。复用既有data-wentian-i18n-skip机制保护中宫/聊天姓名和头像；档案显示新增纯计算baseName/ageText，姓名受保护、年龄与虚岁标签照常翻译，不改存储记录。
+- 统一复用renderWentianArchiveDisplayName用于档案姓名、选中摘要、资料卡、合盘名称等已有输出。所有名字继续escapeHtml，不把姓名直接当HTML。个人档案选择/操作的无障碍标签在生成时使用原名和Age，属性翻译显式跳过，避免视觉已保留但读屏仍报Text。
+- 本地真实浏览器，仅本地合成档案“合成姓名-語言測試”：中宫保持原字；档案显示原名·Age27、Nominal标签；选中摘要、Choose/Edit/Delete无障碍名称也保留原名；进入聊天无新请求，栏头仍原名。不用真实客户数据，不清除既有档案，不消费模型配额。
+- 新增test-name-language-protection.mjs检查姓名标记、年龄分离、HTML转义与英文操作标签；已有英文界面、段落和账号/额度回归继续通过。合盘操作等其他历史姓名属性仍需后续代表性浏览器验证，不把本轮主要路径证明扩大为全站姓名验收。

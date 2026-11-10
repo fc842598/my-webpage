@@ -229,10 +229,14 @@ function figText(id, text, x, y, w, size, color, weight = 400, align = "left", e
   return `<p class="fig-text" data-node-id="${id}" style="left:${x}px;top:${y}px;width:${w}px;font-size:${size}px;color:${color};font-weight:${weight};text-align:${align};${extra}">${text}</p>`;
 }
 
+function renderWentianArchiveDisplayName(item, fallback = "命主") {
+  const name = item?.baseName || item?.name || fallback;
+  return `<span data-wentian-i18n-skip="true">${escapeHtml(name)}</span>${item?.ageText ? ` · <span>${escapeHtml(item.ageText)}</span>` : ""}`;
+}
+
 function renderWentianArchiveNameWithAgeBadge(item, fallback = "命主") {
-  const name = item?.name || fallback;
   const badge = item?.ageBadge ? `<span class="wentian-archive-age-badge">${escapeHtml(item.ageBadge)}</span>` : "";
-  return `<span class="wentian-archive-name-with-age"><span class="wentian-archive-name-text">${escapeHtml(name)}</span>${badge}</span>`;
+  return `<span class="wentian-archive-name-with-age"><span class="wentian-archive-name-text">${renderWentianArchiveDisplayName(item, fallback)}</span>${badge}</span>`;
 }
 
 function figArchiveName(id, item, x, y, w, size, color, weight = 900, align = "left", extra = "") {
@@ -957,7 +961,7 @@ function sourceArchiveScreen(screen) {
     ${figText("source-3-change", "更换档案 〉", 284, 138, 88, 12, "#9b742e", 500, "right")}
     ${figBox("source-3-profile", 16, 164, 358, 104, "converted-card", "border-radius:12px;box-shadow:0 6px 18px rgba(90,62,34,.09);")}
     ${figImage("source-3-profile-avatar", "../images/wentian-prototype-assets/03-profile.webp", 38, 192, 48, 48, "border-radius:24px;border:1px solid #e4d2a7;object-fit:cover;", "loading=\"eager\" decoding=\"async\" onerror=\"this.onerror=null;this.src='../images/wentian-prototype-assets/xu-dashi.webp';\"")}
-    ${figText("source-3-profile-name", escapeHtml(active.name), 102, 184, 188, 18, "#26211c", 800)}
+    ${figText("source-3-profile-name", renderWentianArchiveDisplayName(active), 102, 184, 188, 18, "#26211c", 800)}
     ${figBox("source-3-gender", 102, 211, 30, 18, "", "border-radius:9px;background:#f7ecd5;")}
     ${figText("source-3-gender-text", active.gender, 102, 215, 30, 10, "#b07a2d", 700, "center")}
     ${figBox("source-3-profile-tag", 140, 211, 72, 18, "", "border-radius:9px;background:#f7ecd5;")}
@@ -994,7 +998,7 @@ function sourceArchiveScreenV2(screen) {
     ${figBox("source-3-profile-avatar-core-v2", 41, 190, 40, 40, "", "border-radius:20px;background:linear-gradient(135deg,#cb932e,#f1d18c);")}
     ${figText("source-3-profile-avatar-mark-v2", "\u547d", 41, 201, 40, 16, "#fffdf7", 800, "center")}
     ${figBox("source-3-profile-avatar-dot-v2", 72, 191, 8, 8, "", "border-radius:999px;background:#fff8e8;border:1px solid rgba(255,255,255,.75);")}
-    ${figText("source-3-profile-name-v2", escapeHtml(active.name), 102, 180, 190, 18, "#26211c", 800)}
+    ${figText("source-3-profile-name-v2", renderWentianArchiveDisplayName(active), 102, 180, 190, 18, "#26211c", 800)}
     ${figBox("source-3-gender-v2", 102, 205, 30, 18, "", "border-radius:999px;background:#fbefcf;")}
     ${figText("source-3-gender-text-v2", active.gender, 102, 209, 30, 10, "#b07a2d", 700, "center")}
     ${figBox("source-3-profile-tag-v2", 140, 205, 72, 18, "", "border-radius:999px;background:#fbefcf;")}
@@ -1643,7 +1647,7 @@ function sourceAiChatScreen(screen) {
     <button class="wentian-chat-profile-tag is-context" type="button" data-action="wentian-chat-context-open" aria-label="查看${escapeHtml(profileText)}上下文">
       <span class="wentian-chat-profile-seal" data-node-id="source-4-profile-icon" data-profile-icon="${profileIcon}" aria-hidden="true"></span>
       <span class="wentian-chat-profile-copy">
-        <b data-node-id="source-4-profile-text">${profileText}</b>
+        <b data-node-id="source-4-profile-text">${escapeHtml(profileText)}</b>
         <small data-node-id="source-4-profile-sub">${profileSub}</small>
       </span>
       <span class="wentian-chat-profile-caret">⌄</span>
@@ -1652,7 +1656,7 @@ function sourceAiChatScreen(screen) {
     <button class="wentian-chat-profile-tag" type="button" data-route="screen-5" aria-label="切换命盘">
       <span class="wentian-chat-profile-seal" data-node-id="source-4-profile-icon" data-profile-icon="${profileIcon}" aria-hidden="true"></span>
       <span class="wentian-chat-profile-copy">
-        <b data-node-id="source-4-profile-text">${profileText}</b>
+        <b data-node-id="source-4-profile-text" data-wentian-i18n-skip="true">${escapeHtml(profileText)}</b>
         <small data-node-id="source-4-profile-sub">${profileSub}</small>
       </span>
       <span class="wentian-chat-profile-caret">⌄</span>
@@ -1764,10 +1768,10 @@ function sourceArchiveSelectScreen() {
       return `
         <div class="wentian-archive-option ${selected ? "is-selected" : ""}" data-wentian-archive-option="1" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}">
           <button class="wentian-archive-pick" type="button" data-action="wentian-archive-pick" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}" aria-label="选择${escapeHtml(item.name)}">
-            <span class="wentian-archive-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
+            <span class="wentian-archive-avatar" data-wentian-i18n-skip="true">${escapeHtml(item.name.slice(0, 1))}</span>
             <span class="wentian-archive-main">
               <span class="wentian-archive-title-row">
-                <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
+                <span class="wentian-archive-name">${renderWentianArchiveDisplayName(item)}</span>
                 ${item.ageBadge ? `<span class="wentian-archive-age-badge">${escapeHtml(item.ageBadge)}</span>` : ""}
                 ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
                 <span class="wentian-archive-gender">${item.gender}</span>
@@ -7340,6 +7344,8 @@ function getWentianArchiveDisplay(archive) {
   const pillars = [sizhu.year, sizhu.month, sizhu.day, sizhu.hour].filter(Boolean).join(" ");
   return {
     name,
+    baseName,
+    ageText: name !== baseName && virtualAgeInfo?.ok ? `${virtualAgeInfo.age}岁` : "",
     gender,
     datetime,
     pillars: pillars || "命盘资料待补全",
@@ -10117,6 +10123,7 @@ function applyWentianLanguageText(root = view, code = getWentianLanguageCode(), 
     }
 
     for (const element of root.querySelectorAll("[aria-label], [title]")) {
+      if (element.closest?.("[data-wentian-i18n-skip-attributes]")) continue;
       for (const attr of ["aria-label", "title"]) {
         const current = element.getAttribute(attr) || "";
         if (!current) continue;
@@ -13911,19 +13918,22 @@ function getWentianProfileSummaryText(visibleCount, totalCount, query = wentianP
 }
 
 function renderWentianProfileActionRow(archive, item, isDefaultArchive, confirmingDelete, isEn) {
+  const actionName = isEn && item.baseName
+    ? `${item.baseName}${item.ageText ? ` · Age ${item.ageText.replace(/[岁歲]/g, "")}` : ""}`
+    : item.name;
   if (confirmingDelete) {
     return `
-      <span class="wentian-archive-actions" role="group" aria-label="${escapeHtml(isEn ? `${item.name} file actions` : `${item.name}档案操作`)}">
-        <button class="wentian-archive-action danger is-confirming" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Confirm delete ${item.name}` : `确认删除${item.name}`)}">${isEn ? "Confirm" : "确认删除"}</button>
-        <button class="wentian-archive-action cancel" type="button" data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Cancel delete ${item.name}` : `取消删除${item.name}`)}">${isEn ? "Cancel" : "取消"}</button>
+      <span class="wentian-archive-actions" role="group" data-wentian-i18n-skip-attributes="true" aria-label="${escapeHtml(isEn ? `${actionName} file actions` : `${actionName}档案操作`)}">
+        <button class="wentian-archive-action danger is-confirming" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Confirm delete ${actionName}` : `确认删除${actionName}`)}">${isEn ? "Confirm" : "确认删除"}</button>
+        <button class="wentian-archive-action cancel" type="button" data-action="wentian-archive-delete-cancel" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Cancel delete ${actionName}` : `取消删除${actionName}`)}">${isEn ? "Cancel" : "取消"}</button>
       </span>
     `;
   }
   return `
-    <span class="wentian-archive-actions" role="group" aria-label="${escapeHtml(isEn ? `${item.name} file actions` : `${item.name}档案操作`)}">
-      ${isDefaultArchive ? "" : `<button class="wentian-archive-action default" type="button" data-action="wentian-archive-default" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Set ${item.name} as default` : `设为默认${item.name}`)}">${isEn ? "Set Main" : "设主"}</button>`}
-      <button class="wentian-archive-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Edit ${item.name}` : `编辑${item.name}`)}">${isEn ? "Edit" : "编辑"}</button>
-      <button class="wentian-archive-action danger" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Delete ${item.name}` : `删除${item.name}`)}">${isEn ? "Delete" : "删除"}</button>
+    <span class="wentian-archive-actions" role="group" data-wentian-i18n-skip-attributes="true" aria-label="${escapeHtml(isEn ? `${actionName} file actions` : `${actionName}档案操作`)}">
+      ${isDefaultArchive ? "" : `<button class="wentian-archive-action default" type="button" data-action="wentian-archive-default" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Set ${actionName} as default` : `设为默认${actionName}`)}">${isEn ? "Set Main" : "设主"}</button>`}
+      <button class="wentian-archive-action" type="button" data-action="wentian-archive-edit" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Edit ${actionName}` : `编辑${actionName}`)}">${isEn ? "Edit" : "编辑"}</button>
+      <button class="wentian-archive-action danger" type="button" data-action="wentian-archive-delete" data-archive-id="${escapeHtml(archive.id)}" aria-label="${escapeHtml(isEn ? `Delete ${actionName}` : `删除${actionName}`)}">${isEn ? "Delete" : "删除"}</button>
     </span>
   `;
 }
@@ -13963,11 +13973,11 @@ function renderWentianProfileRows(archives = getWentianArchiveList(), query = we
     const profileMeta = [item.gender, item.datetime.split(" ")[0] || item.datetime].filter(Boolean).join(" · ");
     currentRows.push(`
       <article class="wentian-archive-option wentian-profile-card ${isActiveArchive ? "is-selected" : ""} ${isBatchMode ? "is-batch" : ""}" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${isActiveArchive ? "true" : "false"}">
-        <button class="wentian-archive-pick wentian-profile-pick" type="button" data-action="${isBatchMode ? "wentian-profile-batch-pick" : "wentian-profile-pick"}" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${isActiveArchive ? "true" : "false"}" aria-label="${escapeHtml(isEn ? (isBatchMode ? `Select ${item.name}` : `Choose ${item.name}`) : (isBatchMode ? `勾选${item.name}` : `选择${item.name}`))}">
-          <span class="wentian-archive-avatar">${escapeHtml(item.name.slice(0, 1) || "命")}</span>
+        <button class="wentian-archive-pick wentian-profile-pick" data-wentian-i18n-skip-attributes="true" type="button" data-action="${isBatchMode ? "wentian-profile-batch-pick" : "wentian-profile-pick"}" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${isActiveArchive ? "true" : "false"}" aria-label="${escapeHtml(isEn ? `${isBatchMode ? "Select" : "Choose"} ${item.baseName}${item.ageText ? ` · Age ${item.ageText.replace(/[岁歲]/g, "")}` : ""}` : (isBatchMode ? `勾选${item.name}` : `选择${item.name}`))}">
+          <span class="wentian-archive-avatar" data-wentian-i18n-skip="true">${escapeHtml(item.name.slice(0, 1) || "命")}</span>
           <span class="wentian-archive-main wentian-profile-main">
             <span class="wentian-archive-title-row">
-              <span class="wentian-archive-name">${escapeHtml(item.name)}</span>
+              <span class="wentian-archive-name">${renderWentianArchiveDisplayName(item)}</span>
               ${item.ageBadge ? `<span class="wentian-archive-age-badge">${escapeHtml(item.ageBadge)}</span>` : ""}
               ${item.badge ? `<span class="wentian-archive-badge">${escapeHtml(item.badge)}</span>` : ""}
             </span>
@@ -13997,7 +14007,7 @@ function sourceProfileScreen(screen) {
   const isEn = getWentianLanguageCode() === "en";
   const confirmArchiveId = wentianArchiveDraftId || getWentianSelectedArchiveId(archives);
   const confirmArchive = archives.find((archive) => archive.id === confirmArchiveId) || archives[0] || null;
-  const confirmArchiveName = confirmArchive ? getWentianArchiveDisplay(confirmArchive).name : "";
+  const confirmArchiveDisplay = confirmArchive ? getWentianArchiveDisplay(confirmArchive) : null;
   const batchBar = wentianProfileBatchMode ? `
     ${figBox("source-25-batch-bar", 18, metrics.bottomNavY - 66, 354, 54, "", "border-radius:20px;background:#fffdf8;border:1px solid #eadbc5;box-shadow:0 10px 20px rgba(86,54,37,.10);")}
     ${figText("source-25-batch-count", isEn ? `Selected ${batchSelectedCount}` : `已选 ${batchSelectedCount} 项`, 34, metrics.bottomNavY - 49, 108, 14, "#5f453a", 900)}
@@ -14007,7 +14017,7 @@ function sourceProfileScreen(screen) {
   ` : "";
   const confirmBar = !wentianProfileBatchMode && archives.length ? `
     <div class="wentian-profile-confirm-bar" style="top:${metrics.bottomNavY - 68}px">
-      <span class="wentian-profile-confirm-name">${escapeHtml(isEn ? `Selected: ${confirmArchiveName}` : `已选：${confirmArchiveName}`)}</span>
+      <span class="wentian-profile-confirm-name">${isEn ? "Selected: " : "已选："}${renderWentianArchiveDisplayName(confirmArchiveDisplay, "")}</span>
       <button class="wentian-profile-confirm-button" type="button" data-action="wentian-profile-confirm" aria-label="${escapeHtml(isEn ? "Confirm and open chart" : "确认进入命盘")}">${isEn ? "Open Chart" : "确认进入命盘"}</button>
     </div>
   ` : "";
@@ -14931,7 +14941,7 @@ function sourceHepanSelectScreen() {
         return `
           <div class="wentian-hepan-option ${selected ? "is-selected" : ""}" data-archive-id="${escapeHtml(archive.id)}">
             <button class="wentian-hepan-select" type="button" data-action="wentian-hepan-pick" data-archive-id="${escapeHtml(archive.id)}" aria-pressed="${selected ? "true" : "false"}" aria-label="选择${escapeHtml(item.name)}">
-              <span class="wentian-hepan-avatar">${escapeHtml(item.name.slice(0, 1))}</span>
+              <span class="wentian-hepan-avatar" data-wentian-i18n-skip="true">${escapeHtml(item.name.slice(0, 1))}</span>
               <span class="wentian-hepan-copy">
                 <strong>${renderWentianArchiveNameWithAgeBadge(item)}</strong>
                 <em>${escapeHtml(item.gender)} · ${escapeHtml(item.tag)}</em>
@@ -15315,7 +15325,7 @@ function sourceHepanResultScreen() {
       <div class="wentian-hepan-result-hero">
         <span>关系主格 · 本地初判</span>
         <strong>${escapeHtml(result.relationDisplayTitle || result.relationTitle || "关系合参")}</strong>
-        <p>${escapeHtml(result.leftDisplay.name)} × ${escapeHtml(result.rightDisplay.name)} · 参考 ${escapeHtml(result.total)}分</p>
+        <p>${renderWentianArchiveDisplayName(result.leftDisplay)} × ${renderWentianArchiveDisplayName(result.rightDisplay)} · 参考 ${escapeHtml(result.total)}分</p>
       </div>
 
       ${renderWentianHepanChartCompare(result)}
@@ -21864,7 +21874,7 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}, source
     return `
       <div class="fc-center-panel" style="grid-column:2 / 4;grid-row:2 / 4;">
         <div class="fc-center-title">Zi Wei Chart</div>
-        <div class="fc-center-meta"><span class="fc-center-name">${titleName}</span><span>${escapeHtml(metaTextEn || translateWentianText(genderLabel, "en"))}</span></div>
+        <div class="fc-center-meta"><span class="fc-center-name" data-wentian-i18n-skip="true">${titleName}</span><span>${escapeHtml(metaTextEn || translateWentianText(genderLabel, "en"))}</span></div>
         <div class="fc-center-rows">
           <div class="fc-center-row"><span class="fc-center-lbl">Solar</span><span class="fc-center-val">${escapeHtml([dateText, timeLabelEn].filter(Boolean).join(" "))}</span></div>
           <div class="fc-center-row"><span class="fc-center-lbl">Lunar</span><span class="fc-center-val">${escapeHtml(lunarTextEn)}</span></div>
@@ -21889,7 +21899,7 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}, source
   return `
     <div class="fc-center-panel" style="grid-column:2 / 4;grid-row:2 / 4;">
       <div class="fc-center-title">紫微排盘</div>
-      <div class="fc-center-meta"><span class="fc-center-name">${titleName}</span><span>${escapeHtml(metaText || genderLabel)}</span></div>
+      <div class="fc-center-meta"><span class="fc-center-name" data-wentian-i18n-skip="true">${titleName}</span><span>${escapeHtml(metaText || genderLabel)}</span></div>
       <div class="fc-center-rows">
         <div class="fc-center-row"><span class="fc-center-lbl">公历</span><span class="fc-center-val">${escapeHtml([dateText, timeName ? `${timeName}时` : ""].filter(Boolean).join(" "))}</span></div>
         <div class="fc-center-row"><span class="fc-center-lbl">农历</span><span class="fc-center-val">${escapeHtml(chart?.lunarDate || chart?.chineseDate || "—")}</span></div>
