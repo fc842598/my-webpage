@@ -43,6 +43,9 @@ for (const [input, expected] of [
   ['易经推命切换', 'Choose a Yijing timing view'],
   ['命盘更多操作', 'More chart actions'],
   ['AI 命盘解读', 'AI Chart Reading'],
+  ['先天卦', 'Innate Hexagram'],
+  ['后天卦', 'Acquired Hexagram'],
+  ['流年卦', 'Annual Hexagram'],
 ]) assert.equal(context.translateWentianText(input, 'en'), expected);
 assert.equal(context.translateWentianText('返回', 'zh-Hans'), '返回');
 const back = css.match(/html\[lang="en"\] \[data-node-id\$="-back-copy"\] \{([^}]+)\}/)[1];

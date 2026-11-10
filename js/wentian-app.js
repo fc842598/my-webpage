@@ -9559,6 +9559,8 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "如果你算这个人的先天卦，是水天需，天跑到水下面去了，父先丧失，爸爸先走，母独养成，这是先天卦": "In this innate hexagram, Water over Heaven Xu, heaven falls beneath water: the father image weakens first and the mother raises the child.",
   "如果你算这个人的先天卦，是水天需，天跑到水下面去了，父先丧失，爸爸先走，母独养成，这是先天卦。所以这个小孩子一排出来先天卦是水天需，马上要看他父亲，懂不懂，糟糕，人中那么多，哪里破格，八字拿出来一看，再一看阳宅，厨房在西北角。攀龙附凤，居于尾，五岁之前，有凶事。二十日大人入土中。墓啊，本身就是日入草下地中，这句话，临床是这样子，他爸爸过世了，只剩下他妈妈，带着他，妈妈养他比较辛苦，后来就跟另外一个人结婚，第二个有钱啊，对他跟自己孩子一样…": "In this innate hexagram, Water over Heaven Xu, heaven is below water, so the father image weakens first and the mother raises the child. When this appears, first check the father line, then compare the Bazi and home layout. If the kitchen is in the northwest, the classical image points to an early family loss before age five and a later change in the mother's household.",
   "先天卦": "Innate Hexagram",
+  "后天卦": "Acquired Hexagram",
+  "流年卦": "Annual Hexagram",
   "财帛 · 对宫福德": "Wealth · Opposite Inner Life",
   "小限 财帛；对宫 福德": "Minor limit: Wealth; opposite: Inner Life",
   "今日剩余 8/8 · 每日额度 8次/天": "Today remaining 8/8 · Daily quota 8/day",
@@ -9876,6 +9878,10 @@ function translateWentianText(text, code = getWentianLanguageCode(), element = n
   if (lang === "en") {
     if (source.includes("\n") || source.includes("\\n")) {
       return source.split(/(?:\\n|\n)+/).map((line) => translateWentianText(line, code, element)).join("\n");
+    }
+    if (typeof YANGZHAI_HEX_INDEX !== "undefined"
+      && Object.values(YANGZHAI_HEX_INDEX).some((item) => item.name === convertWentianTextToSimplified(source))) {
+      return getYangzhaiEnglishHexName({name: source});
     }
     const archiveSolarDate = source.match(/^阳历:(.+)$/);
     if (archiveSolarDate) return `Solar: ${archiveSolarDate[1]}`;
@@ -18318,21 +18324,15 @@ function getYangzhaiEnglishLabel(value) {
 }
 
 function getYangzhaiEnglishHexName(hex) {
-  if (!hex?.name) return "Hexagram";
-  const name = convertWentianTextToSimplified(String(hex.name || ""));
-  const pure = name.match(/^(.+)为(.+)$/);
-  if (pure) {
-    const trigram = YANGZHAI_EN_ROLE_GUA[pure[1]] || YANGZHAI_EN_TRIGRAM_NAME[pure[2]] || translateWentianText(pure[2], "en");
-    return `${trigram} over ${trigram}`;
-  }
-  const chars = [...name];
-  if (chars.length >= 3) {
-    const upper = YANGZHAI_EN_TRIGRAM_NAME[chars[0]] || YANGZHAI_EN_ROLE_GUA[chars[0]] || translateWentianText(chars[0], "en");
-    const lower = YANGZHAI_EN_TRIGRAM_NAME[chars[1]] || YANGZHAI_EN_ROLE_GUA[chars[1]] || translateWentianText(chars[1], "en");
-    const suffix = translateWentianText(chars.slice(2).join(""), "en");
-    return `${upper} over ${lower}${suffix && suffix !== "Text" ? ` · ${suffix}` : ""}`;
-  }
-  return translateWentianText(hex.name, "en");
+  const name = convertWentianTextToSimplified(String(hex?.name || ""));
+  const entries = Object.entries(YANGZHAI_HEX_INDEX);
+  const known = entries.find(([, item]) => item.name === name)
+    || entries.find(([, item]) => Number(item.no) === Number(hex?.no || hex?.num));
+  if (!known) return "Hexagram";
+  // Use the established upper/lower pair, not character-by-character pinyin or
+  // compass translations. This is a structural English label, not a new gloss.
+  const [upper, lower] = known[0].split("-").map((role) => YANGZHAI_EN_ROLE_GUA[role]);
+  return `${upper} over ${lower}`;
 }
 
 function buildYangzhaiEnglishHexDesc({ hex, label, palace, matched }) {
@@ -21854,7 +21854,7 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}, source
   ].filter(Boolean).join(" · ");
   const timeLabelEn = timeName ? `${translateWentianText(timeName, "en").replace(/\?/g, "")} Hour` : "";
   const lunarTextEn = translateWentianText(chart?.lunarDate || chart?.chineseDate || "—", "en");
-  const liunianBaseEn = translateWentianText(yijing.results.liunian?.name || selectedXiao?.liunianGuaName || "—", "en").replace(/\bText\b\s*/gi, "").trim();
+  const liunianBaseEn = getYangzhaiEnglishHexName(yijing.results.liunian || {name: selectedXiao?.liunianGuaName});
   const liunianNameEn = selectedXiao?.age ? `Age ${selectedXiao.age} · ${liunianBaseEn}` : liunianBaseEn;
   const trueSolarDisplayEn = (() => {
     const trueSolarClock = formatWentianCenterClock(chartData.trueSolarTime || chartData.solarTime || "");
@@ -21885,8 +21885,8 @@ function renderWentianClassicCenter(chart, chartData, form, options = {}, source
           </div></div>
         </div>
         <div class="fc-gua-rows">
-          ${renderWentianClassicGuaRow("Innate Hexagram", translateWentianText(yijing.results.xiantian?.name || "—", "en"))}
-          ${renderWentianClassicGuaRow("Acquired Hexagram", translateWentianText(yijing.results.houtian?.name || "—", "en"))}
+          ${renderWentianClassicGuaRow("Innate Hexagram", getYangzhaiEnglishHexName(yijing.results.xiantian))}
+          ${renderWentianClassicGuaRow("Acquired Hexagram", getYangzhaiEnglishHexName(yijing.results.houtian))}
           ${renderWentianClassicGuaRow("Annual Hexagram", liunianNameEn)}
         </div>
         ${renderWentianClassicXiaoLianPicker(selectedXiao, options)}
@@ -22354,7 +22354,7 @@ function renderWentianMobileYijingPanel(saved) {
   const reading = getWentianYijingReading(result, activeKey);
   const imageSrc = getYijingHexagramImageSrc(result?.no || result?.num);
   const metaTitleText = getWentianCompactText(meta.title, translateWentianText(meta.title, "en"));
-  const resultNameText = getWentianCompactText(result?.name || "", translateWentianText(result?.name || "", "en"));
+  const resultNameText = getWentianCompactText(result?.name || "", getYangzhaiEnglishHexName(result));
   const imageAlt = [metaTitleText, resultNameText].filter(Boolean).join(" ");
   const selectedXiao = ctx.selectedXiao || {};
   const railItems = getWentianXiaoLianRailItems(selectedXiao);
@@ -22376,7 +22376,7 @@ function renderWentianMobileYijingPanel(saved) {
         ${tabRows.map(([key, item]) => {
           const itemMeta = getWentianYijingTabMeta(key);
           const tabLabel = isEn
-            ? [itemMeta.label, itemMeta.note, item?.name || ""].map((part) => translateWentianText(part, "en")).filter(Boolean).join(" · ")
+            ? [translateWentianText(itemMeta.label, "en"), translateWentianText(itemMeta.note, "en"), getYangzhaiEnglishHexName(item)].filter(Boolean).join(" · ")
             : `${itemMeta.label} ${itemMeta.note} ${item?.name || ""}`.trim();
           return `<button type="button" class="${key === activeKey ? "is-active" : ""}" data-action="wentian-yijing-tab" data-yijing-tab="${key}" aria-label="${escapeHtml(tabLabel)}">
             <span>${escapeHtml(itemMeta.label)}</span>
@@ -22420,7 +22420,7 @@ function renderWentianMobileYijingPanel(saved) {
       <section class="wentian-yijing-master">
         <div class="wentian-yijing-master-head">
           <span>名师讲解</span>
-          <strong>${escapeHtml(reading.masterTitle)}</strong>
+          <strong>${escapeHtml(isEn ? `${metaTitleText} · ${resultNameText}` : reading.masterTitle)}</strong>
         </div>
         <div class="wentian-yijing-master-detail">
           ${renderWentianReadingParagraphs(reading.detail || reading.summary)}

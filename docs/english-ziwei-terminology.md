@@ -26,6 +26,12 @@ The mobile chart may omit "Palace" in compact grid labels, but must keep the sam
 domain name (Migration, Inner Life, Career, Wealth). Full names and aliases must
 not fall through to single-character pinyin such as "Shi Palace" or "Palace".
 
+For compact hexagram labels, use the existing trigram structure in the form
+"Heaven over Thunder" (upper over lower). This is a structural identifier, not
+a newly invented translation of the Judgment. Resolve all 64 names/numbers from
+the existing hexagram table; never translate Qian as NW inside a hexagram name.
+Keep Innate Hexagram, Acquired Hexagram, and Annual Hexagram distinct.
+
 Read-only backlog scan:
 
 `node scripts/check-english-readable-text.mjs --scan`
