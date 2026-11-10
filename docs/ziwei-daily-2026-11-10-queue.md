@@ -15,7 +15,7 @@
 | 09 | 已发布 2026-11-10 10:22 https://yuetianai.com/articles/ziwei-jiee-guanlu-gongzuo-bianjie.html / https://yuetianai.com/articles/en/ziwei-jiee-guanlu-gongzuo-bianjie.html | ziwei-jiee-guanlu-gongzuo-bianjie | 疾厄宫与官禄宫同时受压，怎样建立工作边界？ | 5 | 可执行的任务边界，不写作息日志 |
 | 10 | 已发布 2026-11-10 10:22 https://yuetianai.com/articles/ziwei-jiee-fude-xiuxi-jihua.html / https://yuetianai.com/articles/en/ziwei-jiee-fude-xiuxi-jihua.html | ziwei-jiee-fude-xiuxi-jihua | 疾厄宫提示消耗时，福德宫怎样帮助安排休息？ | 5 | 休息安排与实际可用时间，不写照护分担 |
 | 11 | 已发布 2026-11-10 10:22 https://yuetianai.com/articles/ziwei-caibo-budingqi-shouru-yusuan.html / https://yuetianai.com/articles/en/ziwei-caibo-budingqi-shouru-yusuan.html | ziwei-caibo-budingqi-shouru-yusuan | 收入每月不同，财帛宫怎样配合固定支出预算？ | 6 | 不规则收入缓冲，不写回款周期 |
-| 12 | 待发布 | ziwei-caibo-xiangmu-dianzi | 接项目先垫钱，财帛和官禄宫各要核对什么？ | 6 | 项目垫资风险，不写专业口碑或订阅费 |
+| 12 | 已发布 2026-11-10 10:23 https://yuetianai.com/articles/ziwei-caibo-xiangmu-dianzi.html / https://yuetianai.com/articles/en/ziwei-caibo-xiangmu-dianzi.html | ziwei-caibo-xiangmu-dianzi | 接项目先垫钱，财帛和官禄宫各要核对什么？ | 6 | 项目垫资风险，不写专业口碑或订阅费 |
 | 13 | 待发布 | ziwei-xiongdi-gongyong-shebei | 兄弟宫见天机，熟人共用设备如何定使用规则？ | 7 | 有形资产使用权，不写方案变更 |
 | 14 | 待发布 | ziwei-xiongdi-jiaoyou-jiekuan | 同辈朋友借钱，兄弟与交友宫能提醒哪些边界？ | 7 | 借款记录与关系范围，不写团队分工 |
 | 15 | 待发布 | ziwei-guanlu-waizi-shiyongqi-mubiao | 想进外企，官禄宫怎样对应试用期的具体目标？ | 8 | 入职后岗位目标，不写培训成本 |

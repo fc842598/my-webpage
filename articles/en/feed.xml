@@ -5,9 +5,16 @@
     <link>https://yuetianai.com/articles/en/</link>
     <description>Plain-English Zi Wei Dou Shu articles and chart reading guides.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 10 Nov 2026 02:22:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 10 Nov 2026 02:23:00 +0000</lastBuildDate>
     <atom:link href="https://yuetianai.com/articles/en/feed.xml" rel="self" type="application/rss+xml" />
 
+    <item>
+      <title>Zi Wei Dou Shu: Checking a Project That Requires Upfront Costs</title>
+      <link>https://yuetianai.com/articles/en/ziwei-caibo-xiangmu-dianzi.html</link>
+      <guid isPermaLink="true">https://yuetianai.com/articles/en/ziwei-caibo-xiangmu-dianzi.html</guid>
+      <pubDate>Tue, 10 Nov 2026 02:23:00 +0000</pubDate>
+      <description>Use the Wealth and Career Palaces to examine cash timing, advances, and contract terms.</description>
+    </item>
     <item>
       <title>Zi Wei Dou Shu: A Trade Show and the Travel Palace</title>
       <link>https://yuetianai.com/articles/en/ziwei-qianyi-hangye-zhanhui.html</link>
@@ -560,13 +567,6 @@
       <guid isPermaLink="true">https://yuetianai.com/articles/en/ziwei-qianyi-fengongsi-sanyue-jiediao.html</guid>
       <pubDate>Fri, 06 Nov 2026 01:12:00 +0000</pubDate>
       <description>A three-month transfer to a branch office is a temporary assignment.</description>
-    </item>
-    <item>
-      <title>Zi Wei Dou Shu: Why Branch Positions Stay Fixed in a Zi Wei Dou Shu Chart</title>
-      <link>https://yuetianai.com/articles/en/ziwei-gongming-dizhi-zuobiao.html</link>
-      <guid isPermaLink="true">https://yuetianai.com/articles/en/ziwei-gongming-dizhi-zuobiao.html</guid>
-      <pubDate>Fri, 06 Nov 2026 01:12:00 +0000</pubDate>
-      <description>The Earthly Branch grid stays in place while palace labels depend on the birth chart.</description>
     </item>
   </channel>
 </rss>
