@@ -13,7 +13,7 @@
 | 07 | 已发布 2026-11-10 10:22 https://yuetianai.com/articles/ziwei-qianyi-hangye-zhanhui.html / https://yuetianai.com/articles/en/ziwei-qianyi-hangye-zhanhui.html | ziwei-qianyi-hangye-zhanhui | 去外地参加行业展会，迁移宫比官禄宫多看什么？ | 4 | 短期行业交流，不写海外合同或跨境客户 |
 | 08 | 已发布 2026-11-10 10:22 https://yuetianai.com/articles/ziwei-qianyi-shuangcheng-tongqin.html / https://yuetianai.com/articles/en/ziwei-qianyi-shuangcheng-tongqin.html | ziwei-qianyi-shuangcheng-tongqin | 双城通勤没有搬家，迁移宫怎样与田宅宫配合？ | 4 | 通勤频率与居住安排，不写新人外派 |
 | 09 | 已发布 2026-11-10 10:22 https://yuetianai.com/articles/ziwei-jiee-guanlu-gongzuo-bianjie.html / https://yuetianai.com/articles/en/ziwei-jiee-guanlu-gongzuo-bianjie.html | ziwei-jiee-guanlu-gongzuo-bianjie | 疾厄宫与官禄宫同时受压，怎样建立工作边界？ | 5 | 可执行的任务边界，不写作息日志 |
-| 10 | 待发布 | ziwei-jiee-fude-xiuxi-jihua | 疾厄宫提示消耗时，福德宫怎样帮助安排休息？ | 5 | 休息安排与实际可用时间，不写照护分担 |
+| 10 | 已发布 2026-11-10 10:22 https://yuetianai.com/articles/ziwei-jiee-fude-xiuxi-jihua.html / https://yuetianai.com/articles/en/ziwei-jiee-fude-xiuxi-jihua.html | ziwei-jiee-fude-xiuxi-jihua | 疾厄宫提示消耗时，福德宫怎样帮助安排休息？ | 5 | 休息安排与实际可用时间，不写照护分担 |
 | 11 | 待发布 | ziwei-caibo-budingqi-shouru-yusuan | 收入每月不同，财帛宫怎样配合固定支出预算？ | 6 | 不规则收入缓冲，不写回款周期 |
 | 12 | 待发布 | ziwei-caibo-xiangmu-dianzi | 接项目先垫钱，财帛和官禄宫各要核对什么？ | 6 | 项目垫资风险，不写专业口碑或订阅费 |
 | 13 | 待发布 | ziwei-xiongdi-gongyong-shebei | 兄弟宫见天机，熟人共用设备如何定使用规则？ | 7 | 有形资产使用权，不写方案变更 |
