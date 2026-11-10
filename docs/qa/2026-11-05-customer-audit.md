@@ -255,3 +255,4 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - 新增test-english-hexagram-labels.mjs，逐项与pages/liuyao-data.js另一套8×8表交叉校验64个名称、仅卦序输入、英文通用翻译及繁体别名，修前失败、修后全部通过。未知卦名/非法编号返回Hexagram，不再按字符猜译。另补后天卦/流年卦准确栏目名，避免Heaven Hexagram误译。
 - 本地真实浏览器既有合成盘，先天Heaven over Wind、后天/流年Heaven over Heaven；切换生效且无横向溢出。办公室空表Query禁用，正西门/正北老板查询仍第47卦，页面及图像替代文本均Lake over Water。未调用模型、不消费额度。
 - 仍有部分古籍正文无经过审核的英文内容而回退Regenerate in English，未在本轮通过隐藏或编造翻译伪装完成。29份文章候选、登录账号7份/跨盘扣次及其他未覆盖界面继续保留为未完成项。
+- 上线8567867faa9a926653ce05916f04b25513d03be5与master一致；同步后HTML/JS均HTTP200并逐字匹配。线上既有合成盘实际显示Heaven over Thunder、Lake over Heaven、Lake over Earth，切后天后标题和说明栏为Acquired Hexagram · Lake over Heaven；script版本20261110-hexagram-labels，无横向溢出。没有新建档案/请求AI。
