@@ -22,7 +22,7 @@ function read(file) {
 }
 function put(file, html) { if (html !== originals.get(file)) pending.set(file, html); }
 for (const item of revisions) {
-  assert(/^articles\/(en\/)?[a-z0-9-]+\.html$/.test(item.file), "Only existing article paths allowed");
+  assert(/^articles\/(en\/)?[a-z0-9-]+\.html$/i.test(item.file), "Only existing article paths allowed");
   let html = read(item.file);
   const schema = schemas(html).find(value => value["@type"] === "Article");
   assert(schema && item.title && item.description && item.body, `Incomplete article: ${item.file}`);

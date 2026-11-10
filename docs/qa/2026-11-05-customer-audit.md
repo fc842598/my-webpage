@@ -256,3 +256,11 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - 本地真实浏览器既有合成盘，先天Heaven over Wind、后天/流年Heaven over Heaven；切换生效且无横向溢出。办公室空表Query禁用，正西门/正北老板查询仍第47卦，页面及图像替代文本均Lake over Water。未调用模型、不消费额度。
 - 仍有部分古籍正文无经过审核的英文内容而回退Regenerate in English，未在本轮通过隐藏或编造翻译伪装完成。29份文章候选、登录账号7份/跨盘扣次及其他未覆盖界面继续保留为未完成项。
 - 上线8567867faa9a926653ce05916f04b25513d03be5与master一致；同步后HTML/JS均HTTP200并逐字匹配。线上既有合成盘实际显示Heaven over Thunder、Lake over Heaven、Lake over Earth，切后天后标题和说明栏为Acquired Hexagram · Lake over Heaven；script版本20261110-hexagram-labels，无横向溢出。没有新建档案/请求AI。
+
+### 2026-11-10：英文实践语境文章10篇
+
+- 完整编辑大限过命宫、地空地劫、个人选择、巨门四煞、贪狼、兄弟、工作压力、职业转型、自媒体、子女教育10篇已有英文文章；清理中文残词、Ji Ji/Karma/Jealousy等误译和摘要误拼进步骤。区分命盘主题与人物能力/健康/教育去向的事实判断，不保留把星曜直接当诊断或资格判断的旧句。
+- 数据scripts/english-practical-context-revisions-20261110.mjs，经既有定向生成入口更新，10篇正文和10张列表卡片检查通过，JSON-LD/首发日期/canonical/sitemap校验通过，重复运行无差异；只改已有文章，不新增每日文章。
+- 既有自媒体URL包含大写IP，修订器仅将路径白名单字母匹配改为不区分大小写；仍要求已有articles路径、严格后缀、无斜杠穿越，不重命名原文件或改canonical。原URL大小写保留。
+- 本地浏览器自媒体页标题、正文、3段小标题正常，无中文残留/横向溢出。此前无障碍树重复报Reading path，本轮DOM只找到article-detail-layout的一个::before提示，未发现重复DOM或第二个伪元素；不据AX重复就改CSS。
+- 当前扫描4,106份英文HTML剩19份原始候选，含索引与解释性中文术语，不等于19份都确认缺陷。医疗/财务候选及古籍英文正文仍需审核，真实登录账号验收缺口仍保留。

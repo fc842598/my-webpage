@@ -32,6 +32,11 @@ a newly invented translation of the Judgment. Resolve all 64 names/numbers from
 the existing hexagram table; never translate Qian as NW inside a hexagram name.
 Keep Innate Hexagram, Acquired Hexagram, and Annual Hexagram distinct.
 
+Ten practical-context pages were reviewed on 2026-11-10: ten-year Life Palace,
+Kong Jie, personal choices, Ju Men, Tan Lang, siblings, work strain, career
+transition, content creation, and education. The raw scan of 4,106 HTML files
+now flags 19 files. Medical/financial candidates remain separate reviews.
+
 Read-only backlog scan:
 
 `node scripts/check-english-readable-text.mjs --scan`
