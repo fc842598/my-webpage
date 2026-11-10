@@ -11,7 +11,7 @@
 | 05 | 已发布 2026-11-10 10:05 https://yuetianai.com/articles/ziwei-daxian-xuexi-liunian-kaoshi.html / https://yuetianai.com/articles/en/ziwei-daxian-xuexi-liunian-kaoshi.html | ziwei-daxian-xuexi-liunian-kaoshi | 大限适合长期学习，流年考试不顺时怎样安排节奏？ | 大限流年 | 学习投入与一次考试分开，不写转职 |
 | 06 | 已发布 2026-11-10 10:06 https://yuetianai.com/articles/ziwei-liunian-yuefen-mianshi-shijian.html / https://yuetianai.com/articles/en/ziwei-liunian-yuefen-mianshi-shijian.html | ziwei-liunian-yuefen-mianshi-shijian | 流年有工作机会，面试月份要怎样避免过度解读？ | 大限流年 | 年月精度与申请记录，不写大限转职判断 |
 | 07 | 已发布 2026-11-10 10:22 https://yuetianai.com/articles/ziwei-qianyi-hangye-zhanhui.html / https://yuetianai.com/articles/en/ziwei-qianyi-hangye-zhanhui.html | ziwei-qianyi-hangye-zhanhui | 去外地参加行业展会，迁移宫比官禄宫多看什么？ | 4 | 短期行业交流，不写海外合同或跨境客户 |
-| 08 | 待发布 | ziwei-qianyi-shuangcheng-tongqin | 双城通勤没有搬家，迁移宫怎样与田宅宫配合？ | 4 | 通勤频率与居住安排，不写新人外派 |
+| 08 | 已发布 2026-11-10 10:22 https://yuetianai.com/articles/ziwei-qianyi-shuangcheng-tongqin.html / https://yuetianai.com/articles/en/ziwei-qianyi-shuangcheng-tongqin.html | ziwei-qianyi-shuangcheng-tongqin | 双城通勤没有搬家，迁移宫怎样与田宅宫配合？ | 4 | 通勤频率与居住安排，不写新人外派 |
 | 09 | 待发布 | ziwei-jiee-guanlu-gongzuo-bianjie | 疾厄宫与官禄宫同时受压，怎样建立工作边界？ | 5 | 可执行的任务边界，不写作息日志 |
 | 10 | 待发布 | ziwei-jiee-fude-xiuxi-jihua | 疾厄宫提示消耗时，福德宫怎样帮助安排休息？ | 5 | 休息安排与实际可用时间，不写照护分担 |
 | 11 | 待发布 | ziwei-caibo-budingqi-shouru-yusuan | 收入每月不同，财帛宫怎样配合固定支出预算？ | 6 | 不规则收入缓冲，不写回款周期 |
