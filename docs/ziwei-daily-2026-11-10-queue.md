@@ -1,11 +1,11 @@
-# 2026-11-10 紫微文章待复核队列
+# 2026-11-10 紫微文章发布队列
 
-状态：**待次日研究复核，未发布**。以下 20 个问题仅依据 2026-11-09 已完成的 10 篇同行研究形成备稿；2026-11-10 研究交接、站内查重、正文扩写与逐篇编辑通过前，不得生成公开页或计入当日配额。英文是自然改写草稿，不计为另 20 篇。
+11月10日同行研究交接已通过（10篇、10域名）。仅状态为“已发布”的条目完成正式发布；其余仍须按当天研究重新映射、查重、扩写和逐篇编辑。英文改写不另计篇数。
 
 | 顺序 | 状态 | slug | 原创搜索问题 | 当日来源序号 | 与 11/09 已发布内容区别 |
 |---|---|---|---|---|---|
 | 01 | 已发布 2026-11-10 09:00 https://yuetianai.com/articles/ziwei-2027-tianzhai-gongju-kongjian.html / https://yuetianai.com/articles/en/ziwei-2027-tianzhai-gongju-kongjian.html | ziwei-2027-tianzhai-gongju-kongjian | 2027年与家人共住，田宅宫怎样核对公共空间分工？ | 大限流年 |
-| 02 | 待发布 | ziwei-2027-tianzhai-changbei-woshi | 2027年为长辈调整卧室，田宅与父母宫各看什么？ | 宫位组合 |
+| 02 | 已发布 2026-11-10 09:01 https://yuetianai.com/articles/ziwei-2027-tianzhai-changbei-woshi.html / https://yuetianai.com/articles/en/ziwei-2027-tianzhai-changbei-woshi.html | ziwei-2027-tianzhai-changbei-woshi | 2027年为长辈调整卧室，田宅与父母宫各看什么？ | 宫位组合 |
 | 03 | 待次日研究复核，未发布 | ziwei-2027-fuqi-jiaoyou-jianyi-bianjie | 2027年朋友总替伴侣做决定，夫妻与交友宫如何分辨？ | 2 | 第三方意见边界，不写旧账沟通 |
 | 04 | 待次日研究复核，未发布 | ziwei-2027-fuqi-ziinv-shenghuo-jieduan | 2027年伴侣对生活阶段看法不同，夫妻与子女宫怎么读？ | 2 | 关系规划时间表，不写共同养育 |
 | 05 | 待次日研究复核，未发布 | ziwei-daxian-xuexi-liunian-kaoshi | 大限适合长期学习，流年考试不顺时怎样安排节奏？ | 3 | 学习投入与考试窗口，不写转职 |
@@ -25,4 +25,4 @@
 | 19 | 待次日研究复核，未发布 | ziwei-guanlu-zhize-touxian | 职位头衔变了而工作没变，官禄宫该看什么？ | 10 | 责任与头衔错位，不写佣金回款 |
 | 20 | 待次日研究复核，未发布 | ziwei-caibo-yicixing-jiangjin | 一次性奖金增加，财帛宫为什么不能当长期收入读？ | 10 | 一次性与持续收入分离，不写多渠道主线 |
 
-每篇的中文与英文草稿、原文完整 URL、采用角度和编辑注意事项见 `docs/ziwei-daily-2026-11-10-source.md`。本队列没有“待发布”或“已发布”条目。
+各篇的草稿和编辑说明见 `docs/ziwei-daily-2026-11-10-source.md`。未完成复核的条目不得发布。
