@@ -265,3 +265,65 @@ Moving in, starting a small business, and raising a child require different reso
 
 ### Give the plan a review date
 Separate steps that can begin now from those that need savings, job stability, or a suitable home. A small trial can reveal costs before a longer promise. Record each person's goal and a date to revisit it. Use the Spouse, Children, Wealth, and Property Palaces to organize distinct questions, then let the partners decide together.
+
+---
+
+## 05. 大限适合长期学习，流年考试不顺时怎样安排节奏？
+slug：`ziwei-daxian-xuexi-liunian-kaoshi`
+来源：2026-11-10 https://www.fateclick.com.tw/blog/2027-career-guanlu-guide
+角度及与旧文区别：从个人盘的长期职业能力与单次考试结果分层，不照搬来源的年度落宫表，也不同于旧文的转职决定。原11/09短稿今日复核并重写。
+正文草稿：
+准备职业证照的人，可能大限显示适合累积专业能力，流年却遇到一次考试失利。若把成绩直接解释成整段大限无效，就混淆了学习方向与一次测验。紫微斗数可以帮人分层提问：长期投入是否有用、今年的阻力在哪、下一次考试怎样安排。合格线、错题和学习时数仍要用真实记录核对。
+
+### 大限看能力累积，不保证通过
+先看本命官禄宫与福德宫：前者关联工作中的能力如何使用，后者可问持续学习的心力和节奏。再看大限是否让工作重心从执行转向专业判断、管理或教学。例如一位会计想考新证，虽然第一次没过，所学税务知识已用在客户项目中，长期价值并未因分数归零。若官禄化科，可问专业表达是否得到认可；若福德见忌，则检查疲劳和复习方法，而非断言此人不适合学习。
+
+### 流年只回答当年遇到什么
+流年官禄或相关四化被触动，可以提醒今年工作和考试相互挤压，却不能把某次失利归因于单星。具体障碍可能是准备时间不足、考纲变化、练习题型偏窄，也可能是考试当天生病。先做一张表，分开记录模考分数、正式成绩、错题类别、加班周数。若连续几次同一模块失分，就优先补模块；若只是复习日程被项目打断，就先争取稳定时段。盘面帮助找到要核查的问题，不负责替成绩作解释。
+
+### 两种重考方案要分别比较
+甲方案是三个月内再考：适合差距小、每周能留固定练习时间的人。乙方案是延后半年：适合要补基础课程或先完成工作项目的人。把报名费、请假成本和可用周数列出，再问未来几个月是否有可执行的计划。即便月盘看似顺，也不应跳过错题复盘；即便年盘有压力，也不表示要放弃整个证照方向。考试只是能力积累的一次检验，不是全部职业前景。
+
+### 排盘与复习的顺序
+先核本命官禄和福德的长期模式，再看大限中的岗位与学习任务，最后叠流年，找今年新增的资源或阻力。用实际成绩校验判断，并给复习表设每周目标和复盘日。需要转职还是继续学习，是另一项问题，不因一次考试结果自动决定。
+英文标题：Zi Wei Dou Shu: A Long Learning Cycle and a Difficult Exam Year
+英文描述：Separate a decade of skill development from one exam result when reading career and annual cycles.
+英文正文：
+A failed professional exam can feel like a verdict on years of study. In Zi Wei Dou Shu, a ten-year cycle and an annual layer answer different questions. The longer period may frame how a skill grows and finds use at work. The year may bring a crowded schedule or a particular test. Neither layer can replace the actual score report.
+
+### Measure what changed
+Compare the natal Career and Fortune Palaces with the current longer cycle. A candidate may already use new tax or technical knowledge at work even before passing a license exam. Then inspect the annual layer and list the practical obstacles: missed study hours, unfamiliar question types, or changes in the syllabus. Avoid turning one transformation into a fixed judgment about ability.
+
+### Choose a realistic retake
+A quick retake may work when the score gap is small and weekly practice is possible. A later attempt may be better when basic material or job demands need more time. Record mock scores, missed topics, fees, and leave days. Read the chart in layers, then set a revision schedule that can be tested against those records.
+
+---
+
+## 06. 流年有工作机会，面试月份要怎样避免过度解读？
+slug：`ziwei-liunian-yuefen-mianshi-shijian`
+来源：2026-11-10 https://www.fateclick.com.tw/blog/2027-career-guanlu-guide
+角度及与旧文区别：聚焦从年度职业议题到月份面试的证据精度，不照搬来源的2027宫位定位，也不重复旧文的转职方向。原11/09短稿今日复核并重写。
+正文草稿：
+流年官禄有工作机会，一个人便问“下月面试一定成功吗”。这一步跨得太快：年度职业议题不等于某一天的录取结果。月份能帮助安排观察窗口，但岗位、竞争、面试表现和公司流程都在命盘之外。与其寻找保证日期，不如把不同时间层与实际申请记录对应起来。
+
+### 先确认年度主题属于个人盘
+看2027流年时，应把共同的年度坐标叠回本命宫位和原有星曜，不能把所有人同一宫位的名称当成个人结论。先读本命官禄的职业方式，再看大限是否正处于换平台、升责任或积累技能的阶段。流年官禄若见化禄，可问今年机会从哪里来；若见化忌，就问简历、职位要求或沟通中有哪些实际阻力。它们都不能直接推出“某月必录用”。
+
+### 月份只缩小观察范围
+月盘是在年层之后看的较细时间信息，前提是出生时刻、排盘口径和年界都已核实。两家公司同月邀请面试，一家岗位明确、反馈快，另一家薪酬高却没有书面职责；不能只凭面试日期排序。先比较岗位等级、团队、薪酬结构、通勤和答复期限，再记录哪次谈话真正推进。若两张盘因出生时间临界而不同，不宜继续细化到单日。资料精度不够时，使用年度层做求职计划即可。
+
+### 给判断留下可复查的记录
+做一份申请表：投递日期、岗位要求、联系人、面试轮次、反馈时间和拒绝理由。面试前写下可检验的预期，如“这个月会获得更多面试”而不是“必然拿到最好的工作”。月底回看实际邀请和反馈，检查是否总在结果出来后改写解释。例如一次技术面失利，可能是作品准备不足；下一次可以先改作品演示，再看机会是否改善。这样盘面提示与行动反馈才能分开。
+
+### 排盘顺序和现实动作
+先核本命官禄及三方，再看大限的职业方向，之后叠2027流年；只有出生资料可靠且年层问题明确，才看月份。现实中先准备简历、核岗位条件、练习具体问题并按时跟进。月盘可辅助安排观察，不替雇主给出承诺，也不替求职者作选择。
+英文标题：Zi Wei Dou Shu: Can an Annual Career Signal Pick an Interview Month?
+英文描述：Read career timing in layers and test interview expectations against real applications and feedback.
+英文正文：
+An active annual Career Palace can make job searching worth attention. It cannot promise an offer in a particular month. In Zi Wei Dou Shu, the annual position must be read against a person's natal chart and longer cycle. A monthly layer adds detail only when the birth data and chart settings are reliable.
+
+### Compare jobs before dates
+Two interviews in the same month may offer very different roles. Compare duties, pay structure, team, commute, and response deadlines. A favorable chart signal does not tell you which employer will make an offer. A difficult one may prompt questions about preparation or communication, but the interview notes provide the evidence.
+
+### Keep an application log
+Record each application, interview round, feedback date, and reason for a rejection when available. State a modest expectation before the month begins, then review it afterward. Read the natal Career Palace, longer cycle, annual layer, and only then the monthly chart. Use the record to improve the resume and interview practice rather than moving the prediction after the result.
