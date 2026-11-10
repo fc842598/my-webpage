@@ -6,8 +6,8 @@
 |---|---|---|---|---|---|
 | 01 | 已发布 2026-11-10 09:00 https://yuetianai.com/articles/ziwei-2027-tianzhai-gongju-kongjian.html / https://yuetianai.com/articles/en/ziwei-2027-tianzhai-gongju-kongjian.html | ziwei-2027-tianzhai-gongju-kongjian | 2027年与家人共住，田宅宫怎样核对公共空间分工？ | 大限流年 |
 | 02 | 已发布 2026-11-10 09:01 https://yuetianai.com/articles/ziwei-2027-tianzhai-changbei-woshi.html / https://yuetianai.com/articles/en/ziwei-2027-tianzhai-changbei-woshi.html | ziwei-2027-tianzhai-changbei-woshi | 2027年为长辈调整卧室，田宅与父母宫各看什么？ | 宫位组合 |
-| 03 | 待次日研究复核，未发布 | ziwei-2027-fuqi-jiaoyou-jianyi-bianjie | 2027年朋友总替伴侣做决定，夫妻与交友宫如何分辨？ | 2 | 第三方意见边界，不写旧账沟通 |
-| 04 | 待次日研究复核，未发布 | ziwei-2027-fuqi-ziinv-shenghuo-jieduan | 2027年伴侣对生活阶段看法不同，夫妻与子女宫怎么读？ | 2 | 关系规划时间表，不写共同养育 |
+| 03 | 已发布 2026-11-10 10:02 https://yuetianai.com/articles/ziwei-2027-fuqi-jiaoyou-jianyi-bianjie.html / https://yuetianai.com/articles/en/ziwei-2027-fuqi-jiaoyou-jianyi-bianjie.html | ziwei-2027-fuqi-jiaoyou-jianyi-bianjie | 2027年朋友总替伴侣做决定，夫妻与交友宫如何分辨？ | 宫位组合 | 第三方建议的决策权限，不写旧账沟通 |
+| 04 | 待发布 | ziwei-2027-fuqi-ziinv-shenghuo-jieduan | 2027年伴侣对生活阶段看法不同，夫妻与子女宫怎么读？ | 宫位组合 | 共同计划的阶段时间表，不写共同养育或生育预测 |
 | 05 | 待次日研究复核，未发布 | ziwei-daxian-xuexi-liunian-kaoshi | 大限适合长期学习，流年考试不顺时怎样安排节奏？ | 3 | 学习投入与考试窗口，不写转职 |
 | 06 | 待次日研究复核，未发布 | ziwei-liunian-yuefen-mianshi-shijian | 流年有工作机会，面试月份要怎样避免过度解读？ | 3 | 年月精度与行动记录，不写大限转职判断 |
 | 07 | 待次日研究复核，未发布 | ziwei-qianyi-hangye-zhanhui | 去外地参加行业展会，迁移宫比官禄宫多看什么？ | 4 | 短期行业交流，不写海外合同或跨境客户 |

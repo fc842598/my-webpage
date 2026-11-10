@@ -203,3 +203,65 @@ Measure the route to the bathroom, thresholds, noise, storage, and access to com
 
 ### Try and review
 Small changes such as lighting or furniture placement may solve the immediate problem. If the family tries a new room, agree on a review date and allow the resident to change course. Read the natal Property pattern, then the Parents Palace and annual layer. Use the room's actual features and the resident's wishes to choose.
+
+---
+
+## 03. 2027年朋友总替伴侣做决定，夫妻与交友宫如何分辨？
+slug：`ziwei-2027-fuqi-jiaoyou-jianyi-bianjie`
+来源：2026-11-10 https://www.ai-tianji.com/zh-hant/ziwei/marriage-read
+角度及与旧文区别：聚焦朋友建议进入伴侣决策的权限；区别于旧文的朋友与伴侣相处礼节，也不重复11/09的争议核实。原始短稿参考11/09，今日重查研究并重写。
+正文草稿：
+一对伴侣商量换工作城市，朋友说“这份机会一定要接”，还替其中一方答应了看房。争执看似来自朋友，真正的问题却是两个人何时把建议交成了决定。2027年若夫妻宫与交友宫同时成为流年焦点，应先分清亲密关系内部的协商与外部信息来源，不能凭宫位断定朋友有恶意，也不能用星曜替伴侣表态。
+
+### 夫妻宫先看双方如何形成决定
+夫妻宫不只用来问感情好坏，也可观察两人在有分歧时怎样谈条件。本命夫妻宫提示较稳定的相处方式，大限看阶段性责任变化，流年再指出今年哪件事需要重谈。比如一方想接受外地职位，另一方要照顾家人；先列搬迁期限、费用和照护安排，再问谁有权作最后承诺。若夫妻宫见化忌，重点是核对误解和遗漏的信息，不可直接写成关系破裂。若见化权，也不表示某一方天然应该压过另一方，而要看现实分工是否清楚。
+
+### 交友宫看意见从哪里进来
+交友宫可以提示朋友、同事或社群如何影响判断，但不能给人贴上“破坏关系”的标签。朋友提供当地租金、介绍工作联系人，属于可核实的信息；替伴侣回复招聘方或安排签约，则已经越过建议范围。再看交友宫与夫妻宫的三方四正及四化有没有连接，分辨外部声音是增加资料，还是让双方停止直接沟通。例如朋友把房源发到群里，双方可以共同查合同；朋友要求当天付定金，就应先暂停并核对付款人和风险。
+
+### 两个场景用不同边界
+若朋友介绍新城市的学校，先问学校资料是否准确，之后由伴侣讨论孩子的安排。若朋友建议分手，则先把他说的事实与评价分开：有没有具体事件、能否向当事人核实、双方是否愿意谈。两种情况都不宜把一次外部意见读成必然结果。可约定一条简单规则：朋友可以提供信息，涉及住处、工作、共同账户的承诺必须由两位当事人直接确认。这样既保留支持网络，也让决定的责任回到关系内部。
+
+### 排盘和行动顺序
+先看本命夫妻宫的协商习惯，再看交友宫代表的外部关系及两宫的关联；随后叠大限、2027流年，确认今年具体被触发的议题。最后把信息来源、决定者、预算和截止日期写在同一页。若两人对边界仍有不同理解，先谈程序，再谈选项，不用“某宫不好”替任何人下结论。
+英文标题：Zi Wei Dou Shu in 2027: Friends and a Couple's Decisions
+英文描述：Use the Spouse and Friends Palaces to separate outside advice from decisions a couple must make together.
+英文正文：
+A friend recommends a job in another city and even arranges apartment viewings for a couple. The advice may be useful, but who agreed to move? In Zi Wei Dou Shu, the Spouse Palace frames how partners negotiate. The Friends Palace asks how outside voices enter the discussion. An annual pattern in 2027 cannot prove that a friend has bad motives or make the choice for either partner.
+
+### Keep information and authority separate
+A friend can share local rent figures or introduce an employer. Accepting an offer, paying a deposit, and changing care arrangements need direct agreement between the partners. Read the natal relationship pattern first, then the longer cycle and annual focus. If a difficult transformation appears, ask which facts were missed or misunderstood instead of predicting a breakup.
+
+### Make the decision traceable
+Write down the source of each claim, who checked it, and who may commit shared money or time. A school recommendation needs verification; a request for an immediate apartment deposit needs a pause. Compare the Spouse and Friends Palaces to frame the conversation, then use the actual budget, deadlines, and responsibilities to decide.
+
+---
+
+## 04. 2027年伴侣对生活阶段看法不同，夫妻与子女宫怎么读？
+slug：`ziwei-2027-fuqi-ziinv-shenghuo-jieduan`
+来源：2026-11-10 https://khoahoctuvi.vn/tu-vi/cung-tu-tuc
+角度及与旧文区别：把子女宫用于共同计划和持续投入的时间表；区别于已有的共同养育责任文，也不推断生育结果。原始短稿参考11/09，今日按新来源重写。
+正文草稿：
+一方希望明年同居并开始长期项目，另一方想先稳定工作。两人并非不重视关系，只是给“下一阶段”设了不同起点。2027年看夫妻与子女宫，先问如何协商和持续投入，再问时间是否现实。子女宫不等同生育结果，也不能拿流年星曜催促任何人做家庭决定。
+
+### 夫妻宫对应协议的形成过程
+本命夫妻宫可观察两个人面对分歧时的惯常方式：有人先谈愿望，有人先算条件。大限若正处于换行业或收入重整阶段，年度讨论就不能脱离这层背景。比如一方希望年初共同租房，另一方的试用期要到夏天结束；不妨把“愿意同居”和“何时签约”拆成两项。夫妻宫见化禄，可以问双方是否更愿意投入关系；见化忌，则需检查没有说清的限制。它们都不能替代当事人的同意。
+
+### 子女宫可看需要长期培养的事
+子女宫除了传统亲子议题，也可用来提问双方是否愿意共同照顾一个长期计划。一起养宠物、经营副业或规划课程，所需时间、费用和日常责任并不相同。若子女宫被流年牵动，不能把所有计划自动解读为怀孕；要先问具体项目是什么，谁负责每周执行，失败时怎样调整。例如两人想开周末小店，首月要试营业、记录客流，远比一句“适合创业”更可检验。涉及生育或健康，则依据本人意愿和专业意见处理。
+
+### 把时间表写成可调整的条件
+一张实用表格可分为现在能做、需要等待、暂不承诺三栏。同居可以先试一段时间，长期项目可以先做小规模验证；需要工作稳定或储蓄达到某金额的事项，写明复盘日期。若双方的目标不同，别把一方的犹豫都说成不爱，也别把另一方的急迫都说成冲动。再看财帛宫能否承担固定支出、田宅宫是否支持空间安排，这些宫位提供不同问题，而不是一个统一的吉凶分数。
+
+### 排盘时先分层再讨论选择
+先看本命夫妻宫的沟通方式，接着看子女宫所对应的具体共同投入，并核对财帛、田宅等现实条件。再看大限是否改变工作与生活重心，最后用2027流年安排今年该谈什么。把目标、资源、责任人和下次复盘日记录下来；盘面只能帮助整理问题，生活阶段由双方共同决定。
+英文标题：Zi Wei Dou Shu in 2027: Partners at Different Life Stages
+英文描述：Read the Spouse and Children Palaces as questions about negotiation, shared projects, and timing.
+英文正文：
+One partner wants to move in next year; the other wants to finish a new job's trial period first. They may share a goal but disagree on when to begin. In Zi Wei Dou Shu, the Spouse Palace can frame how the agreement is made. The Children Palace can also raise questions about a project that needs sustained care. Neither palace guarantees a birth or gives one partner authority over the other's choice.
+
+### Name the actual commitment
+Moving in, starting a small business, and raising a child require different resources. Ask what the partners mean by the next stage, who would handle weekly tasks, and what must be true before a commitment begins. A favorable annual signal is no substitute for consent, income, and time. Read the natal chart and longer cycle before the 2027 layer.
+
+### Give the plan a review date
+Separate steps that can begin now from those that need savings, job stability, or a suitable home. A small trial can reveal costs before a longer promise. Record each person's goal and a date to revisit it. Use the Spouse, Children, Wealth, and Property Palaces to organize distinct questions, then let the partners decide together.
