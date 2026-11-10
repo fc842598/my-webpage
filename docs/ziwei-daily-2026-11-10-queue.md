@@ -20,7 +20,7 @@
 | 14 | 已发布 2026-11-10 10:23 https://yuetianai.com/articles/ziwei-xiongdi-jiaoyou-jiekuan.html / https://yuetianai.com/articles/en/ziwei-xiongdi-jiaoyou-jiekuan.html | ziwei-xiongdi-jiaoyou-jiekuan | 同辈朋友借钱，兄弟与交友宫能提醒哪些边界？ | 7 | 借款记录与关系范围，不写团队分工 |
 | 15 | 已发布 2026-11-10 10:23 https://yuetianai.com/articles/ziwei-guanlu-waizi-shiyongqi-mubiao.html / https://yuetianai.com/articles/en/ziwei-guanlu-waizi-shiyongqi-mubiao.html | ziwei-guanlu-waizi-shiyongqi-mubiao | 想进外企，官禄宫怎样对应试用期的具体目标？ | 8 | 入职后岗位目标，不写培训成本 |
 | 16 | 已发布 2026-11-10 10:23 https://yuetianai.com/articles/ziwei-guanlu-qianyi-yuyan-goutong.html / https://yuetianai.com/articles/en/ziwei-guanlu-qianyi-yuyan-goutong.html | ziwei-guanlu-qianyi-yuyan-goutong | 跨语言团队沟通不顺，官禄与迁移宫怎么分工？ | 8 | 工作流程和外部协作，不写跨境客户交付 |
-| 17 | 待发布 | ziwei-lishi-xialingshi-chushengji | 老出生记录遇到夏令时，排盘前怎样核对原始时间？ | 9 | 历史时间记录核验，不写真太阳时双盘 |
+| 17 | 已发布 2026-11-10 10:23 https://yuetianai.com/articles/ziwei-lishi-xialingshi-chushengji.html / https://yuetianai.com/articles/en/ziwei-lishi-xialingshi-chushengji.html | ziwei-lishi-xialingshi-chushengji | 老出生记录遇到夏令时，排盘前怎样核对原始时间？ | 9 | 历史时间记录核验，不写真太阳时双盘 |
 | 18 | 待发布 | ziwei-zishi-kuari-rili-jilu | 接近午夜出生，子时跨日争议先准备哪些记录？ | 9 | 原始日期证据，不写闰月年界设置 |
 | 19 | 待发布 | ziwei-guanlu-zhize-touxian | 职位头衔变了而工作没变，官禄宫该看什么？ | 10 | 责任与头衔错位，不写佣金回款 |
 | 20 | 待发布 | ziwei-caibo-yicixing-jiangjin | 一次性奖金增加，财帛宫为什么不能当长期收入读？ | 10 | 一次性与持续收入分离，不写多渠道主线 |
