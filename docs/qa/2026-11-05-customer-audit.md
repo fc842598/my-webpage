@@ -221,3 +221,12 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - 上线依据须以本轮push后的远端一致、实际资源和浏览器复查为准。注册账号7份命盘计数、成功扣次及真实长回答/英文回答仍未完成端到端验收，完整目标保持未完成。
 - 回滚可仅revert本轮专用提交后按既有master同步，不改域名、部署链路或数据库。
 - 推送后证据：提交29e7b162b9855b3b37bc5088d3ca3d67b9037b85与GitHub master一致；首轮6份资源尚旧，20秒后4篇正文、英文索引、sitemap-en.xml全部HTTP200且与本地逐字一致。线上浏览器关系疏离页显示新标题、Inner Life Palace说明和4个分段。qa-20261105-account-display.mjs现有9组回归全部通过；这些函数级回归不替代真实登录/成功模型输出验收。
+
+### 2026-11-10：英文正常回答与真实长回答验收推进
+
+- 后端7bc2fe053d93cb3c6e5d0f2f726ff092367fbf03修复英文句末`.`误判未完成；新增回归先失败后通过。2026-11-06既有Vercel部署dpl_6ZLcjh9BtWwgYCVA4rpRYNQhbdqm已Ready，api.yuetianai.com仍指向该部署；11月10日重新核验main一致，没有重启已完成部署。
+- 固定合成接口探针本轮HTTP200，aiReplyFallback/emptyReplyFallback/incompleteReplyRepair/hardCompleteFallback均false，quotaCharged=true、quotaCompensated=false，remaining=2。没有增加限额、重置计数或轮换身份。此证据证明正常英文模型路径已可用，不证明所有领域内容准确。
+- 实际线上手机壳浏览器，从“最近命盘”进入既有合成女命问答，在中文界面明确要求English；单次点击后发送禁用并显示正在看盘，生成真实英文正文，顶部3→2。回答完成长度1819字符（DOM含额外分段空白）。PageUp将scrollTop1285.6降至890.4，Ctrl+Home到0，生成继续和结束后仍保持0。滚动容器clientHeight452、scrollHeight最终2867。此为实际服务返回内容，不是本地长文fixture；不声称是真实手机硬件测试。
+- 同时复现英文分段缺陷：中文70字符/逗号拆分规则把原回答拆成27个p。修订splitWentianReplyParagraphs按正文Latin/Han比例保留英文原段，不依赖界面语言；少量中文术语括注也保留；原中文短段策略不变。新增test-chat-english-paragraphs.mjs修前失败、修后通过，现有9组账号/配额/交互回归仍通过。仅修渲染，不改原始历史或再请求模型。
+- 首次打开“最近命盘”的六卷区域仍看见旧的“1位命主”提示，问答入口本轮未被拦截。该提示是否由旧失败状态持久化仍待独立定位，不把它当作正常说明。
+- 注册账号7份档案显示、登录账号跨命盘连续扣次、真实小屏设备和剩余英文候选仍未全验收，目标保持active。手机号邮箱条件文案仍以现有回归为证，未用真实客户账号冒测。

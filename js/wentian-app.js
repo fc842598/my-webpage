@@ -12254,6 +12254,13 @@ function splitWentianReplyParagraphs(text) {
   const explicitBlocks = raw.includes("\n")
     ? raw.split(/\n+/).map((item) => item.trim()).filter(Boolean)
     : [raw.replace(/\s+/g, " ").trim()];
+  // Follow the reply's prose, not the UI language: users can request English
+  // from the Chinese interface. Let CSS wrap English instead of splitting its
+  // clauses at Chinese-sized character thresholds. Small glossary terms remain
+  // compatible with otherwise English paragraphs.
+  const latinLetters = (raw.match(/[A-Za-z]/g) || []).length;
+  const hanCharacters = (raw.match(/[\u3400-\u9fff]/g) || []).length;
+  if (latinLetters >= 16 && latinLetters > hanCharacters * 2) return explicitBlocks;
   const paragraphs = [];
 
   for (const block of explicitBlocks) {
