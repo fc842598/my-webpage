@@ -9,7 +9,7 @@
 | 03 | 已发布 2026-11-10 10:02 https://yuetianai.com/articles/ziwei-2027-fuqi-jiaoyou-jianyi-bianjie.html / https://yuetianai.com/articles/en/ziwei-2027-fuqi-jiaoyou-jianyi-bianjie.html | ziwei-2027-fuqi-jiaoyou-jianyi-bianjie | 2027年朋友总替伴侣做决定，夫妻与交友宫如何分辨？ | 宫位组合 | 第三方建议的决策权限，不写旧账沟通 |
 | 04 | 已发布 2026-11-10 10:03 https://yuetianai.com/articles/ziwei-2027-fuqi-ziinv-shenghuo-jieduan.html / https://yuetianai.com/articles/en/ziwei-2027-fuqi-ziinv-shenghuo-jieduan.html | ziwei-2027-fuqi-ziinv-shenghuo-jieduan | 2027年伴侣对生活阶段看法不同，夫妻与子女宫怎么读？ | 宫位组合 | 共同计划的阶段时间表，不写共同养育或生育预测 |
 | 05 | 已发布 2026-11-10 10:05 https://yuetianai.com/articles/ziwei-daxian-xuexi-liunian-kaoshi.html / https://yuetianai.com/articles/en/ziwei-daxian-xuexi-liunian-kaoshi.html | ziwei-daxian-xuexi-liunian-kaoshi | 大限适合长期学习，流年考试不顺时怎样安排节奏？ | 大限流年 | 学习投入与一次考试分开，不写转职 |
-| 06 | 待发布 | ziwei-liunian-yuefen-mianshi-shijian | 流年有工作机会，面试月份要怎样避免过度解读？ | 大限流年 | 年月精度与申请记录，不写大限转职判断 |
+| 06 | 已发布 2026-11-10 10:06 https://yuetianai.com/articles/ziwei-liunian-yuefen-mianshi-shijian.html / https://yuetianai.com/articles/en/ziwei-liunian-yuefen-mianshi-shijian.html | ziwei-liunian-yuefen-mianshi-shijian | 流年有工作机会，面试月份要怎样避免过度解读？ | 大限流年 | 年月精度与申请记录，不写大限转职判断 |
 | 07 | 待次日研究复核，未发布 | ziwei-qianyi-hangye-zhanhui | 去外地参加行业展会，迁移宫比官禄宫多看什么？ | 4 | 短期行业交流，不写海外合同或跨境客户 |
 | 08 | 待次日研究复核，未发布 | ziwei-qianyi-shuangcheng-tongqin | 双城通勤没有搬家，迁移宫怎样与田宅宫配合？ | 4 | 通勤频率与居住安排，不写新人外派 |
 | 09 | 待次日研究复核，未发布 | ziwei-jiee-guanlu-gongzuo-bianjie | 疾厄宫与官禄宫同时受压，怎样建立工作边界？ | 5 | 可执行的任务边界，不写作息日志 |
