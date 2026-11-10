@@ -239,3 +239,4 @@ Chrome GitHub安装页面当前仍为aa15989267747-lang，仅授权hk-landing、
 - 本地真实浏览器创建本地合成2000-01-01 12:00档案，英文盘面发现两条易经切换说明漏译成拼音、按钮组合aria-label误变Regenerate in English、AI标题/更多操作漏译，以及中宫分隔符错误编码“路”被显示为Text。补齐5条明确静态翻译，组合aria-label按部件翻译后拼接，中宫英文分隔符/空值恢复正常Unicode。
 - 重载本地实际盘面确认12宫标签含Inner Life、Migration、Career、Wealth；meta为Earth Fifth Bureau · Rabbit，无Text；更多操作More chart actions；三条切换按钮说明为英文，aria-label不再要求重新生成；document横向无溢出。没有进行AI生成、支付或注册。
 - 既有英文导航/头部与新增宫名/说明回归通过，chat段落测试、账号/额度9组回归和JS语法通过。旧卦名自动回退仍有NW Heaven等不完整名称，古籍英文仍存在待审核内容；不能据此次修复宣布整站英文完成。文章原始扫描29份候选仍待逐一核对。
+- 上线提交5dea72f433665f970ba794887f3c97ec1ee38fc3与GitHub master一致；首轮旧资源，20秒后HTML/JS均HTTP200并逐字匹配。线上浏览器既有合成命盘加载20261110-palace-terms，12宫含Inner Life/Migration/Career/Wealth，更多操作及三条易经按钮说明为英文，无横向溢出。英文“我的”页实际显示Remaining2/3、Shared guest quota · No daily reset、Saved charts4、Recent Chart。另看见合成档案中文姓名被自动翻成Text1103-Text，后续须按姓名数据保护而不是添加拼音词条修复。
