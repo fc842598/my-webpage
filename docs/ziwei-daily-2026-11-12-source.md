@@ -1,6 +1,6 @@
 # 2026-11-12 紫微文章稿件与编辑说明
 
-今天同行研究可用来源 10 篇、10 个域名；研究来源数不等于本站原创篇数。01 已按当天来源写稿，后续条目尚待选题与编辑，不计为已发布。写前查了现有 articles、双语索引、Feed、sitemap 和旧队列；夫妻宫翻旧账、交友合作误会、泛巨门口舌均已覆盖，本篇限定官禄宫的会议决策留痕。
+今天同行研究可用来源 10 篇、10 个域名；研究来源数不等于本站原创篇数。01–05 已按当天来源写稿，06 完成当日来源映射与查重；后续选题仍待编辑，不计为已发布。写前扫描现有 articles、双语索引、Feed、sitemap 和旧队列，逐篇记录区别。
 
 ## 01. 2027 巨门化忌落官禄宫，会议结论总被误解怎么核对？
 slug：`ziwei-2027-jumen-guanlu-huiyi-jilu`
@@ -163,3 +163,37 @@ The worker may stay home while clients live abroad, travel for a few short assig
 
 ### Check the written option
 Ask the employer to specify the work location, maximum travel, reimbursement, meeting hours, and the process for changing locations. A verbal promise of remote work is weak evidence when the signed contract permits unilateral relocation. Read natal placements before longer and annual cycles, then compare each actual offer's after-tax income, time cost, and reversibility. An annual Travel Palace signal can suggest a useful question about external exposure. It does not decide whether to move a household.
+
+---
+
+## 06. 借调到新团队三个月，绩效由谁评该怎样读官禄宫？
+slug：`ziwei-jiediao-shuang-zhuguan-jixiao`
+来源：2026-11-12 https://lightpath.tw/blog/ziwei-career-questions-guide
+角度及与旧文区别：借鉴职业问题需先分清具体提问的方向；本站只讨论借调期间原部门与接收部门两位主管的考核权、成果归属。站内已有借调的居住安排及主管反馈文，本篇处理双线汇报和绩效证据，不沿用同行的十题清单。
+正文草稿：
+员工借调到新团队三个月，原部门主管说年底绩效仍由他评，新团队主管却每天安排任务。两边都要求交付，谁对成果负责？紫微斗数里的官禄宫可帮助看岗位责任与工作成果，父母宫可观察面对上级和制度的关系，交友宫则涉及协作网络。但盘面不会代替公司确定考核权限。
+
+### 先分清工作来源与评价来源
+借调的关键不在“换了办公室”本身，而在任务、资源和评价可能来自不同人。先查官禄宫主星、三方四正，再看父母宫与上级制度的关联，交友宫则只用于理解团队配合。若官禄有化权，可以问谁实际分配优先级；若父母宫有化忌，先核制度或上级沟通是否存在遗漏，不能直接断定主管会打低分。命宫帮助回看自己能承担多少并行任务，不应将每次返工都解释为个人能力不足。
+
+### 把两位主管的任务写在一张表
+例如数据分析师在新团队负责上线实验，同时仍为原团队维护月报。前者每周要给产品经理结果，后者每月向原主管复盘。若两个截止日冲突，先请双方确认哪个项目优先；若新主管只口头认可实验成果，却不向原部门同步，年底评价可能缺少材料。此时官禄宫指向实际工作，父母宫提示需要核正式考核路径，交友宫提示协作和共享记录。三宫说的是不同问题，不能混成“事业有贵人”。
+
+### 让绩效证据跟着责任走
+借调开始时要求书面说明：期限、汇报对象、指标权重、最终评议人和冲突升级路径。每两周记录已交付成果、接收人、修改原因以及占用工时。另一种情况是新团队要求紧急支援，原团队的月报因此延期；如果没有提前标注，年底可能只看到延期而看不到支援。四化最多提醒哪个环节值得仔细核对，真正决定评价的是组织规则与可追溯的交付证据。
+
+### 大限与流年只回答阶段问题
+本命官禄描述较长期的职业结构，大限可以看近十年的转型背景，流年提示当年是否更常经历任务变化。三个月借调不能仅凭某个流年星曜判成升职或失业。排盘先确认本命官禄及三方，再看父母、交友所对应的权责和合作，最后叠大限流年；现实里拿借调协议、项目记录和两位主管的确认作检验。若评价权未写清，先把问题问清，比猜测“哪一宫更旺”有用。
+英文标题：Zi Wei Dou Shu: Who Reviews Performance During a Three-Month Team Transfer?
+英文描述：Read the Career, Parents and Friends Palaces as distinct questions when two managers assign work but only one may control the annual review.
+英文正文：
+An employee is loaned to another team for three months. The original manager says the year-end review is still theirs, while the new manager assigns the daily work. The practical problem is who sets priorities and whose record will count. In Zi Wei Dou Shu, the Career Palace can frame duties and results, the Parents Palace can raise questions about authority and formal rules, and the Friends Palace can frame cooperation. None of these palaces defines the company's review policy.
+
+### Distinguish assignments from evaluation
+Suppose a data analyst runs an experiment for a product team and still maintains a monthly report for the original team. The product manager sees weekly results, while the original manager sees only the old report. A Hua Quan emphasis in the Career Palace could prompt a question about priority-setting authority. A Hua Ji signal connected with authority could prompt a check for missing approvals or unclear rules. Neither proves that a manager intends to give a poor rating.
+
+### Keep evidence with each commitment
+Before the transfer, request written terms for its dates, reporting line, performance measures, final reviewer, and how conflicting deadlines will be resolved. Record deliveries, recipients, changes, and hours every two weeks. If urgent work for the new team delays the old monthly report, note the tradeoff before review time. The Career Palace addresses the work done; the authority relationship and team cooperation answer different questions.
+
+### Review the period in order
+Read the natal Career Palace and related palaces first, then a longer career cycle, then the annual layer. A short transfer does not by itself mean promotion or dismissal. Compare the chart's questions with the transfer agreement, project history, and confirmations from both managers. When review authority is unclear, asking for the written rule is more reliable than choosing the more favorable palace.
