@@ -899,6 +899,7 @@
     if (sessionMeta && loggedIn) sessionMeta.textContent = getDesktopQuotaSharedText();
     updateDesktopMemberEntry();
     renderBasicReadingAccess();
+    renderYijingAssistLock();
   }
 
   window._updateQuotaDisplay = updateDesktopQuotaDisplay;
@@ -4393,6 +4394,16 @@
       );
     }
     renderYijingTiming(result);
+    renderYijingAssistLock();
+  }
+
+  function renderYijingAssistLock() {
+    const root = $('#mbpYijingAssist');
+    const lock = $('#mbpYijingLock');
+    if (!root || !lock) return;
+    const isMember = !!desktopAuthState.quota?.isMember;
+    root.classList.toggle('is-locked', !isMember);
+    lock.hidden = isMember;
   }
 
   function pillarText(stem, branch) {
@@ -8997,6 +9008,7 @@
       openDesktopAuth(desktopAuthState.session?.user ? desktopAuthState.mode : 'login');
     });
     $('#mbpMemberPayTrigger')?.addEventListener('click', () => openDesktopMemberPayment());
+    $('#mbpYijingUnlockBtn')?.addEventListener('click', () => openDesktopMemberPayment());
     $('#mbpAuthClose')?.addEventListener('click', closeDesktopAuth);
     $('#mbpAuthOverlay')?.addEventListener('click', (event) => {
       if (event.target === $('#mbpAuthOverlay') && !desktopAuthState.loading) closeDesktopAuth();
@@ -9103,6 +9115,7 @@
   renderDesktopPayment();
   bindEvents();
   renderChart();
+  renderYijingAssistLock();
   bootDesktopAuth();
   hydrateCustomerRecordsFromRemote({ rerender: true });
 }());
