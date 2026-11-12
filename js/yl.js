@@ -10,6 +10,9 @@
   var AUTH_SESSION_KEY = "wentian-app-auth-session-v1";
   var AUTH_REFRESH_SKEW_MS = 60 * 1000;
   var PAYMENT_HANDOFF_KEY = "yuetian-payment-handoff-v2";
+  var PAYMENT_HANDOFF_EXPIRY_KEY = "yuetian-payment-handoff-expires-v2";
+  // handoff token 后端 TTL 为 1 小时；前端提前 10 分钟视为过期，避免复用已失效链接
+  var PAYMENT_HANDOFF_REUSE_MS = 50 * 60 * 1000;
   var MEMBER_RETURN_KEY = "yuetian-member-return-v1";
   var MEMBER_RETURN_TTL_MS = 2 * 60 * 60 * 1000;
   // 2026-11-10 价格体系重构：全站只保留一个商品 —— 19.9 深度解读月卡。
@@ -400,10 +403,41 @@
     return Date.now() >= (Number(session.expires_at) * 1000) - AUTH_REFRESH_SKEW_MS;
   }
 
+  function savePaymentHandoff(token, expiresAt) {
+    try {
+      sessionStorage.setItem(PAYMENT_HANDOFF_KEY, token || "");
+      if (expiresAt) {
+        var expMs = new Date(expiresAt).getTime();
+        if (Number.isFinite(expMs)) {
+          sessionStorage.setItem(PAYMENT_HANDOFF_EXPIRY_KEY, String(expMs));
+          return;
+        }
+      }
+      // 未提供过期时间时，用保守的复用窗口兜底
+      sessionStorage.setItem(PAYMENT_HANDOFF_EXPIRY_KEY, String(Date.now() + PAYMENT_HANDOFF_REUSE_MS));
+    } catch (_error) {}
+  }
+
+  function isPaymentHandoffReusable() {
+    try {
+      var raw = sessionStorage.getItem(PAYMENT_HANDOFF_EXPIRY_KEY) || "";
+      var expMs = Number(raw);
+      if (!Number.isFinite(expMs) || expMs <= 0) return true; // 无过期记录时按可复用处理，避免误伤
+      return Date.now() < expMs;
+    } catch (_error) {
+      return true;
+    }
+  }
+
   function readPaymentHandoff() {
     try {
       var token = sessionStorage.getItem(PAYMENT_HANDOFF_KEY) || "";
-      return isValidPaymentConfirmationToken(token) ? token : "";
+      if (!isValidPaymentConfirmationToken(token)) return "";
+      if (!isPaymentHandoffReusable()) {
+        clearPaymentConfirmation();
+        return "";
+      }
+      return token;
     } catch (_error) {
       return "";
     }
@@ -429,7 +463,10 @@
 
   function clearPaymentConfirmation() {
     paymentConfirmationToken = "";
-    try { sessionStorage.removeItem(PAYMENT_HANDOFF_KEY); } catch (_error) {}
+    try {
+      sessionStorage.removeItem(PAYMENT_HANDOFF_KEY);
+      sessionStorage.removeItem(PAYMENT_HANDOFF_EXPIRY_KEY);
+    } catch (_error) {}
   }
 
   function normalizeMemberReturnPath(value) {
@@ -643,12 +680,22 @@
     }
   }
 
+  function extractPaymentHandoffToken(urlValue) {
+    try {
+      var hash = String(urlValue || "").split("#")[1] || "";
+      var match = hash.match(/pay_handoff=(v2\.[A-Za-z0-9_-]+)/);
+      return match?.[1] || "";
+    } catch (_error) {
+      return "";
+    }
+  }
+
   function capturePaymentHandoff() {
     try {
       var match = (window.location.hash || "").match(/^#member\?pay_handoff=(v2\.[A-Za-z0-9_-]+)$/);
       var token = match?.[1] || "";
       if (!isValidPaymentConfirmationToken(token)) return false;
-      sessionStorage.setItem(PAYMENT_HANDOFF_KEY, token);
+      savePaymentHandoff(token, null);
       window.history.replaceState({}, document.title, window.location.pathname + window.location.search + "#member");
       return true;
     } catch (_error) {
@@ -2412,6 +2459,9 @@
       });
       if (!data.handoffUrl) throw new Error("微信支付链接生成失败");
       var handoffUrl = decoratePaymentHandoffUrl(data.handoffUrl);
+      // 保存 token 及后端返回的过期时间，供后续复用前校验，避免复用已过期链接
+      var handoffToken = extractPaymentHandoffToken(handoffUrl);
+      if (handoffToken) savePaymentHandoff(handoffToken, data.expiresAt || null);
       paymentState.status = "handoff";
       paymentState.payMethod = "handoff";
       paymentState.payUrl = handoffUrl;
