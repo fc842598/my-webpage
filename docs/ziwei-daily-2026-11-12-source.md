@@ -367,3 +367,37 @@ Agree on a deposit, cancellation deadline, compensation for completed preparatio
 
 ### Review the booking pattern
 Read the natal Sun placement, related palaces, and longer and annual cycles in order. Then track actual speaking offers, deposits, cancellations, unrecovered costs, and repeat invitations. Frequent cancellations with high publicity may call for a different booking policy rather than a verdict that public work cannot earn money.
+
+---
+
+## 12. 产假后复工遇到跨城出差，子女宫与迁移宫怎样分开看？
+slug：`ziwei-changjia-fugong-chuchai-ziinv-qianyi`
+来源：2026-11-12 https://kairo.aiinvest.tw/articles/daily-20261111-life
+角度及与旧文区别：吸收回岗应同时核职业连续性和照顾资源的议题，本站限定复工首月临时跨城出差，分子女宫的照顾安排、迁移宫的外部任务及官禄宫的岗位责任。旧文已有一般育儿复工与借调居住，本篇只谈两天出差的交接能力，不复制同行的费用清单与阶段复盘结构。
+正文草稿：
+产假结束后刚回岗，主管安排两天跨城客户会议。一方想接任务，担心不去会失去项目；另一方担心孩子接送与夜间照顾突然没人接。紫微斗数里子女宫可以帮助整理照顾责任，迁移宫关注到外部环境执行任务，官禄宫则回到岗位要求。三宫各问一件事，不能凭其中一宫断言“该去”或“不该去”。
+
+### 先确认工作要求是否必须本人到场
+官禄宫对应实际岗位与成果，先问会议目标、需要本人做的部分和是否能远程参加。比如客户只要求产品演示，原负责人可在线讲解，现场由当地同事操作；这与必须签署现场交付文件不同。若官禄有化权，可核是否承担最终决定；若迁移宫有化科，可问专业呈现如何被外部客户理解。星曜提供核查角度，不会替主管写岗位职责。
+
+### 子女宫不能替家庭排班
+子女宫涉及养育与延伸责任，但要把它落到实际照顾时段。两天内谁送孩子、谁接、夜里突发状况联系谁、备用照顾者能否到场，都需先得到相关人的同意。若夫妻宫见化权，可以问临时变更由谁协调，而不是把权力当成某一方“理应负责”。若孩子照顾需要特殊安排，应以实际需求和专业建议为准，不能用盘面猜孩子会不会不舒服。
+
+### 迁移宫看外部任务的代价
+这次出差是两天还是两周，交通是否可改签，会议时区与返程时间是否影响接送？迁移宫的星曜不能直接读成“出门必顺”或“留家必败”。例如会议周四结束，返程票订在周五早上，家庭就需要多覆盖一晚；若改为周四视频参与、周五回岗，工作效果和家庭成本可能都不同。将路线、任务和支持人手写在同一时间表，才知道方案能否执行。
+
+### 排盘之后仍要问清双方承诺
+先看本命官禄、子女和迁移宫及其三方，再叠大限的职业阶段与流年的短期变化。现实里分别向主管确认远程替代方案、向共同照顾者确认时段，并准备交通延误时的备用联系。若两边都无法承接，提出调整会议职责并非“命盘不利”，而是资源尚未到位；若条件齐备，也不必把迁移宫的变化读成必须长期离家。一次出差要靠具体安排决定。
+英文标题：Zi Wei Dou Shu: Returning From Parental Leave and a Short Business Trip
+英文描述：Use the Children, Travel and Career Palaces to separate childcare handoffs from job duties when a new parent faces a two-day trip.
+英文正文：
+An employee has just returned from parental leave when a manager schedules a two-day client meeting in another city. The employee wants to keep the project but needs reliable childcare during the trip. In Zi Wei Dou Shu, the Children Palace can frame caregiving responsibilities, the Travel Palace can frame the outside assignment, and the Career Palace can frame the job requirement. No one palace can decide whether the employee should go.
+
+### Check whether the task requires travel
+Ask what the client meeting must achieve and which part needs this employee in person. A product demonstration might be delivered by video while a colleague handles the room. Signing a physical handoff may be different. A Career Palace authority signal raises a question about final responsibility; a Travel Palace reputation signal raises a question about how expertise is presented to an external client. The manager and client still define the actual work.
+
+### Build a childcare handoff that can work
+Specify who takes the child to care, who collects them, who is reachable overnight, and who can step in if a train is delayed. Each helper must agree to the role. The Spouse Palace can frame how the adults negotiate a change, but a chart cannot assign the entire burden to one partner or predict the child's needs.
+
+### Put the timetable beside the chart
+Compare a Thursday return with a Friday return, a remote presentation, and an in-person visit. The extra night changes the care plan even if the meeting itself lasts only an hour. Read natal job, care, and travel patterns before longer and annual cycles. Then confirm the work alternative with the manager and every care shift with the people involved. The decision follows the available support and the job's actual requirements, not a simple verdict from a palace.
