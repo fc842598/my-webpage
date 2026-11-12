@@ -3476,6 +3476,22 @@ html[lang="en"] .wentian-native-mingpan .fc-center-btn {
   margin-bottom: 0;
 }
 
+.wentian-chat-pay-cta {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #9f3d2e, #bd7d23);
+  box-shadow: 0 8px 18px rgba(131, 67, 29, .22);
+  color: #fffaf3;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  text-align: center;
+}
+
 .wentian-chat-msg:not(.is-user):not(.is-system) {
   margin-left: 36px;
   border-radius: 5px 15px 15px;

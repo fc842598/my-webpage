@@ -12391,9 +12391,13 @@ function renderWentianChatMessageContent(message, role) {
   }
   const shouldNormalizeEnglishAssistant = role === "assistant" && isWentianEnglishMode() && !message.typing;
   const text = shouldNormalizeEnglishAssistant ? normalizeWentianEnglishAssistantText(rawText) : rawText;
-  return splitWentianReplyParagraphs(text)
+  const paragraphs = splitWentianReplyParagraphs(text)
     .map((paragraph) => `<p>${renderWentianSafeInlineMarkdown(paragraph)}</p>`)
     .join("");
+  if (!message.payCta) return paragraphs;
+  const ctaLabel = getWentianCompactText("开通月卡 ¥19.90 继续解读", "Open membership ¥19.90 to continue");
+  return `${paragraphs}
+    <button type="button" class="wentian-chat-pay-cta" data-action="wentian-chat-open-member">${escapeHtml(ctaLabel)}</button>`;
 }
 
 function getWentianChatUserAvatarText() {
@@ -12524,6 +12528,7 @@ function addWentianMessage(role, text, options = {}) {
     : { role, text: safeText, createdAt: new Date().toISOString() };
   if (options.opening) message.opening = true;
   if (options.pending) message.pending = true;
+  if (options.payCta) message.payCta = true;
   wentianXuChat.messages.push(message);
   if (wentianXuChat.messages.length > 30) wentianXuChat.messages.shift();
   renderWentianMessages({ forceScroll: !!options.forceScroll });
@@ -12701,7 +12706,8 @@ async function sendWentianXuChat(promptText = "") {
     const replyText = extractWentianReplyText(data);
     if (replyText) window.yuetianTrack?.("ai_answer_success", { surface: "wentian_mobile", chat_mode: payload.mode || "chart" });
     if (!replyText) setWentianChatStatus("回复未生成", "warn");
-    addWentianMessage("assistant", replyText || getWentianEmptyReplyText(), { typewriter: true });
+    // 额度用尽：追加“开通月卡”引导按钮，避免用户只看到一句提示却无处付费。
+    addWentianMessage("assistant", replyText || getWentianEmptyReplyText(), { typewriter: true, payCta: !!data.quotaExceeded });
   } catch (error) {
     if (!isCurrent()) return;
     wentianXuChat.messages.pop();
@@ -24568,6 +24574,10 @@ document.addEventListener("click", (event) => {
   }
   if (action === "wentian-member-pay") {
     startWentianMemberPayment();
+    return;
+  }
+  if (action === "wentian-chat-open-member") {
+    openWentianDeepReadingAccess();
     return;
   }
   if (action === "wentian-human-consult") {
