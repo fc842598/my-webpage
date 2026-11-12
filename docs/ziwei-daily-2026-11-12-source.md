@@ -231,3 +231,37 @@ The global-city input on this site's mobile chart explains that it uses local le
 
 ### Keep boundary cases open
 When clocks are set back, the same printed hour may occur twice. A record that does not distinguish the two instances may leave two candidate times. A birth near the boundary between traditional two-hour periods can also change the palaces or star placements used in interpretation. Preserve both candidate charts and look for better documentary evidence. Read the original record, input convention, displayed correction, and resulting birth period in that order. Only then interpret the Life Palace, career questions, and annual transformations.
+
+---
+
+## 08. 2027 巨门化忌落父母宫，审批意见口头变更怎么核对？
+slug：`ziwei-2027-jumen-fumu-shenpi-biangen`
+来源：2026-11-12 https://ziyao.life/blog/2027-dingwei-liunian-sihua
+角度及与旧文区别：从丁年巨门化忌落宫因人而异这一规则出发，限定父母宫与主管、制度的正式审批关系，讨论口头意见变更与授权版本。旧文 01 是官禄宫团队会议纪要，其他父母宫文侧重含糊反馈；本篇只处理审批流程，不沿用同行逐宫表。
+正文草稿：
+设计稿在周一收到主管口头同意，周三法务却说合同附件还用旧版。若 2027 年巨门化忌落在个人父母宫，可把它作为检查与上级、审核规则之间信息差的提醒，不能据此断定主管故意反悔。父母宫讨论权威和制度关系，官禄宫仍管实际工作；两宫不能混为一谈。
+
+### 先确认四化真的落到父母宫
+丁年的四化规则相同，但巨门在每个人本命盘所处宫位不同。先确认出生资料、巨门的位置和所采用的四化口径，再分本命、大限、流年的层次。只有 2027 年的化忌确实牵动父母宫，才把关注点放在审批人、制度入口及口头意见如何被正式记录。若落官禄宫，工作任务本身的说明才是首要问题；若落夫妻宫，则不应把公司审批模板套到关系问题上。
+
+### 把“同意了”拆成三个状态
+第一是主管对方向表示认可，第二是有权审批的人确认某个版本，第三是合同或系统完成最终登记。这三步可能由不同人处理。比如产品负责人赞成新价格，财务还没核税费，法务只审了旧附件；一句“可以”并不自动覆盖后续两关。巨门提示说法与理解的差距，化忌提示卡住的节点，父母宫限定正式权力链。此时先查审批矩阵和流程记录，不猜测某个人的真实想法。
+
+### 留住版本、权限和时间
+把每次意见对应到文件编号、修改人、时间和生效条件。电话后发邮件确认“本次同意的是 v3 方案，价格页仍待财务复核”，并请对方指出最终批准人。另一种情况是主管临时要求删掉安全条款，执行人不能只凭聊天截图改合同；应检查该主管是否有相应权限及是否需要二次审查。若父母宫同时见化权，可问谁掌握正式决策；见化科则核流程说明是否清楚。组合用于提出问题，并非保证审批通过。
+
+### 排盘后用实际流程验算
+排盘先看本命巨门和父母宫三方，再叠大限背景与 2027 年的四化。现实中按“提出、审核、批准、执行”四个节点复盘，核每一版文件是否有对应签字或系统记录。若流程本身没有明确负责人，就应推动组织确定，而不是用命盘填补制度空白。能查到批准版本和权限，才知道下一步可以做什么；星曜只帮助定位该查哪一环。
+英文标题：Zi Wei Dou Shu in 2027: Ju Men Hua Ji and a Changing Approval Decision
+英文描述：When a 2027 communication signal touches the Parents Palace, verify approver authority, document versions and effective dates before acting.
+英文正文：
+A manager verbally approves a design on Monday, but legal review on Wednesday still refers to an older attachment. If Ju Men Hua Ji touches the Parents Palace in a person's 2027 Zi Wei Dou Shu chart, it can prompt a check of communication with authorities and formal rules. It does not prove that the manager changed their mind. The Career Palace concerns the work being delivered; the approval chain is a separate question.
+
+### Locate the signal first
+The Ding year's four transformations are shared as a rule, but Ju Men's palace differs by natal chart. Verify the birth data and natal position before layering the longer cycle and 2027. A Parents Palace connection makes the approver and official process relevant. A Career Palace connection would shift attention toward the task description. Do not apply one palace's checklist to another without locating the signal.
+
+### Separate endorsement from authorization
+A product lead may like a new price, finance may still need to calculate fees, and legal may have reviewed only the old document. “Looks good” can mean support for a direction, approval of a particular version, or completed authorization. Those states need different evidence. Record the version number, who changed it, the date, and the condition for taking effect. Confirm a phone conversation in writing and identify who has final authority.
+
+### Test the chart's question against the workflow
+If Hua Quan is also relevant, ask who can make the final decision. If Hua Ke is relevant, check whether the written explanation reaches everyone who must act. Neither guarantees approval. Read the natal palace, the longer context, and 2027 in order. Then trace proposal, review, approval, and execution in the actual system. An unresolved authority gap needs an organizational answer, not a prediction from the chart.
