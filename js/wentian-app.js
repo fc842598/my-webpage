@@ -22401,6 +22401,31 @@ function renderWentianMobileYijingPanel(saved) {
   const ctx = getWentianYijingContext(saved);
   const activeKey = getWentianYijingActiveKey();
   const result = ctx.results[activeKey] || ctx.results.xiantian || ctx.results.houtian || ctx.results.liunian;
+
+  // 易经辅助解命（手机端）：仅月卡会员可见，非会员锁定并引导开通。
+  if (!canWentianOpenDeepReading()) {
+    const lockTitle = getWentianCompactText("易经辅助解读为月卡权益", "Yijing assistant reading is a monthly member benefit");
+    const lockNote = getWentianCompactText(
+      "先天卦、后天卦、流年卦的名师讲解，开通月卡后即可解锁。",
+      "Master readings for the innate, acquired, and annual hexagrams unlock with a monthly membership."
+    );
+    const unlockLabel = getWentianCompactText("开通月卡 ¥19.90", "Open membership ¥19.90");
+    return `
+    <section class="wentian-yijing-panel is-locked" data-node-id="source-27-yijing-panel">
+      <header class="wentian-yijing-head">
+        <span>易经推命</span>
+        <h2>先天 · 后天 · 流年卦</h2>
+      </header>
+      <div class="wentian-yijing-lock">
+        <i class="wentian-yijing-lock-icon" aria-hidden="true">🔒</i>
+        <strong>${escapeHtml(lockTitle)}</strong>
+        <p>${escapeHtml(lockNote)}</p>
+        <button type="button" class="wentian-yijing-unlock" data-action="wentian-yijing-unlock">${escapeHtml(unlockLabel)}</button>
+      </div>
+    </section>
+  `;
+  }
+
   const meta = getWentianYijingTabMeta(activeKey);
   const reading = getWentianYijingReading(result, activeKey);
   const imageSrc = getYijingHexagramImageSrc(result?.no || result?.num);
@@ -24669,6 +24694,10 @@ document.addEventListener("click", (event) => {
   if (action === "wentian-yijing-tab") {
     wentianMobileYijingTab = event.target.closest("[data-yijing-tab]")?.dataset.yijingTab || "xiantian";
     navigatePreservingScroll("screen-27", false);
+    return;
+  }
+  if (action === "wentian-yijing-unlock") {
+    openWentianDeepReadingAccess();
     return;
   }
   if (action === "wentian-yijing-ask-xu") {
