@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/en/</loc>
-    <lastmod>2026-11-12T16:16:00+08:00</lastmod>
+    <lastmod>2026-11-12T20:02:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -24643,4 +24643,6 @@
     <priority>0.7</priority>
   </url>
   <url><loc>https://yuetianai.com/articles/en/ziwei-2027-jumen-guanlu-huiyi-jilu.html</loc><lastmod>2026-11-12T16:16:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/en/ziwei-taiyang-caibo-zhibo-tuihuo-chengben.html</loc><lastmod>2026-11-12T20:00:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/en/ziwei-fuqi-xiongdi-zhangbei-gongtong-zhanghu.html</loc><lastmod>2026-11-12T20:02:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
