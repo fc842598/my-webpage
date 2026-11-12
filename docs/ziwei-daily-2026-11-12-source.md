@@ -435,3 +435,37 @@ Suppose one sibling books, another drives, and a third writes a summary for the 
 
 ### Review effort, not just turns
 One person may live nearby and drive, while another can handle calls from far away. Equal visits need not mean equal effort. Read the natal Siblings and Parents Palaces before longer and annual cycles, then compare three months of actual tasks, work leave, substitutions, and the parent's feedback. Renegotiate the plan when circumstances change rather than assigning duties from a star placement.
+
+---
+
+## 14. 岗位被裁撤，项目成果不能带走时官禄宫还能看什么？
+slug：`ziwei-caiche-gangwei-chengguo-zuopin-zhengju`
+来源：2026-11-12 https://lightpath.tw/blog/ziwei-career-questions-guide
+角度及与旧文区别：借鉴“不同职业问题不能一律看官禄”的方向；本站聚焦岗位裁撤后项目素材受保密限制，如何用合法的职责、流程和公开结果重建履历。已有裁员补偿、危机或转场文章，本篇只谈可展示成果与保密边界，不引用同行案例。
+正文草稿：
+产品岗位被裁撤，面试时很想说明自己做过的重要项目，却不能把公司的内部数据和客户文件带走。官禄宫能帮助整理职业能力是怎样通过工作成果表现出来的，不能给出“可以复制哪些文件”的许可。看盘必须把岗位职责、对外展示权限和求职需要分开，不能把裁员事件直接解释为个人能力差。
+
+### 官禄看做过什么，不替公司定所有权
+先看本命官禄宫主星、三方四正及四化，再问过去的工作究竟由自己负责哪一步。比如一个项目经理协调测试、上线和客服，真正可说明的是推进流程与协作结果；客户名单、未公开价格和源代码是否可展示，取决于合同、公司规则和相关权限。若官禄见化科，可问专业成果是否有可公开证明；见化忌，则核交付中哪些障碍需要客观说明，不把一次岗位调整视为终身定论。
+
+### 用可核对的事实写履历
+不必把机密资料拷走，仍可记录已获准公开的产品名称、自己承担的职责、方法和非敏感结果。若指标不允许公开，可描述“负责跨部门上线流程，组织每周缺陷复盘”，而非编造“提升百分之八十”。另一种情况是项目完全未公开，可以用匿名化的流程说明，并先确认是否仍受保密约束。交友宫可用于整理合作关系，但不能把同事的成果全部写成自己的贡献。
+
+### 区分离岗手续与下一份工作
+父母宫可作为与主管和组织规则沟通的入口，官禄宫关注职业任务，财帛宫再看失业期间现金安排。若主管愿意提供推荐，确认能否评价某段工作和是否可公开；若不能，就用公开证书、个人写作或不涉密的小练习补足可见证据。此时需要保存的是经允许的履历事实，不是私自下载的内部文件。涉及劳动权益或保密争议，应以合同与专业意见处理。
+
+### 盘面只帮助规划下一步
+排盘先看本命官禄与命宫，再看父母、交友和财帛怎样影响工作证明与过渡，最后叠大限和流年。现实中列一张表：可公开的成果、仍需授权的素材、完全不可带走的资料，以及下一份岗位想证明的能力。若缺少可展示案例，可以自己做一个公开样例。被裁撤可能是组织调整，下一步能否找到岗位要靠市场机会和可核查能力，不能让某个星曜替招聘方下结论。
+英文标题：Zi Wei Dou Shu: Showing Career Results After a Role Is Eliminated
+英文描述：When project files are confidential, use the Career Palace to frame your work history while separating public evidence from protected company material.
+英文正文：
+A product role is eliminated. In the next interview, the employee wants to describe an important project but cannot take internal customer files or private data. In Zi Wei Dou Shu, the Career Palace can frame the work and capabilities behind an outcome. It does not grant permission to copy company material. A role ending also does not prove that the employee lacked skill.
+
+### Describe the job before the files
+Read the natal Career Palace, related palaces, and transformations, then identify the employee's actual responsibility. A project manager might have coordinated testing, release, and support. Those duties can often be described without exposing client lists, unpublished pricing, or source code. A Hua Ke signal may prompt a search for evidence of expertise that is already public. A Hua Ji signal may prompt an honest explanation of obstacles. Neither changes an employer's confidentiality rules.
+
+### Build an authorized record
+Use public product names, responsibilities, methods, and approved results. If metrics cannot be disclosed, describe the process without inventing a dramatic number. If a project was never public, check whether even an anonymous case study is allowed. Credit teammates accurately. A former manager may be able to give a reference, but the permitted scope of that reference should be confirmed.
+
+### Plan the next proof of ability
+The Parents Palace can frame contact with supervisors and formal policies; the Wealth Palace can frame the financial transition. Read these alongside the Career Palace and the longer and annual cycles. List what can be shown, what needs permission, and what must remain private. Create an independent public sample if a portfolio gap remains. The next job depends on opportunities and verifiable skills, not a chart's verdict about the layoff.
