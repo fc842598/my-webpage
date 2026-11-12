@@ -401,3 +401,37 @@ Specify who takes the child to care, who collects them, who is reachable overnig
 
 ### Put the timetable beside the chart
 Compare a Thursday return with a Friday return, a remote presentation, and an in-person visit. The extra night changes the care plan even if the meeting itself lasts only an hour. Read natal job, care, and travel patterns before longer and annual cycles. Then confirm the work alternative with the manager and every care shift with the people involved. The decision follows the available support and the job's actual requirements, not a simple verdict from a palace.
+
+---
+
+## 13. 兄弟姐妹轮流陪父母复诊，兄弟宫怎样看照护排班？
+slug：`ziwei-xiongdi-fumu-peizhen-paiban`
+来源：2026-11-12 https://tradiculture.com/yongxiongdigongkanlingyiban/
+角度及与旧文区别：取同辈关系会影响家庭责任实际分配的议题，不采纳由盘推断他人态度的说法；本站限定父母定期复诊时兄弟姐妹的陪同排班、替补与信息交接。03 已讨论双方长辈生活费和共同账户，本篇处理照护时间，不重写金流。
+正文草稿：
+父亲每月需要去医院复诊，三个子女都愿意帮忙，却常在前一晚才发现没人能请假。兄弟宫可用于观察同辈协作方式，父母宫则对应与长辈的关系和实际需求；谁有空、谁会开车、父亲愿意由谁陪同，仍要逐一询问。命盘不能替某位兄弟姐妹承诺出勤，也不该从星曜断定谁最孝顺。
+
+### 先分清需要什么帮助
+同样叫“陪诊”，可能包括挂号、接送、听医嘱、取药及后续联系，每一项所需时间不同。先问父亲愿不愿意有人陪、医院实际流程怎样，再确定哪些任务能远程完成。兄弟宫讨论同辈如何协作，父母宫帮助整理代际沟通，疾厄宫不能用来诊断病情。若有医疗问题，以医生给出的安排为准，不从宫位推断检查结果。
+
+### 看组合时不读他人心思
+本命兄弟宫主星、三方四正和四化，可提醒自己在同辈合作里是否容易把责任说得太笼统。若化权牵动兄弟宫，先问排班的决定权是否过度集中；若化忌被引动，核对临时变更和信息传递是否常卡住。比如一人负责预约，另一人负责接送，第三人负责把医生说明整理给大家；有人出差时，遗漏通常来自没有备用人手，不代表某人存心推卸。
+
+### 做一张能替班的时间表
+把下次复诊日期、集合地点、交通方式和主陪人写清，再列一位已同意的替补。假设周三上午是姐姐陪同，周二晚上姐姐发烧不能出门；如果表里只有“姐姐负责”，其他人很难临时接手。若预约资料、证件与医生上次提出的问题整理在共享文档，替班者可快速找到。涉及隐私的资料只给需要参与且得到长辈同意的人，不能因为是家人就默认任意传播。
+
+### 三个月后回看负担是否公平
+公平未必是每个人轮同样次数。一人住得近可负责接送，另一人在外地可预约和整理信息；还要看请假成本和本人意愿。排盘先看本命兄弟、父母两宫及三方，再以大限和流年了解阶段变化；现实里每月核已完成的任务、临时替班和长辈反馈。若有人确实无法继续，调整安排比用星曜证明谁“应该”承担更有效。
+英文标题：Zi Wei Dou Shu: Siblings Sharing a Parent's Clinic Visits
+英文描述：Use the Siblings and Parents Palaces to frame family coordination, then agree on appointment duties, backup coverage and information sharing.
+英文正文：
+A parent has a recurring clinic appointment. Three adult children want to help, yet the night before a visit they discover that nobody can take leave from work. In Zi Wei Dou Shu, the Siblings Palace can frame cooperation among peers in a family, while the Parents Palace can frame the relationship with the older generation. Neither palace signs someone up for a shift or proves who cares most.
+
+### Define the work before sharing it
+“Go to the appointment” may mean booking a time, driving, listening to instructions, collecting medicine, or following up afterward. Ask the parent what help they want and check the clinic's actual process. Medical questions belong with the treating professionals. The chart should not be used to predict a diagnosis or test result.
+
+### Give each task an owner and a backup
+Suppose one sibling books, another drives, and a third writes a summary for the family. If the driver becomes unavailable, an agreed backup needs the time, location, and relevant documents. A Hua Quan signal in the Siblings Palace can raise a question about who sets the schedule; a Hua Ji signal can raise a question about whether changes are communicated. Neither lets you infer another sibling's intentions. Share private records only with the parent's consent and people who need them for the visit.
+
+### Review effort, not just turns
+One person may live nearby and drive, while another can handle calls from far away. Equal visits need not mean equal effort. Read the natal Siblings and Parents Palaces before longer and annual cycles, then compare three months of actual tasks, work leave, substitutions, and the parent's feedback. Renegotiate the plan when circumstances change rather than assigning duties from a star placement.
