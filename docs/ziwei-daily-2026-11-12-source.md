@@ -265,3 +265,37 @@ A product lead may like a new price, finance may still need to calculate fees, a
 
 ### Test the chart's question against the workflow
 If Hua Quan is also relevant, ask who can make the final decision. If Hua Ke is relevant, check whether the written explanation reaches everyone who must act. Neither guarantees approval. Read the natal palace, the longer context, and 2027 in order. Then trace proposal, review, approval, and execution in the actual system. An unresolved authority gap needs an organizational answer, not a prediction from the chart.
+
+---
+
+## 09. 夫妻宫见巨门，语音消息谈家庭安排为什么容易听岔？
+slug：`ziwei-fuqi-jumen-yuyin-xiaoxi-juece`
+来源：2026-11-12 https://xuanji.com.tw/blog/relationship-palace-communication
+角度及与旧文区别：取“只观察自身需求与可改变的沟通动作，不猜对方心思”的边界；本站限定夫妻宫见巨门时通过异步语音安排接送、改期的误听风险。既有夫妻沟通文讲翻旧账和宽泛表达，本篇只研究语音消息的确认机制，不复制来源提问模板。
+正文草稿：
+一方发了十秒语音：“周五你先接一下，太晚我来。”另一方听成“周五全部你接”。到了放学时间，两个人都以为对方会去。夫妻宫见巨门，可以提醒你注意话语解释与双方期待之间的空隙；它不能证明某个人故意逃避责任。语音消息缺少标点、表情和明确的时间，现实里本就容易留下两种理解。
+
+### 先看夫妻宫，不替对方下定义
+巨门的象意涉及说明、疑问与辨析，落夫妻宫时可用于观察亲密关系里的沟通方式。还要看同宫星曜、三方四正以及四化，不能凭一颗巨门断定婚姻总有争吵。若化忌牵动夫妻宫，先问哪些话反复需要解释，哪些承诺没有明确到人和时间；若化科参与，则可看清晰的书面说明能否帮助双方复盘。盘面说的是可核查的关系环节，不是对伴侣动机的读取。
+
+### 把语音里隐去的主语补出来
+比如周五孩子 16:30 放学，一人 18:00 才下班，祖辈能代接半小时。“你先接一下”究竟是指到校接孩子，还是 18:00 接替祖辈？两个动作都叫接，时间与地点却不同。发消息的人可以补一句文字：“我 18:00 到外婆家接，16:30 从学校到外婆家这段请你确认。”收消息的人则复述自己会做的动作。即便星曜组合看着平顺，这一步仍然必要。
+
+### 改期要更新共同版本
+另一种常见情况是医院把预约提前，原定送诊者在开车，没听到新的语音。此时不应把“发过了”当作“对方确认了”。把新的日期、地点、负责人写入双方都能看的日历，收到确认才算完成交接。若涉及父母宫的长辈照护，先问实际需要与可用人手；夫妻宫处理两人如何商量，不能代替长辈本人意愿。财帛宫只在交通、请假等费用影响预算时加入，不必每次沟通都拉满十二宫。
+
+### 用行为复盘，不用命盘判输赢
+一周后回看误会发生在哪一步：语音没听清、文字没补齐、还是变更未确认。排盘先看本命夫妻宫与巨门组合，再看三方和大限，流年只作阶段提示；现实里把责任人、时间、地点和确认状态写清。若双方都能按记录执行，沟通方式就有效；若仍反复漏接，再调整工具或分工。盘面可以帮忙发现需要说清的地方，不能充当争论中判谁对谁错的裁判。
+英文标题：Zi Wei Dou Shu: Ju Men in the Spouse Palace and Misheard Voice Messages
+英文描述：When a household plan is made by voice message, use the Spouse Palace as a prompt to confirm the person, time and location in writing.
+英文正文：
+One partner sends a voice note: “You pick up first on Friday; I'll come later.” The other hears that the first person will handle the entire pickup. Both then wait for the other at the wrong time. In Zi Wei Dou Shu, Ju Men in the Spouse Palace can prompt a check of how a couple explains and confirms plans. It cannot establish that either partner intended to avoid responsibility. An asynchronous voice message can simply leave the subject and time unclear.
+
+### Read a communication pattern, not a motive
+Start with the natal Spouse Palace, Ju Men's accompanying stars, and related palaces. If Hua Ji is relevant, ask which promises repeatedly need clarification. If Hua Ke is relevant, consider whether a clear written record helps. Neither transformation tells you what the other person secretly thinks. The practical question is what each partner understood and what action was agreed.
+
+### Restore the missing details
+A child leaves school at 4:30, one parent leaves work at 6:00, and a grandparent can help briefly. “Pick up first” might refer to the school pickup or the later handoff. Follow the voice note with a sentence specifying who goes where and when. Have the recipient repeat the action they will take. If an appointment moves, update a shared calendar and wait for acknowledgment instead of assuming that a sent message was heard.
+
+### Review the actual handoff
+The Parents Palace can frame an older relative's care needs, while the Spouse Palace concerns the couple's agreement. Do not use a chart to replace anyone's consent. Read the natal relationship pattern before longer and annual cycles, then review the week's handoffs. Check whether misunderstandings came from unclear audio, missing written details, or an unconfirmed change. Adjust the process that failed rather than using the chart to assign blame.
