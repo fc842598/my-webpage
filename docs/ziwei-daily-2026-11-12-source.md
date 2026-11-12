@@ -197,3 +197,37 @@ Before the transfer, request written terms for its dates, reporting line, perfor
 
 ### Review the period in order
 Read the natal Career Palace and related palaces first, then a longer career cycle, then the annual layer. A short transfer does not by itself mean promotion or dismissal. Compare the chart's questions with the transfer agreement, project history, and confirmations from both managers. When review authority is unclear, asking for the written rule is more reliable than choosing the more favorable palace.
+
+---
+
+## 07. 海外出生证明是当地时间，排紫微盘要先换成北京时间吗？
+slug：`ziwei-haiwai-chusheng-shiqu-chongfu-huansuan`
+来源：2026-11-12 https://sndmp.com/guides/birth-time
+角度及与旧文区别：采用出生地与记录时间可能被重复校正的疑问；本站核过 wentian-app 全球城市表单提示及日期时区计算入口，文章仅说明输入与核对顺序，不宣称所有历史地点都能自动识别。旧文讨论时辰不详、真太阳时原理，本篇限定海外出生证明的当地钟表时间，不照搬同行的具体案例和章节。
+正文草稿：
+出生证明写着“伦敦 1998 年 10 月某日 01:30”，如今住在北京。排紫微斗数时，先把 01:30 手动换成北京时间，再选伦敦出生地吗？如果排盘工具会按出生城市处理时区，这样做就可能校正两次。关键不是记住一个统一的换算公式，而是确认记录上的时间属于哪个城市、工具让你输入哪一种时间。
+
+### 先抄原始记录，不改写日期和钟点
+把出生证明的日期、钟点、出生城市及记录是否注明夏令时完整保存。海外出生的“当地时间”指当地当时钟表显示的法定时间，不是现在居住地时间。若记录只有大致上午，没有分钟，就应标为不确定，不能为了排出一张确定命盘擅自补上 01:30。不同国家和年份的时区规则会变，靠今天的时差倒推过去也可能不对。
+
+### 看工具的输入约定再填
+本站手机排盘的全球城市界面提示“当地法定时 + 经度校正”，中国地区则提示按出生记录的中国时间输入。选择全球城市并核对搜索结果是否真为出生城市，再填出生证明的当地钟点；不要先换成北京钟点后还让工具按海外城市处理。若工具未列出准确地点，或历史时区资料不确定，先查该地当年的时间记录，不能把邻近城市的设置当作证据。
+
+### 交界时间要保留两种可能
+特别留意时辰交界和时钟回拨的日期。有些地方在结束夏令时的夜里，同一个钟点会出现两次；出生证明若只写 01:30，未说明属于哪一次，仅凭城市和日期也可能不足以定盘。例如两个候选时间分别落在相邻时辰，命宫、身宫和各宫星曜可能随之改变。这时可分别排两张候选盘，先列出差异，再找原始记录或家人补证；不要挑一张“听起来更像自己”的盘当结论。
+
+### 时间层先确定，才读宫位
+确认输入的当地日期、出生城市、历史时区与是否采用真太阳时后，再看工具显示的校正结果及最终时辰。若两盘仍有分歧，涉及命宫、官禄、夫妻等具体解释都应保留条件。排盘顺序是原始记录、工具口径、校正显示、候选时辰，最后才进入星曜和四化；输入层有一小时差异时，后面再精细的解读也无法补救。记录不够精确，就诚实停在可确认的层次。
+英文标题：Zi Wei Dou Shu Birth Chart: Should an Overseas Birth Time Be Converted First?
+英文描述：For an overseas birth record, check whether the chart tool expects local clock time before converting time zones or applying a true solar adjustment.
+英文正文：
+A birth certificate records 01:30 in London, but its owner now lives in Beijing. Should that clock time be converted to Beijing time before entering a Zi Wei Dou Shu birth chart? It depends on the chart tool's input rules. If the tool already interprets a selected birthplace's historical time zone, a manual conversion followed by the tool's correction can count the offset twice.
+
+### Preserve the source record
+Write down the date, clock time, city, and any daylight-time notation exactly as recorded. The relevant civil time is the time kept in the birthplace on the birth date, not the time zone of the current home. If the record says only “early morning,” do not invent a precise minute. Historical time rules can differ from today's offset.
+
+### Confirm what the tool expects
+The global-city input on this site's mobile chart explains that it uses local legal time and a longitude adjustment. Select the actual birthplace and enter its recorded local time under that rule. Do not manually convert to Beijing time and still select the overseas city. Confirm that the selected city is correct; if it is missing or historical rules are uncertain, check the original records before treating the resulting chart as settled.
+
+### Keep boundary cases open
+When clocks are set back, the same printed hour may occur twice. A record that does not distinguish the two instances may leave two candidate times. A birth near the boundary between traditional two-hour periods can also change the palaces or star placements used in interpretation. Preserve both candidate charts and look for better documentary evidence. Read the original record, input convention, displayed correction, and resulting birth period in that order. Only then interpret the Life Palace, career questions, and annual transformations.
