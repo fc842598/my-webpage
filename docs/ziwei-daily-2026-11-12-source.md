@@ -571,3 +571,37 @@ The product may have changed twice during the leave. Ask for the latest schedule
 
 ### Allow time to regain context
 If old performance measures no longer match new duties, request an updated plan and realistic dates for restoring access to materials. Read the natal career pattern before longer and annual cycles, then compare the chart's questions with the actual role description and work records. A specific handoff and evaluation plan helps more than treating a temporary reassignment as a forecast of career decline.
+
+---
+
+## 18. 2027 太阴化禄落财帛宫，分租房的租金与押金怎么分开算？
+slug：`ziwei-2027-taiyin-hualu-caibo-fenzu-xianjin`
+来源：2026-11-12 https://ziyao.life/blog/2027-dingwei-liunian-sihua
+角度及与旧文区别：丁年太阴化禄需按个人本命落宫理解；本站限定分租房的租金到账、可退押金及维修预留。旧文太阴化禄田宅谈居住与资产，本篇只讨论财帛宫的可用现金，不照搬同行四化逐宫表。
+正文草稿：
+房主把闲置房间分租，每月收到一笔租金，也收到一笔将来可能要退的押金。若 2027 年太阴化禄落在个人财帛宫，不能把账户里所有进账都叫“财运增加”。太阴可用于观察较稳定、持续的资源安排，化禄提示资源流入；财帛宫问的是这些钱怎样进入、留下和被使用。押金是代为保管的款项，维修费用也要预留。
+
+### 先确认化禄落在财帛而非田宅
+丁年太阴化禄是年度规则，太阴在每个人本命盘的位置不同。先核出生资料和太阴所在宫，再把大限与 2027 流年叠上去。若化禄落田宅，可重点问居住、房屋使用与资产安排；若落财帛，则检查现金流与收入来源。即使两宫有关联，也不能把房价、租金、押金当作同一个数字，更不能从单一四化判断房产一定升值。
+
+### 三种入账要分三栏
+例如每月租金三千元，承租人另交六千元押金，房主先付一千五百元维修。租金属于约定的当期收入，押金有返还条件，维修支出已减少可用现金。把“本月到账九千元”直接当盈利，会高估手头资金。还要核房屋空置期、清洁费以及租约约定的分担责任。财帛宫见化禄，适合问持续收入如何形成，不替会计记录或合同解释。
+
+### 看房屋使用与收款责任是否一致
+田宅宫帮助核房屋和生活空间的使用，官禄宫只在分租已成为主要经营工作时加入。若承租人要增加一位室友，房屋使用与费用分摊可能都改变；先看租约许可和双方同意，再谈是否调整租金。另一种情况是租金按时到账，但漏水维修迟迟未处理，未来退租可能产生争议。四化提示资源流动，不允许忽视实际维护义务。
+
+### 按真实账目复盘
+排盘先看本命财帛、太阴及三方，再核田宅的使用状况，最后叠大限流年。每月记应收租金、实际到账、押金余额、不可退成本和维修预留，至少看几个月再判断是否有净收益。若涉及租约或税费，以当地规则和专业意见核对。命盘最多帮助问收入是否稳定、责任是否清楚；能动用多少钱，必须以合同和现金记录为准。
+英文标题：Zi Wei Dou Shu in 2027: Tai Yin Hua Lu and Rental Cash Flow
+英文描述：A room rental can produce regular payments, but refundable deposits and repair costs must be kept separate from usable income.
+英文正文：
+A homeowner rents out a spare room and receives monthly rent plus a refundable deposit. If Tai Yin Hua Lu touches the Wealth Palace in a person's 2027 Zi Wei Dou Shu chart, it can raise a question about steady resources entering the household. It does not make every bank deposit earned income. The rental deposit may need to be returned, and repairs require cash.
+
+### Locate the transformation
+The Ding year's Tai Yin transformation is a shared rule, but Tai Yin appears in different natal palaces. Check the individual chart before applying the 2027 layer. A Property Palace connection raises questions about living space and ownership; a Wealth Palace connection makes cash flow central. A relationship between them does not turn rent, deposits, and property value into one number.
+
+### Keep three columns
+Suppose monthly rent is 3,000 units, the deposit is 6,000, and repairs cost 1,500. A 9,000-unit bank inflow is not the month's profit. Record the earned rent, refundable balance, and spending separately, along with vacancy and cleaning costs. The Wealth Palace can prompt an inquiry into recurring income, but the ledger and rental terms establish what is available.
+
+### Check use and maintenance
+If another occupant moves in, space use and cost sharing may change. Confirm the written rental terms and everyone's agreement before altering a payment. Read the natal Wealth and Property Palaces, then longer and annual layers. Track several months of expected rent, settled cash, deposits, and repairs. Local rules and professional advice govern lease and tax questions; the chart only helps organize what to inspect.
