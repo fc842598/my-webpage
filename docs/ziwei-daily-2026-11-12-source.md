@@ -469,3 +469,37 @@ Use public product names, responsibilities, methods, and approved results. If me
 
 ### Plan the next proof of ability
 The Parents Palace can frame contact with supervisors and formal policies; the Wealth Palace can frame the financial transition. Read these alongside the Career Palace and the longer and annual cycles. List what can be shown, what needs permission, and what must remain private. Create an independent public sample if a portfolio gap remains. The next job depends on opportunities and verifiable skills, not a chart's verdict about the layoff.
+
+---
+
+## 15. 2027 天机化科落财帛宫，复杂方案怎样分阶段收费？
+slug：`ziwei-2027-tianji-huake-caibo-fangan-shoufei`
+来源：2026-11-12 https://ziyao.life/blog/2027-dingwei-liunian-sihua
+角度及与旧文区别：从丁年天机化科需按个人落宫判断出发，本站限定研究型方案的阶段收费、验证标准和修改边界。10 巨门财帛讨论旧版报价被误认，已有专业收入文讲信誉来源；本篇只问持续思考劳动如何约定里程碑，不照搬来源四化清单。
+正文草稿：
+顾问答应帮一家店找出客流下降原因。两周后做出分析，客户又要求加做会员系统和员工培训，仍按原价结算。若 2027 年天机化科牵动个人财帛宫，可以把它当作检查“思考、设计和验证怎样收费”的提示，不代表聪明就会自动涨价。财帛宫要看收入边界，官禄宫要看实际工作，化科关注专业方法能否被清楚呈现。
+
+### 先核四化是否真的作用于财帛
+丁年天机化科是年度规则，天机在每个人本命盘的位置不同。先核本命落宫、三方四正，再叠大限和 2027 流年，不能拿同一年四化给所有顾问下同一个收入结论。若天机化科落官禄，更应看方案如何落实为岗位成果；若落财帛，才把计费结构放在前面。盘面不提供市场定价，报价还要看客户预算、竞争与自己的交付能力。
+
+### 把“想办法”拆成能验收的阶段
+第一阶段做访谈和资料核对，交一份问题清单；第二阶段提出两个可测试方案；第三阶段根据试验数据复盘。比如客流下滑是门店位置变化还是复购下降，第一阶段未确认之前，不宜承诺“一个月增长百分之三十”。每一阶段写清需由客户提供哪些数据、何时确认、修改几轮。天机的机动性可以用于提出替代路径，化科使专业说明更可见，但不能把无止境的修改当作专业服务。
+
+### 另起需求就另核费用
+客户后来要求搭会员系统，已从分析进入实施；员工培训又是另一类交付。应说明哪些内容在原约定内，哪些需要新报价和新时间表。另一种情况是客户提供的数据不全，顾问需要多花一周清洗数据；若未先约定资料质量与延期条件，双方容易把额外劳动当成“你本来就该做”。财帛宫见化禄也不意味着所有新增工作都能收款，只有双方明确同意的款项才有可执行基础。
+
+### 用真实项目检验是否可持续
+排盘先看本命天机与财帛三方，再看官禄的交付能力、迁移宫的外部客户，最后叠大限与 2027 年四化。现实里记录每阶段工时、客户确认、到账时间和返工次数。若专业评价高而现金少，先调整验收与收费，而非只追求更漂亮的报告。天机化科可以提示把方法讲明白；能否形成稳定收入，要靠清楚的边界和真实回款。
+英文标题：Zi Wei Dou Shu in 2027: Tian Ji Hua Ke in the Wealth Palace
+英文描述：For a research-heavy consulting project, define paid milestones, evidence, revision limits and extra scope before assuming expertise becomes income.
+英文正文：
+A consultant agrees to investigate why a store has lost customers. Two weeks later, the analysis is ready, but the client asks for a membership system and staff training under the original fee. If Tian Ji Hua Ke touches the Wealth Palace in a 2027 Zi Wei Dou Shu chart, use it to ask how research and design work are explained and paid. Expertise does not raise a price automatically. The Career Palace concerns delivery; the Wealth Palace concerns the agreed income.
+
+### Locate the annual signal
+The Ding year's transformation is shared as a rule, but Tian Ji occupies different natal palaces in individual charts. Check the natal placement and related palaces before adding longer and annual cycles. A Career Palace connection asks whether a method becomes a completed job. A Wealth Palace connection makes the fee structure a closer question. The market and client's budget still determine a workable price.
+
+### Give the work measurable stages
+Start with interviews and a list of problems, move to testable options, then review data from a small experiment. State what information the client must supply, when each stage is accepted, and how many revisions are included. Without reliable data, promising a dramatic sales increase would be unjustified. A flexible method is valuable when its limits and evidence can be explained.
+
+### Treat new scope as a new decision
+Building software and training employees are not the same task as diagnosing a traffic problem. Confirm a new fee and schedule before starting them. Missing customer data may also add a week of cleanup; agree on what happens when input quality changes. Read the chart's income question alongside actual hours, approvals, payments, and rework. If feedback is strong but cash is weak, improve the milestones and acceptance terms rather than assuming a favorable star guarantees payment.
