@@ -793,10 +793,14 @@
   }
 
   function isMobileBrowser() {
+    // 优先用 UA 正则判断（可靠、跨浏览器），userAgentData 仅作补充，
+    // 避免 iPad 桌面模式 UA、或 userAgentData 与 UA 不一致时误判为桌面。
+    var ua = navigator.userAgent || "";
+    if (/Android|iPhone|iPad|iPod|Mobile/i.test(ua)) return true;
     if (navigator.userAgentData && typeof navigator.userAgentData.mobile === "boolean") {
       return navigator.userAgentData.mobile;
     }
-    return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || "");
+    return (navigator.maxTouchPoints || 0) > 1 && /Macintosh/.test(ua);
   }
 
   function getProviderLabel(provider) {
