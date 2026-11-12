@@ -537,3 +537,37 @@ List contributions, future maintenance duties, and revenue shares separately. Eq
 
 ### Review what continues after release
 Read the natal creative, cooperation, work, and money questions before longer and annual layers. Compare the chart's prompts with signed terms, actual update hours, customer support, and cash received. A chart may help reveal a neglected responsibility; it cannot assign another creator's rights. A clear record lets the team change the collaboration without erasing earlier contributions.
+
+---
+
+## 17. 育儿假后返岗，原项目已交给同事，官禄宫怎样看职责重定？
+slug：`ziwei-fugong-yuan-gangwei-jiaojie-zeren`
+来源：2026-11-12 https://kairo.aiinvest.tw/articles/daily-20261111-life
+角度及与旧文区别：取育儿后职业连续性与家庭资源需分开考量的方向；本站限定返岗时原项目已移交后的职责重定、成果归属和重新上手。旧文谈能否复工与照顾安排，12 谈两天出差，本篇只谈岗位任务，不沿用来源净收入清单。
+正文草稿：
+育儿假结束回到公司，发现原来负责的产品已由同事继续推进。主管说“先帮忙看看”，却没有新岗位说明。紫微斗数里官禄宫可帮助整理职业责任和成果，交友宫可观察与接手同事的配合，父母宫用于核对主管与组织规则。子女宫涉及家庭照顾，但不能因此把岗位边界的问题全部归因于育儿。
+
+### 先问当前负责哪一段
+返岗者需要知道自己能决定什么、要交付什么、由谁评价。原项目的负责人可能仍是同事，自己改为负责用户调研；这与“回到原职继续签字”不同。先看本命官禄的主星、三方四正和四化，再用盘面提醒自己核职责，不以“事业运变差”替代组织安排。若官禄见化权，问授权是否写清；见化忌，问流程卡在交接还是评价，不能断定同事抢功。
+
+### 让交接双方都看见最新版本
+比如产品功能在休假期间改了两轮，旧文档里的发布时间与当前计划不同。先由接手同事说明已完成、未完成、风险及客户承诺，再由返岗者写下新接手范围。若双方都在给客户回消息，最容易出现两套口径。交友宫对应协作，不代表同事必然帮忙或阻挠；父母宫的主管责任是明确最终版本和谁可对外确认。交接会后给双方一份简短确认记录，比私下揣测更有效。
+
+### 把评价权和学习时间说清
+重新上手需要时间。若主管要求返岗第一周就按原绩效指标验收，应问旧指标是否仍匹配新职责、培训或资料访问何时恢复。另一种情况是公司安排新方向，但未说明阶段目标；可以提议前两周完成现状审查、后四周交付改版方案。财帛宫只在薪酬、奖金确实受岗位变化影响时加入，不必从一颗星直接推断收入。涉及岗位权益，以实际制度和专业意见核对。
+
+### 排盘服务于一次清楚的对话
+先看本命官禄与命宫，再合看交友、父母所代表的合作和授权，最后叠大限流年，避免把一次交接说成十年命运。现实里向主管确认新职责、交付日期、评价人和原项目归属，并向同事核共同对外口径。若没有书面答案，就保留待确认事项；若已清楚，再按实际进展复盘。照顾家庭与职业任务都重要，但需要分别安排和验证。
+英文标题：Zi Wei Dou Shu: Returning From Parental Leave to a Reassigned Project
+英文描述：When a former project now has another owner, use the Career, Friends and Parents Palaces to clarify duties, handoff records and review criteria.
+英文正文：
+An employee returns from parental leave and finds that a former product has been advanced by a colleague. The manager says, “Help where you can,” but gives no new role description. In Zi Wei Dou Shu, the Career Palace can frame duties and results, the Friends Palace can frame cooperation with the colleague, and the Parents Palace can frame managerial authority. The Children Palace may relate to care at home, yet it should not be used to explain away an unclear job assignment.
+
+### Define the current role
+Ask what the returning employee can decide, what they must deliver, and who evaluates the work. The colleague may still own the original product while the returning employee takes on user research. That differs from restoring the old approval authority. A Hua Quan signal can prompt a question about delegated power; a Hua Ji signal can prompt a check of where a handoff is blocked. Neither proves that a colleague took credit unfairly.
+
+### Reconcile the working version
+The product may have changed twice during the leave. Ask for the latest schedule, customer commitments, open risks, and the colleague's completed work. Write down who now speaks for each decision. Without one agreed version, two employees may send conflicting messages to a client. The manager should confirm the final responsibility and the review criteria.
+
+### Allow time to regain context
+If old performance measures no longer match new duties, request an updated plan and realistic dates for restoring access to materials. Read the natal career pattern before longer and annual cycles, then compare the chart's questions with the actual role description and work records. A specific handoff and evaluation plan helps more than treating a temporary reassignment as a forecast of career decline.
