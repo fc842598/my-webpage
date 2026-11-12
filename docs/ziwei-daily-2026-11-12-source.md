@@ -333,3 +333,37 @@ Give each quote a version, service scope, expiration date, and payment milestone
 
 ### Follow the cash, not the headline price
 A large signed contract can still leave a short-term cash gap when software and subcontractors must be paid before the first installment arrives. If a growth signal appears alongside a constraint, ask whether the revenue is collectible and whether refund or revision costs are included. Read the natal Wealth Palace, longer cycle, and annual signal in order. Then trace quote, acceptance, delivery, approval, and payment through actual records. If the client confirmed only the old version, resolve the scope before adding work.
+
+---
+
+## 11. 太阳在财帛宫，公开讲座临时取消如何看收入与准备成本？
+slug：`ziwei-taiyang-caibo-jiangzuo-quxiao-dingjin`
+来源：2026-11-12 https://kaxanta.com/guide/zi-wei-dou-shu/tai-yang/wealth-palace/
+角度及与旧文区别：采用公开展示可能带来收入同时也带来维护成本的线索；本站限定线下讲座临时取消的定金、备课、差旅与未来复邀价值。02 讨论直播订单和平台退款，此篇讨论讲座服务合同与取消条款，不沿用同行职业清单。
+正文草稿：
+讲师接到一场公开讲座邀约，海报已经发出，课件也做完，主办方却在活动前两天取消。太阳在财帛宫常被理解为“越公开越能赚”，但曝光不等于已经收款。紫微斗数里太阳的公开表达要放进财帛宫的实际收入路径，再连官禄宫看准备与交付责任，才能问清这次取消到底损失了什么。
+
+### 先把可见度和收入分开
+太阳在财帛可提示通过讲解、展示或公开服务接触客户，但不保证每次露面都会变现。以一场企业培训为例，主办方在社交媒体公布讲师姓名，可能带来后续询问；眼前的讲座费却要等活动完成后才支付。若活动取消，海报的浏览量不等于当期收入。看本命太阳的落宫、三方四正和四化后，仍要核书面邀约、付款节点及取消责任，而不是凭“太阳旺”乐观估算。
+
+### 把成本按能否收回分类
+备课十小时、提前购买车票、租设备和请助教，成本性质不同。车票也许能退一部分，课件可用于别的活动，助教时段却可能已付定金。财帛宫问现金是否留下，官禄宫问备课是否属于岗位职责，迁移宫问出行和外部场地的安排。比如一场讲座报价八千元，前期实际支出两千元，主办方仅愿付一千元取消费；不能把“差七千”直接当净损失，也不能忽略已付的两千元。
+
+### 在接受邀约时写清取消条款
+先约定定金、取消期限、已完成备课的结算方法及差旅报销。另一场活动若在前一天取消，但已付定金覆盖不可退车票，现金损失就比第一场小。若财帛宫化科，可问专业资料和公开口碑是否有后续价值；若化忌，应核现金收取和临时取消的暴露程度。四化不是律师或合同，条款是否有效要以双方签署文件和适用规则为准。
+
+### 复盘是否值得继续公开接单
+排盘先看本命太阳和财帛三方，再核官禄的准备工作、迁移的外部场地，最后叠大限流年。现实里记录每次公开邀约的成交率、定金到账、不可退成本和后续复邀，连续几场后再评估接单方式。若曝光高但取消频繁，可以调整收定金和排期，而非简单认为自己“不适合公开赚钱”。太阳提示收入可能依赖被看见，能留下多少钱仍取决于合同和成本。
+英文标题：Zi Wei Dou Shu: Sun in the Wealth Palace and a Canceled Public Talk
+英文描述：A public speaking invitation may bring visibility without settled income. Compare deposits, preparation time, travel costs and cancellation terms.
+英文正文：
+A speaker prepares a public talk, appears on the event poster, and then learns that the organizer has canceled two days before the event. In Zi Wei Dou Shu, the Sun in the Wealth Palace may raise a question about income linked to public visibility. The poster's reach is not the same as money received. The Career Palace also matters because preparation and delivery create work even when the event never happens.
+
+### Measure what the cancellation changes
+Consider a training session with a quoted fee, ten hours of preparation, a purchased train ticket, and an assistant booked for the day. Some costs can be recovered; the slides may be reused; other payments may be lost. Separate the expected fee, deposit already paid, refundable travel, and nonrefundable commitments. The Wealth Palace frames cash, the Career Palace frames preparation duties, and the Travel Palace frames the venue and journey. Counting only the advertised fee exaggerates the loss.
+
+### Set terms before publicity starts
+Agree on a deposit, cancellation deadline, compensation for completed preparation, and travel reimbursement before allowing the organizer to announce the event. If a reputation-related transformation is relevant, ask whether a useful professional connection remains after a cancellation. If a constraint appears, check where cash exposure lies. Neither signal replaces the signed agreement or applicable rules.
+
+### Review the booking pattern
+Read the natal Sun placement, related palaces, and longer and annual cycles in order. Then track actual speaking offers, deposits, cancellations, unrecovered costs, and repeat invitations. Frequent cancellations with high publicity may call for a different booking policy rather than a verdict that public work cannot earn money.
