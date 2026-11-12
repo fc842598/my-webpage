@@ -1803,7 +1803,7 @@
       button.classList.toggle("is-active", paymentState.provider === provider);
       button.classList.toggle("is-pending-approval", alipayPendingApproval);
       button.classList.toggle("is-provider-unavailable", !meta.enabled);
-      button.disabled = !accountConfirmed || paymentState.loading || paymentState.status === "pending" || !providerEnabled;
+      button.disabled = !accountConfirmed || paymentState.loading || !providerEnabled;
       button.textContent = alipayPendingApproval
         ? label + (IS_ENGLISH_CHECKOUT ? " (Under Review)" : "审核中")
         : (meta.enabled ? label : label + (IS_ENGLISH_CHECKOUT ? " (Unavailable)" : "未配置"));
@@ -3084,27 +3084,30 @@
     });
     $all(".yl-pay-method").forEach(function (button) {
       button.addEventListener("click", function () {
-        if (paymentState.loading || paymentState.status === "pending") return;
+        if (paymentState.loading) return;
         var provider = button.dataset.provider || "wechat";
         if (provider === "alipay" && !ALIPAY_CHECKOUT_ENABLED) return;
         if (provider === "paypal" && !PAYPAL_CHECKOUT_VISIBLE) return;
         if (provider === "paypal_card" && (!PAYPAL_CHECKOUT_VISIBLE || !PAYPAL_CARD_CHECKOUT_VISIBLE)) return;
         var previousProvider = paymentState.provider;
+        if (provider === previousProvider) return;
+        // 若当前存在未支付的订单（pending），切换渠道前先确认，避免误放弃进行中的订单
+        if (paymentState.status === "pending" && paymentState.orderNo) {
+          var abandon = window.confirm(
+            "当前" + getProviderLabel(previousProvider) + "订单尚未支付。确定放弃该订单，改用" + getProviderLabel(provider) + "吗？"
+          );
+          if (!abandon) return;
+        }
         paymentState.provider = provider;
-        if (paymentState.status === "handoff") {
-          paymentState.status = "";
-          paymentState.message = "";
-          paymentState.payUrl = "";
-          paymentState.payMethod = "";
-          setPayHint("");
-        }
-        if (provider !== previousProvider && !paymentState.orderNo) {
-          paymentState.status = "";
-          paymentState.message = "";
-          paymentState.payUrl = "";
-          paymentState.payMethod = "";
-          paymentState.panelDismissed = true;
-        }
+        // 切换渠道时彻底清理旧订单状态，避免微信订单残留导致支付宝下单冲突
+        paymentState.status = "";
+        paymentState.message = "";
+        paymentState.orderNo = "";
+        paymentState.payUrl = "";
+        paymentState.payMethod = "";
+        paymentState.mockMode = false;
+        paymentState.panelDismissed = true;
+        setPayHint("");
         var meta = getProviderMeta(paymentState.provider);
         if (meta.currency) {
           paymentState.product = Object.assign({}, paymentState.product || {}, {
