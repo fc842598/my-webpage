@@ -605,3 +605,37 @@ Suppose monthly rent is 3,000 units, the deposit is 6,000, and repairs cost 1,50
 
 ### Check use and maintenance
 If another occupant moves in, space use and cost sharing may change. Confirm the written rental terms and everyone's agreement before altering a payment. Read the natal Wealth and Property Palaces, then longer and annual layers. Track several months of expected rent, settled cash, deposits, and repairs. Local rules and professional advice govern lease and tax questions; the chart only helps organize what to inspect.
+
+---
+
+## 19. 兄弟姐妹一起修父母旧房，兄弟宫与田宅宫怎样分工？
+slug：`ziwei-xiongdi-fumu-tianzhai-jiufang-xiushan`
+来源：2026-11-12 https://tradiculture.com/yongxiongdigongkanlingyiban/
+角度及与旧文区别：借同辈协作会影响家庭资源安排的议题，本站限定父母旧房修缮的预算、监工与居住意愿。03 讲生活费，13 讲陪诊时段，本篇只讨论一次性房屋工程，不继承来源转宫断言。
+正文草稿：
+父母住的旧房漏水，兄妹三人都同意修，却有人认为先换屋顶，有人想顺便翻新厨房。紫微斗数里田宅宫帮助整理居住空间和资产使用，兄弟宫帮助观察同辈协作，父母宫则提醒长辈的真实需要和同意。哪一项工程该做、花多少钱，必须靠现场检查和预算，不能让命盘替住在屋里的人作主。
+
+### 先确定问题是安全还是改善
+漏水、线路隐患与厨房外观并不是同一优先级。先请合格人员查看房屋状况，列必须处理和可延后的项目，再问父母愿不愿意施工、期间住在哪里。田宅宫不等于房价预测；在这个问题里它对应空间怎样被使用。若田宅宫见化忌，可提醒关注维护与使用冲突，却不能据此断定房屋存在某种结构缺陷。实际状况需要专业勘察。
+
+### 兄弟宫看协作，不替大家分账
+兄妹三人可能一人出钱、一人负责找施工方、一人在当地监工。三种贡献不能只按汇款金额比较。先看本命兄弟宫主星与三方四正，若化权参与，可问是谁有权批准增项；若化科参与，可问报价和进度记录是否透明。有人住得远，无法每周到场，也不等于故意逃避。需要把每个人自愿承担的时间、费用和权限写下来。
+
+### 增项时重新确认
+比如原定只修屋顶，施工时发现墙面受潮，报价从两万元升到三万五千元。不能由现场监工独自答应全部增项，也不能因为微信群里有人回“看着办”就认为预算已获批准。约定一个金额上限，超出后暂停并让出资人与房屋权利人确认。若父母拥有房屋，房屋使用与施工决定还需尊重他们的意愿。财帛宫在此只帮助核各人的现金承受能力，不代替权属文件或合同。
+
+### 工程结束后留下可查记录
+排盘先看本命田宅、兄弟与父母三宫的关联，再以大限和流年理解阶段背景；现实里保存勘察报告、方案版本、付款凭证、验收照片和保修联系。若工程延期，先查施工与付款节点，而不是归咎某个宫位“不吉”。几个月后回看是否解决漏水、父母住得是否方便、费用有没有超出约定。星曜帮助把分工问题提出，工程质量仍由事实验证。
+英文标题：Zi Wei Dou Shu: Siblings Repairing a Parent's Old Home
+英文描述：Use the Siblings, Property and Parents Palaces to frame a shared repair project, then confirm scope, budget authority and the parent's wishes.
+英文正文：
+An older parent's home has a leak. Three adult children agree that repairs are needed, but one wants only the roof fixed while another wants a new kitchen. In Zi Wei Dou Shu, the Property Palace can frame the use of living space, the Siblings Palace can frame cooperation, and the Parents Palace can remind the family to ask the person who lives there. A chart cannot inspect a roof or approve construction on the parent's behalf.
+
+### Separate necessary repair from optional improvement
+Have a qualified person inspect the property and list urgent issues separately from cosmetic changes. Ask the parent whether they agree to the work and where they can stay during it. A constraint signal in the Property Palace may prompt a maintenance question, but it does not diagnose a structural defect. Use the inspection and written estimates to define scope.
+
+### Divide work as well as money
+One sibling may contribute cash, another find contractors, and a third supervise on site. A Hua Quan signal in the Siblings Palace could prompt a question about who may approve changes; a Hua Ke signal could prompt a question about transparent records. Living far away does not prove reluctance. Record each person's agreed money, time, and authority.
+
+### Control changes and verify the result
+If opening the roof reveals more damage and the estimate rises, pause at a pre-agreed spending limit and get approval from the payers and the property owner. Keep estimates, payments, inspection notes, completion photos, and warranty contacts. Read the natal family and property questions before longer and annual cycles, then check whether the leak was fixed, the parent's living needs were respected, and costs stayed within the agreed scope.
