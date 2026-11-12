@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-11-12T21:43:00+08:00</lastmod>
+    <lastmod>2026-11-12T21:44:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -20,7 +20,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-four-transformations.html</loc>
-    <lastmod>2026-11-12T21:41:00+08:00</lastmod>
+    <lastmod>2026-11-12T21:44:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -24715,4 +24715,5 @@
   <url><loc>https://yuetianai.com/articles/ziwei-fugong-yuan-gangwei-jiaojie-zeren.html</loc><lastmod>2026-11-12T21:39:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-2027-taiyin-hualu-caibo-fenzu-xianjin.html</loc><lastmod>2026-11-12T21:41:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-xiongdi-fumu-tianzhai-jiufang-xiushan.html</loc><lastmod>2026-11-12T21:43:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-2027-tiantong-huaquan-fumu-zhaohu-fuwu.html</loc><lastmod>2026-11-12T21:44:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

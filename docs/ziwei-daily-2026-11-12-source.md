@@ -639,3 +639,37 @@ One sibling may contribute cash, another find contractors, and a third supervise
 
 ### Control changes and verify the result
 If opening the roof reveals more damage and the estimate rises, pause at a pre-agreed spending limit and get approval from the payers and the property owner. Keep estimates, payments, inspection notes, completion photos, and warranty contacts. Read the natal family and property questions before longer and annual cycles, then check whether the leak was fixed, the parent's living needs were respected, and costs stayed within the agreed scope.
+
+---
+
+## 20. 2027 天同化权落父母宫，长辈照护服务由谁决定？
+slug：`ziwei-2027-tiantong-huaquan-fumu-zhaohu-fuwu`
+来源：2026-11-12 https://ziyao.life/blog/2027-dingwei-liunian-sihua
+角度及与旧文区别：丁年天同化权的共同规则需依个人落宫判断；本站限定父母宫的居家照护服务选择权、长辈意愿与试用复盘。13 是兄弟陪诊轮班，19 是旧房工程；本篇处理服务合同与日常照护体验，不抄同行逐宫表。
+正文草稿：
+母亲希望继续住在熟悉的家，子女担心她独自在家不方便，想请居家照护人员。有人主张立刻签一年，有人希望先试一个月。若 2027 年天同化权落在个人父母宫，可把它作为核对“谁有权决定照护安排、谁承担执行责任”的提醒，不能借此替母亲作选择。父母宫是关系与需求入口，化权提示责任和决定权需要说清。
+
+### 先核天同和父母宫的落点
+丁年天同化权是年度四化规则，但天同在每个人本命盘的位置不同。先确认出生资料、本命天同所在宫，再分大限背景与 2027 年流年。只有确实牵动父母宫，才把讨论重点放在长辈关系和照护决定；落其他宫位，问题焦点可能不同。即使父母宫见化权，也不意味着子女理应夺走长辈的决定权，或服务人员一定可靠。
+
+### 把需求和服务内容分别写清
+先问母亲希望在哪些时间得到帮助：采购、做饭、出门陪同或家务整理。再看服务方能提供什么、人员如何替换、费用和取消规则。比如子女以为“白天有人陪”包括送诊，合同却只写家务两小时；若不核范围，期待容易落空。父母宫提示先听当事人意见，兄弟宫可帮助整理同辈谁负责联系与支付，财帛宫只在费用影响家庭预算时加入。
+
+### 决定权与执行权分开
+母亲愿意试用、子女负责比较机构、其中一位负责每周结算，这三件事可以分给不同人。若服务开始后母亲觉得陌生人进屋不自在，不应以“已经签约”为由忽视反馈；若照护人员无法按时到场，也要有备用联系。另一种情况是子女意见分裂，却没人问母亲是否愿意接受上门服务。化权能提示权限争议，不能替代真实同意与合同上的终止条件。
+
+### 用短期试行检验
+排盘先看本命父母宫与天同组合，再核兄弟、财帛对协作和支出的影响，最后叠大限流年。现实里先确认服务范围、试用时长、紧急联系人和反馈方式，一个月后核母亲感受、服务记录、实际费用及是否需要调整。健康状况和照护需求如涉及医疗判断，应由专业人员评估。命盘的价值是把责任和选择权问清，服务好坏仍靠实际体验验证。
+英文标题：Zi Wei Dou Shu in 2027: Tian Tong Hua Quan and a Parent's Care Service
+英文描述：When family members consider in-home support for an older parent, clarify consent, service scope, payment responsibility and a trial review.
+英文正文：
+An older parent wants to remain at home. Adult children worry that daily tasks have become harder and consider an in-home support service. One wants a year-long contract; another suggests a one-month trial. If Tian Tong Hua Quan touches the Parents Palace in a person's 2027 Zi Wei Dou Shu chart, it can prompt a question about who decides and who carries out the arrangement. It does not give the children authority to override the parent's wishes.
+
+### Locate the annual signal
+The Ding year's Tian Tong transformation is a shared rule, but the star's natal palace differs by chart. Verify the natal placement before considering longer and annual cycles. A Parents Palace connection puts the older person's needs and the family relationship in view. Hua Quan can raise an authority question, but it cannot prove that a service provider is reliable or that one relative should control the plan.
+
+### Define the service separately from the need
+Ask what help the parent wants: shopping, meals, outings, or housework. Then check the provider's written hours, staff replacement policy, fee, and cancellation terms. “Someone will be here during the day” may not include transportation to an appointment. The Siblings Palace can frame which relative coordinates calls; the Wealth Palace can frame the budget. Neither replaces the parent's agreement.
+
+### Try and review
+The parent may consent to a trial, one child may compare providers, and another may handle monthly payments. Those are different roles. Set a short review date, an emergency contact, and a way for the parent to report discomfort or missed visits. Read natal and annual chart layers in order, then compare them with the parent's experience, service record, and actual costs. Medical needs require professional assessment; the chart only helps the family ask clear responsibility questions.
