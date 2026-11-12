@@ -95,3 +95,71 @@ Separate household costs, each person's regular support for parents, and unexpec
 
 ### Agree on the rule, then review it
 If Hua Quan touches the Spouse Palace, ask who can approve a transfer from the shared account. If Hua Ji touches the Wealth Palace, check whether regular payments leave an emergency reserve. A delayed paycheck can also create a cash gap without signaling a relationship failure. Read the natal pattern, longer cycle, and annual layer in order. Write down the payment rule and revisit it after three months with real account records and each person's consent.
+
+---
+
+## 04. 产品试运营三个月没起色，子女宫能决定何时停吗？
+slug：`ziwei-ziinv-chanpin-shiyunying-tuichu`
+来源：2026-11-12 https://www.suan.pro/ziwei-children-palace/
+角度及与旧文区别：只借子女宫可用于理解长期培养之物这一问题入口；本站限定一款付费学习工具的试运营决策，以官禄的交付、财帛的现金及子女宫的培育责任分开核对。已有子女宫看作品与上线维护文章，本篇回答退出阈值与下一步资源分配，不沿用同行结构、例子或断言。
+正文草稿：
+一款付费学习工具试运营三个月，团队投入了周末和积蓄，付费用户仍很少。有人看到子女宫有化禄，便说“再坚持就会起来”；有人看到化忌，又说“马上停”。这两句话都替代不了产品数据。紫微斗数里的子女宫可以帮助观察对一项长期培育之事的投入方式，却不能直接给出停运日期。
+
+### 先明确盘面所问的对象
+子女宫首先有自己的传统宫位含义；借它谈产品时，只讨论创作者与产出物的关系，不把产品当作真实孩子推断。先确认本命子女宫的主星、三方四正和四化，再问这次项目是个人长期作品，还是公司安排的短期任务。若官禄宫显示主要责任在受雇岗位，就不能把团队的经营结果全部压在个人子女宫。大限提供阶段背景，流年只看这一年如何触发，也不能颠倒层次。
+
+### 把培育、交付和收入拆开
+例如两位设计师做课程工具，一位负责内容更新，一位负责客户支持。子女宫可提示“还想不想继续培育”，官禄宫要核每周谁维护程序、谁处理故障，财帛宫再看订阅收入能否覆盖服务器与客服。若子女宫化禄而财帛见化忌，可能出现用户反馈热烈、现金却持续流出的局面；不要把好评等同盈利。若官禄见化权，先查谁有权决定减少功能和转移工时，而非断定某位合伙人会强势。
+
+### 给下一轮投入设置可核对的门槛
+试运营之前写下一个四周窗口：新增付费用户、退款率、每周维护小时数和现金余额各到什么水平才继续。若没有达到，区分是没人愿意付费，还是用户需要的功能与目前产品不符。前者可能需要停止投放；后者可做一次小范围改版。另一种情况是付费人数上升，但每位用户都要求大量人工答疑，实际交付成本高于订阅费；此时所谓“增长”也不能说明模式成立。阈值应由团队事前商定，不能事后为了符合命盘解释而修改。
+
+### 停止也可以保留作品价值
+停止收费服务，不等于所有投入都浪费。团队可保留文档、开放部分功能，或把可靠的组件用于下一项目，同时履行对已付费用户的承诺。排盘先看本命子女宫与三方，接着核官禄的责任和财帛的现金，再叠大限、流年；最后用订单、退款和维护工时作现实检验。盘面帮助你问“哪种责任正在扩大”，停止、缩小或继续仍要由合同、现金和团队意愿决定。
+英文标题：Zi Wei Dou Shu: Can the Children Palace Decide When a Product Trial Ends?
+英文描述：Use the Children, Career and Wealth Palaces to frame a product trial, then set measurable cash and workload thresholds before deciding whether to continue.
+英文正文：
+A small team has tested a paid learning tool for three months. Users like parts of it, but few pay. In Zi Wei Dou Shu, the Children Palace can be an analogy for something its creators are cultivating over time. It cannot supply a date on which a product must close. A favorable transformation does not replace the sales ledger, and an unfavorable one does not require an immediate shutdown.
+
+### Define what is being cultivated
+First read the natal palace, its related palaces, and the relevant transformations. A personal long-term project differs from a short assignment at an employer. The Career Palace helps identify who actually owns delivery and maintenance. The Wealth Palace addresses cash entering and leaving the project. A longer cycle sets context; an annual signal describes a narrower period. Neither should be read as a substitute for the product's evidence.
+
+### Compare demand with the cost of serving it
+Imagine two designers running a subscription tool. One writes lessons and the other handles support. Good user feedback can coexist with refunds, server bills, and unpaid support hours. If a growth signal touches the Children Palace while a constraint touches the Wealth Palace, ask whether interest turns into settled cash. If authority is emphasized in the Career Palace, establish who can reduce scope or reassign work. These are questions about responsibility, not predictions about a teammate's character.
+
+### Decide before the numbers arrive
+Set a four-week review window with a target for paid users, refunds, maintenance hours, and available cash. If subscriptions increase but each user needs extensive individual help, revenue may still fail to cover delivery. A team could redesign one feature, shrink the service, or end subscriptions while preserving useful components. Review the natal pattern, career duties, cash position, and annual layer in order. Then let the agreed measures, customer commitments, and team consent determine the next step.
+
+---
+
+## 05. 命宫空宫、迁移宫有星，跨境岗位邀约一定要搬家吗？
+slug：`ziwei-minggong-kong-qianyi-kuajing-gangwei`
+来源：2026-11-12 https://vocus.cc/article/69a3bbe7fd89780001564ea9
+角度及与旧文区别：采用“命宫空宫和迁移星曜不能推出必须出国”的问题意识；本站只讨论跨境岗位邀约里远程、短差与长期搬迁三类合同条款。已有迁移宫远程工作与外地发展文章，本篇重心是签约前的岗位地点核对，不沿用同行案例或固定距离说法。
+正文草稿：
+一家海外公司发来工作邀约，面试官说可远程办公，但合同写着“必要时到总部工作”。命宫空宫、迁移宫有星的人，常会被劝“机会在国外，必须搬”。这一步跳得太远。迁移宫可以观察外部环境和对外互动，命宫空宫需要借对宫参看；两者都不等于机票或长期居住义务。
+
+### 命迁轴先回答适应问题
+命宫空宫不代表本人没有主见，也不意味着对宫的每颗星都变成命宫主星。先看命迁轴的整体组合与三方四正：外部评价、陌生组织中的表现、换环境后的适应，分别有什么线索。若迁移宫见太阳和巨门，可以留意公开表达与跨团队解释成本；不是说此人注定要去阳光充足的国家，或一定与外国同事争执。若再见化科，核对专业资历能否被远方雇主理解，仍须看招聘要求。
+
+### 把“海外机会”拆成三个地点
+第一种是人留在本地，客户和同事在国外；第二种是季度出差，居住地不变；第三种才是长期迁居。三种情况都可能牵动迁移宫，但生活成本完全不同。比如同一份产品经理工作，远程方案要求每周两次深夜会议，出差方案要求一年四次驻场，搬迁方案则涉及签证、住房和家属安排。官禄宫帮助核岗位内容，田宅宫帮助整理居住安排，财帛宫核税后收入与新增支出。不能只数迁移宫吉星多少。
+
+### 合同中的地点比口头承诺更明确
+请对方写清工作地点、出差上限、住宿报销、时区会议和地点变更流程。若合同允许公司单方面要求常驻，原先的远程口头承诺就不足以评估风险。另一份邀约可能工资较低，但完全远程且时区稳定，对有家庭照护责任的人反而可执行。盘面不会替你比较签证资格或合同条款。看大限与流年时，也只问某阶段是否更常接触外部平台，不把流年迁移引动直接读成今年搬家。
+
+### 最后再回到个人的选择
+排盘先确认出生资料与命宫是否空宫，再合看迁移及官禄、财帛、田宅的关联，最后叠大限流年。现实中把三个地点方案分别列出净收入、时间成本和可逆性，向雇主确认书面条件。若条件未明确，先补资料而不是凭星曜答应搬迁。迁移宫能帮助审视外部机会，是否移动身体、家庭和生活重心，仍要由本人根据合同与资源决定。
+英文标题：Zi Wei Dou Shu: An Empty Life Palace and an Overseas Job Offer
+英文描述：Stars in the Travel Palace do not require a move abroad. Compare remote work, short trips and relocation clauses before accepting an overseas job.
+英文正文：
+An overseas company offers a role described as remote, yet the contract says the employee may need to work at headquarters. Someone with an empty Life Palace and prominent stars in the Travel Palace might hear that a move abroad is inevitable. A Zi Wei Dou Shu chart cannot turn that phrase into a relocation requirement. The Travel Palace can frame interaction with an outside environment; the signed terms determine where a person must work.
+
+### Read the Life and Travel axis
+An empty Life Palace does not mean a person lacks direction. Read its opposite palace together with the wider chart rather than treating every opposite star as a literal instruction. A Sun and Ju Men combination in the Travel Palace may prompt questions about public communication and explanations across teams. It does not name a destination. Hua Ke may raise a question about whether professional credentials travel well, which the employer's requirements can answer.
+
+### Separate three versions of an overseas role
+The worker may stay home while clients live abroad, travel for a few short assignments each year, or relocate for a long period. All three involve external contact, but their costs differ. A product manager might compare late-night meetings under a remote contract with flights under a travel contract and housing and visa arrangements under a relocation contract. The Career Palace frames the job itself, the Wealth Palace frames net income, and the Property Palace frames the living arrangement.
+
+### Check the written option
+Ask the employer to specify the work location, maximum travel, reimbursement, meeting hours, and the process for changing locations. A verbal promise of remote work is weak evidence when the signed contract permits unilateral relocation. Read natal placements before longer and annual cycles, then compare each actual offer's after-tax income, time cost, and reversibility. An annual Travel Palace signal can suggest a useful question about external exposure. It does not decide whether to move a household.
