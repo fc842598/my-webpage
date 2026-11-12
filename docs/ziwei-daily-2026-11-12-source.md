@@ -503,3 +503,37 @@ Start with interviews and a list of problems, move to testable options, then rev
 
 ### Treat new scope as a new decision
 Building software and training employees are not the same task as diagnosing a traffic problem. Confirm a new fee and schedule before starting them. Missing customer data may also add a week of cleanup; agree on what happens when input quality changes. Read the chart's income question alongside actual hours, approvals, payments, and rework. If feedback is strong but cash is weak, improve the milestones and acceptance terms rather than assuming a favorable star guarantees payment.
+
+---
+
+## 16. 子女宫看联合创作，作品署名与后续维护该怎样分开？
+slug：`ziwei-ziinv-lianhe-chuangzuo-shuming-fengong`
+来源：2026-11-12 https://www.suan.pro/ziwei-children-palace/
+角度及与旧文区别：借鉴子女宫可延伸讨论作品和培育责任；本站限定两位创作者联合制作课程时的署名、贡献证据和后续维护。04 讨论产品试运营退出，旧文讨论一般作品维护；本篇核心是共同作者权利与劳动分工，不继承同行案例或清单。
+正文草稿：
+两位创作者合做一套课程，甲设计框架并录制主讲，乙制作练习与答疑。上线后海报只写甲的名字，乙仍每周维护内容。子女宫可用于整理作品如何被培育，不能直接决定版权或署名归属；交友宫帮助看合作，官禄宫问实际交付，财帛宫问收入如何分。若把四件事混成一句“我们一起做”，争议很容易拖到销售之后。
+
+### 子女宫讨论作品，先别代替合同
+本命子女宫的主星、三方四正与四化，可以提醒一个人对长期作品有多深的投入或怎样处理延续责任。若化禄被引动，问作品带来什么资源；若化忌，问维护义务是否被低估。盘面不能认定某人拥有法律上的作者身份，更不能替合作方签署授权。谁写了什么、贡献能否证明、作品权利如何分配，应以具体创作记录和双方约定核对。
+
+### 把署名、维护、分成列成三张表
+第一张列实际贡献：脚本、录制、练习设计和后期；第二张列上线后谁更新、谁答疑、暂停时谁接手；第三张列收入和成本。比如甲获得主讲署名，乙获得练习设计署名，维护按每月工时另结算。另一种情况是两人都署名，但只有一人承担客服；署名对等并不自动代表后续劳动对等。交友宫的合作关系与官禄宫的岗位责任要分开看。
+
+### 变更前先确认旧约定还能否用
+课程推出半年后新增线下工作坊，原协议只覆盖线上视频。不要假设先前的分成自然适用于新产品。若财帛宫见化权，可问价格和收入分配由谁决定；若子女宫见化科，可看公开署名和内容质量的说明是否准确。四化只是核对角度，合作条款仍需双方明确。若一人退出，也要约定旧课维护、存量用户答疑与对外介绍怎样处理。
+
+### 排盘后回到可验证的协作
+先看本命子女宫与三方，再核交友、官禄、财帛之间的关系，最后叠大限和流年。现实里保存创作版本、确认公开署名、签下维护与分成规则，定期核实际工时和收入。命盘可以提示“作品延伸出去之后谁还在付出”，不能替双方裁定权利；可执行的记录比口头认为“我们是伙伴”更可靠。
+英文标题：Zi Wei Dou Shu: Credit and Maintenance in a Joint Creative Project
+英文描述：Use the Children, Friends, Career and Wealth Palaces to separate creative credit, ongoing work and revenue in a shared course project.
+英文正文：
+Two creators build a course. One designs the outline and records lessons; the other writes exercises and answers learners' questions. The launch poster names only the first creator, while the second continues weekly maintenance. In Zi Wei Dou Shu, the Children Palace can frame a work that people cultivate over time. It cannot decide copyright or legal credit. The Friends Palace frames cooperation, the Career Palace frames delivery, and the Wealth Palace frames income.
+
+### Record contribution before assigning credit
+Read the natal Children Palace and related palaces, then ask what each creator actually made. A growth signal may raise a question about benefits from the work; a constraint may raise a question about underestimated maintenance. Neither proves ownership. Keep drafts, version history, recording credits, and a written agreement about how names appear to the public.
+
+### Separate three agreements
+List contributions, future maintenance duties, and revenue shares separately. Equal billing does not imply equal support hours. A creator who leaves the project may still have an agreed credit for past work while no longer answering new questions. When a live workshop is added six months later, the old online-video terms may not cover it. Confirm the new scope and compensation before launching.
+
+### Review what continues after release
+Read the natal creative, cooperation, work, and money questions before longer and annual layers. Compare the chart's prompts with signed terms, actual update hours, customer support, and cash received. A chart may help reveal a neglected responsibility; it cannot assign another creator's rights. A clear record lets the team change the collaboration without erasing earlier contributions.
