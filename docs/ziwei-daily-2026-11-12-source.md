@@ -299,3 +299,37 @@ A child leaves school at 4:30, one parent leaves work at 6:00, and a grandparent
 
 ### Review the actual handoff
 The Parents Palace can frame an older relative's care needs, while the Spouse Palace concerns the couple's agreement. Do not use a chart to replace anyone's consent. Read the natal relationship pattern before longer and annual cycles, then review the week's handoffs. Check whether misunderstandings came from unclear audio, missing written details, or an unconfirmed change. Adjust the process that failed rather than using the chart to assign blame.
+
+---
+
+## 10. 2027 巨门化忌落财帛宫，客户把旧报价当新报价怎么办？
+slug：`ziwei-2027-jumen-caibo-baojia-gaiban`
+来源：2026-11-12 https://ziyao.life/blog/2027-dingwei-liunian-sihua
+角度及与旧文区别：沿用丁年巨门化忌需核个人落宫的规则，限定财帛宫的报价版本、有效期、成本及回款。01 官禄处理会议责任，08 父母处理审批授权；本篇处理交易价格是否成立，不照搬来源逐宫解释。
+正文草稿：
+设计师周一发出一份三万元报价，周三增加交付范围后改为三万六千元。客户周五回“同意”，却把旧版报价截图附在邮件里。若 2027 年巨门化忌落在个人财帛宫，紫微斗数提醒核对交易语言与真实现金流，不能据此断言客户会赖账。问题是双方同意的究竟是哪份价格、哪些服务，以及钱在何时到账。
+
+### 先看巨门化忌的实际落宫
+丁年四化的规则相同，巨门在不同人的本命盘上并不落在同一个宫。核出生资料和本命巨门位置后，才谈流年四化进入哪里。落财帛宫时，优先检查价格、收支和结算条件；落官禄宫要问交付责任，落父母宫要问谁有批准权。大限给出较长的事业与收入背景，不能把一个订单的分歧说成整年必破财。
+
+### 把报价拆成可签认的四项
+一份报价至少写清版本号、服务范围、有效期和付款节点。比如旧版只含页面设计，新版增加两轮测试与数据迁移；两者相差六千元，不能用一句“之前谈好的”带过。回复客户时附上新旧差异表，明确请对方确认新版本的总价和付款条件，再开始新增工作。巨门对应的表达差异在这里是可查的文件问题，不是对客户性格的判断。
+
+### 成交额与回款要分开核算
+财帛宫关注收入路径，但报价被接受不等于现金已到。另一单生意写了十万元合同，首款要在验收后六十天支付；与此同时团队要先购买软件和外包服务。即使账面金额更大，短期现金可能更紧。若财帛宫再见化禄，仍需问收入是否可结算；见化忌，则核对退款、返工或账期哪里卡住。别把星曜解释成财务报表，真实收款和成本才是决策依据。
+
+### 形成能复盘的成交记录
+排盘先核本命财帛三方与巨门，再叠大限、2027 年流年；现实里按“报价、确认、交付、验收、到账”追踪每一步。若客户只确认旧版，就先暂停新增范围并重新签认，避免把争议留到结账时。若确认新版却迟迟不付款，问题已从沟通进入信用与催收流程，也不能只靠命盘解决。把价格、期限和版本说清，比一句“今年钱会卡”更能控制风险。
+英文标题：Zi Wei Dou Shu in 2027: Ju Men Hua Ji in the Wealth Palace and Old Quotes
+英文描述：If a client accepts an old price after the scope changes, confirm the quote version, payment terms and settled cash before starting extra work.
+英文正文：
+A designer quotes one price on Monday, then adds testing and migration work on Wednesday. On Friday the client says yes but attaches a screenshot of Monday's cheaper quote. If Ju Men Hua Ji touches the Wealth Palace in a 2027 Zi Wei Dou Shu chart, use it as a prompt to check the words and numbers in a transaction. It does not prove that the client intends to avoid payment.
+
+### Locate the palace before the deal
+The Ding year's transformation rule is shared, but Ju Men's natal position is individual. Verify the chart before applying the 2027 layer. A Wealth Palace connection directs attention to prices, costs, and settlement. A Career Palace connection asks more about the delivery duty; a Parents Palace connection asks who can authorize a change. A single order should not be turned into a prediction about the whole year.
+
+### Make the accepted quote identifiable
+Give each quote a version, service scope, expiration date, and payment milestones. The first version may include page design; the second adds testing and migration. Send a short comparison and ask the client to confirm the new total and terms before beginning the extra work. “We agreed” is weak evidence when the attached document names another scope.
+
+### Follow the cash, not the headline price
+A large signed contract can still leave a short-term cash gap when software and subcontractors must be paid before the first installment arrives. If a growth signal appears alongside a constraint, ask whether the revenue is collectible and whether refund or revision costs are included. Read the natal Wealth Palace, longer cycle, and annual signal in order. Then trace quote, acceptance, delivery, approval, and payment through actual records. If the client confirmed only the old version, resolve the scope before adding work.
