@@ -1340,6 +1340,57 @@ input:focus-visible {
 .yl-member-card.is-status-loading > :not(.yl-member-status-loading):not(.yl-checkout-account):not(.yl-member-return) { display: none !important; }
 .yl-member-card.is-status-loading > .yl-member-status-loading { display: block; }
 
+.yl-free-quota-bar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 0 0 18px;
+  padding: 14px 18px;
+  border: 1px solid rgba(184, 139, 69, .28);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fffdf6, #faf4e6);
+  box-shadow: 0 8px 20px rgba(117, 67, 31, .06);
+}
+
+.yl-free-quota-label {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #8a5a1f;
+  background: #f3e4c3;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .05em;
+}
+
+.yl-free-quota-bar strong {
+  color: #7e261d;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.yl-free-quota-bar small {
+  color: #8a7a68;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.yl-free-quota-bar[data-plan="member"] {
+  border-color: rgba(158, 48, 38, .3);
+  background: linear-gradient(135deg, #fff7ef, #fbe9d9);
+}
+
+.yl-free-quota-bar[data-plan="member"] .yl-free-quota-label {
+  color: #fffaf4;
+  background: #aa3828;
+}
+
+.yl-free-quota-bar[data-plan="member"] strong {
+  color: #8f3d30;
+}
+
 .yl-campaign-banner {
   grid-column: 1 / -1;
   margin: 0 0 18px;

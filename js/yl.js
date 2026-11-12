@@ -1247,6 +1247,28 @@
       var el = $(selector);
       if (el) el.textContent = label;
     });
+
+    var freeQuotaValue = $("#ylFreeQuotaValue");
+    var freeQuotaNote = $("#ylFreeQuotaNote");
+    var freeQuotaBar = $("#ylFreeQuotaBar");
+    if (freeQuotaValue) {
+      if (isMember) {
+        freeQuotaValue.textContent = (quota.planName || "月卡") + " " + limit + " 次/天";
+        if (typeof remaining === "number") freeQuotaValue.textContent += " · 今日剩余 " + Math.max(0, remaining) + " 次";
+      } else if (isGuest) {
+        freeQuotaValue.textContent = "未登录 · 免费体验 " + limit + " 次追问";
+      } else {
+        freeQuotaValue.textContent = "免费用户 · 共 " + limit + " 次追问";
+      }
+    }
+    if (freeQuotaNote) {
+      freeQuotaNote.textContent = isMember
+        ? "深度解读已全部解锁"
+        : "基础排盘免费看，深度解读需开通月卡";
+    }
+    if (freeQuotaBar) {
+      freeQuotaBar.dataset.plan = isMember ? "member" : (isGuest ? "guest" : "free");
+    }
   }
 
   function loadState() {
