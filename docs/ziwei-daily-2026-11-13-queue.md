@@ -10,7 +10,7 @@
 | 04 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-liangdu-butong-zhuxing-xiangtong.html / https://yuetianai.com/articles/en/ziwei-liangdu-butong-zhuxing-xiangtong.html | ziwei-liangdu-butong-zhuxing-xiangtong | 紫微排盘亮度不同、主星位置相同，需不需要重排？ | 看盘方法 | 聚焦亮度标注差异对判断的影响，不重写软件优劣或泛化算法争议。 |
 | 05 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-shichen-buqueding-shijianxian.html / https://yuetianai.com/articles/en/ziwei-shichen-buqueding-shijianxian.html | ziwei-shichen-buqueding-shijianxian | 紫微出生时辰不确定，怎样制作候选盘事件时间线？ | 看盘方法 | 重点是独立事件时间线与候选盘证据，不重写“用性格猜时辰”。 |
 | 06 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-wuzhengming-houxuanpan-zanting-panduan.html / https://yuetianai.com/articles/en/ziwei-wuzhengming-houxuanpan-zanting-panduan.html | ziwei-wuzhengming-houxuanpan-zanting-panduan | 出生证明找不到时，紫微候选盘哪些判断先暂停？ | 看盘方法 | 关注证据不足时的解读边界，不重复定时辰操作总览。 |
-| 07 | 待发布 | ziwei-2027-yiyue-liunian-huannian-koujing | 公历一月查看 2027 紫微流年，为什么先核换年口径？ | 大限流年 | 只处理公历一月查询与农历、立春口径，不重写 2027 四化总览。 |
+| 07 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-2027-yiyue-liunian-huannian-koujing.html / https://yuetianai.com/articles/en/ziwei-2027-yiyue-liunian-huannian-koujing.html | ziwei-2027-yiyue-liunian-huannian-koujing | 公历一月查看 2027 紫微流年，为什么先核换年口径？ | 大限流年 | 只处理公历一月查询与农历、立春口径，不重写 2027 四化总览。 |
 | 08 | 待发布 | ziwei-2027-jumen-huaji-geren-luogong | 同是 2027 巨门化忌，为何有人先看工作、有人先看伴侣？ | 大限流年 | 比较两张个人盘的化忌落宫，不重复昨天单篇官禄会议纪要。 |
 | 09 | 待发布 | ziwei-konggong-duigong-gongzuo-sanfang | 紫微空宫借对宫看工作，何时还要核三方四正？ | 宫位组合 | 聚焦空宫职业问题的本宫、对宫与三方角色，不重复空宫基础定义。 |
 | 10 | 待发布 | ziwei-gonggan-sihua-qihua-luogong-jilu | 紫微宫干四化只看落宫，为什么容易漏掉问题来源？ | 四化 | 用起化宫、受化星与落宫记录法核一件事，不重写四化入门大全。 |
