@@ -15,7 +15,7 @@
 | 09 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-konggong-duigong-gongzuo-sanfang.html / https://yuetianai.com/articles/en/ziwei-konggong-duigong-gongzuo-sanfang.html | ziwei-konggong-duigong-gongzuo-sanfang | 紫微空宫借对宫看工作，何时还要核三方四正？ | 宫位组合 | 聚焦空宫职业问题的本宫、对宫与三方角色，不重复空宫基础定义。 |
 | 10 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-gonggan-sihua-qihua-luogong-jilu.html / https://yuetianai.com/articles/en/ziwei-gonggan-sihua-qihua-luogong-jilu.html | ziwei-gonggan-sihua-qihua-luogong-jilu | 紫微宫干四化只看落宫，为什么容易漏掉问题来源？ | 四化 | 用起化宫、受化星与落宫记录法核一件事，不重写四化入门大全。 |
 | 11 | 已发布 2026-11-13 09:16 https://yuetianai.com/articles/ziwei-tanlang-wenqu-kecheng-liucun.html / https://yuetianai.com/articles/en/ziwei-tanlang-wenqu-kecheng-liucun.html | ziwei-tanlang-wenqu-kecheng-liucun | 贪狼会文曲做课程，表达热闹却留不住学员怎么读？ | 主星细读 | 限定贪狼与文曲在课程创作中的吸引和留存，不重复站内营销话术与产品承诺文章。 |
-| 12 | 待发布 | ziwei-tanlang-fuqi-guanlu-shejiao-fengong | 贪狼在夫妻宫与官禄宫，社交能力为何不能混着看？ | 主星细读 | 对比贪狼落宫造成的提问范围差异，不重写贪狼桃花词典或感情吉凶。 |
+| 12 | 已发布 2026-11-13 09:16 https://yuetianai.com/articles/ziwei-tanlang-fuqi-guanlu-shejiao-fengong.html / https://yuetianai.com/articles/en/ziwei-tanlang-fuqi-guanlu-shejiao-fengong.html | ziwei-tanlang-fuqi-guanlu-shejiao-fengong | 贪狼在夫妻宫与官禄宫，社交能力为何不能混着看？ | 主星细读 | 对比贪狼落宫造成的提问范围差异，不重写贪狼桃花词典或感情吉凶。 |
 | 13 | 待发布 | ziwei-daxian-fuqi-hehuo-kaidian-hetong | 大限走夫妻宫时合伙开店，合同责任怎样分？ | 宫位组合 | 聚焦十年阶段中的一对一开店合作与合同责任，不重复大限夫妻宫泛合作文。 |
 | 14 | 待发布 | ziwei-daxian-fuqi-gongzuo-fengong-hexin | 夫妻宫大限里工作变忙，伴侣分工该从哪个宫核？ | 宫位组合 | 专门分开十年关系责任与官禄工作量，不写合伙经营或婚期判断。 |
 | 15 | 待发布 | ziwei-changqu-tonggong-sanhe-xiezuo | 文昌文曲同宫与三方会照，写作能力能一样断吗？ | 辅煞曜 | 仅比较两种位置关系对一项写作任务的提示，不复制格局库或泛论昌曲优点。 |
