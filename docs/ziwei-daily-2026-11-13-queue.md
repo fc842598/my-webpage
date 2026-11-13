@@ -14,13 +14,14 @@
 | 08 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-2027-jumen-huaji-geren-luogong.html / https://yuetianai.com/articles/en/ziwei-2027-jumen-huaji-geren-luogong.html | ziwei-2027-jumen-huaji-geren-luogong | 同是 2027 巨门化忌，为何有人先看工作、有人先看伴侣？ | 大限流年 | 比较两张个人盘的化忌落宫，不重复昨天单篇官禄会议纪要。 |
 | 09 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-konggong-duigong-gongzuo-sanfang.html / https://yuetianai.com/articles/en/ziwei-konggong-duigong-gongzuo-sanfang.html | ziwei-konggong-duigong-gongzuo-sanfang | 紫微空宫借对宫看工作，何时还要核三方四正？ | 宫位组合 | 聚焦空宫职业问题的本宫、对宫与三方角色，不重复空宫基础定义。 |
 | 10 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-gonggan-sihua-qihua-luogong-jilu.html / https://yuetianai.com/articles/en/ziwei-gonggan-sihua-qihua-luogong-jilu.html | ziwei-gonggan-sihua-qihua-luogong-jilu | 紫微宫干四化只看落宫，为什么容易漏掉问题来源？ | 四化 | 用起化宫、受化星与落宫记录法核一件事，不重写四化入门大全。 |
-| 11 | 待发布 | ziwei-tanlang-wenqu-kecheng-liucun | 贪狼会文曲做课程，表达热闹却留不住学员怎么读？ | 主星 | 限定贪狼与文曲在课程创作中的吸引和留存，不重复站内营销话术与产品承诺文章。 |
-| 12 | 待发布 | ziwei-tanlang-fuqi-guanlu-shejiao-fengong | 贪狼在夫妻宫与官禄宫，社交能力为何不能混着看？ | 主星 | 对比贪狼落宫造成的提问范围差异，不重写贪狼桃花词典或感情吉凶。 |
+| 11 | 待发布 | ziwei-tanlang-wenqu-kecheng-liucun | 贪狼会文曲做课程，表达热闹却留不住学员怎么读？ | 主星细读 | 限定贪狼与文曲在课程创作中的吸引和留存，不重复站内营销话术与产品承诺文章。 |
+| 12 | 待发布 | ziwei-tanlang-fuqi-guanlu-shejiao-fengong | 贪狼在夫妻宫与官禄宫，社交能力为何不能混着看？ | 主星细读 | 对比贪狼落宫造成的提问范围差异，不重写贪狼桃花词典或感情吉凶。 |
 | 13 | 待发布 | ziwei-daxian-fuqi-hehuo-kaidian-hetong | 大限走夫妻宫时合伙开店，合同责任怎样分？ | 宫位组合 | 聚焦十年阶段中的一对一开店合作与合同责任，不重复大限夫妻宫泛合作文。 |
 | 14 | 待发布 | ziwei-daxian-fuqi-gongzuo-fengong-hexin | 夫妻宫大限里工作变忙，伴侣分工该从哪个宫核？ | 宫位组合 | 专门分开十年关系责任与官禄工作量，不写合伙经营或婚期判断。 |
-| 15 | 待发布 | ziwei-changqu-tonggong-sanhe-xiezuo | 文昌文曲同宫与三方会照，写作能力能一样断吗？ | 特定命例 | 仅比较两种位置关系对一项写作任务的提示，不复制格局库或泛论昌曲优点。 |
-| 16 | 待发布 | ziwei-changqu-jiaming-wenxing-zuoming | 昌曲夹命与文星坐命有什么区别，求职简历如何用？ | 特定命例 | 限定夹命和坐命的位置差异及简历表达，不重复文昌文曲星性百科。 |
+| 15 | 待发布 | ziwei-changqu-tonggong-sanhe-xiezuo | 文昌文曲同宫与三方会照，写作能力能一样断吗？ | 辅煞曜 | 仅比较两种位置关系对一项写作任务的提示，不复制格局库或泛论昌曲优点。 |
+| 16 | 待发布 | ziwei-changqu-jiaming-wenxing-zuoming | 昌曲夹命与文星坐命有什么区别，求职简历如何用？ | 辅煞曜 | 限定夹命和坐命的位置差异及简历表达，不重复文昌文曲星性百科。 |
 | 17 | 待发布 | ziwei-genggan-sihua-shengji-jiubaogao | 紫微软件升级后庚干四化变了，旧报告怎样复查？ | 四化 | 聚焦同一软件升级后旧报告的版本审计，不重复站内两款软件四化表比较文。 |
 | 18 | 待发布 | ziwei-sihua-chayi-biaoge-zhizuo | 只有四化结果不同，紫微两张盘怎样制作差异表？ | 四化 | 教读者把差异限定到四化层与宫位，不重复庚干某一行的版本说明。 |
 | 19 | 待发布 | ziwei-kuacheng-tongqin-chengben-guanlu-caibo | 跨城办公通勤变贵、工资未变，财帛与官禄怎么核？ | 财运事业 | 聚焦跨城通勤造成的净现金变化，不重复站内职责增加和奖金延迟文章。 |
 | 20 | 待发布 | ziwei-gongzuo-shebei-butie-caibo-guanlu | 公司要求自购工作设备，补贴算收入还是成本抵扣？ | 财运事业 | 聚焦自购设备和单位补贴的现金时间差，不重复副业转主业或多渠道收入文章。 |
+
