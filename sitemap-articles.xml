@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-11-13T09:15:00+08:00</lastmod>
+    <lastmod>2026-11-13T09:16:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-main-stars.html</loc>
-    <lastmod>2026-11-10T10:23:00+08:00</lastmod>
+    <lastmod>2026-11-13T09:16:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -24726,4 +24726,5 @@
   <url><loc>https://yuetianai.com/articles/ziwei-2027-jumen-huaji-geren-luogong.html</loc><lastmod>2026-11-13T09:15:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-konggong-duigong-gongzuo-sanfang.html</loc><lastmod>2026-11-13T09:15:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-gonggan-sihua-qihua-luogong-jilu.html</loc><lastmod>2026-11-13T09:15:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-tanlang-wenqu-kecheng-liucun.html</loc><lastmod>2026-11-13T09:16:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
