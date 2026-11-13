@@ -5,7 +5,7 @@
 | 顺序 | 状态 | slug | 原创搜索问题 | 类别 | 与旧文区别 |
 |---|---|---|---|---|---|
 | 01 | 已发布 2026-11-13 09:14 https://yuetianai.com/articles/ziwei-wanzishi-shifen-liangpan-duibi.html / https://yuetianai.com/articles/en/ziwei-wanzishi-shifen-liangpan-duibi.html | ziwei-wanzishi-shifen-liangpan-duibi | 紫微排盘晚子时前后十分钟，为什么会出现两张盘？ | 看盘方法 | 聚焦 22:55 与 23:05 的输入和软件规则对照，不重复泛时辰误差文章。 |
-| 02 | 待发布 | ziwei-runyue-paipan-chayi-hexin | 紫微闰月出生，软件排盘差一宫该先核哪项？ | 看盘方法 | 限定闰月资料与软件换算差一宫的排错次序，不重写历法基础百科。 |
+| 02 | 已发布 2026-11-13 09:14 https://yuetianai.com/articles/ziwei-runyue-paipan-chayi-hexin.html / https://yuetianai.com/articles/en/ziwei-runyue-paipan-chayi-hexin.html | ziwei-runyue-paipan-chayi-hexin | 紫微闰月出生，软件排盘差一宫该先核哪项？ | 看盘方法 | 限定闰月资料与软件换算差一宫的排错次序，不重写历法基础百科。 |
 | 03 | 待发布 | ziwei-xingyao-xiangtong-jiedu-xiangfan | 两款紫微软件星曜相同、解读相反，是排盘错了吗？ | 看盘方法 | 聚焦相同盘面上的解释分歧，不重复 AI 算命可靠性泛问答。 |
 | 04 | 待发布 | ziwei-liangdu-butong-zhuxing-xiangtong | 紫微排盘亮度不同、主星位置相同，需不需要重排？ | 看盘方法 | 聚焦亮度标注差异对判断的影响，不重写软件优劣或泛化算法争议。 |
 | 05 | 待发布 | ziwei-shichen-buqueding-shijianxian | 紫微出生时辰不确定，怎样制作候选盘事件时间线？ | 看盘方法 | 重点是独立事件时间线与候选盘证据，不重写“用性格猜时辰”。 |
