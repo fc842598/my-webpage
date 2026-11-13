@@ -19,7 +19,7 @@
 | 13 | 已发布 2026-11-13 09:16 https://yuetianai.com/articles/ziwei-daxian-fuqi-hehuo-kaidian-hetong.html / https://yuetianai.com/articles/en/ziwei-daxian-fuqi-hehuo-kaidian-hetong.html | ziwei-daxian-fuqi-hehuo-kaidian-hetong | 大限走夫妻宫时合伙开店，合同责任怎样分？ | 宫位组合 | 聚焦十年阶段中的一对一开店合作与合同责任，不重复大限夫妻宫泛合作文。 |
 | 14 | 已发布 2026-11-13 09:16 https://yuetianai.com/articles/ziwei-daxian-fuqi-gongzuo-fengong-hexin.html / https://yuetianai.com/articles/en/ziwei-daxian-fuqi-gongzuo-fengong-hexin.html | ziwei-daxian-fuqi-gongzuo-fengong-hexin | 夫妻宫大限里工作变忙，伴侣分工该从哪个宫核？ | 宫位组合 | 专门分开十年关系责任与官禄工作量，不写合伙经营或婚期判断。 |
 | 15 | 已发布 2026-11-13 09:16 https://yuetianai.com/articles/ziwei-changqu-tonggong-sanhe-xiezuo.html / https://yuetianai.com/articles/en/ziwei-changqu-tonggong-sanhe-xiezuo.html | ziwei-changqu-tonggong-sanhe-xiezuo | 文昌文曲同宫与三方会照，写作能力能一样断吗？ | 辅煞曜 | 仅比较两种位置关系对一项写作任务的提示，不复制格局库或泛论昌曲优点。 |
-| 16 | 待发布 | ziwei-changqu-jiaming-wenxing-zuoming | 昌曲夹命与文星坐命有什么区别，求职简历如何用？ | 辅煞曜 | 限定夹命和坐命的位置差异及简历表达，不重复文昌文曲星性百科。 |
+| 16 | 已发布 2026-11-13 09:16 https://yuetianai.com/articles/ziwei-changqu-jiaming-wenxing-zuoming.html / https://yuetianai.com/articles/en/ziwei-changqu-jiaming-wenxing-zuoming.html | ziwei-changqu-jiaming-wenxing-zuoming | 昌曲夹命与文星坐命有什么区别，求职简历如何用？ | 辅煞曜 | 限定夹命和坐命的位置差异及简历表达，不重复文昌文曲星性百科。 |
 | 17 | 待发布 | ziwei-genggan-sihua-shengji-jiubaogao | 紫微软件升级后庚干四化变了，旧报告怎样复查？ | 四化 | 聚焦同一软件升级后旧报告的版本审计，不重复站内两款软件四化表比较文。 |
 | 18 | 待发布 | ziwei-sihua-chayi-biaoge-zhizuo | 只有四化结果不同，紫微两张盘怎样制作差异表？ | 四化 | 教读者把差异限定到四化层与宫位，不重复庚干某一行的版本说明。 |
 | 19 | 待发布 | ziwei-kuacheng-tongqin-chengben-guanlu-caibo | 跨城办公通勤变贵、工资未变，财帛与官禄怎么核？ | 财运事业 | 聚焦跨城通勤造成的净现金变化，不重复站内职责增加和奖金延迟文章。 |
