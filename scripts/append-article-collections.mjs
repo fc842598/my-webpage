@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const site = 'https://yuetianai.com';
 const escape = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const hubs = { '看盘方法': 'ziwei-learning-path.html', '大限流年': 'ziwei-cycles.html', '宫位组合': 'ziwei-palaces.html', '辅煞曜': 'ziwei-helper-malice-stars.html', '四化': 'ziwei-four-transformations.html', '主星细读': 'ziwei-main-stars.html', '财运事业': 'ziwei-money-career.html' };
+const hubs = { '看盘方法': 'ziwei-learning-path.html', '大限流年': 'ziwei-cycles.html', '宫位组合': 'ziwei-palaces.html', '辅煞曜': 'ziwei-helper-malice-stars.html', '四化': 'ziwei-four-transformations.html', '主星细读': 'ziwei-main-stars.html', '财运事业': 'ziwei-money-career.html', '特定命例': 'ziwei-case-patterns.html' };
 
 function metadata(root, rel) {
   const html = readFileSync(path.join(root, rel), 'utf8');

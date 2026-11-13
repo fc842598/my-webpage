@@ -471,6 +471,9 @@ function markdownBody(markdown) {
     if (lines.every((line) => /^[-*]\s+/.test(line))) {
       return `<ul>${lines.map((line) => `<li>${inlineMarkdown(line.replace(/^[-*]\s+/, ""))}</li>`).join("")}</ul>`;
     }
+    if (lines.every((line) => /^\d+\.\s+/.test(line))) {
+      return `<ol>${lines.map((line) => `<li>${inlineMarkdown(line.replace(/^\d+\.\s+/, ""))}</li>`).join("")}</ol>`;
+    }
 
     const parts = [];
     let paragraphLines = [];
