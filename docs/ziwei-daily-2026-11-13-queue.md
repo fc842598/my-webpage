@@ -12,7 +12,7 @@
 | 06 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-wuzhengming-houxuanpan-zanting-panduan.html / https://yuetianai.com/articles/en/ziwei-wuzhengming-houxuanpan-zanting-panduan.html | ziwei-wuzhengming-houxuanpan-zanting-panduan | 出生证明找不到时，紫微候选盘哪些判断先暂停？ | 看盘方法 | 关注证据不足时的解读边界，不重复定时辰操作总览。 |
 | 07 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-2027-yiyue-liunian-huannian-koujing.html / https://yuetianai.com/articles/en/ziwei-2027-yiyue-liunian-huannian-koujing.html | ziwei-2027-yiyue-liunian-huannian-koujing | 公历一月查看 2027 紫微流年，为什么先核换年口径？ | 大限流年 | 只处理公历一月查询与农历、立春口径，不重写 2027 四化总览。 |
 | 08 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-2027-jumen-huaji-geren-luogong.html / https://yuetianai.com/articles/en/ziwei-2027-jumen-huaji-geren-luogong.html | ziwei-2027-jumen-huaji-geren-luogong | 同是 2027 巨门化忌，为何有人先看工作、有人先看伴侣？ | 大限流年 | 比较两张个人盘的化忌落宫，不重复昨天单篇官禄会议纪要。 |
-| 09 | 待发布 | ziwei-konggong-duigong-gongzuo-sanfang | 紫微空宫借对宫看工作，何时还要核三方四正？ | 宫位组合 | 聚焦空宫职业问题的本宫、对宫与三方角色，不重复空宫基础定义。 |
+| 09 | 已发布 2026-11-13 09:15 https://yuetianai.com/articles/ziwei-konggong-duigong-gongzuo-sanfang.html / https://yuetianai.com/articles/en/ziwei-konggong-duigong-gongzuo-sanfang.html | ziwei-konggong-duigong-gongzuo-sanfang | 紫微空宫借对宫看工作，何时还要核三方四正？ | 宫位组合 | 聚焦空宫职业问题的本宫、对宫与三方角色，不重复空宫基础定义。 |
 | 10 | 待发布 | ziwei-gonggan-sihua-qihua-luogong-jilu | 紫微宫干四化只看落宫，为什么容易漏掉问题来源？ | 四化 | 用起化宫、受化星与落宫记录法核一件事，不重写四化入门大全。 |
 | 11 | 待发布 | ziwei-tanlang-wenqu-kecheng-liucun | 贪狼会文曲做课程，表达热闹却留不住学员怎么读？ | 主星 | 限定贪狼与文曲在课程创作中的吸引和留存，不重复站内营销话术与产品承诺文章。 |
 | 12 | 待发布 | ziwei-tanlang-fuqi-guanlu-shejiao-fengong | 贪狼在夫妻宫与官禄宫，社交能力为何不能混着看？ | 主星 | 对比贪狼落宫造成的提问范围差异，不重写贪狼桃花词典或感情吉凶。 |
