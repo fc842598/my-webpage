@@ -33,6 +33,123 @@ Read the natal chart, the current ten-year period, and the relevant annual cycle
 
 ---
 
+## 05. 真太阳时修正跨过午夜，紫微排盘应先核哪一天？
+slug：`ziwei-paipan-kuari-chusheng-riqi`
+参考研究日期与原文 URL：2026-11-16 https://suanming.io/zh-TW/ziwei-method
+采用角度与旧文区别：限定修正跨日时的原始记录与重排步骤，不重复晚子时十分钟的盘面对比。
+正文草稿：
+出生证明写着当地时间 00:08，工具修正后却显示前一天 23:42。此时不能只把时辰从子时改为亥时，仍保留原来的农历日。日期与时辰是同一条计算链，跨午夜意味着后续安星依据也可能改变。
+
+### 保存原始输入
+先照证件记录出生地、当地日期、时分、时区和是否采用夏令时，再单独记录工具显示的校正时间。不要先把证件日期改成自己推算的日期，否则日后无法分辨差异来自输入还是算法。若出生地同名城市很多，还需核对坐标与行政区；一座城市的经度选错，临界时刻尤其敏感。
+
+### 跨日要整盘重算
+假设一款软件将校正后的日期作为排盘日，另一款保留登记日，命宫、身宫或四化可能出现不同结果。先查看两者声明的真太阳时与换日规则，再分别保存两张完整盘；不能把 A 软件的宫位和 B 软件的星曜拼成一张盘。若软件没有说明跨日处理，标注口径未知，暂停后面的精细断语。
+
+### 再问具体问题
+比较两盘时，选一项可独立核实的现实问题，例如某年的转岗或搬迁，不凭“哪张性格更像”挑盘。读盘顺序为核出生证据、确认校正规则、重排日期与时辰、对照命宫三方四正，最后才看大限流年。时间证据不足时，保留候选盘，比假装精确更有用。
+
+英文标题：Zi Wei Dou Shu Birth Time Correction Across Midnight
+英文描述：Preserve the recorded local date and recalculate the whole chart when a time correction crosses midnight.
+英文正文：
+A birth certificate may say 12:08 a.m. while a chart tool displays 11:42 p.m. on the preceding day after time correction. That change can affect more than the hour branch. In Zi Wei Dou Shu, the date used for calculation may change too.
+
+### Keep the evidence intact
+Record the certificate's local date, place, time zone, and daylight saving rule before applying any correction. Save the tool's adjusted result separately. Check the selected city and coordinates, especially if several cities share a name.
+
+### Recalculate, then compare
+If the corrected time crosses midnight, compare two complete charts under stated rules. Do not combine the Life Palace from one tool with transformations from another. When a tool does not explain how it handles the date boundary, mark the calculation as uncertain.
+
+Confirm the input, time rule, and resulting chart first. Only then compare palace relationships and an independently recorded life event. A plausible personality description cannot establish the correct birth date.
+
+---
+
+## 06. 排盘工具没有计算飞宫四化，读者怎样识别解读越界？
+slug：`ziwei-ruanyuan-weisuan-feihua-biaozhu`
+参考研究日期与原文 URL：2026-11-16 https://suanming.io/zh-TW/ziwei-method
+采用角度与旧文区别：检查软件计算范围与自动解读的对应关系，不重写四化流派或版本差异。
+正文草稿：
+某排盘页列出十四主星和生年四化，同时说明未计算宫干飞化；旁边的自动解读却写“夫妻宫飞忌入官禄”。这句话需要已计算的起化宫、受化星、落宫和所用规则。若页面没有这些数据，就不能当作盘面结论使用。
+
+### 先列出工具真的算了什么
+把界面分成输入、计算结果和解释三栏。输入包括出生地与时间；结果应能看见宫位、星曜、四化和版本；解释是对结果的文字运用。生年四化已显示，并不代表宫干四化、流月、流日也已实现。若工具只展示本命盘，就不要把一个流月判断当作可复核的输出。
+
+### 对一条断语做追溯
+遇到“某宫飞忌”时，问从哪一宫起化、哪颗星承接、飞到哪一宫，以及依据哪套四化表。比如有关工作争议的断语若没有官禄宫的起化和落点记录，读者无法知道它指岗位压力还是沟通责任。不能凭另一款软件的结果替原工具补数据，更不能把模型自由生成的话当成计算事实。
+
+### 使用边界要写清
+可以保留这条话作为待验证的提问，随后用支持该算法的工具重排，并对照现实事件；不支持就停在已计算的层级。实际使用顺序是核输入、读功能说明、核可见盘面、再读自动文字。这样即使两套解读冲突，也能先找计算缺口，而不急着判哪一家“更准”。
+
+英文标题：Zi Wei Dou Shu: When an App Describes Transformations It Did Not Calculate
+英文描述：Trace an automated interpretation back to visible chart inputs and supported transformation calculations.
+英文正文：
+A chart app may display natal stars and birth-year transformations while saying it does not calculate palace-to-palace transformations. If its text then claims that a transformation flies from the Spouse Palace to the Career Palace, ask where that calculation came from.
+
+### Separate data from interpretation
+List the birth inputs, visible chart output, and written explanation separately. A displayed birth-year transformation does not establish that monthly cycles or palace-stem transformations were computed. For a flying transformation, look for its source palace, receiving star, destination, and rule set.
+
+When those fields are absent, treat the sentence as an unverified question. Recalculate with a tool that supports the method if the distinction matters. Read the app's stated coverage before using its prose to make a personal decision.
+
+---
+
+## 07. 问工作去留时，命宫、迁移、财帛、官禄怎样分工？
+slug：`ziwei-gongzuo-wenti-sigong-dingwei`
+参考研究日期与原文 URL：2026-11-16 https://www.xinyj.com/wen/ziwei-chart-reading-order/
+采用角度与旧文区别：用一个留任或离职问题分解四宫角色，不再写新手通用读盘顺序。
+正文草稿：
+“该不该离开现在的工作”至少有四种意思：不喜欢职责、外部机会更好、收入不够，或自己已经无法承受当前节奏。四个问题不能只从官禄宫找一颗吉星。先问清最主要的矛盾，再用命宫、官禄、财帛、迁移四宫分工核对。
+
+### 岗位与收入分开
+官禄宫看工作方式、职责和评价标准；财帛宫看收入渠道、回款和可留存金额。假设原岗位可以升为主管，头衔变大但奖金要等年底，官禄有机会并不等于财帛立刻改善。把职责清单、固定薪资、浮动奖金与离职成本各自列出，避免用“事业好”覆盖现金问题。
+
+### 人与外部环境分开
+命宫关乎本人应对问题的方式，迁移宫关乎到外部平台、陌生客户或新城市后的关系。另一人想离职，是因为远程客户越来越多而公司禁止异地办公；这时迁移与官禄的冲突比单看命宫性格更贴近问题。即使迁移有化禄，也要核新公司能否提供合同、权限与稳定客户，不能推论外面一定更好。
+
+### 从一件事开始读
+先校验出生资料，定位四宫和对宫、三方四正，再区分本命倾向、大限背景与流年触发。最后把盘面问题翻译成三个现实动作：确认新岗位职责、比较净收入、核离职后的支持。若没有具体邀约，就别把“想走”写成“应该马上走”。
+
+英文标题：Zi Wei Dou Shu Career Decisions: Four Palaces, Four Different Questions
+英文描述：Use the Life, Career, Wealth, and Travel Palaces to separate role, pay, self, and outside opportunity.
+英文正文：
+“Should I leave my job?” can mean that the duties are wrong, the pay is too low, or a new employer offers a better setting. Zi Wei Dou Shu uses different palaces to keep those questions separate.
+
+### Split role from money
+The Career Palace frames responsibilities and evaluation. The Wealth Palace frames income, payment timing, and what remains after costs. A promotion with a delayed bonus can improve a title without improving near-term cash.
+
+### Split the person from the setting
+The Life Palace concerns how the person handles demands. The Travel Palace frames a new platform, clients, or city. An outside opportunity still needs a real contract and support. Read the natal four-palace structure first, then the ten-year background and annual trigger. Compare the chart questions with the actual offer before resigning.
+
+---
+
+## 08. 身宫寄在官禄宫，工作选择能否只看身宫？
+slug：`ziwei-shengong-jizai-guanlu-zhiye`
+参考研究日期与原文 URL：2026-11-16 https://www.xinyj.com/wen/ziwei-chart-reading-order/
+采用角度与旧文区别：把身宫寄官禄的工作投入与岗位、收入、阶段区分，不讲身宫定义百科。
+正文草稿：
+身宫寄在官禄宫，常让人觉得自己的行动与工作角色联系紧密。但这不是“天生只能做某一种职业”的标签，也不能跳过命宫、财帛和现实条件。身宫提示用力处，官禄宫说明岗位场景，二者仍需放回整盘。
+
+### 先分清投入和适配
+一位设计师特别愿意承担项目统筹，却发现新岗位几乎全是行政审批。身宫在官禄可让工作责任成为重要议题，不能证明任何管理岗都适合。看官禄宫主星、辅曜与四化时，要问是创造、协调还是控制进度；再看命宫的处理方式能否持续承接。职位名称相同，真实工作内容可能完全不同。
+
+### 再核钱与外部平台
+财帛宫区分劳动、回款和资源留存，迁移宫看外部团队或市场。另一位接到自由职业邀约，工作内容很合心意，但客户付款周期长，财帛压力就不能被“身宫重事业”盖过去。若迁移宫显示对外接触的议题，仍须核合同对象、客户来源和交付边界。
+
+### 按阶段判断
+本命身宫的位置不会因一次换岗而改变，大限和流年却会调整当下的侧重点。先确认排盘时辰和身宫落点，再读命、官、财、迁的关系，最后对照具体岗位与现金安排。把身宫当成提问起点，有助于理解投入；把它当唯一决定器，则容易忽略人真正要承担的成本。
+
+英文标题：Zi Wei Dou Shu: Body Palace in the Career Palace and Job Choice
+英文描述：A Body Palace in the Career Palace highlights work involvement but does not select a job by itself.
+英文正文：
+When the Body Palace sits in the Career Palace, work may be an important place where a person acts and takes responsibility. It does not assign one profession or prove that every management job fits.
+
+### Check the actual role
+A designer may enjoy coordinating a project but dislike a role made mostly of approvals. Read the Career Palace for the kind of duties involved, then compare the Life Palace for how the person handles them. Job titles alone hide those differences.
+
+### Check the money and platform
+The Wealth Palace frames payment and retained cash. The Travel Palace frames outside clients or a new organization. A freelance offer can feel engaging while its payment cycle creates financial strain. Confirm the birth time and Body Palace placement, then read the four related palaces with the current ten-year and annual context. Compare that structure with the real job description and contract.
+
+---
+
 ## 02. 出差两周变成驻点三个月，迁移宫与官禄宫怎么重新核？
 slug：`ziwei-chuchai-liangzhou-qianyi-guanlu`
 参考研究日期与原文 URL：2026-11-16 https://xingge.tw/zh-hant/notes/qianyi-chuguo
