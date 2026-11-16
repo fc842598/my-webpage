@@ -13,7 +13,7 @@
 | 07 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-gongzuo-wenti-sigong-dingwei.html / https://yuetianai.com/articles/en/ziwei-gongzuo-wenti-sigong-dingwei.html | ziwei-gongzuo-wenti-sigong-dingwei | 问工作去留时，命宫、迁移、财帛、官禄怎样分工？ | 看盘方法 | 用一个去留问题分四宫，区别入门顺序大全。 |
 | 08 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-shengong-jizai-guanlu-zhiye.html / https://yuetianai.com/articles/en/ziwei-shengong-jizai-guanlu-zhiye.html | ziwei-shengong-jizai-guanlu-zhiye | 身宫寄在官禄宫，工作选择能否只看身宫？ | 看盘方法 | 限定身宫与命官财关系，不重讲第十三宫。 |
 | 09 | 已发布 2026-11-16 09:03 https://yuetianai.com/articles/ziwei-2027-weigong-liunian-qidian.html / https://yuetianai.com/articles/en/ziwei-2027-weigong-liunian-qidian.html | ziwei-2027-weigong-liunian-qidian | 2027 流年命宫定位未宫后，为什么仍要回本命盘？ | 大限流年 | 强调移动起点与本命落点，不写年度总运。 |
-| 10 | 待发布 | ziwei-liunian-xiaoxian-hunbu-tong | 流年太岁法与小限起点不同，两张盘怎样避免混读？ | 大限流年 | 比较两套起点和记录字段，不重写 2027 四化。 |
+| 10 | 已发布 2026-11-16 09:03 https://yuetianai.com/articles/ziwei-liunian-xiaoxian-hunbu-tong.html / https://yuetianai.com/articles/en/ziwei-liunian-xiaoxian-hunbu-tong.html | ziwei-liunian-xiaoxian-hunbu-tong | 流年太岁法与小限起点不同，两张盘怎样避免混读？ | 大限流年 | 比较两套起点和记录字段，不重写 2027 四化。 |
 | 11 | 待发布 | ziwei-taiyinlu-gaoshouru-dichuxu | 2027 太阴化禄遇高收入低储蓄，财帛与田宅先核什么？ | 财运事业 | 只看现金留存与固定支出，不作买房预测。 |
 | 12 | 待发布 | ziwei-tiantongquan-guanli-gangwei | 2027 天同化权遇管理岗，职位变化为何还要核授权？ | 财运事业 | 限定职责与权限是否配套，不写通用升职运。 |
 | 13 | 待发布 | ziwei-fuqihua-ji-cengci-zhengju | 被说夫妻宫化忌一定离婚，先问清哪层四化？ | 感情关系 | 用四化层级和可核事实纠偏，不借论坛案例。 |
