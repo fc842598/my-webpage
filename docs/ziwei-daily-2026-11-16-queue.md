@@ -19,7 +19,7 @@
 | 13 | 已发布 2026-11-16 09:05 https://yuetianai.com/articles/ziwei-fuqihua-ji-cengci-zhengju.html / https://yuetianai.com/articles/en/ziwei-fuqihua-ji-cengci-zhengju.html | ziwei-fuqihua-ji-cengci-zhengju | 被说夫妻宫化忌一定离婚，先问清哪层四化？ | 宫位组合 | 用四化层级和可核事实纠偏，不借论坛案例。 |
 | 14 | 已发布 2026-11-16 09:05 https://yuetianai.com/articles/ziwei-fuqi-lucun-chengnuo-shijian.html / https://yuetianai.com/articles/en/ziwei-fuqi-lucun-chengnuo-shijian.html | ziwei-fuqi-lucun-chengnuo-shijian | 夫妻宫有禄存，却常为见面时间争执，该核什么？ | 宫位组合 | 比较资源投入与时间承诺，不预测婚姻结果。 |
 | 15 | 已发布 2026-11-16 09:05 https://yuetianai.com/articles/ziwei-ziyouzhiye-guanlu-caibo-qiehuan.html / https://yuetianai.com/articles/en/ziwei-ziyouzhiye-guanlu-caibo-qiehuan.html | ziwei-ziyouzhiye-guanlu-caibo-qiehuan | 从固定工资转自由职业，官禄和财帛先比较哪三项？ | 财运事业 | 只做职责、回款、风险准备的转换核查。 |
-| 16 | 待发布 | ziwei-tiaocao-shidian-benming-daxian | 职业方向合适，却想立即跳槽，本命和大限如何分问？ | 财运事业 | 区分长期适配与当下时点，不写职业星曜表。 |
+| 16 | 已发布 2026-11-16 09:05 https://yuetianai.com/articles/ziwei-tiaocao-shidian-benming-daxian.html / https://yuetianai.com/articles/en/ziwei-tiaocao-shidian-benming-daxian.html | ziwei-tiaocao-shidian-benming-daxian | 职业方向合适，却想立即跳槽，本命和大限如何分问？ | 财运事业 | 区分长期适配与当下时点，不写职业星曜表。 |
 | 17 | 待发布 | ziwei-jiee-huaji-zuoxi-jilu | 疾厄宫化忌时，哪些作息变化值得记录？ | 宫位组合 | 只谈可观察习惯和医疗边界，不断疾病。 |
 | 18 | 待发布 | ziwei-jieekong-duigong-shenghuo | 疾厄宫空宫，为什么不能借对宫星曜诊断身体？ | 宫位组合 | 区分结构参考和医学判断，不写健康星表。 |
 | 19 | 待发布 | ziwei-guanlu-fuqi-gaoya-xiangchu | 高压项目期间伴侣争执，官禄与夫妻宫怎样分开看？ | 宫位组合 | 追踪工作时间与关系沟通，不写伴侣类型。 |
