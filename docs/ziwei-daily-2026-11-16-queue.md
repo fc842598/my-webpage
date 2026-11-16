@@ -22,6 +22,6 @@
 | 16 | 已发布 2026-11-16 09:05 https://yuetianai.com/articles/ziwei-tiaocao-shidian-benming-daxian.html / https://yuetianai.com/articles/en/ziwei-tiaocao-shidian-benming-daxian.html | ziwei-tiaocao-shidian-benming-daxian | 职业方向合适，却想立即跳槽，本命和大限如何分问？ | 财运事业 | 区分长期适配与当下时点，不写职业星曜表。 |
 | 17 | 已发布 2026-11-16 09:06 https://yuetianai.com/articles/ziwei-jiee-huaji-zuoxi-jilu.html / https://yuetianai.com/articles/en/ziwei-jiee-huaji-zuoxi-jilu.html | ziwei-jiee-huaji-zuoxi-jilu | 疾厄宫化忌时，哪些作息变化值得记录？ | 宫位组合 | 只谈可观察习惯和医疗边界，不断疾病。 |
 | 18 | 已发布 2026-11-16 09:06 https://yuetianai.com/articles/ziwei-jieekong-duigong-shenghuo.html / https://yuetianai.com/articles/en/ziwei-jieekong-duigong-shenghuo.html | ziwei-jieekong-duigong-shenghuo | 疾厄宫空宫，为什么不能借对宫星曜诊断身体？ | 宫位组合 | 区分结构参考和医学判断，不写健康星表。 |
-| 19 | 待发布 | ziwei-guanlu-fuqi-gaoya-xiangchu | 高压项目期间伴侣争执，官禄与夫妻宫怎样分开看？ | 宫位组合 | 追踪工作时间与关系沟通，不写伴侣类型。 |
+| 19 | 已发布 2026-11-16 09:06 https://yuetianai.com/articles/ziwei-guanlu-fuqi-gaoya-xiangchu.html / https://yuetianai.com/articles/en/ziwei-guanlu-fuqi-gaoya-xiangchu.html | ziwei-guanlu-fuqi-gaoya-xiangchu | 高压项目期间伴侣争执，官禄与夫妻宫怎样分开看？ | 宫位组合 | 追踪工作时间与关系沟通，不写伴侣类型。 |
 | 20 | 待发布 | ziwei-wuqu-fuqi-wuzhi-chengnuo | 武曲在夫妻宫，物质照顾和实际陪伴怎样分别核？ | 宫位组合 | 限定责任表达与共同时间，不贴性格标签。 |
 
