@@ -10,7 +10,7 @@
 | 04 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-liuyue-wenti-riqi-jilu.html / https://yuetianai.com/articles/en/ziwei-liuyue-wenti-riqi-jilu.html | ziwei-liuyue-wenti-riqi-jilu | 查询流月工作机会前，为什么要先写清问题发生日期？ | 大限流年 | 聚焦具体事件窗口而非泛化月份吉凶。 |
 | 05 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-paipan-kuari-chusheng-riqi.html / https://yuetianai.com/articles/en/ziwei-paipan-kuari-chusheng-riqi.html | ziwei-paipan-kuari-chusheng-riqi | 真太阳时修正跨过午夜，紫微排盘应先核哪一天？ | 看盘方法 | 讨论修正后日期重算，不重复晚子时十分钟。 |
 | 06 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-ruanyuan-weisuan-feihua-biaozhu.html / https://yuetianai.com/articles/en/ziwei-ruanyuan-weisuan-feihua-biaozhu.html | ziwei-ruanyuan-weisuan-feihua-biaozhu | 排盘工具没有计算飞宫四化，读者怎样识别解读越界？ | 看盘方法 | 聚焦功能覆盖声明，不比较四化表版本。 |
-| 07 | 待发布 | ziwei-gongzuo-wenti-sigong-dingwei | 问工作去留时，命宫、迁移、财帛、官禄怎样分工？ | 看盘方法 | 用一个去留问题分四宫，区别入门顺序大全。 |
+| 07 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-gongzuo-wenti-sigong-dingwei.html / https://yuetianai.com/articles/en/ziwei-gongzuo-wenti-sigong-dingwei.html | ziwei-gongzuo-wenti-sigong-dingwei | 问工作去留时，命宫、迁移、财帛、官禄怎样分工？ | 看盘方法 | 用一个去留问题分四宫，区别入门顺序大全。 |
 | 08 | 待发布 | ziwei-shengong-jizai-guanlu-zhiye | 身宫寄在官禄宫，工作选择能否只看身宫？ | 看盘方法 | 限定身宫与命官财关系，不重讲第十三宫。 |
 | 09 | 待发布 | ziwei-2027-weigong-liunian-qidian | 2027 流年命宫定位未宫后，为什么仍要回本命盘？ | 大限流年 | 强调移动起点与本命落点，不写年度总运。 |
 | 10 | 待发布 | ziwei-liunian-xiaoxian-hunbu-tong | 流年太岁法与小限起点不同，两张盘怎样避免混读？ | 大限流年 | 比较两套起点和记录字段，不重写 2027 四化。 |
