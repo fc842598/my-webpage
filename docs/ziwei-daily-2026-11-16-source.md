@@ -33,6 +33,115 @@ Read the natal chart, the current ten-year period, and the relevant annual cycle
 
 ---
 
+## 09. 2027 流年命宫定位未宫后，为什么仍要回本命盘？
+slug：`ziwei-2027-weigong-liunian-qidian`
+参考研究日期与原文 URL：2026-11-16 https://horosastrology.com/blog/post/what-is-liu-nian-in-zi-wei-dou-shu
+采用角度与旧文区别：解释年度起点和个人本命宫位的关系，不重写 2027 四化总览。
+正文草稿：
+采用太岁法排 2027 年流年盘时，会先按丁未年的地支找到未宫，再安置流年命宫。这个共同起点不意味着所有人的未宫都放着相同星曜，也不意味着人人经历同一种事。流年宫位是在各自本命盘上移动的阅读层。
+
+### 同一未宫，盘面内容不同
+甲的未宫可能是本命官禄相关位置，乙的未宫可能牵动夫妻或田宅议题。即便同一年都从未宫起流年命宫，也要记录未宫原本的宫名、星曜、四化及三方四正。若读到巨门化忌，先确认该星在自己的哪一宫，不能从年度四化表直接得出“工作争吵”或“伴侣争吵”。
+
+### 年度和十年层次不能互换
+本命盘提供较稳定的结构，大限说明当下十年资源与责任，流年盘才说明这一年哪里被强调。比如同样考虑跨城工作，一人处于职业转换的大限，另一人需要先解决家庭住处，迁移宫的年度动象就应放进不同背景里。把年度宫位旋转后，仍要回查本命对应的位置，避免把移动的流年名称写成本命固定结论。
+
+### 排盘时留一张对应表
+核出生时辰，选明太岁法，再记录“2027 未宫—本命原宫—流年新宫—相关四化”。若工具采用小限法，另开表，不把两个起点混合。最后针对实际问题核官禄、财帛或夫妻等宫位，并对照当年的合同、支出和关系安排。共同年份只是查询条件，个人盘才决定可讨论的范围。
+
+英文标题：Zi Wei Dou Shu 2027: Why the Wei Palace Is Only an Annual Starting Point
+英文描述：Locate the 2027 annual Life Palace, then map it back to each person's natal chart before interpreting it.
+英文正文：
+Under one annual method, the 2027 Ding Wei year starts by locating the Wei branch in the natal chart. This does not give everyone the same reading. The stars, natal palace, and supporting structure at Wei differ from person to person.
+
+### Map the moving layer back
+Record the annual palace beside the palace that occupied that position in the natal chart. Then check its stars, transformations, and related palaces. A transformation listed for the year does not by itself specify whether a person's issue is work, housing, or a relationship.
+
+Read natal structure, the current ten-year period, and the annual layer in sequence. Note which annual method the tool uses. If it uses a minor-limit method instead, keep that calculation separate rather than combining starting points.
+
+---
+
+## 10. 流年太岁法与小限起点不同，两张盘怎样避免混读？
+slug：`ziwei-liunian-xiaoxian-hunbu-tong`
+参考研究日期与原文 URL：2026-11-16 https://horosastrology.com/blog/post/what-is-liu-nian-in-zi-wei-dou-shu
+采用角度与旧文区别：只核两种年度起点与软件标注，不做年度预测。
+正文草稿：
+同一人的两款紫微年度盘，一款把流年命宫放在当年太岁地支所在宫，另一款用小限按年龄推进。宫位不同，不一定是出生资料错了；先确认两款软件采用的是什么方法。把不同起点拼在一起解释四化，才最容易得出自相矛盾的结论。
+
+### 先写清盘的身份
+保存出生输入与本命盘后，在年度盘旁写“太岁法”或“小限法”，并注明所问年份、年龄算法和换年口径。太岁法看当年地支在个人盘中的位置；小限法还涉及年龄推进。工具若只写“流年”而不说明方法，应先查帮助页或停止比较，不凭截图中宫位位置猜算法。
+
+### 再核具体问题
+假设读者问 2027 年是否适合转岗，甲工具提示官禄宫，乙工具突出迁移宫。先确认两图的宫位是否从同一年度起点排出，再核其对应的本命宫位和四化。官禄可问岗位内容，迁移可问外部平台；两者也可能同时相关，但不能因为界面都写“2027”就把不同层级的星曜互换。
+
+### 做一份可复查的对照
+表格列出生年月日时、软件版本、年度方法、年度命宫起点、四化表、相关本命宫和现实事件日期。先核输入，后核方法，再讨论命、官、财、迁的组合。若口径无法查实，两盘暂时各自保留，不用一句“流年不准”掩盖方法差异。
+
+英文标题：Zi Wei Dou Shu Annual Charts: Keep Tai Sui and Minor-Limit Methods Separate
+英文描述：Label the annual starting method, age rule, and chart version before comparing two yearly readings.
+英文正文：
+Two annual Zi Wei Dou Shu charts can place the annual Life Palace in different positions because they use different starting methods. One may follow the year's Tai Sui branch; another may advance a minor limit by age. A different starting point does not automatically mean a bad birth input.
+
+Save the natal chart first. For each annual chart, write the method, year boundary, age convention, and software version. Compare the annual position with its natal palace before reading transformations. A Career Palace signal may concern the job itself, while a Travel Palace signal may concern a new employer or place.
+
+If a tool does not state its method, leave the comparison unresolved until the rule is known. Keep each chart internally consistent rather than mixing its palaces with another tool's annual cycle.
+
+---
+
+## 11. 2027 太阴化禄遇高收入低储蓄，财帛与田宅先核什么？
+slug：`ziwei-taiyinlu-gaoshouru-dichuxu`
+参考研究日期与原文 URL：2026-11-16 https://ziweiai.com/zh-TW/notes/2027-ziwei-doushu-ding-wei
+采用角度与旧文区别：聚焦收入与留存的差距，不写房产投资或全年财运。
+正文草稿：
+有人薪资年年增长，账户余额却几乎不变。看到 2027 太阴化禄，不宜直接写成“今年会存到钱”。化禄提示资源入口，入口落在哪个宫、实际支出流向哪里、钱能否留住，是三件不同的事。
+
+### 先看钱从哪里来
+财帛宫对应薪资、接单、结算等收入渠道；官禄宫可核收入背后的工作责任。若奖金增加却要到次年才发，账面待遇与当年现金流不同。读太阴化禄时先记受化星落宫，再看它与财帛、官禄的关系，不把任何化禄自动折算成个人存款。
+
+### 再看住处吃掉多少现金
+田宅宫可用来讨论居住与资产基础，却不能仅凭宫位建议买房。比如月收入提高三千元，同期房租、家庭支持与车贷合计多出四千元，安全感反而下降。记录固定支出、债务到期与应急金，再核是否有一次性搬迁费用。高收入低储蓄的矛盾需要真实账目，命盘只帮助找出该问哪些问题。
+
+### 不用年度标签替代个人盘
+确认 2027 换年口径后，分开读本命财帛与田宅、大限资源背景、流年四化实际落点。若太阴化禄并未落在财帛，也要按其真实宫位解释。最后用三个月收支和可支配余额验证，避免把“资源增多”写成“人人发财”。
+
+英文标题：Zi Wei Dou Shu 2027: Tai Yin Hua Lu and High Income With Low Savings
+英文描述：Distinguish incoming resources from retained cash and housing costs in a personal 2027 chart.
+英文正文：
+Higher pay can coexist with low savings. Tai Yin Hua Lu in a 2027 Zi Wei Dou Shu reading may point to a resource channel, but it does not prove that cash will remain in a bank account.
+
+Read the actual palace holding the transformation, then compare the Wealth Palace for income and the Career Palace for the duties behind it. A delayed bonus is different from money received this month. The Property Palace can frame housing and asset obligations, while real rent, debt payments, and family support show the cash cost.
+
+Confirm the chart's year boundary and read natal, ten-year, and annual layers separately. Use three months of income and expense records to test the financial question. A yearly label cannot replace an individual budget.
+
+---
+
+## 12. 2027 天同化权遇管理岗，职位变化为何还要核授权？
+slug：`ziwei-tiantongquan-guanli-gangwei`
+参考研究日期与原文 URL：2026-11-16 https://ziweiai.com/zh-TW/notes/2027-ziwei-doushu-ding-wei
+采用角度与旧文区别：只讨论管理职责与实际权限是否配套，不写一般升职运。
+正文草稿：
+员工被安排带团队，名片写上“负责人”，却无法批预算或确定排班。若个人 2027 年盘中天同化权牵动官禄，值得问的是责任如何落地，不是直接宣告升职顺利。化权要看落宫、任务和授权链，不能只读一个好听的职位。
+
+### 责任不等于决定权
+官禄宫可核岗位工作，父母宫在组织关系中可辅助看制度与上级授权，交友宫可核同事协作。一个项目经理要承担延期责任，却连供应商选择都不能决定，问题在权限边界。把“可以决定”“需要上报”“不得承诺”写成清单，再看盘中四化关联的究竟是岗位、上级还是团队。
+
+### 比较两个具体场景
+甲得到正式授权，可分配工时并验收成果；乙只有代理头衔，重要决策仍由原主管签字。两者都可能表现为工作责任增加，但现实回报与风险不同。财帛宫还需核报酬是否随着责任变化，不能用化权推断一定加薪。若团队矛盾来自职责不清，应先补书面流程。
+
+### 回到个人盘与文件
+确认年份和四化表，先读本命官禄的长期工作方式，再看大限阶段和流年落点。最后核岗位说明、签字权限、预算额度、考核人和薪资条款。盘面提醒责任议题，真正能执行的管理权仍要由组织文件证明。
+
+英文标题：Zi Wei Dou Shu 2027: Tian Tong Hua Quan and Real Management Authority
+英文描述：Check whether a management title comes with written authority, budget control, and matching pay.
+英文正文：
+An employee can be named a team lead while still needing approval for every spending or scheduling decision. If Tian Tong Hua Quan touches the Career Palace in a personal 2027 Zi Wei Dou Shu chart, ask how responsibility is assigned and supported.
+
+The Career Palace frames duties. The Parents Palace can help frame formal organization and approval, and the Wealth Palace concerns pay. List decisions the person can make, must escalate, or cannot promise. A real manager and an acting manager with no signature authority carry different risks even when both receive more work.
+
+Check the natal role pattern, current ten-year period, and annual placement before reading the transformation. Confirm the job description, approval limits, reviewer, and pay in writing. A chart cannot grant authority that an employer has not given.
+
+---
+
 ## 05. 真太阳时修正跨过午夜，紫微排盘应先核哪一天？
 slug：`ziwei-paipan-kuari-chusheng-riqi`
 参考研究日期与原文 URL：2026-11-16 https://suanming.io/zh-TW/ziwei-method
