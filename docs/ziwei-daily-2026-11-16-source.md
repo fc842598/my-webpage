@@ -33,6 +33,114 @@ Read the natal chart, the current ten-year period, and the relevant annual cycle
 
 ---
 
+## 17. 疾厄宫化忌时，哪些作息变化值得记录？
+slug：`ziwei-jiee-huaji-zuoxi-jilu`
+参考研究日期与原文 URL：2026-11-16 https://www.fateclick.com.tw/blog/ji-e-gong
+采用角度与旧文区别：只讨论可观察的工作与休息习惯，不把星曜映射成疾病。
+正文草稿：
+看到疾厄宫化忌，很多人立刻搜索“会得什么病”。紫微宫位无法诊断疾病。更合适的问题是：最近的生活节奏有哪些可以记录和调整的地方？若已有症状，检查和治疗应由医疗专业人员负责，不能等命盘给答案。
+
+### 先分盘面与事实
+疾厄宫可作为讨论身体承压方式的入口，福德宫提示恢复与心理节奏，官禄宫可核工作安排。化忌要注明是生年、大限还是流年，落宫与受化星也要明确。即使这层关系成立，也只说明该问题值得留意，不证明某种疾病存在。别把陌生星名写成检验报告。
+
+### 记录可以行动的项目
+一名接案者连续三周夜间开会，第二天常延迟交付。他可以记下会议开始和结束时间、睡眠时长、白天注意力与休息安排；这些记录能帮助与客户谈时区窗口，也能在就医时说明情况。另一人只是体检前焦虑，作息并无明显变化，便不该从化忌倒推出隐藏病症。事实与推测分栏，避免互相强化焦虑。
+
+### 何时暂停命盘讨论
+若出现持续不适、明显恶化或紧急症状，应按现实情况就医。排盘顺序是核出生资料、四化时间层、疾厄及相关宫位，再把问题转为可观察的工作和休息数据。盘面可以提醒留意习惯，却不能决定检查项目或药物。
+
+英文标题：Zi Wei Dou Shu Health Palace Hua Ji: Track Habits, Not Diagnoses
+英文描述：Use the Health Palace to frame observable workload and rest questions while leaving diagnosis to clinicians.
+英文正文：
+Hua Ji in the Health Palace is not a diagnosis. In Zi Wei Dou Shu, first identify whether the transformation belongs to the natal chart, a ten-year period, or an annual cycle. Then ask what part of daily life can actually be observed.
+
+The Health Palace can frame a question about strain, the Fortune Palace about recovery, and the Career Palace about workload. Someone taking late client calls can record meeting hours, sleep, daytime performance, and rest. Those facts may support a schedule change or a useful conversation with a clinician.
+
+Persistent or worsening symptoms need medical assessment. Do not infer an illness from a star, and do not use a chart to choose treatment. Confirm chart inputs and keep observations separate from interpretations.
+
+---
+
+## 18. 疾厄宫空宫，为什么不能借对宫星曜诊断身体？
+slug：`ziwei-jieekong-duigong-shenghuo`
+参考研究日期与原文 URL：2026-11-16 https://www.fateclick.com.tw/blog/ji-e-gong
+采用角度与旧文区别：聚焦空宫借对宫的解释边界，不写泛健康运或主星疾病表。
+正文草稿：
+疾厄宫没有主星，不等于没有健康问题，也不等于要把对宫星曜当作病名。空宫是排盘结构，借对宫是帮助理解宫位关系的方法；医学诊断是另一套依据症状、体征和检查作出的判断。两者不能混成一件事。
+
+### 借对宫借的是线索
+读空宫时先看本宫辅曜、煞曜与四化，再参考对宫和三方四正。对宫父母宫可能让人把家庭期待或制度压力纳入生活情境，但不能从某颗星推断遗传病。福德宫可帮助核休息和情绪节奏，官禄宫可核工作量；这些仍是讨论生活方式的不同入口，不是诊断工具。
+
+### 同一盘面可有不同现实
+甲连续加班，周末也接客户电话；乙工时正常，却因为照顾长辈睡眠不足。两人即使疾厄宫都空，值得核对的事实也不同。前者可记录工时和休息窗口，后者要协商照护分工。若任何一方出现症状，需向医护人员描述真实情况，而不是递上一句宫位结论。
+
+### 把用途限定清楚
+先核输入时辰，再按本宫、对宫、三方和四化读结构，最后写下可观察的作息、压力源与需要专业检查的问题。软件没有显示的星曜或算法不要脑补；空宫只意味着主星配置的一种情况，不给健康决定开绿灯或红灯。
+
+英文标题：Zi Wei Dou Shu Empty Health Palace: Opposite Stars Are Not a Diagnosis
+英文描述：Read an empty Health Palace with its surrounding structure without turning chart symbols into medical claims.
+英文正文：
+An empty Health Palace means no main star occupies that palace in the chart. It does not mean perfect health, and borrowing the opposite palace does not produce a medical diagnosis.
+
+In Zi Wei Dou Shu, first examine the Health Palace's supporting stars and transformations, then its opposite and related palaces. The Parents Palace may raise questions about family or institutional pressure. The Fortune Palace can frame rest, and the Career Palace workload. None of these positions identifies a disease.
+
+One person may need to track overtime; another may need to reorganize family care. Record the actual schedule and symptoms separately. Seek clinical assessment for health concerns, and use the chart only as a structured prompt for everyday questions.
+
+---
+
+## 19. 高压项目期间伴侣争执，官禄与夫妻宫怎样分开看？
+slug：`ziwei-guanlu-fuqi-gaoya-xiangchu`
+参考研究日期与原文 URL：2026-11-16 https://spyll.id/en/blog/zi-wei-dou-shu-spouse-palace
+采用角度与旧文区别：限定项目工时与沟通的交叉问题，不写伴侣星曜类型或婚姻吉凶。
+正文草稿：
+项目上线前两周，一方每天加班到晚上十点，另一方觉得所有约定都随时会取消。争执发生在关系里，压力却可能从工作安排进入。读盘时官禄宫核任务和考核，夫妻宫核双方期待与相处，不能把工作冲突全说成“感情不合”。
+
+### 找到压力的入口
+假设项目经理需随时回应客户，团队却没有轮班。官禄宫可问职责是否集中在一人，迁移宫可问外部客户的要求；夫妻宫问临时变动如何通知伴侣。若巨门化忌牵涉沟通，也要注明具体时间层和落宫，不能直接判定谁“爱吵架”。先列出客户响应时限、可交接的任务以及家中已承诺事项。
+
+### 两个例子要分开处理
+一对伴侣的问题是每晚接送孩子无人负责，解决点在备用接送人；另一对的问题是晚餐时间常改但没有提前消息，解决点在通知规则。盘面都可能牵动官禄与夫妻，但现实协商不能套同一答案。财帛宫若涉及加班报酬，也只是另一条账，不应自动抵消被占用的共同时间。
+
+### 复盘要有期限
+核出生资料、本命两宫与对宫关系，再看当前大限和项目所处的流年、流月。随后约定项目结束日、每周固定联系窗口、取消时的替代安排。到期后检验双方是否按约执行；星曜无法替任何人履行承诺。
+
+英文标题：Zi Wei Dou Shu: Career Pressure and Conflict in the Spouse Palace
+英文描述：Separate project duties from relationship agreements when overtime disrupts time together.
+英文正文：
+Before a launch, one partner works until late every night while the other sees plans repeatedly canceled. The argument occurs in the relationship, but the pressure may enter through work. In Zi Wei Dou Shu, the Career Palace frames duties and evaluation; the Spouse Palace frames shared expectations.
+
+Check the response time demanded by clients, who can cover tasks, and which household commitments were made. Missing child pickup needs a backup caregiver; a canceled dinner may need earlier notice. Those are different fixes even if the same palaces are involved.
+
+Confirm the natal chart and current time layer, then agree on a project end date, a contact window, and a replacement plan for canceled time. Review what actually happens rather than assigning a permanent relationship label from a star.
+
+---
+
+## 20. 武曲在夫妻宫，物质照顾和实际陪伴怎样分别核？
+slug：`ziwei-wuqu-fuqi-wuzhi-chengnuo`
+参考研究日期与原文 URL：2026-11-16 https://spyll.id/en/blog/zi-wei-dou-shu-spouse-palace
+采用角度与旧文区别：聚焦财务责任与共同时间的协商，不复制十四主星关系类型表。
+正文草稿：
+武曲在夫妻宫，有人会联想到务实、承担费用，于是把伴侣是否给钱当成是否用心的唯一证据。星曜只提供表达责任的线索，不规定一个人必须怎样爱，也不证明对方无需陪伴。读关系仍要看双方真正的承诺与行动。
+
+### 先把两种责任分开
+夫妻宫问一对一关系，财帛宫问共同费用的来源与分担，官禄宫问工作时间如何影响可用的陪伴。假设一方支付房贷，另一方负责老人复诊和孩子晚间作业：两人都在投入，但投入形态不同。武曲的“负责”不能只折算成转账金额；看宫位主星时还需核辅曜、四化与对宫，不能孤立读一颗星。
+
+### 谈具体可执行的安排
+一对伴侣可先列共同账单、每周照护时段与不可随意取消的约定。若经济压力使一方必须加班，先说明持续多久、谁补位、何时重新分工；若收入并无明显压力，却长期缺席，也要讨论关系期待，而非用星曜为失约找理由。不能从盘面推断某人一定冷漠或忠诚。
+
+### 回到个人盘和真实沟通
+先核出生时辰、夫妻宫与对宫官禄，再看财帛、福德及当下大限流年的触发。最后请双方各说出最需要的一项支持，约定下一次复盘日期。盘面可帮助区分钱、时间与情绪需求，关系仍由现实互动塑造。
+
+英文标题：Zi Wei Dou Shu: Wu Qu in the Spouse Palace, Money, and Time Together
+英文描述：Read practical support and shared time as separate relationship questions rather than fixed personality labels.
+英文正文：
+Wu Qu in the Spouse Palace is sometimes read as practical responsibility. It cannot prove that paying bills replaces time together, or that a partner has a fixed emotional style. Zi Wei Dou Shu supplies a question about how support is expressed, not a verdict about love.
+
+The Spouse Palace frames the relationship, the Wealth Palace shared costs, and the Career Palace the work schedule. One person may pay a mortgage while another handles appointments and evening care. List money, unpaid labor, and agreed time separately so neither form of support disappears.
+
+Confirm the birth time, related palaces, and transformation layer. Then discuss one concrete need from each partner, a realistic schedule, and a date to review it. The chart cannot fulfill a promise on anyone's behalf.
+
+---
+
 ## 13. 被说夫妻宫化忌一定离婚，先问清哪层四化？
 slug：`ziwei-fuqihua-ji-cengci-zhengju`
 参考研究日期与原文 URL：2026-11-16 https://yuvachart.com/blog/zi-wei-dou-shu-spouse-palace-breakup-case/
