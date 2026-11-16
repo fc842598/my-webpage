@@ -16,11 +16,12 @@
 | 10 | 已发布 2026-11-16 09:03 https://yuetianai.com/articles/ziwei-liunian-xiaoxian-hunbu-tong.html / https://yuetianai.com/articles/en/ziwei-liunian-xiaoxian-hunbu-tong.html | ziwei-liunian-xiaoxian-hunbu-tong | 流年太岁法与小限起点不同，两张盘怎样避免混读？ | 大限流年 | 比较两套起点和记录字段，不重写 2027 四化。 |
 | 11 | 已发布 2026-11-16 09:03 https://yuetianai.com/articles/ziwei-taiyinlu-gaoshouru-dichuxu.html / https://yuetianai.com/articles/en/ziwei-taiyinlu-gaoshouru-dichuxu.html | ziwei-taiyinlu-gaoshouru-dichuxu | 2027 太阴化禄遇高收入低储蓄，财帛与田宅先核什么？ | 财运事业 | 只看现金留存与固定支出，不作买房预测。 |
 | 12 | 已发布 2026-11-16 09:03 https://yuetianai.com/articles/ziwei-tiantongquan-guanli-gangwei.html / https://yuetianai.com/articles/en/ziwei-tiantongquan-guanli-gangwei.html | ziwei-tiantongquan-guanli-gangwei | 2027 天同化权遇管理岗，职位变化为何还要核授权？ | 财运事业 | 限定职责与权限是否配套，不写通用升职运。 |
-| 13 | 待发布 | ziwei-fuqihua-ji-cengci-zhengju | 被说夫妻宫化忌一定离婚，先问清哪层四化？ | 感情关系 | 用四化层级和可核事实纠偏，不借论坛案例。 |
-| 14 | 待发布 | ziwei-fuqi-lucun-chengnuo-shijian | 夫妻宫有禄存，却常为见面时间争执，该核什么？ | 感情关系 | 比较资源投入与时间承诺，不预测婚姻结果。 |
+| 13 | 已发布 2026-11-16 09:05 https://yuetianai.com/articles/ziwei-fuqihua-ji-cengci-zhengju.html / https://yuetianai.com/articles/en/ziwei-fuqihua-ji-cengci-zhengju.html | ziwei-fuqihua-ji-cengci-zhengju | 被说夫妻宫化忌一定离婚，先问清哪层四化？ | 宫位组合 | 用四化层级和可核事实纠偏，不借论坛案例。 |
+| 14 | 待发布 | ziwei-fuqi-lucun-chengnuo-shijian | 夫妻宫有禄存，却常为见面时间争执，该核什么？ | 宫位组合 | 比较资源投入与时间承诺，不预测婚姻结果。 |
 | 15 | 待发布 | ziwei-ziyouzhiye-guanlu-caibo-qiehuan | 从固定工资转自由职业，官禄和财帛先比较哪三项？ | 财运事业 | 只做职责、回款、风险准备的转换核查。 |
 | 16 | 待发布 | ziwei-tiaocao-shidian-benming-daxian | 职业方向合适，却想立即跳槽，本命和大限如何分问？ | 财运事业 | 区分长期适配与当下时点，不写职业星曜表。 |
 | 17 | 待发布 | ziwei-jiee-huaji-zuoxi-jilu | 疾厄宫化忌时，哪些作息变化值得记录？ | 宫位组合 | 只谈可观察习惯和医疗边界，不断疾病。 |
 | 18 | 待发布 | ziwei-jieekong-duigong-shenghuo | 疾厄宫空宫，为什么不能借对宫星曜诊断身体？ | 宫位组合 | 区分结构参考和医学判断，不写健康星表。 |
-| 19 | 待发布 | ziwei-guanlu-fuqi-gaoya-xiangchu | 高压项目期间伴侣争执，官禄与夫妻宫怎样分开看？ | 感情关系 | 追踪工作时间与关系沟通，不写伴侣类型。 |
-| 20 | 待发布 | ziwei-wuqu-fuqi-wuzhi-chengnuo | 武曲在夫妻宫，物质照顾和实际陪伴怎样分别核？ | 感情关系 | 限定责任表达与共同时间，不贴性格标签。 |
+| 19 | 待发布 | ziwei-guanlu-fuqi-gaoya-xiangchu | 高压项目期间伴侣争执，官禄与夫妻宫怎样分开看？ | 宫位组合 | 追踪工作时间与关系沟通，不写伴侣类型。 |
+| 20 | 待发布 | ziwei-wuqu-fuqi-wuzhi-chengnuo | 武曲在夫妻宫，物质照顾和实际陪伴怎样分别核？ | 宫位组合 | 限定责任表达与共同时间，不贴性格标签。 |
+

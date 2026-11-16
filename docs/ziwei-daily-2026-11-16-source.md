@@ -33,6 +33,112 @@ Read the natal chart, the current ten-year period, and the relevant annual cycle
 
 ---
 
+## 13. 被说夫妻宫化忌一定离婚，先问清哪层四化？
+slug：`ziwei-fuqihua-ji-cengci-zhengju`
+参考研究日期与原文 URL：2026-11-16 https://yuvachart.com/blog/zi-wei-dou-shu-spouse-palace-breakup-case/
+采用角度与旧文区别：不移植论坛个案；只给四化层级、时辰和现实证据的核查步骤。
+正文草稿：
+有人听到“夫妻宫化忌”就担心关系一定失败。先暂停结论，问这句话指生年四化、大限四化、流年四化，还是某个宫干飞化；再问化忌落在哪一宫、受哪颗星承接。四个层次混用，同一句断语便没有可复核的意思。
+
+### 把盘面写完整
+若说的是生年四化，要核出生时辰、四化表及夫妻宫原有星曜；若说的是流年触发，不能把一年里的沟通难题变成一生的婚姻宣判。夫妻宫对宫官禄还可能提示工作时间和关系安排互相影响，三方宫位也要一起看。化忌是需要处理的卡点，不等于唯一结局。
+
+### 用事实替代标签
+例如一方每周临时加班，另一方承担全部接送。争执的可核事实是排班、事先通知和照护分工，并不是“命里会离婚”。再如两人都不满意开销，却没有共同预算，这属于钱与责任的协商问题。先记录何时发生、双方怎样回应、是否持续改善，不从星曜推断谁一定不忠或不在乎。
+
+### 排盘与行动分两步
+核出生资料，注明四化所属时间层，阅读夫妻、官禄及相关财帛、福德宫位，再把盘面问题翻译成可谈的日程和责任。若涉及伤害或威胁，优先处理现实安全与专业支持。盘面可以帮助命名议题，无法替代双方的选择。
+
+英文标题：Zi Wei Dou Shu: Does Hua Ji in the Spouse Palace Predict Divorce?
+英文描述：Identify the transformation layer and real relationship facts before treating a Spouse Palace label as a verdict.
+英文正文：
+“Hua Ji in the Spouse Palace” is incomplete without a chart layer. Is it a birth-year transformation, a ten-year period, an annual trigger, or a palace-stem calculation? Zi Wei Dou Shu cannot turn an unspecified label into a guaranteed divorce prediction.
+
+Confirm the birth time, transformation table, receiving star, and palace. Then read the Spouse Palace with the Career Palace and relevant supporting palaces. A stressful work schedule may affect shared care, but the chart cannot tell who is faithful or what a partner will choose.
+
+Record observable issues such as missed plans, notice before overtime, and household responsibilities. Discuss those facts with the partner. If there is a real threat or harm, address safety and seek appropriate support before consulting a chart.
+
+---
+
+## 14. 夫妻宫有禄存，却常为见面时间争执，该核什么？
+slug：`ziwei-fuqi-lucun-chengnuo-shijian`
+参考研究日期与原文 URL：2026-11-16 https://spyll.id/en/blog/zi-wei-dou-shu-spouse-palace
+采用角度与旧文区别：从资源投入与时间承诺的差异切入，不做十四主星伴侣类型索引。
+正文草稿：
+伴侣每月支付共同房租，也愿意买礼物，却总在临时会议后取消约定。若盘中夫妻宫见禄存，不能把资源投入直接等同关系满意；一方看重物质保障，另一方更在意稳定陪伴，两种需要必须说清。
+
+### 宫位象意要落到行为
+夫妻宫讨论一对一关系的相处，官禄宫提示工作职责如何占用时间，财帛宫可核钱的分配。禄存可能让读者关注保存资源和稳定投入，但不能据此断定伴侣“只会给钱不会陪伴”。先问约定的频率、取消前通知时间、替代安排是否兑现，才知道矛盾落在工作排期还是沟通方式。
+
+### 两种付出不能相互抵消
+甲负责房租，乙负责接送孩子；甲认为已承担较多开销，乙觉得独自处理了所有临时变化。若只看钱，照护时间就被忽略；若只看时间，又可能看不到住房压力。把固定支出、家务与共同时间分别列账，避免用一句“夫妻宫好”压住具体诉求。
+
+### 按顺序核盘与协商
+先确认出生时辰和夫妻宫星曜、四化，再看其对宫官禄及三方与现实问题有关的位置。大限、流年只用于判断当下压力是否加重，不替双方定义关系。约定一段可执行的共同时间、取消规则和复盘日期，观察行动是否变化，比给伴侣贴星曜标签有效。
+
+英文标题：Zi Wei Dou Shu: Lu Cun in the Spouse Palace and Missing Time Together
+英文描述：Separate financial support from reliable shared time when reading a relationship question.
+英文正文：
+One partner pays the rent and buys gifts but repeatedly cancels plans after late meetings. Lu Cun in the Spouse Palace may invite a question about resources and stability. It cannot prove that the partner does not care, or that money replaces time together.
+
+The Spouse Palace frames the one-to-one relationship, the Career Palace frames work demands, and the Wealth Palace helps track shared costs. Record the promised time, cancellation notice, and whether an alternative plan happened. Also list paid expenses and unpaid care work separately.
+
+Confirm the chart inputs and transformation layer, then look at the actual schedule. Agree on a realistic shared-time plan and review whether both people follow it. A palace placement does not decide the relationship for them.
+
+---
+
+## 15. 从固定工资转自由职业，官禄和财帛先比较哪三项？
+slug：`ziwei-ziyouzhiye-guanlu-caibo-qiehuan`
+参考研究日期与原文 URL：2026-11-16 https://sng-mia.com/en/articles/solutions/career-choice
+采用角度与旧文区别：只比较职责、回款周期、风险准备，不列星曜适合职业表。
+正文草稿：
+设计师月薪稳定，接私单的报价却更高，于是考虑离职。报价高不等于自由职业净收入高。读紫微盘时，官禄宫帮助看工作方式和交付责任，财帛宫帮助看钱的进入和留存；决定是否切换，还要核客户来源与现金缓冲。
+
+### 把工作内容列成清单
+受雇时有人负责销售、合同与催款，独立接单后这些任务全回到自己身上。官禄宫若显示擅长创作，也不能据此推断擅长报价与客户管理。迁移宫可问外部客户和平台，交友宫可问合作资源，仍要用真实订单验证。至少列出每周创作、沟通、销售、交付、售后的时间，而非只比单个项目报价。
+
+### 把到账和成本分开
+财帛宫不只问“收入多少”，还问何时到账、能留下多少。假设三笔订单总额高于工资，但其中一笔三个月后才付，另两笔要扣平台费、税和外包费，短期现金可能低于原薪资。先算过去六个月已到账净额，再算未来三个月必付账单和可用应急金。合同未签的口头意向不要计成收入。
+
+### 长期适配与切换时点
+本命官禄看惯常工作方式，大限看此阶段的资源与责任，流年才看现在是否出现转换议题。排盘时先核命、官、财、迁，再用已签订单、回款计划和社保安排验证。可以先缩短工时或试做项目，不需要让一颗星替自己决定辞职日期。
+
+英文标题：Zi Wei Dou Shu: Moving From Salary to Freelance Work
+英文描述：Compare duties, payment timing, and cash reserves before leaving a salaried role for freelance work.
+英文正文：
+A freelancer's quoted fee can exceed a monthly salary while leaving less usable cash. In Zi Wei Dou Shu, the Career Palace frames the work and delivery duties; the Wealth Palace frames income and retention. The Travel Palace can help ask how outside clients arrive.
+
+List creative work, sales, contracts, support, and collection time separately. Then compare settled payments with platform fees, tax, subcontracting, and the next three months of bills. An unsigned lead is not cash. Read natal work patterns, the current ten-year period, and the annual transition question separately. Use actual contracts and reserves to decide when a change is sustainable.
+
+---
+
+## 16. 职业方向合适，却想立即跳槽，本命和大限如何分问？
+slug：`ziwei-tiaocao-shidian-benming-daxian`
+参考研究日期与原文 URL：2026-11-16 https://sng-mia.com/en/articles/solutions/career-choice
+采用角度与旧文区别：长期职业适配与当下跳槽时点分开，不写泛职业选择或固定星曜职业。
+正文草稿：
+“我适合做产品经理”和“我这周要不要接受产品经理邀约”不是同一个问题。前者偏向本命官禄、命宫与财帛的长期组合；后者还要核当前大限、流年，以及新岗位的实际条件。方向合适，时点仍可能受经验、合同或家庭安排限制。
+
+### 先看长期工作方式
+官禄宫可问偏向统筹、执行还是专业深耕，命宫看本人处理压力的方式，财帛宫核这种劳动如何换成收入。假设一人善于协调跨部门，却讨厌没有决策权的“产品经理”头衔；同一职位名称，在两家公司可能是不同工作。主星只是线索，不能代替岗位说明。
+
+### 再看当前阶段
+大限提示近十年的资源和责任框架，流年提示此年的具体引动。若正在承担家庭照护，新岗位却要求长期跨城，迁移、田宅与相关家庭宫位就不能遗漏。若新公司承诺高薪但试用期薪资低，财帛宫的问题也不同于官禄的职业发展。把邀约期限、试用期、出差比例与当下承诺列在同一张表。
+
+### 给决定设验证点
+先核出生输入，读本命命、官、财、迁的长期关系，再看大限和流年是否围绕转岗产生现实问题。最后向招聘方确认权限、薪资、考核及入职时间；答复前给现有项目留交接计划。盘面帮助区分“想走”和“现在能走”，不能保证任何一份邀约成功。
+
+英文标题：Zi Wei Dou Shu: Career Fit Is Different From the Timing of a Job Move
+英文描述：Separate long-term job fit from the current offer, ten-year period, and practical start date.
+英文正文：
+Being suited to a kind of work and accepting an offer this week are different questions. The natal Career, Life, and Wealth Palaces can frame a longer work pattern. A ten-year period and annual cycle add the current setting, while the real offer supplies duties, pay, and timing.
+
+A “product manager” title may mean coordination with authority in one company and coordination without authority in another. Ask for the job scope. If the new role requires travel during a family care period, include the Travel and household questions. If a trial salary is lower than promised future pay, check near-term cash.
+
+Confirm birth inputs, read the natal structure, then the current period and year. Compare the chart questions with the written offer, handover needs, and start date before deciding.
+
+---
+
 ## 09. 2027 流年命宫定位未宫后，为什么仍要回本命盘？
 slug：`ziwei-2027-weigong-liunian-qidian`
 参考研究日期与原文 URL：2026-11-16 https://horosastrology.com/blog/post/what-is-liu-nian-in-zi-wei-dou-shu
