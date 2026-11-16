@@ -7,7 +7,7 @@
 | 01 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-waipai-yinian-guanlu-tianzhai.html / https://yuetianai.com/articles/en/ziwei-waipai-yinian-guanlu-tianzhai.html | ziwei-waipai-yinian-guanlu-tianzhai | 外派一年和全家移居，紫微为什么不能只看迁移宫？ | 宫位组合 | 对比住宿与岗位责任，不写迁移宫泛论。 |
 | 02 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-chuchai-liangzhou-qianyi-guanlu.html / https://yuetianai.com/articles/en/ziwei-chuchai-liangzhou-qianyi-guanlu.html | ziwei-chuchai-liangzhou-qianyi-guanlu | 出差两周变成驻点三个月，迁移宫与官禄宫怎么重新核？ | 宫位组合 | 只讨论派驻期限变化和职责重谈。 |
 | 03 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-liuyue-yuechu-huanyue-koujing.html / https://yuetianai.com/articles/en/ziwei-liuyue-yuechu-huanyue-koujing.html | ziwei-liuyue-yuechu-huanyue-koujing | 同在公历十一月，两款紫微流月盘为何日期不同？ | 大限流年 | 核软件换月口径与查询日期，不写月运预测。 |
-| 04 | 待发布 | ziwei-liuyue-wenti-riqi-jilu | 查询流月工作机会前，为什么要先写清问题发生日期？ | 大限流年 | 聚焦具体事件窗口而非泛化月份吉凶。 |
+| 04 | 已发布 2026-11-16 09:00 https://yuetianai.com/articles/ziwei-liuyue-wenti-riqi-jilu.html / https://yuetianai.com/articles/en/ziwei-liuyue-wenti-riqi-jilu.html | ziwei-liuyue-wenti-riqi-jilu | 查询流月工作机会前，为什么要先写清问题发生日期？ | 大限流年 | 聚焦具体事件窗口而非泛化月份吉凶。 |
 | 05 | 待发布 | ziwei-paipan-kuari-chusheng-riqi | 真太阳时修正跨过午夜，紫微排盘应先核哪一天？ | 看盘方法 | 讨论修正后日期重算，不重复晚子时十分钟。 |
 | 06 | 待发布 | ziwei-ruanyuan-weisuan-feihua-biaozhu | 排盘工具没有计算飞宫四化，读者怎样识别解读越界？ | 看盘方法 | 聚焦功能覆盖声明，不比较四化表版本。 |
 | 07 | 待发布 | ziwei-gongzuo-wenti-sigong-dingwei | 问工作去留时，命宫、迁移、财帛、官禄怎样分工？ | 看盘方法 | 用一个去留问题分四宫，区别入门顺序大全。 |
