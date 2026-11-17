@@ -9449,6 +9449,7 @@ Object.assign(WENTIAN_I18N_EN_EXTRA, {
   "阅天AI": "AI",
   "已登录": "Signed In",
   "去排盘": "Create",
+  "查看命盘": "View chart",
   "专业AI命理工作台": "AI Destiny Studio",
   "许大师已在线": "Master Xu is online",
   "先排盘，后解读": "Chart First, Read Next",
@@ -14131,6 +14132,7 @@ function sourceMembershipScreen() {
     : (isEn ? "Unlock deep readings · $4.99" : "开通深度解读 · ¥19.90");
   const currentQuota = formatWentianQuotaTextForUi(member.daily, isEn);
   const currentLimit = formatWentianQuotaTextForUi(member.dailyLimit, isEn);
+  const freeLimitNum = (String(member.dailyLimit || "").match(/\d+/) || [])[0] || "8";
   return `
     ${figBox("wt33-bg", 0, 0, 390, 844, "", "background:#fbf7ef;")}
     ${wentianBackPill("wt33", 18, 42, 'data-action="wentian-return-previous" data-fallback-route="screen-31" aria-label="返回"')}
@@ -14162,7 +14164,7 @@ function sourceMembershipScreen() {
 
     ${figBox("wt33-free", 24, 444, 342, 66, "", "border:1px solid #eadfce;border-radius:14px;background:#fffdf8;")}
     ${figText("wt33-free-title", campaignActive ? (isEn ? "Campaign access" : "活动资格") : (isEn ? "Free plan" : "免费可看"), 44, 462, 124, 13, "#25211d", 900)}
-    ${figText("wt33-free-desc", campaignActive ? (isEn ? "Registered accounts receive free access automatically" : "仅限注册账号，登录后自动生效") : (isEn ? "Basic chart reading free · 8 questions total" : "基础排盘完整免费看 · 共8次追问"), 44, 486, 300, 11, "#8d8377", 700)}
+    ${figText("wt33-free-desc", campaignActive ? (isEn ? "Registered accounts receive free access automatically" : "仅限注册账号，登录后自动生效") : (isEn ? `Basic chart reading free · ${freeLimitNum} questions total` : `基础排盘完整免费看 · 共${freeLimitNum}次追问`), 44, 486, 300, 11, "#8d8377", 700)}
 
     ${figBox("wt33-submit", 42, 536, 306, 48, "", "border-radius:24px;background:linear-gradient(180deg,#b74e39,#983323);box-shadow:0 12px 24px rgba(158,61,43,.18);")}
     ${figButton("wt33-submit-hit", 42, 536, 306, 48, `data-action="wentian-member-pay" aria-label="${escapeHtml(buttonText)}"`)}
@@ -21007,7 +21009,7 @@ function sourceDashboardHomeScreen() {
       ? [dashboardArchiveDisplay.gender, dashboardArchiveDisplay.datetime].filter(Boolean).join(" · ")
       : "先建立命盘档案";
     const dashboardLoginLabel = dashboardAccount.loggedIn ? "已登录" : "未登录";
-    const dashboardArchiveAction = dashboardArchive ? "换档案" : "去排盘";
+    const dashboardArchiveAction = dashboardArchive ? "换档案" : "查看命盘";
     const dashboardArchiveRoute = dashboardArchive ? "screen-25" : "screen-26";
     const dashboardFeatures = [
       ["紫微斗数", "排盘 · AI细读", "01-feature-ziwei-v2.svg", "screen-26"],
@@ -22409,7 +22411,8 @@ function renderWentianMobileYijingPanel(saved) {
   const result = ctx.results[activeKey] || ctx.results.xiantian || ctx.results.houtian || ctx.results.liunian;
 
   // 易经辅助解命（手机端）：仅月卡会员可见，非会员锁定并引导开通。
-  if (!canWentianOpenDeepReading()) {
+  // 会员状态未加载时先按未解锁处理，待 hydrate 完成后重渲染，堵住直接排盘路径绕过月卡锁。
+  if (!wentianMemberState.loaded || !canWentianOpenDeepReading()) {
     const lockTitle = getWentianCompactText("易经辅助解读为月卡权益", "Yijing assistant reading is a monthly member benefit");
     const lockNote = getWentianCompactText(
       "先天卦、后天卦、流年卦的名师讲解，开通月卡后即可解锁。",
@@ -23673,7 +23676,7 @@ function navigate(route, push = true, syncHash = true) {
     if (screen.no === 9) window.setTimeout(initWentianChatHistory, 0);
     if (screen.no === 5 || screen.no === 25) window.setTimeout(() => hydrateWentianArchivesFromRemote({ rerender: true }), 0);
     if (screen.no === 30) window.setTimeout(initWentianPaymentScreen, 0);
-    if (screen.no === 1 || screen.no === 4 || screen.no === 29 || screen.no === 31 || screen.no === 33 || screen.no === 38 || screen.no === 40 || screen.no === 41) window.setTimeout(() => hydrateWentianMemberStatus({ rerender: true }), 0);
+    if (screen.no === 1 || screen.no === 4 || screen.no === 27 || screen.no === 29 || screen.no === 31 || screen.no === 33 || screen.no === 38 || screen.no === 40 || screen.no === 41) window.setTimeout(() => hydrateWentianMemberStatus({ rerender: true }), 0);
     if (screen.no === 22 || screen.no === 23 || screen.no === 24 || screen.no === 31 || screen.no === 34) window.setTimeout(() => hydrateWentianInvite({ rerender: true }), 0);
     if (screen.no === 48) window.setTimeout(() => hydrateWentianOrders({ rerender: true }), 0);
     if (screen.no === 26) window.setTimeout(initWentianChartForm, 0);

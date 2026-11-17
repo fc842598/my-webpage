@@ -315,7 +315,6 @@
     loading: false,
     panelOpen: false,
     reauth: false,
-    memberPrompted: false,
     mode: "login",
     tone: "",
     message: ""
@@ -363,12 +362,7 @@
     });
     if (active === "member") {
       renderHealthAuthPanel();
-      if (!healthAuthState.memberPrompted && !readAuthSession() && !hasHealthPaymentAuth()) {
-        healthAuthState.memberPrompted = true;
-        openHealthAuthPanel(IS_ENGLISH_CHECKOUT
-          ? "Sign in or create an account. Membership stays with that account."
-          : "请先登录或注册，会员权益会绑定到登录账号。");
-      }
+      // 进入会员页先展示价格与权益；登录/账号确认只在点击付款或账号入口时触发。
     }
     if (opts.scroll !== false) {
       window.scrollTo({ top: 0, behavior: opts.instant ? "auto" : "smooth" });

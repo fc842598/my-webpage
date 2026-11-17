@@ -148,7 +148,7 @@
   // 2026-11-10 价格体系重构：全站统一 19.9 深度解读月卡，不限命主、每天100次追问。
   const desktopPaidDailyLimit = 100;
   const desktopPaidProductName = '阅天AI深度解读月卡';
-  const desktopPaidProductDesc = '基础排盘免费看；开通后31天内不限命主人数，深度解读全解锁，每天可追问100次。';
+  const desktopPaidProductDesc = '排盘与解盘免费；开通后31天内解锁许大师讲解，每天可追问100次。';
   const desktopPaymentPollMs = 3000;
   const desktopPaymentState = {
     open: false,
@@ -4797,12 +4797,8 @@
   function bindBasicReadingAccessButtons() {
     document.querySelectorAll('[data-basic-access]').forEach((button) => {
       button.addEventListener('click', () => {
-        if (button.dataset.basicAccess === 'login') {
-          openDesktopAuth('login');
-          return;
-        }
+        if (hasDesktopAccount()) return;
         openDesktopAuth('login');
-        setDesktopAuthError('完整深度解读为月卡权益，请在个人中心选择月卡。');
       });
     });
   }
@@ -4812,7 +4808,6 @@
     const report = buildReports();
     if (!report) return;
     const loggedIn = hasDesktopAccount();
-    const isMember = !!desktopAuthState.quota?.isMember;
     const specialEntries = Object.entries(report.specials || {});
     specialEntries.forEach(([key, item], index) => {
       const card = document.querySelector(`[data-report="${key}"]`);
@@ -4838,7 +4833,7 @@
         <span>卷${index + 1}</span>
         <div class="mbp-report-title">
           <h3>${escapeHtml(item[0])}</h3>
-          ${isMember ? chapterActionButton(index) : '<button type="button" class="mbp-basic-deep-button" data-basic-access="member">查看深度解读</button>'}
+          ${chapterActionButton(index)}
         </div>
         <div class="mbp-report-content"><p>${escapeHtml(item[1])}</p></div>
       </article>
@@ -7387,14 +7382,8 @@
   async function decodeSingleModule(moduleKey, options = {}) {
     if (!ensureChartReady()) return false;
     if (!desktopAuthState.session?.user) {
-      setDecodeStatus('登录后可查看完整基础解读；深度解读为月卡权益。');
+      setDecodeStatus('登录后可生成解读；许大师讲解与追问为月卡权益。');
       openDesktopAuth('login');
-      return false;
-    }
-    if (!desktopAuthState.quota?.isMember) {
-      setDecodeStatus('当前已显示完整基础解读；选择月卡后可生成深度解读。');
-      openDesktopAuth('login');
-      setDesktopAuthError('深度解读为月卡权益，请在个人中心选择月卡。');
       return false;
     }
     const bundle = getChartBundle();
@@ -7488,14 +7477,8 @@
   async function decodeReports() {
     if (!ensureChartReady()) return false;
     if (!desktopAuthState.session?.user) {
-      setDecodeStatus('登录后可查看完整基础解读；深度解读为月卡权益。');
+      setDecodeStatus('登录后可生成解读；许大师讲解与追问为月卡权益。');
       openDesktopAuth('login');
-      return false;
-    }
-    if (!desktopAuthState.quota?.isMember) {
-      setDecodeStatus('当前已显示完整基础解读；选择月卡后可生成深度解读。');
-      openDesktopAuth('login');
-      setDesktopAuthError('深度解读为月卡权益，请在个人中心选择月卡。');
       return false;
     }
     const bundle = getChartBundle();
