@@ -44,7 +44,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-11-17T10:04:00+08:00</lastmod>
+    <lastmod>2026-11-17T10:07:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -86,7 +86,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-cycles.html</loc>
-    <lastmod>2026-11-16T09:03:00+08:00</lastmod>
+    <lastmod>2026-11-17T10:07:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -24946,4 +24946,6 @@
   <url><loc>https://yuetianai.com/articles/en/ziwei-jie-jiankang-bianjie-xiguan.html</loc><lastmod>2026-11-16T10:35:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-caibo-keji-weikuan-yanshou.html</loc><lastmod>2026-11-17T10:04:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/en/ziwei-caibo-keji-weikuan-yanshou.html</loc><lastmod>2026-11-17T10:04:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-daxian-fangxiang-liunian-weidong.html</loc><lastmod>2026-11-17T10:07:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/en/ziwei-daxian-fangxiang-liunian-weidong.html</loc><lastmod>2026-11-17T10:07:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
