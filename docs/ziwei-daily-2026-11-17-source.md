@@ -63,3 +63,34 @@ An editor may finish training and a portfolio while the company has frozen hirin
 Use the natal chart for the broader work pattern, the ten-year period for the current direction, and the annual cycle for the year's particular emphasis. Compare Career, Travel, and Wealth Palace questions with actual duties, outside opportunities, and pay terms. If there is no opening or action yet, keep the move as a plan and review it when the facts change.
 
 ---
+
+## 03. 巨门化忌遇到客户投诉，先核交付还是沟通？
+slug：`ziwei-jumenhuaji-ketou-fenliu`
+参考研究日期与原文 URL：2026-11-17 https://fusang-vision.com/blogs/ziwei-knowledge/zi-wei-dou-shu-2027-forecast
+采用角度与旧文区别：聚焦售后投诉的事实分流，分别讨论交付缺项、解释歧义与处理时限；不重写站内旧报价版本争议或巨门口舌泛论。
+正文草稿：
+客户说“东西不好用”，团队却只回“我们已经交付”。若看到巨门化忌，就说今年必有口舌，反而错过了最需要核实的事：客户实际遇到什么问题、合同承诺了什么、谁负责回复。四化是读盘线索，不是投诉调查结论。
+
+### 先核四化属于哪一层
+问2027年的事，先确认采用的年度边界和四化表，再找巨门化忌在个人盘里的落宫。它在官禄宫，适合问岗位的交付与解释责任；关联父母宫，则更要核文书、确认记录和审批；关联交友宫，需看客户与团队的沟通链。若生年巨门化忌和流年标记同时被看见，要分别记录，不把一生的表达倾向说成某次投诉的起因。还要回到本命、三方四正与现实流程，不能靠一颗星替客户判责。
+
+### 两种投诉，处理顺序不同
+一家软件公司交付报表后，客户发现导出栏位少了合同列明的字段。此时先核验收清单和产品缺项，官禄宫的问题是交付有没有完成，客服措辞再好也不能代替修复。另一家培训机构的课程内容已按约交付，但学员把“课后答疑”理解成无限次一对一辅导。问题先在父母宫对应的书面规则和沟通记录：页面说明、报名确认、实际回复是否一致。两种情形都可能产生争执，原因与补救动作却完全不同。
+
+### 给投诉留一条可追溯的线
+收到投诉时记下时间、原话、订单或合同版本、证据、负责人和承诺回复日。能复现的缺陷进入修复单，服务范围争议先做条款核对，情绪表达则由明确的联系人解释。不要把化忌当作必须强硬回击的理由，也不要用“化科能化解”跳过事实核查。排盘先核出生资料与年度口径，再定位四化和相关宫位，最后把官禄的交付、父母宫的文书与交友宫的协作分别对照投诉记录。若涉及法律责任，按合同及专业意见处理。
+
+英文标题：Zi Wei Dou Shu Ju Men Hua Ji: Is a Client Complaint About Delivery or Communication?
+英文描述：Trace a complaint through deliverables, written terms, and response ownership before reading it as a general conflict.
+英文正文：
+A client says a product does not work, while the team says it was delivered. Ju Men Hua Ji in a Zi Wei Dou Shu reading does not identify who is at fault. Start with the reported problem, the written promise, and the person responsible for the reply.
+
+### Locate the transformation
+For an annual question, confirm the year boundary and transformation table. Note the palace where Ju Men Hua Ji lands in this person's chart. A Career Palace question may concern delivery duties; a Parents Palace connection may point toward documents and approvals; a Friends Palace connection can raise questions about the customer and team communication chain. Keep natal and annual markers separate.
+
+### Triage two different complaints
+A software customer finds a missing field that the contract required. The first action is to reproduce and fix the missing deliverable. In another case, a course was delivered, but a learner understood “after-class support” as unlimited private tutoring. Check the enrollment page, confirmation, and reply history before deciding what the service promised.
+
+Record the complaint time, contract version, evidence, owner, and response deadline. Read the chart from verified birth inputs through the annual placement, then compare the palace questions with the actual case file. Use the contract and appropriate professional advice for legal responsibility.
+
+---
