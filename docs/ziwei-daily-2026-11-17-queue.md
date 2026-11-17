@@ -1,0 +1,7 @@
+# 2026-11-17 紫微文章发布队列
+
+当天同行交接：10 篇、10 个独立域名，shortfall=10。逐篇审核后才把稿件加入待发布队列；其余19篇仍待当日研究映射、查重和编辑，未发布。
+
+| 顺序 | 状态 | slug | 原创搜索问题 | 类别 | 与旧文区别 |
+|---|---|---|---|---|---|
+| 01 | 已发布 2026-11-17 10:04 https://yuetianai.com/articles/ziwei-caibo-keji-weikuan-yanshou.html / https://yuetianai.com/articles/en/ziwei-caibo-keji-weikuan-yanshou.html | ziwei-caibo-keji-weikuan-yanshou | 财帛宫化科与化忌都被提起，项目尾款为什么仍要等验收？ | 财运事业 | 聚焦专业被认可、验收条件、尾款到账三件事，不写一般财运吉凶。 |
