@@ -6785,9 +6785,19 @@ function refreshWentianChartAiScreen() {
   if (state.route === "screen-27") navigatePreservingScroll("screen-27", false);
 }
 
+function ensureWentianChartDecodeAccess() {
+  // 解盘不收费：只要求登录，会员身份不再是前置条件。许大师讲解与追问才走月卡。
+  const account = getWentianAuthDisplay();
+  if (account.loggedIn) return true;
+  wentianAuthState.mode = "login";
+  wentianAuthState.error = "登录后即可生成解读；许大师讲解与追问为月卡权益。";
+  navigate("screen-40");
+  return false;
+}
+
 async function decodeWentianChartAiModules(moduleKeys, options = {}) {
-  // 深度解读收费闸门：未开通会员时引导登录/开通，基础排盘不受影响。
-  if (!openWentianDeepReadingAccess()) return 0;
+  // 解盘仅校验登录；不再因非会员而拦截。
+  if (!ensureWentianChartDecodeAccess()) return 0;
   syncWentianChartAiStateFromStorage();
   if (wentianChartAiState.status === "running") return;
   const chartData = getWentianChartPayload();
