@@ -633,7 +633,11 @@
         await openDesktopMemberPayment();
         return;
       }
-      if (intent === 'login') openDesktopAuth('login');
+      if (intent === 'login') {
+        // 已登录用户从首页入口进来时不再重复要求登录。
+        const session = await getDesktopAuthSession();
+        if (!session?.user) openDesktopAuth('login');
+      }
     } finally {
       window.requestAnimationFrame(() => {
         document.documentElement.classList.remove('mbp-entry-intent');
