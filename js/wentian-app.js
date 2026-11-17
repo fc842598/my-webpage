@@ -22680,7 +22680,17 @@ function sourceZiweiEmptyChartScreen() {
 }
 
 function sourceZiweiMingpanScreen(saved = getWentianDisplayChartState()) {
-  return saved ? sourceZiweiMingpanScreenFromChart(saved) : sourceZiweiEmptyChartScreen();
+  if (saved) return sourceZiweiMingpanScreenFromChart(saved);
+  // 默认命盘：全新访客还没有排过盘时，展示一张内置示例盘，
+  // 避免只看到"还没有命盘"空状态、必须手动填出生信息。仅用于展示，不写入本地存储。
+  const demoChart = {
+    archiveId: "default-demo-chart",
+    isDefaultDemo: true,
+    chart: { palaces: WENTIAN_XU_PALACES, solarDate: "1991-02-16", lunarDate: "", chineseDate: "", fiveElementsClass: "火六局", zodiac: "羊", earthlyBranchOfSoulPalace: "申", earthlyBranchOfBodyPalace: "子" },
+    chartData: { ...WENTIAN_XU_CHART_BASE, chartRecordId: "default-demo-chart", name: "示例命盘" },
+    form: { name: "", gender: "male", datetime: "1991-02-16T22:58", city: "", archiveId: "default-demo-chart" },
+  };
+  return sourceZiweiMingpanScreenFromChart(demoChart);
 }
 
 function renderConvertedScreen(no) {

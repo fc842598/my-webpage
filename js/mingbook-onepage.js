@@ -9114,6 +9114,25 @@
   renderDesktopAuth();
   renderDesktopPayment();
   bindEvents();
+  // 默认命盘：全新访客（无 URL 参数、无已存资料）首屏自动排一个示例盘，
+  // 避免打开页面是一张空盘、必须手动填写出生信息才能看到内容。
+  // 有 URL 参数或用户上次保存的资料时，尊重其选择，不强行覆盖。
+  (function renderDefaultChartOnBoot() {
+    if (hasProfileParams()) return;
+    let saved = null;
+    try {
+      const raw = localStorage.getItem(storageKey);
+      saved = raw ? normalizeProfile(JSON.parse(raw)) : null;
+    } catch (_) {}
+    if (saved && !isLegacyDefaultProfile(saved) && !isLegacyOnlyProfile(saved)) return;
+    state.profile = normalizeProfile({ ...defaultProfile });
+    formCalMode = state.profile.isLunar ? 'lunar' : 'solar';
+    state.chart = null;
+    state.chartKey = '';
+    state.chartReady = true;
+    state.chartConfirmedKey = profileHistoryKey(state.profile);
+    state.chartRecordId = makeLocalId();
+  })();
   renderChart();
   renderYijingAssistLock();
   bootDesktopAuth();
