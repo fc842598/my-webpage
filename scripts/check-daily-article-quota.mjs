@@ -39,7 +39,7 @@ export function readDailyInventory(date, ref = "origin/master") {
   assessQuota([], date);
   const revision = git(["rev-parse", "--verify", `${ref}^{commit}`]).trim();
   const additions = git(["log", revision, `--since=${date}T00:00:00+08:00`, `--until=${date}T23:59:59+08:00`, "--diff-filter=A", "--name-only", "--format=", "--", "articles"]);
-  const paths = [...new Set(additions.split(/\r?\n/).filter((file) => /^articles\/[a-z0-9-]+\.html$/.test(file)))];
+  const paths = [...new Set(additions.split(/\r?\n/).filter((file) => /^articles\/[a-z0-9-]+\.html$/i.test(file)))];
   const articles = [];
   for (const file of paths) {
     const page = parsePage(git(["show", `${revision}:${file}`]));
