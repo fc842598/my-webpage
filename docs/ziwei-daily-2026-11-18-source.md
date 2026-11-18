@@ -191,3 +191,36 @@ The Career Palace helps identify work obligations that constrain a schedule. Tia
 For each task, write an owner, due time, completion standard, and backup. One partner buys groceries before Tuesday's shift; the other cooks after waking on Wednesday. If overtime intervenes, the backup orders delivery. A school uniform needed on Thursday requires a Thursday deadline, not a vague promise to do laundry sometime this week. A short shared note can carry the next day's two most urgent tasks.
 
 Review missed tasks once a week, including invisible work such as late pickup or arranging childcare. Compare overtime, forgotten messages, and an uneven workload before assigning a cause. Confirm both birth records, then read Spouse, Career, and Property with the relevant time layer. Test the interpretation against the real weekly plan.
+
+---
+
+## 10. 在家接单要添设备，官禄宫与田宅宫如何分成本？
+slug：`ziwei-guanlu-tianzhai-jiaju-bangong-chengben`
+参考研究日期与原文 URL：2026-11-18 https://qimenxuanxue.com/ziwei-astrology-read-combine-partner-do-birth-intent/
+采用角度与旧文区别：参考资料将经营职责与资金投入分开；站内已有通勤和居家办公讨论，本篇专问在住宅接单时设备采购、家用空间与现金支出的分账。
+正文草稿：
+在家接设计订单，准备添一台电脑、一张大桌和一组灯。商家给出打包价，买完才发现桌子占了家人的活动空间，灯只能用于部分订单，分期付款还要持续一年。讨论事业时常盯官禄宫，却把空间与现金视为附带问题。其实官禄、田宅、财帛分别对应工作交付、居住条件和付款能力，不能因为接单量上升就默认三项都能承受。
+
+### 先问设备服务哪一种任务
+把设备分为交付必需、效率改善、家用兼顾三类。设计师旧电脑无法运行客户指定软件，升级是交付问题；买高价摄影灯却只有一单需要，则先考虑租借。官禄宫见文昌，可提示核对文件版本与制作流程；见武曲，可提示核对性能、耐用性和预算。这些是安排讨论的线索，不是“见某星就该买某品牌”。还要核每单收入、设备使用频率和维修成本。
+
+### 田宅宫不是免费工位
+家里多一张桌子，要看走道是否安全、夜间工作是否影响同住者、设备存放是否占用公共区域。甲在独立房间做平面设计，安静桌面可能足够；乙在客厅拍摄带客户到场，收音、隐私与通行就成了限制。田宅宫用于整理空间安排，夫妻宫或父母宫则可帮助确认同住者的协商关系。即使盘上居住条件看起来顺，现实仍须量面积、核物业规则和用电负荷。
+
+### 财帛宫核付款节奏
+一次性购买与分期付款会改变未来数月的现金余量。将设备价格、预估可服务订单、折旧、维修和退货期限列在同一表；不要把潜在订单当成已收到的款项。财帛宫若见化忌，可优先核现金流是否被固定月供挤压；若见化禄，也不能省去支出上限。比如先租灯完成三单，确认经常使用再购入，能把不确定需求留在较小风险内。
+
+排盘时先核出生资料和接单类型，依次看官禄宫的任务、田宅宫的空间、财帛宫的支付，再看相关四化与时间层。最后拿订单合同、家庭空间和真实账本复核。设备能提高效率，但要让家里和现金都容得下它。
+
+英文标题：Zi Wei Dou Shu Home Office Equipment: Career, Property, and Cash Costs
+英文描述：Separate delivery needs, shared home space, and payment timing before buying equipment for home based work.
+英文正文：
+A designer working from home plans to buy a computer, desk, and lighting kit. The bundle looks efficient until the desk takes over a shared room, the lights serve only a few jobs, and instalments continue for a year. In Zi Wei Dou Shu, the Career Palace frames delivery, the Property Palace frames home space, and the Wealth Palace frames payment. Higher bookings do not mean all three constraints disappear.
+
+### Buy for a defined task
+An old computer that cannot run required client software is a delivery problem. An expensive light needed for one shoot may be better rented. Wen Chang in Career may prompt a question about document workflow; Wu Qu may prompt one about equipment reliability and cost. Neither star selects a product. Count completed jobs, likely usage, repair expense, and any client requirement before purchasing.
+
+### A home workspace uses shared space
+A designer with a separate room may only need a quiet desk. A photographer meeting clients in a living room needs to consider privacy, access, and noise. The Property Palace helps frame how the room is used, while actual floor area and household agreement decide whether the arrangement works. Check electricity load and building rules for equipment that stays installed.
+
+List purchase price, maintenance, return period, and monthly payments beside confirmed revenue. Do not count a possible booking as cash received. Hua Ji in Wealth can prompt a cash flow check; Hua Lu does not cancel one. Renting lights for three jobs before buying may keep the test affordable. Confirm birth inputs and the work question, then read Career, Property, and Wealth with the relevant time layer. Use contracts and accounts for the final decision.
