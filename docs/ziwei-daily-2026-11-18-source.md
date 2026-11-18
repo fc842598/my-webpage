@@ -1,6 +1,6 @@
 # 2026-11-18 紫微双语原创稿
 
-今天研究实际合格10篇、10域名。编辑前检查了 `articles/`、中英文索引、Feed 和 sitemap 中相近标题与搜索意图；以下已编辑篇目使用今天的原文问题方向，正文场景与措辞均为本站原创。未编辑短初稿不作为发布稿。
+今天研究实际合格10篇、10域名。编辑前检查了 `articles/`、中英文索引、Feed 和 sitemap 中相近标题与搜索意图；今日20篇均按当天研究重新映射选题并完成编辑，正文场景与措辞均为本站原创。
 
 ## 03. 带学徒反复返工，子女宫与官禄宫怎样分开看反馈周期？
 slug：`ziwei-ziinv-xuetu-fankui-zhouqi`
@@ -438,7 +438,7 @@ Include a landlord or property manager, company administrator, nearby clinic, al
 
 ## 09. 换城过渡期两处房租重叠，财帛与迁移宫怎样算缓冲？
 slug：`ziwei-caibo-qianyi-bancheng-guodu-yusuan`
-参考研究日期与原文 URL：2026-11-18 https://aiziwei.online/zh-TW/blog/%E6%83%B3%E6%90%AC%E5%8E%BB%E5%88%A5%E7%9A%84%E5%9F%8E%E5%B8%82%E9%87%8D%E6%96%B0%E9%96%8B%E5%A7%8B-%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E7%9C%8B%E9%81%B7%E7%A7%BB%E5%AE%AE%E8%88%87%E4%BD%A0%E5%B8%B6%E8%91%8F%E7%9A%84%E5%95%8F%E9%A1%8C
+参考研究日期与原文 URL：2026-11-18 https://aiziwei.online/zh-TW/blog/%E6%83%B3%E6%90%AC%E5%8E%BB%E5%88%A5%E7%9A%84%E5%9F%8E%E5%B8%82%E9%87%8D%E6%96%B0%E9%96%8B%E5%A7%8B-%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E7%9C%8B%E9%81%B7%E7%A7%BB%E5%AE%AE%E8%88%87%E4%BD%A0%E5%B8%B6%E8%91%97%E8%B5%B0%E7%9A%84%E5%95%8F%E9%A1%8C
 采用角度与旧文区别：旧文谈首付和长期购房；本篇只处理搬城两地短期租金重叠、押金回流时点。
 正文草稿：
 新岗位下月入职，旧房还剩一个月租期，新房又要求押一付三。看到财帛宫化禄就以为搬家费用“自然会回来”，容易把押金当成可用现金。迁移宫帮助识别换城带来的外部条件，财帛宫要核每笔付款和退款日期。两个宫位一起读，也不能代替账户余额。
