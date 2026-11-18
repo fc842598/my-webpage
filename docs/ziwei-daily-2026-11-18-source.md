@@ -158,3 +158,36 @@ Was the email a project approval, purchasing authority, or a transfer notice? If
 Record the approval date, the date funds reach the account, and the date the money may be used for a particular purchase. A community program may need a venue contract before its first instalment. A software team may have an annual allocation but still need a second approval for hardware. These delays require different remedies. An expected transfer should never be entered as cash already received.
 
 Set a cap on advances before signing. Split expenses into cancellable bookings, binding contracts, and purchases that can wait. A venue hold may be safer than a nonrefundable deposit; design work might proceed while hardware approval is pending. Confirm birth inputs, read Career and Wealth with the relevant transformations and timing, then use contracts and bank records for the spending decision.
+
+---
+
+## 17. 伴侣轮班不一致，夫妻宫怎样落实次日家务责任？
+slug：`ziwei-fuqi-shuangban-ciyao-zeren`
+参考研究日期与原文 URL：2026-11-18 https://www.mystilink.com/en/zi-wei-dou-shu
+采用角度与旧文区别：原文按具体问题选择夫妻宫、再核时间层；站内已有夫妻沟通和兄弟照护排班，本篇只讨论两位伴侣工作班次错开时的家务交接、验收与备用安排。
+正文草稿：
+一人上早班，另一人上夜班，两人一天只在门口碰面十分钟。垃圾没倒、孩子的校服没洗，双方都以为对方会处理。看夫妻宫时，别急着把这归为“感情不好”；具体问题是任务没人接，还是交接时间太短。先列出未来七天的班次和家务，再讨论宫位组合，才不会把可修正的安排误读为关系定局。
+
+### 夫妻宫看互动，官禄宫看班次
+夫妻宫可用于观察商量与回应的方式，官禄宫则帮助核对职业责任如何占用时间。比如夫妻宫见天同，一方可能重视相处的舒适感；官禄宫见武曲，另一方可能更习惯按固定期限完成任务。这只是读盘时的提问线索，不能凭星曜断定谁懒惰。若晚班每周变化，固定写“你永远负责早饭”便未必可行；应按实际排班滚动分配。
+
+### 把家务变成可交接的任务
+田宅宫可用于讨论居家流程，但决定能否执行的是清单。将事项写成“谁、何时、完成标准、备用人”四列。甲周二下班前买菜，乙周三起床后煮饭；若甲临时加班，备用人按共享表改订配送。另一个家庭的孩子校服必须周四洗好，则不能只写“这周洗衣”，要写截止时点。两组例子的问题都不是家务总量，而是上一班没有给下一班可执行的信息。
+
+### 每周只复盘一次卡点
+每天深夜追问“你怎么又没做”容易把班次冲突变成指责。可约每周共同休息时看一次未完成项目，区分临时加班、忘记查看和分配不均。若一方连续承担夜间接送，就把这段隐形劳动纳入总量，不按任务件数机械平分。夫妻宫有化忌也只提示沟通摩擦值得看，仍要听双方说法，核现实时间与体力。实在无法同时间交流，可以用留言确认下一日最重要的两件事。
+
+排盘时先核双方出生资料及所问时段，再看夫妻宫的互动、官禄宫的班次压力、田宅宫的居家安排，最后对照实际一周日程和相关四化。共同表能否减少遗漏，比用星曜给责任归属盖章更值得检验。
+
+英文标题：Zi Wei Dou Shu Spouse Palace and Opposite Shifts: Who Handles Tomorrow's Chores?
+英文描述：Use the Spouse, Career, and Property Palaces to frame chore handoffs when partners work different shifts.
+英文正文：
+One partner starts work before dawn; the other finishes a night shift. They meet for ten minutes at the door. The trash remains, and a child's uniform is still unwashed because each assumed the other would do it. In Zi Wei Dou Shu, the Spouse Palace can frame how the partners communicate. It cannot assign blame. Begin with the next seven days of shifts and tasks.
+
+### Separate interaction from time available
+The Career Palace helps identify work obligations that constrain a schedule. Tian Tong in the Spouse Palace might prompt a question about keeping the interaction comfortable; Wu Qu in Career might prompt one about fixed deadlines. Neither placement proves that someone avoids chores. If shifts change weekly, a permanent assignment for breakfast may fail. Match duties to the actual rota.
+
+### Make each handoff usable
+For each task, write an owner, due time, completion standard, and backup. One partner buys groceries before Tuesday's shift; the other cooks after waking on Wednesday. If overtime intervenes, the backup orders delivery. A school uniform needed on Thursday requires a Thursday deadline, not a vague promise to do laundry sometime this week. A short shared note can carry the next day's two most urgent tasks.
+
+Review missed tasks once a week, including invisible work such as late pickup or arranging childcare. Compare overtime, forgotten messages, and an uneven workload before assigning a cause. Confirm both birth records, then read Spouse, Career, and Property with the relevant time layer. Test the interpretation against the real weekly plan.
