@@ -376,3 +376,117 @@ First confirm the transformation system and whether the placement is natal, majo
 
 ### Reconstruct three moments
 Read the original scope and named approver. Record exactly what changed during the call. Then find the revised list sent before delivery. A web client verbally removes mobile support while the signed scope still requires it. A video client requests a short cut first and confirms by email that the long cut belongs to phase two. Those are different evidence situations. After each call, send a short note with old scope, proposed change, price and timing impact, and the person asked to approve it. Use version numbers at acceptance. Confirm chart inputs and timing, then compare the palace question with contracts and sign-off records before drawing a conclusion.
+---
+
+## 01. 换城前先试住一周，迁移宫与官禄宫各核什么？
+slug：`ziwei-qianyi-huancheng-shizhu-he-shangban`
+参考研究日期与原文 URL：2026-11-18 https://aiziwei.online/zh-TW/blog/%E6%83%B3%E6%90%AC%E5%8E%BB%E5%88%A5%E7%9A%84%E5%9F%8E%E5%B8%82%E9%87%8D%E6%96%B0%E9%96%8B%E5%A7%8B-%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E7%9C%8B%E9%81%B7%E7%A7%BB%E5%AE%AE%E8%88%87%E4%BD%A0%E5%B8%B6%E8%91%97%E8%B5%B0%E7%9A%84%E5%95%8F%E9%A1%8C
+采用角度与旧文区别：旧文多问搬迁吉凶；本篇让试住一周成为可核的工作与生活测试。
+正文草稿：
+准备换城工作，周末看了两套房便想签一年租约。与其让迁移宫替你决定，不如先试住一周：周一到周五按真实上班时间出门，晚上按实际工作方式连线。迁移宫讨论外部环境的适应，官禄宫核岗位能否持续完成，财帛宫再核过渡花费。试住不是“验出吉凶”，而是把未知条件变成记录。
+
+### 迁移宫看可变的外部条件
+同一套房，周末半小时到办公室，工作日高峰可能要一小时。若迁移宫见天机，可提醒观察路线与日程变化；若见化忌，可追问卡在交通、网络还是证件手续。不能由星曜断定这座城不适合你。逐日记录门到门时间、晚间噪声、买菜和就医距离，至少区分偶发事件与反复出现的限制。
+
+### 官禄宫核实际交付
+甲做远程客户服务，试住时网络三次中断，需测试备用连接和客户响应时限；乙在现场实验室工作，通勤虽长，关键是能否准时完成早班交接。前者要看接单和响应，后者看固定班次。官禄宫见文昌时可检查文档和在线沟通，见武曲时可核设备、现场权限与硬性任务；这些只是问题方向，不能代替雇主要求。
+
+### 一周后再做选择
+把通勤、履约、住宿和现金四栏并排。房租较低却要每周多付交通与请假成本，需算总账；靠近公司但网络不稳，也不适合需要持续在线的岗位。若一周碰上临时封路，延长测试而不是据此下结论。排盘先核出生资料和所问时间，再看迁移、官禄、财帛及相关大限流年，最后用试住记录和合同条款决定。能否住下去，取决于真实工作和生活是否可持续。
+
+英文标题：Zi Wei Dou Shu Travel Palace: Test a New City Before Signing a Lease
+英文描述：Use a one-week trial stay to compare commuting, job delivery, housing, and cash costs.
+英文正文：
+Before signing a year-long lease in a new city, try living there for a working week. A weekend tour will not show the Monday commute or whether a remote job can run from the apartment. In Zi Wei Dou Shu, the Travel Palace frames outside conditions, the Career Palace frames delivery, and the Wealth Palace frames transition costs.
+
+### Record the week
+Travel can raise questions about routes, noise, and access. Tian Ji might prompt a closer look at changing schedules; Hua Ji might prompt a search for a bottleneck. Neither proves the city is wrong for you. Record door-to-door travel, evening noise, and the services you actually need.
+
+### Test the job
+A remote support worker needs a stable connection and a backup. A laboratory worker needs to arrive for an early handoff. These are different Career Palace questions. Compare a cheaper apartment's transport costs with a closer apartment's higher rent. Confirm chart inputs, then read Travel, Career, and Wealth with the relevant time layer. Use the trial notes and lease terms for the decision.
+
+---
+
+## 02. 到新城市后无人临时接应，迁移宫与交友宫怎样查支持？
+slug：`ziwei-qianyi-xincheng-linshizhiyuan`
+参考研究日期与原文 URL：2026-11-18 https://aiziwei.online/zh-TW/blog/%E6%83%B3%E6%90%AC%E5%8E%BB%E5%88%A5%E7%9A%84%E5%9F%8E%E5%B8%82%E9%87%8D%E6%96%B0%E9%96%8B%E5%A7%8B-%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E7%9C%8B%E9%81%B7%E7%A7%BB%E5%AE%AE%E8%88%87%E4%BD%A0%E5%B8%B6%E8%91%97%E8%B5%B0%E7%9A%84%E5%95%8F%E9%A1%8C
+采用角度与旧文区别：旧文关注是否搬城；本篇限于抵达后谁能提供哪类可执行支援。
+正文草稿：
+换城第一周，门锁坏了、公司报到材料少一份，认识的人都在原来的城市。迁移宫能帮助讨论陌生环境，交友宫则提醒查看可求助的协作网络；但“朋友多”不等于有人能在周二上午带你补证件。要把支持写成具体的人、时间和任务，不用宫位替现实安排。
+
+### 支持要分三层
+紧急层是钥匙、医院、突发请假，日常层是路线、办事窗口、代收快递，长期层才是情感陪伴与职业社群。甲有很多线上朋友，却无人知道当地修锁电话；乙只认识一位同事，却得到清楚的报到清单和备用联系人。交友宫不能按通讯录人数打分，迁移宫也不能从城市大小推断孤独程度。两人的缺口不同，补法也不同。
+
+### 宫位组合只负责提出问题
+若迁移宫见天机，变化多时可先备多个联系渠道；交友宫见化科，可核是否有可靠的书面指引；若交友宫见化忌，重点是确认求助链在哪一环中断。星曜不证明朋友是否忠诚。官禄宫还要检查公司报到流程，田宅宫核房屋管理处与租约；别把本来属于机构的责任压给朋友。
+
+### 落地前做一张支援卡
+列房东或物业、单位行政、附近医疗机构、交通替代路线和一位愿意接电话的人，并确认对方可联系的时段。若完全没有本地熟人，先用正规服务渠道解决紧急事务，再慢慢建立关系。排盘先核出生资料，明确是问搬迁环境还是人际协作，再看迁移、交友及相应三方四正。最后用电话是否接通、办事是否完成等实际记录更新判断，而非凭一次孤立经历断人生。
+
+英文标题：Zi Wei Dou Shu Travel and Friends Palaces: Building Support in a New City
+英文描述：Turn a vague wish for support after a move into contacts, tasks, and available hours.
+英文正文：
+During the first week in a new city, a lock breaks and a job registration form is missing. Your friends all live elsewhere. The Travel Palace in Zi Wei Dou Shu frames the unfamiliar setting; the Friends Palace frames cooperation. Neither tells you who can answer a call on Tuesday morning.
+
+### Name the support needed
+Separate emergencies, routine tasks, and long-term companionship. One newcomer has many online contacts but no local repair number. Another knows only one colleague yet has a clear registration checklist. The number of friends is a poor substitute for usable help. Ask who can help, with what task, and during which hours.
+
+### Build a practical contact card
+Include a landlord or property manager, company administrator, nearby clinic, alternative transport route, and one person willing to take a call. Tian Ji in Travel may prompt backup channels; Hua Ke in Friends may prompt a check for written instructions. Neither proves someone's loyalty. Confirm chart inputs, read Travel and Friends with Career or Property when relevant, then revise the plan using actual calls and completed tasks.
+
+---
+
+## 09. 换城过渡期两处房租重叠，财帛与迁移宫怎样算缓冲？
+slug：`ziwei-caibo-qianyi-bancheng-guodu-yusuan`
+参考研究日期与原文 URL：2026-11-18 https://aiziwei.online/zh-TW/blog/%E6%83%B3%E6%90%AC%E5%8E%BB%E5%88%A5%E7%9A%84%E5%9F%8E%E5%B8%82%E9%87%8D%E6%96%B0%E9%96%8B%E5%A7%8B-%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E7%9C%8B%E9%81%B7%E7%A7%BB%E5%AE%AE%E8%88%87%E4%BD%A0%E5%B8%B6%E8%91%8F%E7%9A%84%E5%95%8F%E9%A1%8C
+采用角度与旧文区别：旧文谈首付和长期购房；本篇只处理搬城两地短期租金重叠、押金回流时点。
+正文草稿：
+新岗位下月入职，旧房还剩一个月租期，新房又要求押一付三。看到财帛宫化禄就以为搬家费用“自然会回来”，容易把押金当成可用现金。迁移宫帮助识别换城带来的外部条件，财帛宫要核每笔付款和退款日期。两个宫位一起读，也不能代替账户余额。
+
+### 先画现金时间轴
+在日历上写旧房末期租金、新房首期租金、押金、搬运费和第一笔新工资。旧押金即使按约可退，也可能在验房后几周才到账；在那之前不能用它支付新房。财帛宫见化科可提示核对凭证和条款，见化忌可提示查现金被卡住的环节。四化层次与落宫要先确认，不要直接套吉凶。
+
+### 两种重叠不是同一问题
+甲旧房可提前转租，但需要房东书面同意；乙旧房不能退租，却能把入职日期延后两周。甲应先核转租风险与押金责任，乙应比较延后工资和少住两周新房的成本。迁移宫核地点与时间能否变动，官禄宫核入职约束，财帛宫计算现金缺口。不能看到“搬家”就忽略两人的不同合同条件。
+
+### 给最紧的一周留余量
+算出最低余额出现在哪一天，留出交通、餐食和突发住宿费，再决定何时签新租约。若不足，先和雇主、房东确认可调整的日期或付款方式，别把尚未到手的补贴写进现款。排盘时核出生资料与搬迁日期，再看迁移、财帛和官禄的时间层；最后以租约、工资支付日及银行余额复核。盘面能帮助拆问题，现金流必须逐日算。
+
+英文标题：Zi Wei Dou Shu Wealth and Travel Palaces: Two Rents During a Move
+英文描述：Map overlapping rent, deposits, moving costs, and first pay dates before relocating for work.
+英文正文：
+A new job starts next month, while the old lease has another month to run. The new apartment requires a deposit and several months of rent up front. In Zi Wei Dou Shu, the Travel Palace frames the move; the Wealth Palace frames actual cash. A deposit expected back later is not money available today.
+
+### Put each payment on a calendar
+Mark the old rent, new rent, deposits, moving bill, and first paycheck. Check when the old deposit can be returned after inspection. Hua Ke in Wealth might raise a question about receipts; Hua Ji might raise one about a delay. Establish the transformation layer and placement first. Neither changes the bank balance.
+
+### Compare the options
+One tenant can sublet only with written approval. Another cannot end the old lease but may delay the new job's start. The first needs to check deposit responsibility; the second must compare lost wages with saved rent. Read Travel for what can move, Career for work constraints, and Wealth for the lowest balance during the transition. Use leases and payment dates to decide.
+
+---
+
+## 11. 2027 天机化科遇新团队，交接文档怎样分层核？
+slug：`ziwei-2027-tianji-huake-xin-tuandui-wendang`
+参考研究日期与原文 URL：2026-11-18 https://www.purpletome.com/learn/2027
+采用角度与旧文区别：旧文谈2027四化总览或单次同事交接；本篇只看加入新团队后的权限、版本与反馈期限，并提示四化口径依流派。
+正文草稿：
+刚进入新团队，主管说“资料都在共享盘”，新人却发现同一流程有三个版本，权限也未开通。有人把2027天机化科读成“学习顺利”，仍要先核所用四化表、天机实际落宫以及进入团队的时间。化科可以引出整理方法的问题，不保证系统文档准确，更不能替主管完成授权。
+
+### 先确认盘面，再确认文件
+不同流派对年份界线和四化表可能有不同口径。确认出生资料、流年起点与天机化科是否确实关联所问的官禄或交友宫；如果没有，不能硬套年度词。官禄宫侧重岗位流程，交友宫侧重协作传递，文昌等星曜可提示书面沟通，但文件是否可用要看版本号、负责人和最近更新时间。
+
+### 把交接拆成三件事
+第一是权限：谁批准新人进入系统，何时生效。第二是版本：旧版为何保留，当前执行的是哪一版。第三是反馈：新人试做后谁在多长时间内纠错。甲接客服班次，缺权限会错过当天工单；乙接研究项目，能打开文件却找不到数据口径说明。前者优先解决账号，后者优先锁定方法版本。两个例子都叫交接不畅，根因不同。
+
+### 用一次试做检验
+让负责人选一个低风险任务，新人按最新版操作并记录疑点，第二天核对答案。若权限与版本都清楚却仍有误差，再看培训和岗位安排，不把所有困难归到化忌或“流年不利”。排盘先核四化口径、落宫和时间层，再看官禄、交友及三方四正；现实上以权限记录、文档版本和试做结果作为下一步依据。
+
+英文标题：Zi Wei Dou Shu Tian Ji Hua Ke in 2027: Check a New Team's Handover
+英文描述：Separate system access, document versions, and feedback timing when joining a new team.
+英文正文：
+A new employee hears that everything is in the shared drive, but finds three versions of the process and lacks access to the system. A 2027 Tian Ji Hua Ke reading may raise a question about organizing knowledge. It does not guarantee that the team's documents are correct. First check the transformation convention, year boundary, and actual palace placement.
+
+### Three handover problems
+Access needs an approver and activation date. Versions need a named current owner. Feedback needs a reviewer and deadline. A support worker without account access cannot handle today's tickets. A researcher with full access but no data definition needs the method clarified. Both report a poor handover, yet their fixes differ.
+
+Ask the owner to select a low-risk trial task, have the newcomer document unclear steps, and review the result the next day. In the chart, compare Career for job process and Friends for information passed between people. Confirm birth data, time layer, and transformation placement. Use access logs, version history, and trial results to decide what needs repair.
