@@ -490,3 +490,114 @@ A new employee hears that everything is in the shared drive, but finds three ver
 Access needs an approver and activation date. Versions need a named current owner. Feedback needs a reviewer and deadline. A support worker without account access cannot handle today's tickets. A researcher with full access but no data definition needs the method clarified. Both report a poor handover, yet their fixes differ.
 
 Ask the owner to select a low-risk trial task, have the newcomer document unclear steps, and review the result the next day. In the chart, compare Career for job process and Friends for information passed between people. Confirm birth data, time layer, and transformation placement. Use access logs, version history, and trial results to decide what needs repair.
+---
+
+## 14. 合伙项目发票抬头写错，财帛与交友宫先查什么？
+slug：`ziwei-caibo-hehuo-kaipiao-taitou-cuowu`
+参考研究日期与原文 URL：2026-11-18 https://qimenxuanxue.com/ziwei-astrology-read-combine-partner-do-birth-intent/
+采用角度与旧文区别：当天研究把合伙关系和资金责任分开。旧文谈出资分账与尾款；本篇限定票据主体出错导致的付款延迟。
+正文草稿：
+合伙团队完成设计，客户财务却因发票抬头写错暂停付款。有人看到财帛宫化忌，便说这笔钱“命里收不回”。付款卡住有具体环节：谁提供了开票信息、谁核对主体、谁负责重开、客户的付款周期是否因此顺延。财帛宫讨论资金流动，交友宫讨论伙伴协作，官禄宫核交付责任。把问题拆开，比对一个四化词猜结果有用。
+
+### 先确认哪一个主体在交易
+合同签的是甲公司，报价由合伙人乙发出，发票却开成乙的个人工作室。先核合同相对方、实际收款账户和客户开票要求是否一致。交友宫见文昌可提示查看伙伴传递的书面信息，但不能证明谁填错。若官禄宫见化权，应追问谁获授权确认对外资料，而不是把星曜当成授权证明。法律和税务处理要按真实文件办理。
+
+### 把重开与付款分开记
+第一组团队当天重开发票，客户财务仍按下个月固定批次付款；第二组团队发票无误，客户验收单尚缺签名。两组都说“回款慢”，前者卡在付款排期，后者卡在验收。财帛宫若见化科，可追问凭证是否齐全；见化忌则追问哪个日期或账户被卡住。四化层次也要先核，不应把两种不同原因写成同一命盘结论。
+
+### 建一张责任和日期表
+列合同主体、发票主体、核对人、重开日、验收人、约定付款日和实际到账日。客户要求更改资料时，合伙人内部先确认，再由唯一窗口回复。若因开票错误产生额外费用，按合伙协议和实际过错处理。排盘先核出生资料及问题时间，看交友、官禄、财帛的关系，再回到合同、票据和银行流水。资金判断以这些记录为准。
+
+英文标题：Zi Wei Dou Shu Partnership: A Wrong Invoice Name Delays Payment
+英文描述：Separate partner communication, invoice identity, acceptance, and cash timing when a project payment stalls.
+英文正文：
+A partnership delivers a design project, but the client pauses payment because the invoice names the wrong entity. In Zi Wei Dou Shu, the Friends Palace can frame cooperation and the Wealth Palace can frame cash flow. Neither proves that the money is lost. Find the party named in the contract, the invoicing entity, the account to receive payment, and the client's finance schedule.
+
+### Find the actual hold
+One team corrects the invoice today but must wait for next month's payment run. Another has a correct invoice but lacks a signed acceptance form. The first has a timing issue; the second has a delivery record issue. Hua Ke may prompt a check of documents and Hua Ji a check of the blocked step, once the time layer and palace placement are established.
+
+List the contract party, invoice name, reviewer, correction date, acceptance owner, due date, and actual deposit. Give the client one contact for confirmed changes. Read Friends, Career, and Wealth after confirming chart inputs, then use contracts and account records to decide what happened.
+
+---
+
+## 15. 七杀独坐申值班遇故障，谁能决定暂停服务？
+slug：`ziwei-qisha-shen-zhilun-tingji-juece`
+参考研究日期与原文 URL：2026-11-18 https://www.mystilink.com/en/zi-wei-dou-shu
+采用角度与旧文区别：当天资料强调先按问题定位宫位与时间层；旧文泛谈七杀接乱局，本篇限定值班停机决定权。
+正文草稿：
+深夜系统故障，值班工程师想立刻暂停服务，产品负责人却要求先观察。若盘上七杀独坐申，有人会把“敢决断”当成可以越级停机的理由。星曜只可帮助讨论面对压力的行动风格，停机权来自值班制度和事故等级。先查告警时间、受影响用户、数据是否可能损坏，以及谁有权宣布暂停。
+
+### 把风格和授权分开
+七杀独坐申也要看所在宫位、庙旺、同会星曜和四化，不能只凭四个字断人勇敢或鲁莽。若落官禄宫，可观察岗位责任与应急决策；落交友相关位置，则要看协作链。无论哪种组合，值班手册中的授权人、升级时限和回滚条件都优先于性格解释。没有明确授权时，先按制度升级并保留告警证据。
+
+### 两次故障，两种动作
+甲看到支付接口错误率升高，但已有自动回滚方案；他应按阈值执行预案，告知负责人并记录结果。乙发现数据写入可能丢失，尚未确认影响范围；她应先限制写入、召集技术负责人评估，不能擅自恢复对外服务。两人都面对高压，官禄宫同样涉及责任，决策却由风险类型和预先授权决定。星曜无法替系统监控测量损失。
+
+### 事故后复盘授权缺口
+记录谁发起暂停、谁批准、用户何时收到通知、何时恢复，以及下一次阈值是否要改。若两名负责人意见冲突，明确最终裁决人和超时机制。排盘先核出生资料，确认七杀实际落宫，再看三方四正、大限流年；最后与事故记录和组织制度对照。解盘可以帮助当事人检视决策习惯，不能替代现场应急规则。
+
+英文标题：Zi Wei Dou Shu Qisha in Shen: Who Can Pause a Service During an Incident?
+英文描述：Separate decisive style from formal authority when an on-call worker faces a service outage.
+英文正文：
+An on-call engineer wants to pause a service during an outage. A product owner wants to wait. Qisha in the Shen position of a Zi Wei Dou Shu chart may raise a question about decisive behavior, but it does not grant shutdown authority. First check alert time, affected users, possible data loss, and the incident policy.
+
+### Style is not permission
+The meaning of Qisha depends on its palace, condition, associated stars, and timing. In Career it may frame responsibility; in a cooperation context it may frame the escalation chain. Neither overrides the authorized owner or rollback threshold.
+
+One engineer sees a rising payment error rate with a tested rollback. Another sees possible data loss with an unknown scope. The first may follow the approved rollback rule. The second may need to limit writes and summon the responsible lead before restoring service. Record who paused, approved, informed users, and restored it. Confirm chart inputs and placement, then compare the reading with incident logs and written authority.
+
+---
+
+## 16. 伴侣临时代回副业客户消息，夫妻宫与官禄宫怎样分承诺？
+slug：`ziwei-fuqi-fuye-kehu-daili-huifu`
+参考研究日期与原文 URL：2026-11-18 https://qimenxuanxue.com/ziwei-astrology-read-combine-partner-do-birth-intent/
+采用角度与旧文区别：当天资料区分合作关系与经营职责；旧文谈伴侣副业场地，本篇只核临时代回复客户的承诺边界。
+正文草稿：
+一方经营周末摄影副业，忙着拍摄时请伴侣代回客户消息。伴侣为了留住订单，答应免费加修十张照片；摄影师事后才发现排期已满。夫妻宫可以帮助讨论两人如何协商，官禄宫核实际交付，财帛宫看额外工作成本。代回一句消息不等于被授权改价格和服务范围。
+
+### 先定可回复与须确认的内容
+可代答地址、开放时段、已公开的套餐说明；价格折扣、交片日期、额外修图和退款则要本人确认。若夫妻宫见天机，可观察两人是否习惯临场调整；若官禄宫见化权，可追问谁承担最终交付。宫位与四化是观察线索，不会自动授予代理权限。把可说的话写成短清单，比事后争论“你应该懂我”更有效。
+
+### 两种客户消息分开处理
+甲客户问停车位置，伴侣按预先写好的地址答复，风险低；乙客户要求原定周五交片改成周三，伴侣若直接答应，就把工作量和排期一起改变。后者可先回复“已收到，确认制作进度后答复”，并把问题转给负责人。即使二人关系很好，客户仍需要唯一、准确的交付版本。
+
+### 让帮助可以持续
+共享一个已确认的常见问题表，标明价格有效期、改期规则和紧急联系人。每晚十分钟核未答复消息，避免同一客户收到相反答复。若伴侣实际长期参与经营，再讨论报酬、账号权限和责任，不把临时帮忙默认为无偿岗位。排盘先核所问关系和时间，再看夫妻、官禄、财帛；最后以客户记录、订单和两人明确的约定校验。
+
+英文标题：Zi Wei Dou Shu Spouse and Career Palaces: A Partner Replies to Side-Business Clients
+英文描述：Set clear reply limits when a spouse temporarily handles messages for a small business.
+英文正文：
+A photographer asks a partner to answer client messages during a shoot. To keep a booking, the partner promises ten extra edited photos for free. The photographer has no room in the schedule. In Zi Wei Dou Shu, the Spouse Palace frames negotiation between partners, the Career Palace frames delivery, and the Wealth Palace frames extra cost. Helping with messages does not automatically include authority to change scope.
+
+### Create reply limits
+An address, published opening hours, and standard package details may be safe to answer from an approved list. Discounts, delivery dates, extra edits, and refunds need the business owner's confirmation. A parking question can be answered immediately. A request to move delivery from Friday to Wednesday should receive an acknowledgment and a promised follow-up, not an instant commitment.
+
+Keep one approved FAQ, a price validity date, and a daily check of unanswered messages. If the partner regularly joins the business, discuss access, pay, and responsibility explicitly. Confirm chart inputs and the relationship question, then compare Spouse, Career, and Wealth with the actual client messages and the couple's agreement.
+
+---
+
+## 20. 换限时接新岗位，旧项目绩效归谁核？
+slug：`ziwei-daxian-xin-gangwei-jiu-xiangmu-jixiao`
+参考研究日期与原文 URL：2026-11-18 https://destin-field.com/ctzwds/guide/ruhe-yuedu-ziwei-doushu-mingpan
+采用角度与旧文区别：旧文泛谈大限交接，本篇限定工作考核同时跨越旧项目验收与新岗位起算。
+正文草稿：
+换新岗位的月份，旧项目还在验收，新团队已开始给新任务。若排盘显示大限正在交界，容易把两种职责都解释成“新运来了”。大限提供较长的时间背景，不能给公司绩效系统划分归属。先列调岗生效日、旧项目验收日、新岗位目标起算日和考核周期，再谈盘面。
+
+### 先核换限与调岗的两套日期
+排盘工具可能以不同虚实岁或年界显示换限，需先核出生资料、起限口径和工具设置。公司调岗又有通知日期、生效日期和实际交接日期，三者可能不同。甲一号收到通知，十五号才转组；乙同日转组，旧项目月底验收。把这些日期并排，才能知道自己在问哪一段责任，而非用大限标签覆盖所有事件。
+
+### 工作成果按约定分归属
+旧项目谁签验收、返工由谁负责、奖金按哪个周期计算，要看原岗位目标和调岗协议；新岗位的试用目标和资源支持另列。官禄宫帮助讨论职责变化，财帛宫讨论奖金到账，交友宫可看跨团队协作。若官禄见化权，可以追问新增决策责任，但不能推定旧业绩自动转给新主管。若财帛见化忌，需核付款条件，而不是断言绩效被扣。
+
+### 用一张交接表避免两头落空
+写清旧项目剩余任务、验收人、奖金口径、新任务开始日及每周负责人。请两位主管确认同一版本；若规则未明，暂记“待确认”，不要自己补出答案。排盘时先统一大限算法，再看本命官禄、大限和流年如何对应实际日期。最后以人事文件、项目记录和工资单确认责任与收入。换限可帮助回顾周期，绩效归属仍由制度和事实决定。
+
+英文标题：Zi Wei Dou Shu Major Cycle Change: Who Reviews an Old Project After a New Role?
+英文描述：Separate chart timing from project acceptance, new duties, and performance pay during a role change.
+英文正文：
+A worker moves into a new role while an old project still awaits acceptance. A Zi Wei Dou Shu major cycle may also be changing, but that chart boundary cannot assign performance credit. First list the role effective date, old project acceptance date, new goal start date, and pay review period.
+
+### Compare two sets of dates
+Chart tools may label major cycle boundaries using different age or calendar rules. Confirm birth inputs, starting age, and tool settings. A company may have a notice date, effective date, and actual handoff date. One worker transfers mid-month; another transfers immediately but signs off an old project at month-end. Those are different responsibilities.
+
+The Career Palace can frame duty changes, Wealth can frame pay timing, and Friends can frame cooperation between teams. None determines an employer's bonus policy. Put remaining tasks, acceptance owner, bonus rule, new target start, and weekly owner in one shared handoff sheet. Ask both managers to confirm it. Read the chart only after the timing rules are clear, and use HR documents and payslips for the final allocation.
