@@ -1,6 +1,6 @@
 # 2026-11-18 紫微双语原创稿
 
-今天研究实际合格10篇、10域名。编辑前检查了 `articles/`、中英文索引、Feed 和 sitemap 中相近标题与搜索意图；以下三篇使用今天的原文问题方向，正文场景与措辞均为本站原创。其余17篇短初稿尚未复核，不作为发布稿。
+今天研究实际合格10篇、10域名。编辑前检查了 `articles/`、中英文索引、Feed 和 sitemap 中相近标题与搜索意图；以下已编辑篇目使用今天的原文问题方向，正文场景与措辞均为本站原创。未编辑短初稿不作为发布稿。
 
 ## 03. 带学徒反复返工，子女宫与官禄宫怎样分开看反馈周期？
 slug：`ziwei-ziinv-xuetu-fankui-zhouqi`
@@ -92,3 +92,69 @@ Check the tenant, guarantor, deposit, exit fee, and subletting rules. A cooperat
 The Property Palace question is whether the room supports ventilation, storage, visitors, and noise limits. The Wealth Palace question is whether rent and equipment remain affordable during an empty class month. A favorable room can still be too expensive; a cheap room can still be unusable for teaching. Estimate fixed costs with a conservative class count before committing household funds.
 
 A three month trial in a shared space can reveal demand before a long lease. If a year is required, set an investment cap, a review date, and a clear exit decision. Confirm birth inputs before comparing Spouse, Property, Wealth, and Career Palace roles. Use the signed contract and actual accounts for legal and financial decisions.
+
+---
+
+## 05. 每周往返两地工作，迁移宫怎样核算返程成本？
+slug：`ziwei-qianyi-zhouqi-fancheng-chengben`
+参考研究日期与原文 URL：2026-11-18 https://aiziwei.online/zh-TW/blog/%E6%83%B3%E6%90%AC%E5%8E%BB%E5%88%A5%E7%9A%84%E5%9F%8E%E5%B8%82%E9%87%8D%E6%96%B0%E9%96%8B%E5%A7%8B-%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E7%9C%8B%E9%81%B7%E7%A7%BB%E5%AE%AE%E8%88%87%E4%BD%A0%E5%B8%B6%E8%91%97%E8%B5%B0%E7%9A%84%E5%95%8F%E9%A1%8C
+采用角度与旧文区别：参考资料讨论迁居后的外部环境；本站已有外派和搬城主题，本篇只处理每周固定跨城往返的全成本、报销边界及休息安排。
+正文草稿：
+每周一去外地驻点、周五返城，薪水看似增加，月底却几乎没有结余。车票只是可见的一项：临时住宿、打车、周末补觉和家务转移也消耗资源。迁移宫可以帮助整理人在外部环境中的适应，不能直接说这份工作值不值得接。先把一周的往返记录摊开，才能知道问题发生在哪一段。
+
+### 把外出频率和工作回报分开
+迁移宫谈离开熟悉环境后的条件，官禄宫谈岗位责任，财帛宫谈实际收支。比如迁移宫见天机，临时改车次和工位安排可能成为讨论线索；官禄宫若见武曲，应再核可交付的任务和绩效口径。星曜不会替你算票价。把每周外出天数、出发与到达时间、住宿地点和远程可完成的工作列为四栏，再问哪些移动是工作必需。
+
+### 同一张车票，承担者不同
+甲是工程师，周二到周四在客户现场，车票由公司报销，住宿却有每日上限；乙是自由摄影师，周末往返两城拍摄，交通、器材托运和改期费都从报价里扣。两人都在路上，甲要核报销到账周期与超标支出，乙要核每单毛利和取消规则。财帛宫见化忌时，可以把现金垫付与延迟结算列为问题，但不能由此断言会亏损。应以合同和过去数周账目确认金额。
+
+### 恢复时间也占日程
+假设周五夜里到家，周六还要陪孩子上课，星期日备下周演示。福德宫可用于询问是否留有恢复空间，田宅宫可用于询问家庭分工；实际判断仍看睡眠、照护任务和谁能替班。若公司允许两天远程办公，不妨比较连续驻点与分散往返两种排法。一次出差顺利不等于长期可持续，也不要把疲惫全解释成宫位不佳。
+
+排盘时先核出生资料，按迁移、官禄、财帛、福德的次序定位所问，再看相关四化和时间层。最后用四周实际车票、住宿、报销和休息记录作对照。对工作安排的决定，应建立在净收入与时间成本都清楚的基础上。
+
+英文标题：Zi Wei Dou Shu Travel Palace: What Does a Weekly Two City Commute Cost?
+英文描述：Use the Travel, Career, Wealth, and Blessing Palaces to frame recurring travel costs and recovery time.
+英文正文：
+A worker travels to another city every Monday and returns on Friday. The salary increase looks attractive, but little cash remains at month end. In Zi Wei Dou Shu, the Travel Palace frames the outside setting. It cannot price a ticket, assign reimbursement, or decide whether the arrangement is sustainable. Start with four weeks of actual records.
+
+### Separate travel from the job
+The Career Palace asks what must be done on site. The Wealth Palace asks who pays and when cash comes back. Tian Ji in the Travel Palace might prompt a question about changing schedules. Wu Qu in Career might prompt a question about measurable delivery. Neither placement establishes the travel cost. Record days away, transit hours, lodging, and tasks that could be handled remotely.
+
+### Compare two contracts
+An engineer has rail fares reimbursed but faces a lodging cap and a slow expense cycle. A freelance photographer pays for travel and equipment transport from each client fee. The engineer needs a reimbursement calendar; the photographer needs a margin per assignment and a cancellation clause. If Hua Ji appears in Wealth, treat it as a reason to examine cash tied up in advances, then confirm the amount in invoices.
+
+Rest also has a cost. A late Friday arrival followed by weekend family care leaves little time to recover. Compare a continuous stay with fewer trips against shorter visits with more tickets. Confirm birth inputs, then read Travel, Career, Wealth, and Blessing in relation to the question. Use dated receipts, work terms, and sleep records before changing a job arrangement.
+
+---
+
+## 08. 项目预算获批却未到账，官禄宫与财帛宫怎样核？
+slug：`ziwei-guanlu-hualu-yusuan-shenpi`
+参考研究日期与原文 URL：2026-11-18 https://qimenxuanxue.com/ziwei-astrology-read-combine-partner-do-birth-intent/
+采用角度与旧文区别：原文把经营角色和资金分开；站内已有预算责任文章，本篇限于项目获批、拨款、可支用余额三个日期及垫资限制。
+正文草稿：
+团队拿到项目批准邮件，负责人当天就预订场地、采购设备。月底财务却说款项还没到账，供应商要求按期付款。获批是工作权限，到账是现金事件，可支用余额还受合同用途限制。紫微斗数里官禄宫与财帛宫分别提供提问位置，不能把两者混成一句“预算运势好”。
+
+### 批准的是任务还是款项
+先看邮件写的是项目立项、采购授权，还是正式拨款通知。官禄宫用于讨论谁承担交付和审批责任，财帛宫用于讨论钱何时可用。假设官禄宫见化权，负责人可能更需要明确签字权限与责任范围；若财帛宫会照化忌，就把付款时点、限制条件列入核查。四化只是提出问题，不代表已经发生拖欠。
+
+### 画出三条日期线
+第一条是批准日：谁签字，批准额度多少。第二条是入账日：钱进哪个账户，是否分期。第三条是可支用日：采购类别、发票和报销规则何时满足。比如社区活动获批十万元，却要先提交场地合同才能申请首笔款；软件团队获得年度预算，但跨部门设备采购要二次审批。这两种延迟的原因不同，不能只看批准金额。若有付款承诺，还要核对合同到期日，别把预计拨款写成已收款。
+
+### 垫资上限要事先写清
+在款未到前，哪些支出可撤销，哪些会形成违约金？把已签合同、待签合同、可推迟的采购分三列。项目经理可以约定场地保留期，暂缓不可退订金；小团队可先做不依赖新设备的设计工作。财帛宫见化禄也不能免去现金流测试，官禄宫见吉曜也不能替财务审批。记录谁承担垫资、何时复核，避免把个人储蓄默认为团队资金。
+
+排盘时先核出生资料与具体项目，定位官禄宫的工作责任，再看财帛宫的资金流动及相关四化，最后按大限、流年检查问题时点。现实执行仍以批准文件、账户流水和合同条款为准；三个日期未齐，不应按“钱已到手”安排不可逆支出。
+
+英文标题：Zi Wei Dou Shu Career and Wealth Palaces: Approved Budget, No Cash Yet
+英文描述：Separate project approval, money received, and usable funds before committing to purchases.
+英文正文：
+A project lead receives an approval email and books a venue. The supplier then requests payment, while finance says the funds have not arrived. In Zi Wei Dou Shu, the Career Palace frames the role and authority to deliver. The Wealth Palace frames the cash question. An approved plan is not necessarily money available to spend.
+
+### Identify what was approved
+Was the email a project approval, purchasing authority, or a transfer notice? If Hua Quan appears in Career, ask who can sign and who bears responsibility. If Hua Ji touches Wealth, inspect timing and restrictions. Neither transformation proves a payment will be late. Read the actual approval document and account statement.
+
+### Keep three dates apart
+Record the approval date, the date funds reach the account, and the date the money may be used for a particular purchase. A community program may need a venue contract before its first instalment. A software team may have an annual allocation but still need a second approval for hardware. These delays require different remedies. An expected transfer should never be entered as cash already received.
+
+Set a cap on advances before signing. Split expenses into cancellable bookings, binding contracts, and purchases that can wait. A venue hold may be safer than a nonrefundable deposit; design work might proceed while hardware approval is pending. Confirm birth inputs, read Career and Wealth with the relevant transformations and timing, then use contracts and bank records for the spending decision.
