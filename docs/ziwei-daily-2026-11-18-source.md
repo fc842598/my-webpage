@@ -257,3 +257,36 @@ A merchant may confirm the return, a payment platform may send a refund instruct
 One buyer returns a six month card purchase. A lump sum credit may offset charges already billed before future instalments change. Another buyer cancels the unused part of a course; the platform first checks usage and contract terms. The first needs to confirm the amount due on the card and any fees. The second needs to confirm the refund base and deadline. Neither should stop a scheduled payment solely because a support agent said a refund is coming.
 
 Keep separate columns for the merchant promise, bank or platform status, and usable balance. Record split refunds one by one. Confirm birth data, question date, transformation layer, and Wealth Palace placement, then use contracts and account statements to settle the money question.
+
+---
+
+## 19. 两款排盘的大限交界日期不同，先核哪些输入？
+slug：`ziwei-daxian-jiesuan-riqi-cha`
+参考研究日期与原文 URL：2026-11-18 https://destin-field.com/ctzwds/guide/ruhe-yuedu-ziwei-doushu-mingpan
+采用角度与旧文区别：参考资料强调跨体系算法不可直接套用；站内已写闰月、子时造成的命宫差异，本篇只处理同一出生记录下两款工具显示的大限起限岁数与换限日期不同。
+正文草稿：
+两款工具的命宫位置一致，却一个说今年进入新大限，另一个说明年才换。读者容易马上找过去十年的事情“验盘”，实际应先把显示规则摊开。大限交界不仅涉及出生资料，还涉及起限岁数、虚岁实岁、生日或农历年界等口径。两张图看着相近，不代表切换日期采用同一规则；未核清前不宜比较哪种解释更贴近生活。
+
+### 先固定原始出生资料
+把出生证明上的日期、时间、地点和性别完整抄到一张表，不要一款填公历、一款填手算农历。若出生地在海外，要核当地时区及当年的夏令时；若时刻靠近子时或出生于闰月，还要记录工具的处理选项。即便本次两款命宫相同，也应保留输入截图，防止比较的是两套不同设置。这里是资料核对，不是用“哪个盘更像自己”挑答案。
+
+### 核起限岁数和年龄口径
+大限从哪一宫起、顺逆如何定、每段显示哪十岁，依赖所用体系与盘面设置。甲工具用虚岁标示“35—44”，乙工具用实岁标示“34—43”，两行文字可能指向接近的时间段，不能只看数字断言差一年。再看工具是否在生日当天、农历新年或另一界点更新当前年龄。若页面只显示十年范围而没有精确切换日，应把“日期未知”记下来，不凭标题推算某一天。
+
+### 同名大限也要看规则版本
+某款采用现代十四主星盘，另一款可能使用不同安星或四化体系；即使都叫官禄大限，相关星曜和四化不必按同一公式对照。可让两款都导出设置页，逐项核体系、历法、起限、顺逆、年龄显示与时间界点。比如工作调岗在三月，若一款按生日换限、另一款按农历年换限，应分别标明其采用规则，再讨论调岗日期与哪一层盘面有关。不可把现实变动硬塞进某一张盘的边界。
+
+排盘时先固定原始输入，核命身宫是否一致，再核大限起限与年龄显示，最后才看流年及实际事件日期。若工具不公开算法，就明确写“无法判定差异来源”，保留截图和版本号。读盘方法清楚，才有资格谈大限内容。
+
+英文标题：Zi Wei Dou Shu Major Cycle Dates Differ Across Chart Tools: What Should You Check?
+英文描述：Compare birth inputs, cycle starting age, age counting, and calendar boundaries before interpreting a decade change.
+英文正文：
+Two Zi Wei Dou Shu chart tools place the Life Palace in the same position. One says a new major cycle starts this year; the other says next year. Before testing which reading feels more accurate, compare their settings. The difference may come from starting age, Chinese age versus age at last birthday, or the date each tool uses to update the display.
+
+### Hold the birth record constant
+Enter the same recorded date, time, place, and sex in both tools. Check time zone and historical daylight saving rules for an overseas birth. Record how each handles a birth near the midnight boundary or in a lunar leap month. Save the input screen even if the Life Palace matches; a matching palace does not prove every timing setting matches.
+
+### Read the label before the forecast
+One tool may label a decade as ages 35 to 44 using Chinese age, while another displays 34 to 43 using age at last birthday. Those labels might cover similar periods. Ask when each tool updates age: on a birthday, at lunar new year, or under another convention. If it shows only an age range, do not invent an exact switch date. Record that the date is unknown.
+
+Also compare the chart system, cycle starting point, forward or reverse direction, and transformation rules. The same name on two charts does not guarantee the same algorithm. For a job change in March, place the actual date beside each tool's stated boundary and rule before interpreting the transition. If the algorithm is unpublished, preserve version numbers and screenshots and state that the source of the difference remains unresolved.
