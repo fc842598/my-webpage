@@ -17,6 +17,6 @@
 | 07 | 已发布 2026-11-18 10:59 https://yuetianai.com/articles/ziwei-hehuo-duiwai-qianyue-quanxian.html / https://yuetianai.com/articles/en/ziwei-hehuo-duiwai-qianyue-quanxian.html | ziwei-hehuo-duiwai-qianyue-quanxian | 合伙人能谈价格却不能签合同，官禄与交友宫怎样分权限？ | 财运事业 | 旧文讨论出资比例、退出和总经营权；本篇限定对外报价与签署权限。 |
 | 12 | 已发布 2026-11-18 11:00 https://yuetianai.com/articles/ziwei-jumen-huaji-kehu-yanshou-koutou-genggai.html / https://yuetianai.com/articles/en/ziwei-jumen-huaji-kehu-yanshou-koutou-genggai.html | ziwei-jumen-huaji-kehu-yanshou-koutou-genggai | 客户口头改验收标准，巨门化忌先核哪一版记录？ | 财运事业 | 旧文讨论同事交接缺文档；本篇只核客户口头变更、合同版本及签收证据。 |
 | 01 | 已发布 2026-11-18 11:00 https://yuetianai.com/articles/ziwei-qianyi-huancheng-shizhu-he-shangban.html / https://yuetianai.com/articles/en/ziwei-qianyi-huancheng-shizhu-he-shangban.html | ziwei-qianyi-huancheng-shizhu-he-shangban | 换城前先试住一周，迁移宫与官禄宫各核什么？ | 宫位组合 | 旧文谈搬家能否转运；本篇只核试住期间通勤、网络和岗位持续性。 |
-| 02 | 待发布 | ziwei-qianyi-xincheng-linshizhiyuan | 到新城市后无人临时接应，迁移宫与交友宫怎样查支持？ | 宫位组合 | 旧文谈迁居总体选择；本篇限定落地后突发求助和支持网络的可用性。 |
+| 02 | 已发布 2026-11-18 11:00 https://yuetianai.com/articles/ziwei-qianyi-xincheng-linshizhiyuan.html / https://yuetianai.com/articles/en/ziwei-qianyi-xincheng-linshizhiyuan.html | ziwei-qianyi-xincheng-linshizhiyuan | 到新城市后无人临时接应，迁移宫与交友宫怎样查支持？ | 宫位组合 | 旧文谈迁居总体选择；本篇限定落地后突发求助和支持网络的可用性。 |
 | 09 | 待发布 | ziwei-caibo-qianyi-bancheng-guodu-yusuan | 换城过渡期两处房租重叠，财帛与迁移宫怎样算缓冲？ | 财运事业 | 旧文讨论首付或搬家选择；本篇只核短期双租、押金冻结与到账时间。 |
 | 11 | 待发布 | ziwei-2027-tianji-huake-xin-tuandui-wendang | 2027 天机化科遇新团队，交接文档怎样分层核？ | 看盘方法 | 旧文谈全年四化或交接缺文档；本篇限定新团队接入的权限、版本与反馈期限。 |
