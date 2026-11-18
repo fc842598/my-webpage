@@ -224,3 +224,36 @@ An old computer that cannot run required client software is a delivery problem. 
 A designer with a separate room may only need a quiet desk. A photographer meeting clients in a living room needs to consider privacy, access, and noise. The Property Palace helps frame how the room is used, while actual floor area and household agreement decide whether the arrangement works. Check electricity load and building rules for equipment that stays installed.
 
 List purchase price, maintenance, return period, and monthly payments beside confirmed revenue. Do not count a possible booking as cash received. Hua Ji in Wealth can prompt a cash flow check; Hua Lu does not cancel one. Renting lights for three jobs before buying may keep the test affordable. Confirm birth inputs and the work question, then read Career, Property, and Wealth with the relevant time layer. Use contracts and accounts for the final decision.
+
+---
+
+## 13. 财帛宫同见科忌，分期退款怎样分开记账？
+slug：`ziwei-caibo-shuanghua-fenqi-tuihuan`
+参考研究日期与原文 URL：2026-11-18 https://www.mystilink.com/en/zi-wei-dou-shu
+采用角度与旧文区别：参考资料强调先按问题选财帛宫并区分四化和时间层；站内昨日已有项目尾款验收，本篇只处理消费者分期购买后的退货，拆开商家承诺、分期账单撤销与实际到账。
+正文草稿：
+分期买的电脑退货获批，客服说五个工作日退款；信用卡账单却继续扣款。有人看到财帛宫同时提起化科和化忌，想问“到底退不退得回来”。盘面不能代替支付流水。先确认这两种四化各自属于生年、大限还是流年，是否真落同一财帛宫，再把退款流程拆开，避免一句吉凶混掉三个不同动作。
+
+### 书面承诺不等于账单关闭
+商家发出的退货确认、支付平台的退款指令、银行的分期账单撤销，可能是三个日期。财帛宫的化科若作为书面处理的提问线索，应核订单号、金额和退货凭证是否齐全；化忌若提示卡点，应查款项停留在哪个环节。不能因为两者同现就断言“先顺利后失败”。先保存客服承诺和支付记录，再看当前账期是否已经出账。
+
+### 两类退款的现金位置不同
+甲用信用卡分六期购买电脑，退货后商家一次性退到卡上，银行可能先抵扣已出账款，再调整后续分期；乙通过平台分期买课程，商家同意退未使用部分，平台先核使用记录与违约条款。甲要核信用卡应还金额、利息或手续费是否撤回；乙要核退款基数和平台处理期限。同叫退款，现金流方向和核对凭证并不相同。争议期间若仍有应还款，不要凭客服口头说法擅自停付。
+
+### 建一张三栏对账表
+第一栏记商家承诺：日期、退款金额、订单号。第二栏记支付平台或银行状态：已提交、处理中、已冲正。第三栏记真实可用余额与下期应还。若退款拆成两笔，分别记录每笔到账日，不把总承诺金额一次写入收入。财帛宫若还有化禄，也只是引导看资源如何回流，不能省略逐笔对账。逾期未处理时，按合同和平台申诉路径保留证据。
+
+排盘时先核出生资料与问题日期，再辨明四化层次和落宫；财帛宫讨论资金状态，官禄宫可辅助看工作用途，但财务结论仍由合同、账单和余额决定。把“商家同意”“分期撤销”“钱可再用”分开核，就不会被一个退款进度词误导。
+
+英文标题：Zi Wei Dou Shu Wealth Palace: Tracking an Instalment Refund with Hua Ke and Hua Ji
+英文描述：Separate a merchant's refund promise, cancelled instalments, and cash actually returned.
+英文正文：
+A laptop bought on instalments is returned. Customer support promises a refund within five business days, yet the next card bill still shows a charge. In Zi Wei Dou Shu, Hua Ke and Hua Ji may both be raised in a Wealth Palace reading. First establish which time layer each transformation belongs to and where it actually lands. The chart cannot replace the payment record.
+
+### Three events, three dates
+A merchant may confirm the return, a payment platform may send a refund instruction, and the bank may adjust the instalment plan on different days. Hua Ke can prompt a question about written proof and amounts; Hua Ji can prompt a question about where processing is stuck. Their presence does not prove a fixed sequence of success and failure. Keep order numbers, support messages, and the current statement.
+
+### Compare the cash paths
+One buyer returns a six month card purchase. A lump sum credit may offset charges already billed before future instalments change. Another buyer cancels the unused part of a course; the platform first checks usage and contract terms. The first needs to confirm the amount due on the card and any fees. The second needs to confirm the refund base and deadline. Neither should stop a scheduled payment solely because a support agent said a refund is coming.
+
+Keep separate columns for the merchant promise, bank or platform status, and usable balance. Record split refunds one by one. Confirm birth data, question date, transformation layer, and Wealth Palace placement, then use contracts and account statements to settle the money question.
