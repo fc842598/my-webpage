@@ -21,6 +21,6 @@
 | 09 | 已发布 2026-11-18 11:00 https://yuetianai.com/articles/ziwei-caibo-qianyi-bancheng-guodu-yusuan.html / https://yuetianai.com/articles/en/ziwei-caibo-qianyi-bancheng-guodu-yusuan.html | ziwei-caibo-qianyi-bancheng-guodu-yusuan | 换城过渡期两处房租重叠，财帛与迁移宫怎样算缓冲？ | 财运事业 | 旧文讨论首付或搬家选择；本篇只核短期双租、押金冻结与到账时间。 |
 | 11 | 已发布 2026-11-18 11:00 https://yuetianai.com/articles/ziwei-2027-tianji-huake-xin-tuandui-wendang.html / https://yuetianai.com/articles/en/ziwei-2027-tianji-huake-xin-tuandui-wendang.html | ziwei-2027-tianji-huake-xin-tuandui-wendang | 2027 天机化科遇新团队，交接文档怎样分层核？ | 看盘方法 | 旧文谈全年四化或交接缺文档；本篇限定新团队接入的权限、版本与反馈期限。 |
 | 14 | 已发布 2026-11-18 11:03 https://yuetianai.com/articles/ziwei-caibo-hehuo-kaipiao-taitou-cuowu.html / https://yuetianai.com/articles/en/ziwei-caibo-hehuo-kaipiao-taitou-cuowu.html | ziwei-caibo-hehuo-kaipiao-taitou-cuowu | 合伙项目发票抬头写错，财帛与交友宫先查什么？ | 财运事业 | 旧文谈分账和尾款；本篇只核票据主体、税务信息确认与付款节点。 |
-| 15 | 待发布 | ziwei-qisha-shen-zhilun-tingji-juece | 七杀独坐申值班遇故障，谁能决定暂停服务？ | 财运事业 | 旧文谈一般风险上限；本篇只核停机权限、通知链和恢复条件。 |
+| 15 | 已发布 2026-11-18 11:03 https://yuetianai.com/articles/ziwei-qisha-shen-zhilun-tingji-juece.html / https://yuetianai.com/articles/en/ziwei-qisha-shen-zhilun-tingji-juece.html | ziwei-qisha-shen-zhilun-tingji-juece | 七杀独坐申值班遇故障，谁能决定暂停服务？ | 财运事业 | 旧文谈一般风险上限；本篇只核停机权限、通知链和恢复条件。 |
 | 16 | 待发布 | ziwei-fuqi-fuye-kehu-daili-huifu | 伴侣临时代回副业客户消息，夫妻宫与官禄宫怎样分承诺？ | 宫位组合 | 旧文谈伴侣副业租房；本篇限于临时代回复客户时的交付授权。 |
 | 20 | 待发布 | ziwei-daxian-xin-gangwei-jiu-xiangmu-jixiao | 换限时接新岗位，旧项目绩效归谁核？ | 看盘方法 | 旧文泛谈大限交接；本篇只核旧项目验收与新岗位考核的日期边界。 |
