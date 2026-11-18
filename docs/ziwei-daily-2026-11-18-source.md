@@ -290,3 +290,89 @@ Enter the same recorded date, time, place, and sex in both tools. Check time zon
 One tool may label a decade as ages 35 to 44 using Chinese age, while another displays 34 to 43 using age at last birthday. Those labels might cover similar periods. Ask when each tool updates age: on a birthday, at lunar new year, or under another convention. If it shows only an age range, do not invent an exact switch date. Record that the date is unknown.
 
 Also compare the chart system, cycle starting point, forward or reverse direction, and transformation rules. The same name on two charts does not guarantee the same algorithm. For a job change in March, place the actual date beside each tool's stated boundary and rule before interpreting the transition. If the algorithm is unpublished, preserve version numbers and screenshots and state that the source of the difference remains unresolved.
+---
+
+## 04. 第一次见客户，对方反馈与自我介绍不一致，迁移宫怎样核？
+slug：`ziwei-qianyi-xin-kehu-chujian-fankui`
+参考研究日期与原文 URL：2026-11-18 https://note.com/nao0415_natsumi/n/n04ef73ce3b6e?hl=en
+采用角度与旧文区别：当天研究提示迁移宫也涉及外部初见。旧文多谈搬迁与出差；本篇专看首次客户会谈后的可观察反馈。
+正文草稿：
+第一次见客户，自己觉得把方案讲得很完整，对方会后却说“没听见项目风险”。有人便问迁移宫是不是不好。先别给自己贴标签：会议目标、发言顺序和客户原本最关心的问题，都会改变第一印象。迁移宫可以帮助讨论陌生人如何接收你的表达，命宫则帮助观察你熟悉的工作习惯；两者需要与会议记录一起读。
+
+### 先核对双方实际听到了什么
+把会前邮件、会议录音与会后提问排在同一条时间线上。若你在第十分钟才谈风险，而客户第五分钟就要决定是否继续，内容虽有讲到，顺序却可能不合适。迁移宫见文昌，可以提醒核文件与口头说明是否一致；若见天机，可留意临场调整，但不能由此断言你一定说得太快。盘面是提问线索，客户原话才是本次沟通的证据。
+
+### 区分自我风格与外部场合
+甲在熟人团队习惯直接展示成品，面对新客户却需要先确认预算和交付范围；乙习惯先解释方法，客户只想知道何时能看到样稿。命宫可讨论两人原有表达偏好，迁移宫看陌生场合的回应，官禄宫再核实际工作承诺。若迁移宫与命宫有冲突感，不等于人格有两面，只说明需要把场合与任务分开。不要用一场会议推断长期人缘。
+
+### 用下一次会谈验证调整
+会前发三项议程：目标、风险、下一步；开场请客户按重要性排序。会后寄出一页纪要，逐条请对方确认。若反馈由“没听到风险”变为“风险已说明但价格仍不合适”，问题已从表达转向报价，下一次应改看财帛和官禄，而非继续纠结迁移宫。排盘时先核出生资料，再看命宫、迁移宫及其三方四正，最后对照客户原话、纪要和后续回复；初见印象应由多次可核的互动修正。
+
+英文标题：Zi Wei Dou Shu Travel Palace and First Client Impressions
+英文描述：Compare your usual presentation style with a new client's actual feedback after a first meeting.
+英文正文：
+A consultant believes the first meeting covered every part of the proposal. The client later says the risks were never explained. Before calling this a bad Travel Palace reading, compare the agenda, the time spent on each point, and the client's questions. In Zi Wei Dou Shu, the Travel Palace can frame how you come across in an unfamiliar setting. The Life Palace frames a more familiar style of action.
+
+### Check the meeting evidence
+If risks appeared at minute ten but the client needed an answer at minute five, the issue may be sequence. Wen Chang in Travel can prompt a comparison between slides and spoken explanations. Tian Ji may prompt a question about changes made in the room. Neither placement proves what the client heard. Use the client's exact follow-up and the meeting record.
+
+### Test one adjustment
+One designer leads with finished visuals for a familiar team but needs to ask a new client about budget first. Another explains the method while the client wants a sample date. Send a short agenda before the next meeting: goal, risks, and next step. Ask the client to rank those points, then send a one-page summary for confirmation. If the next objection is price, move the question to Career and Wealth rather than attributing every objection to first impressions. Confirm chart inputs, compare Life and Travel with the relevant palaces, and judge the pattern against more than one documented meeting.
+
+---
+
+## 07. 合伙人能谈价格却不能签合同，官禄与交友宫怎样分权限？
+slug：`ziwei-hehuo-duiwai-qianyue-quanxian`
+参考研究日期与原文 URL：2026-11-18 https://qimenxuanxue.com/ziwei-astrology-read-combine-partner-do-birth-intent/
+采用角度与旧文区别：当天资料把经营角色和伙伴关系分开。旧文讨论出资、总经营权或退出；本篇只核报价、承诺和合同签署的边界。
+正文草稿：
+两人合伙接项目，甲负责找客户、谈价格，乙负责合同和交付。甲在电话里答应加做两轮修改，乙签约时却说预算不够。争议并不只在“伙伴合不合”，而在谁有权代表团队作出哪一种承诺。交友宫可帮助观察协作方式，官禄宫用于核岗位责任，财帛宫再核承诺会占用多少成本。
+
+### 把谈判权和签署权列成两栏
+能介绍服务、讨论价格区间，不等于能确定总价、追加服务或签合同。先列每人可单独答复的事项、必须双人确认的金额上限、最终签字人与备用人。若官禄宫见化权，可把它当作追问责任归属的线索，不能据此认定某人天然拥有法律签署权。交友宫若见文曲，也不能替代书面授权。真实权限要看企业文件与双方协议。
+
+### 用两个场景查失控点
+甲口头报八万元，却未确认税费和第三方采购，乙拿到账本才发现毛利不足；另一组伙伴允许客户经理给小额折扣，但对新增交付必须走共同审批。前者的问题是报价与成本未连上，后者的问题是审批表是否在合同前生效。财帛宫核钱的流向，官禄宫核谁要完成工作，交友宫核伙伴如何传递信息；三者不能互相代替。
+
+### 在客户听到承诺之前完成内部确认
+把报价单标明有效期、包含项目、变更费用和签字权限。客户提出额外需求时，由接洽人记录，交付负责人核工作量，再由有权签署者确认版本。若已作出口头承诺，应及时说明尚待书面确认，避免双方基于不同版本开工。排盘先核出生资料和所问关系，再看交友、官禄、财帛及四化层次；最后用授权文件、报价单和合同版本校验。盘面不能替任何人签字。
+
+英文标题：Zi Wei Dou Shu Partnership: Who May Quote and Who May Sign?
+英文描述：Separate a partner's client conversation from pricing authority, delivery duties, and contract signatures.
+英文正文：
+Two partners share a client project. One finds the client and discusses the price; the other signs contracts and manages delivery. The first promises two extra revision rounds by phone. The second discovers that the budget cannot cover them. The useful question is who may make each kind of promise. In Zi Wei Dou Shu, the Friends Palace frames cooperation, the Career Palace frames responsibility, and the Wealth Palace frames the cost.
+
+### Write down the limits
+The right to introduce a service is different from the right to fix a price, change scope, or sign. List what each partner may answer alone, the amount that requires joint approval, and the person who signs. Hua Quan in Career might raise a question about authority, but it cannot establish legal signing power. Check the actual company documents and agreement.
+
+### Compare promise with cost
+One partner quotes a price without including tax and outside purchases. Another team permits small discounts but requires joint approval for added work. In both cases, a quote sheet should show its expiry date, scope, change fees, and authorized signer. Record a new client request, have the delivery owner estimate the work, and confirm the version before anyone promises it. Confirm chart inputs, then read Friends, Career, and Wealth alongside the signed documents. A chart cannot sign a contract.
+
+---
+
+## 12. 客户口头改验收标准，巨门化忌先核哪一版记录？
+slug：`ziwei-jumen-huaji-kehu-yanshou-koutou-genggai`
+参考研究日期与原文 URL：2026-11-18 https://www.purpletome.com/learn/2027
+采用角度与旧文区别：当天研究区分巨门化忌的沟通议题与具体落宫。旧文谈同事交接；本篇限定客户电话改验收条件后的版本确认。
+正文草稿：
+客户电话里说“先做简版”，两周后却按原合同的完整版本验收。执行者看到流年巨门化忌，担心注定争吵。先暂停这样的推断：要核的是电话日期、谁在场、会后有没有确认邮件、合同里变更条款怎样写。巨门化忌可以提示沟通成为议题，不能证明谁说谎，也不能代替事实与合同。
+
+### 四化先定层次与落宫
+确认所用流派的四化表，再看巨门化忌究竟落在本命、当前大限还是流年哪一宫。若在官禄相关位置，工作交付的表达值得细查；若在交友相关位置，协作传话链可能更关键。两种都只是查证方向，不能把“化忌”直接翻译成客户一定违约。文昌或文曲参与时，也应先看实际文件版本，而不是凭星名判断记录可靠。
+
+### 还原标准变化的三个时点
+第一，原合同写了哪些交付项和验收人；第二，电话中具体删减了什么，谁同意；第三，最终交付前是否发送新版清单。甲做网页，客户口头删掉移动端，但原合同仍列手机适配；乙做视频，客户说先交短片，邮件明确长片留到第二阶段。甲有待核的范围冲突，乙已有可引用的分阶段记录。两者不能用同一段“沟通不顺”解释。
+
+### 让下一次变更能追溯
+通话后发一封短邮件：原要求、建议变更、费用和工期影响、请谁回复确认。收到确认前，按合同现有范围安排风险较低的工作，不把沉默当同意。验收时让客户按版本编号签收，争议部分单列处理。排盘时核出生资料、问题日期、四化口径和落宫，再把宫位线索与合同、邮件和签收表逐项核对。判断能否收费或追责，应以具体约定和事实为准。
+
+英文标题：Zi Wei Dou Shu and Ju Men Hua Ji: A Client Changes Acceptance Terms by Phone
+英文描述：Trace contract versions and written confirmations when a client verbally changes delivery requirements.
+英文正文：
+A client says by phone that a simpler version will do. Two weeks later, the client evaluates the full version described in the original contract. Ju Men Hua Ji in a Zi Wei Dou Shu reading can suggest a communication question. It does not prove who is right. Start with the call date, who attended, the follow-up email, and the contract's change process.
+
+### Locate the actual transformation
+First confirm the transformation system and whether the placement is natal, major cycle, or annual. A Career Palace connection can prompt a closer look at delivery language. A Friends Palace connection can prompt a look at who passed on the message. Neither proves a breach. Wen Chang or Wen Qu does not make a document reliable by itself; check the version that was actually sent.
+
+### Reconstruct three moments
+Read the original scope and named approver. Record exactly what changed during the call. Then find the revised list sent before delivery. A web client verbally removes mobile support while the signed scope still requires it. A video client requests a short cut first and confirms by email that the long cut belongs to phase two. Those are different evidence situations. After each call, send a short note with old scope, proposed change, price and timing impact, and the person asked to approve it. Use version numbers at acceptance. Confirm chart inputs and timing, then compare the palace question with contracts and sign-off records before drawing a conclusion.
