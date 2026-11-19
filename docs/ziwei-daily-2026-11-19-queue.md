@@ -21,6 +21,6 @@
 | 02 | 已发布 2026-11-19 12:09 https://yuetianai.com/articles/ziwei-2027-jumen-huaji-hetong-fujian.html / https://yuetianai.com/articles/en/ziwei-2027-jumen-huaji-hetong-fujian.html | ziwei-2027-jumen-huaji-hetong-fujian | 2027 巨门化忌遇合同附件漏传，先查哪一层记录？ | 四化 | 限定签署前的附件清单与收件确认，不重复口头改验收标准。 |
 | 07 | 已发布 2026-11-19 12:10 https://yuetianai.com/articles/ziwei-liupai-laiyin-shengnian-sihua-koujing.html / https://yuetianai.com/articles/en/ziwei-liupai-laiyin-shengnian-sihua-koujing.html | ziwei-liupai-laiyin-shengnian-sihua-koujing | 读到来因宫教程，怎样与生年四化的站内读法对齐？ | 看盘方法 | 只核术语与软件体系对应，不重复来因宫入门。 |
 | 09 | 已发布 2026-11-19 12:12 https://yuetianai.com/articles/ziwei-guanlu-fude-xiaban-xiaoxi-bianjie.html / https://yuetianai.com/articles/en/ziwei-guanlu-fude-xiaban-xiaoxi-bianjie.html | ziwei-guanlu-fude-xiaban-xiaoxi-bianjie | 下班仍反复查工作消息，官禄宫与福德宫怎样拆责任和休息？ | 财运事业 | 限定下班消息与值班协议，不重复职业倦怠总论。 |
-| 10 | 待发布 | ziwei-ziwei-minggong-lihui-jueding-quan | 紫微坐命主持例会，怎样分清协调会议与拍板权限？ | 主星细读 | 限定主持人与决策人不同，不重复紫微星性格总论。 |
+| 10 | 已发布 2026-11-19 12:12 https://yuetianai.com/articles/ziwei-ziwei-minggong-lihui-jueding-quan.html / https://yuetianai.com/articles/en/ziwei-ziwei-minggong-lihui-jueding-quan.html | ziwei-ziwei-minggong-lihui-jueding-quan | 紫微坐命主持例会，怎样分清协调会议与拍板权限？ | 主星细读 | 限定主持人与决策人不同，不重复紫微星性格总论。 |
 | 13 | 待发布 | ziwei-fuqi-caibo-zhuangxiu-geren-chuxu | 伴侣共同装修，夫妻宫与财帛宫怎样分家用和个人储蓄？ | 宫位组合 | 限定共同支出与个人储备的边界，不重复单人家居预算。 |
 | 19 | 待发布 | ziwei-caibo-guanlu-tuihuo-lirun-hedui | 销售额上涨却退货率高，财帛宫与官禄宫怎样核实际利润？ | 财运事业 | 限定退货、履约成本与到账利润，不重复一般现金流。 |
