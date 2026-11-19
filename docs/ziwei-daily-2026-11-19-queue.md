@@ -13,3 +13,5 @@
 | 06 | 已发布 2026-11-19 11:03 https://yuetianai.com/articles/ziwei-fuqi-gongzuo-guanxi-wenti-dingwei.html / https://yuetianai.com/articles/en/ziwei-fuqi-gongzuo-guanxi-wenti-dingwei.html | ziwei-fuqi-gongzuo-guanxi-wenti-dingwei | 同事也是伴侣，工作争议先看官禄宫还是夫妻宫？ | 宫位组合 | 同一人物分开核岗位评价与伴侣期待。 |
 | 16 | 已发布 2026-11-19 11:03 https://yuetianai.com/articles/ziwei-ziinv-daijiao-quanxian.html / https://yuetianai.com/articles/en/ziwei-ziinv-daijiao-quanxian.html | ziwei-ziinv-daijiao-quanxian | 带新人可改稿却不能发布，子女宫与官禄宫怎样划权限？ | 宫位组合 | 只核编辑、审核、发布与回滚权限。 |
 | 18 | 已发布 2026-11-19 11:03 https://yuetianai.com/articles/ziwei-hehuo-caigou-shenpi-ed.html / https://yuetianai.com/articles/en/ziwei-hehuo-caigou-shenpi-ed.html | ziwei-hehuo-caigou-shenpi-ed | 合伙人都能采购，金额超过上限时谁有批准权？ | 财运事业 | 只核内部采购门槛与双签，不重复客户报价题。 |
+| 11 | 已发布 2026-11-19 12:05 https://yuetianai.com/articles/ziwei-qianyi-wangshang-shouke-chujian.html / https://yuetianai.com/articles/en/ziwei-qianyi-wangshang-shouke-chujian.html | ziwei-qianyi-wangshang-shouke-chujian | 首次线上授课给陌生人，迁移宫还能看第一印象吗？ | 宫位组合 | 只核网课开场信息与课后反馈，不重复商务客户初见。 |
+| 12 | 待发布 | ziwei-qianyi-xin-shequ-zhiyuan | 加入陌生社区做志愿者，迁移宫与交友宫怎样分问？ | 宫位组合 | 区分初次接触与持续排班，不重复新城市临时接应。 |

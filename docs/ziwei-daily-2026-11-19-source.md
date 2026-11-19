@@ -302,3 +302,66 @@ One shop may let staff buy supplies below a small limit, require a second confir
 
 ### Close the loop
 Match invoices to bank payments and inventory at month end. If the refrigerator has already been ordered, read the cancellation terms and current balance before arguing over intent. Define the chart question first, then verify the decision in the written threshold and transaction records.
+---
+
+## 11. 首次线上授课给陌生人，迁移宫还能看第一印象吗？
+slug：`ziwei-qianyi-wangshang-shouke-chujian`
+参考研究日期与原文 URL：2026-11-19 https://shengpinkai.com/zwds/learn/twelve-palaces-in-depth
+采用角度与旧文区别：当日十二宫研究提示迁移宫可以问外部场域的反馈；站内商务客户初见讨论线下会谈，本篇限定第一次线上授课的开场说明、提问与课后记录。
+正文草稿：
+第一次给陌生学员上直播课，老师讲完后只看到两条弹幕，便觉得自己“不适合对外表达”。这时若想用紫微斗数复盘，迁移宫可以提出一个问题：陌生听众怎样接收到我的信息？它不能替听众发言，更不能用两条弹幕判断课程成败。先把课堂目标、平台规则和实际反馈分开。
+
+### 迁移宫要落在具体场景
+人在家里直播，也进入了不熟悉的外部群体。迁移宫可看对外接触的线索，命宫补看讲者自己的表达习惯，官禄宫则问授课是不是岗位交付。先核三宫主星、四化和三方四正。若迁移见化忌，只提醒留意沟通阻力，不能断定学生不喜欢；若官禄见化权，也要核谁决定课程标准。
+
+### 用两场课比较不同的反馈
+一场课有四十人在线，只有两人提问，但课后作业完成率高；另一场弹幕很多，学员却找不到资料下载入口。前者可能是互动设计不适合实时提问，后者可能是说明不清。把开场目标、提问时段、回放观看和作业提交各记一栏。迁移宫所问的外部回应，需要这些可观察记录来检验。
+
+### 调整开场而不是猜测人心
+下次课开始时用一分钟说明今天解决什么问题、何时提问、资料在哪里；结束后问一个具体问题，比如哪一步最难操作。若学员答不上来，再看讲解顺序和示例是否需要改。排盘先核出生资料和所问事件，再看迁移、命、官禄的组合；最后拿两次课程记录复盘。星曜提供检查角度，课程质量仍由教学证据判断。
+
+英文标题：Zi Wei Dou Shu Travel Palace and First Impressions in an Online Class
+英文描述：Use the Travel Palace to frame outside feedback during a first online class, then check actual teaching evidence.
+英文正文：
+A teacher gives a first live class to unfamiliar students and sees only two chat messages. That alone cannot establish whether the lesson worked. In Zi Wei Dou Shu, the Travel Palace can frame the encounter with a new audience even when the teacher stays at home. The chart offers questions about outside response; the class records provide evidence.
+
+### Define the setting
+Read the Travel Palace with its connected palaces, then use the Life Palace for the teacher's communication habits and the Career Palace for delivery duties. A difficult transformation can prompt a review of friction. It does not reveal what every student thought. Confirm the platform's chat rules and the stated lesson goal before interpreting a quiet room.
+
+### Compare two kinds of response
+One class may have few live questions but strong assignment completion. Another may have lively chat while students cannot find the worksheet. Record the opening explanation, question period, replay views, and submissions separately. Those observations point to different fixes. Neither a favorable chart marker nor a busy chat proves teaching quality.
+
+### Test a change
+At the next opening, state the learning goal, question time, and location of the materials. Ask a specific closing question about the hardest step. Compare the answer and completion records with the previous class. Check the birth data and chart question first, read Travel, Life, and Career Palace connections, then return to the lesson evidence.
+
+---
+
+## 12. 加入陌生社区做志愿者，迁移宫与交友宫怎样分问？
+slug：`ziwei-qianyi-xin-shequ-zhiyuan`
+参考研究日期与原文 URL：2026-11-19 https://shengpinkai.com/zwds/learn/twelve-palaces-in-depth
+采用角度与旧文区别：当日研究把迁移宫与交友宫分别用于外部处境与人际协作；站内临时接应文章讨论突发求助，本篇限定志愿任务从第一次试做到固定排班的变化。
+正文草稿：
+搬到新社区后，有人邀请你周末参加旧物整理。第一次见面气氛热烈，你就答应以后每周都来；两周后才发现清点物资、联系捐赠者和搬运都落在自己身上。紫微斗数里，迁移宫与交友宫可以把初见感受和长期协作分开提问。愿意帮忙不等于已经了解岗位边界。
+
+### 先看进入陌生场域
+迁移宫先问进入社区时遇到怎样的规则和回应，命宫可补看自己习惯怎样答应请求。星曜、四化和三方四正要结合所问，不把一颗吉星解释成“这里的人都可靠”。第一次活动可记录地点、负责人、任务时长和安全要求；若这些信息不清，先问明白，再决定是否参加。
+
+### 再看持续合作
+交友宫适合问固定协作者之间如何分工，官禄宫可补问有无正式管理责任。比如甲只负责登记物资，乙负责搬运，联系人负责决定哪些物品可收。若第二周改成让甲自行联系捐赠者，就出现新职责，应重新确认时间和权限。交友见化权可提示组织中的责任议题，但实际授权仍要有负责人说明。
+
+### 用一次有限任务做试验
+先答应参加两小时整理，留下任务清单、联络方式及结束时间。做完后核对实际耗时、临时加派的工作和反馈，再谈下个月的排班。若持续缺人，可商量轮值或减少收集量，不能靠一个人无限补位。排盘时先核出生资料与所问时间，接着看迁移的初见、交友的协作和官禄的职责，最后用两次活动记录决定是否长期加入。
+
+英文标题：Zi Wei Dou Shu Travel and Friends Palaces for Community Volunteering
+英文描述：Separate a warm first meeting from the duties of a continuing volunteer role.
+英文正文：
+You visit a neighborhood volunteer group and enjoy the first meeting. Two weeks later, sorting donations, contacting donors, and moving boxes all fall to you. In a Zi Wei Dou Shu chart, the Travel Palace can frame your entry into an unfamiliar setting. The Friends Palace raises a different question about ongoing cooperation. A friendly welcome does not define a recurring role.
+
+### Check the first encounter
+Read the Travel Palace and its connected palaces for questions about the outside setting. The Life Palace can add your habit of accepting requests. Confirm the location, organizer, task length, and safety rules. A favorable star does not establish that every duty has been explained.
+
+### Check the team after the first day
+Use the Friends Palace for recurring division of work and the Career Palace if a formal operating duty develops. One person may log goods, another carry boxes, and a coordinator decide what can be accepted. If someone is later asked to call donors, that is a new responsibility to agree on. A chart marker about authority does not create actual permission.
+
+### Try a limited shift
+Agree to a two hour task with a named contact and an end time. Record what was added during the shift and what feedback came afterward. Compare two activities before joining a monthly rota. Verify the birth data and the precise question, then read Travel for entry, Friends for cooperation, and Career for assigned duties. Make the continuing commitment from the real schedule.
