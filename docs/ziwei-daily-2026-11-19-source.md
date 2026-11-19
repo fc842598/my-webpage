@@ -174,3 +174,131 @@ Record the device, steps to reproduce, severity, and owner for each issue. Three
 
 ### Verify the acceptance terms
 Test each contracted function, record the result and environment, and identify who can approve it. Put new requests into a change record rather than silently adding them to the original acceptance list. If payment follows acceptance, verify the actual invoice and bank date separately. Read the Children, Career, and Wealth Palaces as distinct questions, then compare them with two real lists: test issues and contractual acceptance items.
+
+---
+
+## 05. 财帛宫提到现金流，排盘时怎样避免把收入当结余？
+slug：`ziwei-caibo-cailiu-touzi-biaoge`
+参考研究日期与原文 URL：2026-11-19 https://www.purplestarmapper.com/en/blog/2026-economic-reshuffle-ziwei-wealth-palace-guide
+采用角度与旧文区别：当天研究涉及财帛宫与现实资金；站内已有赚钱路径、财星强弱，本篇限定现金流表的已到账、已承诺和可动用三栏。
+正文草稿：
+设计师这个月签了八万元订单，账户却只有一万五千元，还要在周五付外包两万元。若只看财帛宫的化禄就说“手头宽裕”，把合同额误作结余，最容易误判。紫微斗数先帮人确定问题是进账、资产还是现金缺口；真正能付款的数额仍由银行流水决定。
+
+### 财帛宫先问流向，不直接报余额
+定位财帛宫主星、四化和三方四正，再看官禄宫的工作安排、田宅宫的固定支出。财帛见禄可能提示资源与交易机会，却无法说明客户是否付款；见忌也只能提示收支卡点，不能据此认定投资失败。把“预计收入”与“已经到账”用两种颜色记，防止读盘时混成一项。
+
+### 用三栏表还原可动用的钱
+第一栏记已到账且可以使用的钱，第二栏记房租、税费和已签约的付款，第三栏才是扣除承诺后的余额。比如上例账户一万五千元、周五要付两万元，即使八万元合同已签，仍有五千元近期缺口。另一位设计师账上同样一万五千元，却没有外包账单，两人的决策空间不同。再注明客户回款日期是否有书面依据，逾期款不能按承诺日期直接填进余额。
+
+### 把盘面提示变成核对顺序
+排盘先确认出生资料和所问月份，再依次看财帛的资金主题、官禄的交付责任与田宅的固定成本。若想添置设备，先列付款日与最低留存现金；若考虑投资，先把生活费和项目备用金分开。星曜组合帮助提出“钱卡在哪里”的问题，表格和合同回答“现在能不能付”。每次更新实际到账后再重算，不用一次读盘代替持续记账。
+
+英文标题：Zi Wei Dou Shu Wealth Palace: Income Is Not Available Cash
+英文描述：Use a cash flow table alongside the Wealth Palace to separate paid income, committed expenses, and available money.
+英文正文：
+A freelancer signs a large client contract but has a small bank balance and a supplier bill due Friday. A favorable Wealth Palace marker in Zi Wei Dou Shu does not turn the contract value into cash. First decide whether the question is about earning potential, assets, or the money available this week.
+
+### Locate the money question
+Read the Wealth Palace and its connected palaces, then check the Career Palace for delivery obligations and the Property Palace for fixed household costs. A transformation may draw attention to a transaction or a bottleneck. It does not verify a client's payment date. Keep projected revenue apart from money already received.
+
+### Build three columns
+Record usable deposits, committed bills, and the remainder after those bills. A worker with fifteen thousand in the account and a twenty thousand supplier payment has a near term shortfall, even with an eighty thousand contract. Another worker with the same balance and no immediate bill has a different choice. Mark overdue invoices separately until the payment actually arrives.
+
+### Return to the decision
+Verify birth data and the month under review, read the Wealth and Career Palace questions together, and compare them with bank records and contracts. Before buying equipment or investing, protect living costs and project reserves. Recalculate when money arrives rather than treating a chart label as an account balance.
+
+---
+
+## 06. 同事也是伴侣，工作争议先看官禄宫还是夫妻宫？
+slug：`ziwei-fuqi-gongzuo-guanxi-wenti-dingwei`
+参考研究日期与原文 URL：2026-11-19 https://astroverse.com.tw/knowledge/og-ziwei-spouse-1ps1vr
+采用角度与旧文区别：当天研究提示夫妻宫的关系议题需结合具体情境；站内已有夫妻副业及客户授权，本篇只拆同一件争执里的岗位评价与亲密期待。
+正文草稿：
+两位伴侣在同一团队上班。甲认为乙交付的报表漏了数据，乙却听成“你一直不相信我”。同一句责备已经牵出两个问题：报表是否合格，和两人在家里如何谈工作。紫微排盘时先写清所问，不因争执对象是伴侣就只看夫妻宫。
+
+### 先把角色与事实分开
+官禄宫问岗位职责、考核和团队规则；夫妻宫问两人如何协商期待。命宫可补看本人习惯，交友宫可补看团队合作，但不能把所有宫位当成同一个结论。若官禄见化权，先核谁有审批权；夫妻宫见化忌，也不等于感情注定受损。星曜落宫、对宫与三方要对应具体问题。
+
+### 两件事各留一份记录
+报表漏数时，把源数据、交付版本、复核人和截止时间写进工作记录。甲负责审稿而乙负责汇总，就按岗位流程修复；若主管另有验收标准，应由主管明确。回家后另约时间讨论被批评时的感受与说话方式，不拿工作错误作伴侣品格评价。另一对伴侣可能报表无误，却因公开会议中的语气不满；这时工作证据和关系修复的顺序又不同。
+
+### 决定先解决哪一层
+如果明早就要给客户交付，先按官禄宫对应的职责把数据补齐，再谈夫妻宫对应的沟通。如果工作任务已经结束，仍反复因尊重问题争吵，就单独商量会议边界和私下反馈方式。排盘先固定出生资料及所问事件，再逐宫核星曜、四化和现实证据。两张清单分别关掉问题，不用一条“夫妻宫好坏”包办全部。
+
+英文标题：Zi Wei Dou Shu Career or Spouse Palace for a Partner at Work?
+英文描述：Separate job performance from relationship expectations when a coworker is also your partner.
+英文正文：
+Two partners work on the same team. One points out a missing figure in a report; the other hears a judgment about trust. Before opening a Zi Wei Dou Shu chart, write down two questions. Was the report correct, and how should the couple discuss criticism? The same person has two roles, but the evidence for each question differs.
+
+### Choose a palace by the question
+The Career Palace frames job duties and review authority. The Spouse Palace frames the agreement between two people. The Life Palace may add personal habits, while the Friends Palace can show a team setting. Read each star and transformation in its actual palace and connected positions. A difficult marker is a prompt to examine friction, not a verdict on the relationship.
+
+### Keep two records
+For the report, retain the source data, version, reviewer, and deadline. If a manager sets the standard, ask that manager to clarify it. For the relationship, agree on when to give private feedback and what language feels respectful. Another couple may have delivered a correct report yet still resent a public remark; fixing data would not settle that issue.
+
+### Set the order of action
+If the client deadline is tomorrow, repair the work first and schedule the personal conversation afterward. If the task is closed, address the repeated communication pattern separately. Check the chart only after defining the event, then compare Career and Spouse Palace questions with the two real records.
+
+---
+
+## 16. 带新人可改稿却不能发布，子女宫与官禄宫怎样划权限？
+slug：`ziwei-ziinv-daijiao-quanxian`
+参考研究日期与原文 URL：2026-11-19 https://shengpinkai.com/zwds/learn/twelve-palaces-in-depth
+采用角度与旧文区别：当天十二宫研究提示子女宫不只取字面亲子；站内已写学徒返工和反馈周期，本篇限定网站编辑、审核、发布和回滚四级权限。
+正文草稿：
+编辑带新人做专题页，让他修改草稿，却没有给线上发布权限。新人觉得“不信任我”，带教人担心一键上线后的错字和价格错误。子女宫可以讨论培养中的作品与带教，官禄宫则要问正式岗位责任。两宫所问不同，不能把“允许练习”直接解释成“已经授权上线”。
+
+### 宫位对应不同阶段
+先看子女宫星曜、四化和三方，问新人能否在反馈中成长；再看官禄宫与命宫，问谁负责最终交付、审核和事故处理。若子女宫见禄，只提示资源或机会，不表示权限已经放开；官禄见权也需与岗位任命对应。盘面不替代系统里的角色设置。
+
+### 把权限拆成四道门
+草稿编辑允许新人改文字但不碰价格数据；审核允许资深编辑给修改意见；发布由值班负责人操作；回滚指定能恢复上一版的人。比如新人改了活动日期，审核者发现后退回，线上没有影响。另一次发布后才发现优惠门槛写错，必须查发布日志、通知负责人并恢复旧版。两种错误分别需要练习反馈和事故流程，不能一概归为“新人不细心”。
+
+### 用可观察的标准升级权限
+连续几次稿件通过审核，可逐渐允许新人准备发布清单，但真正上线仍应按系统授权和复核结果执行。若人手少，可明确替班审核与紧急回滚人，不把账号密码共享当作培养。排盘先确定所问是成长、岗位还是上线风险，再看子女、官禄和相关四化；最后核对系统角色、审批记录与日志，决定下一次该开放哪一步。
+
+英文标题：Zi Wei Dou Shu Children and Career Palaces for Trainee Publishing Rights
+英文描述：Use mentoring and job responsibility as separate questions when a trainee may edit but cannot publish.
+英文正文：
+A trainee editor can revise a page but cannot publish it. The restriction can feel personal until the team separates practice from production responsibility. In Zi Wei Dou Shu, the Children Palace can frame mentoring and a developing work. The Career Palace asks who is accountable for a live release.
+
+### Read the stages separately
+Locate the stars and transformations in the Children Palace and connected positions, then look at the Career Palace for assigned duties. A favorable mentoring marker does not grant system access. A marker of authority still requires an actual job role and approval rule.
+
+### Define four permissions
+Editing changes a draft. Reviewing checks facts, dates, and prices. Publishing moves the approved version online. Rolling back restores the previous version after an error. If a trainee enters a wrong date and a reviewer catches it, the practice loop works. If a price error reaches the site, the team needs a release log, an owner, and a rollback path.
+
+### Upgrade by evidence
+Use several approved drafts to decide whether the trainee can prepare a release checklist. Keep the final publish action tied to assigned access and review. Read the chart after defining whether the question concerns learning or accountability, then verify the answer against roles, approval records, and site logs.
+
+---
+
+## 18. 合伙人都能采购，金额超过上限时谁有批准权？
+slug：`ziwei-hehuo-caigou-shenpi-ed`
+参考研究日期与原文 URL：2026-11-19 https://www.purplestarmapper.com/en/blog/2026-economic-reshuffle-ziwei-wealth-palace-guide
+采用角度与旧文区别：当天研究提示财帛宫需结合资金决策；站内已谈客户报价、收款主体，本篇只问合伙企业内部采购金额门槛及双人签核。
+正文草稿：
+两人合伙经营花店，约定小额补货谁都能买。开业后，一人订了八千元冷柜，另一人认为超出本月预算。争议并非谁的财帛宫比较强，而是“每个人都能采购”有没有金额上限。紫微盘可拆经营、资金与合作三个问题，批准权仍要在协议里写清。
+
+### 三个宫位分别提问
+官禄宫看日常经营由谁负责，财帛宫看预算与现金流，交友宫看合作怎样协调。主星、四化及三方四正要落到实际职权；财帛见禄不等于任何支出都有收益，交友见忌也不能据此指责伙伴故意越权。先核冷柜属于补货、设备投资还是紧急维修，再看约定权限。
+
+### 给采购定分层门槛
+例如五百元以内由值班人采购并留票；五百至三千元先在共享表单登记，由另一位确认；三千元以上两人签字并核本月现金余额。若鲜花冷库当天坏了，紧急维修可另设例外，但须保留报价、故障照片和事后复核。另一家店有统一供应商却临时涨价，责任在谁下单、谁批准、谁复核三个环节，而不在星曜一句吉凶。
+
+### 回到记录而非口头默契
+每笔采购留用途、金额、供应商、批准人和支付账户；月底与银行账、库存和退货相对。若八千元冷柜已经订购，先查取消条款及资金缺口，再决定是追认还是调整计划。读盘先确定所问是经营分工、现金压力还是合伙摩擦，再合看官禄、财帛、交友宫。最后由双方签下门槛与例外流程，下一单才有可执行的边界。
+
+英文标题：Zi Wei Dou Shu Wealth Palace and Purchasing Approval for Business Partners
+英文描述：Separate daily buying authority, cash limits, and partner approval before a large purchase.
+英文正文：
+Two partners run a flower shop. Either can buy routine supplies, but one orders an expensive refrigerator without checking the monthly budget. A Zi Wei Dou Shu chart can frame the Career Palace for operating duties, the Wealth Palace for cash pressure, and the Friends Palace for cooperation. The purchase agreement determines who can approve the order.
+
+### Define the type of expense
+Routine flowers, equipment, and emergency repairs need different rules. Read each palace's stars and transformations in their real positions, including connected palaces. A favorable money marker does not make an unapproved purchase profitable. A difficult cooperation marker is not evidence that a partner acted in bad faith.
+
+### Set a tiered threshold
+One shop may let staff buy supplies below a small limit, require a second confirmation for midrange orders, and require both signatures for major equipment. A broken cooler can qualify for an exception if the team keeps the fault photo, quote, and later review. Record who requests, approves, pays, and checks the delivery.
+
+### Close the loop
+Match invoices to bank payments and inventory at month end. If the refrigerator has already been ordered, read the cancellation terms and current balance before arguing over intent. Define the chart question first, then verify the decision in the written threshold and transaction records.
