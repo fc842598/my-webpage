@@ -69,3 +69,73 @@ Log invitation times, agendas, written summaries, and your replies. Repeated las
 
 ### Agree on a workable response window
 Set online hours, urgent contacts, and a deadline for asynchronous replies. A designer may attend one cross-time-zone call each week and use recordings for the rest. A daily on-call role needs different terms and pay. Read the birth data and chart rules first, then the Travel, Life, and Career Palaces with relevant transformations. Finally check the interpretation against the written role and two weeks of actual work.
+
+---
+
+## 04. 短期外派前家务无人接手，迁移宫和夫妻宫先核什么？
+slug：`ziwei-qianyi-duanqi-waipai-jiawu-jiaojie`
+参考研究日期与原文 URL：2026-11-19 https://shengpinkai.com/zwds/learn/twelve-palaces-in-depth
+采用角度与旧文区别：当日资料提示迁移宫与其他生活宫位须合参。站内已有外派合同、换城试住与伴侣轮班题；本篇只处理三周离家期间的家庭任务移交，避免把获得外派机会误当成家务自然有人接手。
+正文草稿：
+外派三周，差旅费和岗位安排都谈好了，出发前才发现孩子接送、老人复诊和月底账单没有接手人。紫微盘里的迁移宫可以提醒你核对外部行程，夫妻宫可以帮助提出伴侣分工问题；两宫都不能替你指定谁有空。先把每天必须完成的任务列出来，再谈这次外派能否执行。
+
+### 外部机会与家庭承接分开看
+迁移宫看离开原有环境后面对的工作条件和支持，官禄宫看这次任务在岗位上由谁负责。夫妻宫讨论双方怎样协商责任，田宅宫则可补问居住安排。若迁移宫见化权，可能值得问外部授权是否增加；若夫妻宫同时有压力线索，问题也未必是关系变差，可能只是原来的家务排班已无余量。不能用一颗吉星替代四周日历。
+
+### 把三周任务交给具体的人
+例如每周二孩子放学后要接去上课，每周五老人要复诊，月底还要处理租金与水电。表格写明任务、日期、负责人、备用人和联系方式。伴侣能接周二，不代表能接周五；家人愿意帮忙，也要确认交通和请假成本。另一种家庭没有接送任务，却有宠物用药和夜间紧急联络，同样外派三周，安排不能照搬。
+
+### 核清突发情况与工作边界
+外派地点若临时延长项目，谁有权同意改返程票？家中出现急事，谁先联络，能否远程处理，是否要提前约定替补同事？把这些写进家庭与单位两份计划。夫妻宫见禄也不能保证伴侣无限承接；交友宫若提示可求助，仍要核实朋友是否明确答应，以及是否需要支付帮忙费用。
+
+### 排盘后回到行程表
+先核出生资料与所问的实际外派日期，再分看迁移、官禄、夫妻及田宅的主星和四化，比较三方四正有没有指向同一压力。随后打开日历逐项确认负责人、备用人和费用。若有任务无人接手，先改出差天数或补外部服务；盘面可以整理问题，执行条件仍由人和时间决定。
+
+英文标题：Zi Wei Dou Shu Travel and Spouse Palaces for a Short Work Assignment
+英文描述：Plan household handoffs before a short assignment away from home by separating outside duties from shared responsibilities.
+英文正文：
+A three-week assignment is approved, but the family calendar is not. School pickup, a medical appointment, and bills still need named owners. In a Zi Wei Dou Shu chart, the Travel Palace can frame the outside assignment, while the Spouse Palace prompts questions about shared duties. Neither palace names the person who is actually available on Tuesday.
+
+### Read the two settings separately
+Use the Travel Palace to ask what support and limits exist at the destination. The Career Palace adds the duties and authority of the role. Use the Spouse Palace to discuss how two people negotiate responsibilities at home, with the Property Palace adding the living arrangement. A transformation suggesting more responsibility is a question to verify with the employer, not a promise that the home schedule will solve itself.
+
+### Make a handoff that can be used
+For each task, record a date, primary owner, backup, contact number, and cost. One partner may be able to handle a Tuesday pickup but not a Friday appointment. A different household may need pet medication rather than childcare. A relative who offers help still needs the address, transport plan, and permission to change the appointment if necessary.
+
+### Decide what happens when plans change
+Name who can approve an extended trip and who handles a home emergency. Confirm whether a colleague can take over work if you return early. Check the birth data and assignment dates, then read the Travel, Career, Spouse, and Property Palaces together. Compare every question from the chart with the real calendar. If a task has no owner, change the schedule or arrange paid help before departure.
+
+---
+
+## 17. 朋友合伙开店，店铺收款码归谁名下先查哪几个宫？
+slug：`ziwei-hehuo-puhao-shoukuan-zhuti`
+参考研究日期与原文 URL：2026-11-19 https://www.purplestarmapper.com/en/blog/2026-economic-reshuffle-ziwei-wealth-palace-guide
+采用角度与旧文区别：当日资料提示财帛宫应落到真实资金轨迹。站内已谈合伙发票抬头、客户报价和签约权限；本篇只核门店收款主体、逐日对账和提现审批，避免将友情等同于账户控制权。
+正文草稿：
+两位朋友合开咖啡店，开业当天一位把自己的收款码贴在柜台，说月底再分账。另一位觉得彼此认识多年，先营业更重要。排盘时交友宫可以问合作关系，财帛宫可以问钱从哪里进出，官禄宫可以问谁负责经营；真正要先办的，是查清收款账户归谁、流水谁能看、提现谁能批。
+
+### 合作信任不等于资金权限
+交友宫谈伙伴之间能否协作，财帛宫谈收入与支出的实际路径。若财帛宫见化禄，不等于营业款已安全归店铺；若交友宫见化忌，也不构成朋友一定会挪用资金的证据。把星曜落宫、对宫及三方四正记下，只用它们帮助提出核查问题，不给人贴诚信标签。
+
+### 先确认每一笔钱归谁
+核对收款码实名认证主体、商户合同、结算银行卡和退款入口。若一天收到两千元，次日退单三百元、平台扣费五十元，账面可分配款并不是两千元。另一家店用公司商户号，两个合伙人都能查流水但只有一人能提现；这也要写明提现申请、复核和到账通知，不能只看收款二维码的名称。
+
+### 把对账和异常写成规则
+每天收银结束核订单数、实收、退款、手续费与银行到账；每周由非经手人复核差额。个人代收过渡期应设截止日期和转账凭证，避免后来分不清营业款与个人借款。超过约定金额的退款或采购，另设双人审批。官禄宫对应日常经营职责，不能把“负责店面”自动推成“可以独自转出全部余额”。
+
+### 从命盘回到合同与后台
+排盘先确认所问是合作磨合还是资金归属，再看交友、财帛、官禄及相关四化；把盘面提示转成账户、权限、流水三张核对单。最后由双方登录商户后台核实际权限，并把分账周期、退款责任和退出办法写进协议。若账户主体无法核实，先暂停使用该收款码，不能靠好朋友的口头保证完成对账。
+
+英文标题：Zi Wei Dou Shu Wealth Palace and Payment Account Ownership in a Small Shop
+英文描述：For a shop run with a friend, check payment account ownership, daily reconciliation, and withdrawal rights.
+英文正文：
+Two friends open a coffee shop and one places a personal payment code at the counter. The plan is to divide receipts at month end. A Zi Wei Dou Shu reading can help frame the questions: the Friends Palace concerns cooperation, the Wealth Palace concerns the path of money, and the Career Palace concerns operating duties. The payment provider's records determine who actually controls the account.
+
+### Separate partnership from account access
+A favorable Wealth Palace theme does not prove that the shop owns the receipts. A tense Friends Palace theme does not prove dishonesty. Locate the relevant stars and transformations in the chart, including connected palaces, then turn them into practical questions about permissions. Avoid using a chart label to accuse a partner.
+
+### Trace a payment from customer to bank
+Check the registered merchant, settlement account, refund controls, and transaction history. If a day brings two thousand in sales, three hundred in refunds, and fifty in fees, the amount available to distribute is lower than gross sales. Even with a company account, one person may be able to view records while another alone can withdraw funds. Put each role in writing.
+
+### Reconcile and approve exceptions
+At closing, compare orders, receipts, refunds, fees, and bank deposits. Have someone other than the cashier review differences each week. If personal collection is temporary, set an end date and keep transfer receipts. Require a second approval for large refunds or purchases. Read the chart only after defining whether the question is about cooperation or cash control; then verify the answer in the merchant dashboard and partnership agreement.
