@@ -17,4 +17,4 @@
 | 12 | 已发布 2026-11-19 12:05 https://yuetianai.com/articles/ziwei-qianyi-xin-shequ-zhiyuan.html / https://yuetianai.com/articles/en/ziwei-qianyi-xin-shequ-zhiyuan.html | ziwei-qianyi-xin-shequ-zhiyuan | 加入陌生社区做志愿者，迁移宫与交友宫怎样分问？ | 宫位组合 | 区分初次接触与持续排班，不重复新城市临时接应。 |
 | 08 | 已发布 2026-11-19 12:07 https://yuetianai.com/articles/ziwei-xuexi-xingyao-biaoge-jilu.html / https://yuetianai.com/articles/en/ziwei-xuexi-xingyao-biaoge-jilu.html | ziwei-xuexi-xingyao-biaoge-jilu | 刚学紫微星曜太多，怎样建立一张不混宫位的学习表？ | 看盘方法 | 只讲一张盘的记录字段，不重复读盘顺序总论。 |
 | 14 | 已发布 2026-11-19 12:07 https://yuetianai.com/articles/ziwei-wenchang-guanlu-jilu-zhize.html / https://yuetianai.com/articles/en/ziwei-wenchang-guanlu-jilu-zhize.html | ziwei-wenchang-guanlu-jilu-zhize | 文昌落官禄宫，岗位要求写文档时先核哪些实际职责？ | 财运事业 | 只核撰写、审核、归档责任，不重复文档接入权限。 |
-| 20 | 待发布 | ziwei-xiaoxian-shisui-xusui-hedui | 小限显示差一岁，怎样核实岁虚岁和软件口径？ | 大限流年 | 只核小限年龄标签，不重复大限交界日期。 |
+| 20 | 已发布 2026-11-19 12:07 https://yuetianai.com/articles/ziwei-xiaoxian-shisui-xusui-hedui.html / https://yuetianai.com/articles/en/ziwei-xiaoxian-shisui-xusui-hedui.html | ziwei-xiaoxian-shisui-xusui-hedui | 小限显示差一岁，怎样核实岁虚岁和软件口径？ | 大限流年 | 只核小限年龄标签，不重复大限交界日期。 |
