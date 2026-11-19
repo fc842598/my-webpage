@@ -139,3 +139,38 @@ Check the registered merchant, settlement account, refund controls, and transact
 
 ### Reconcile and approve exceptions
 At closing, compare orders, receipts, refunds, fees, and bank deposits. Have someone other than the cashier review differences each week. If personal collection is temporary, set an end date and keep transfer receipts. Require a second approval for large refunds or purchases. Read the chart only after defining whether the question is about cooperation or cash control; then verify the answer in the merchant dashboard and partnership agreement.
+
+---
+
+## 15. 子女宫谈项目成果，内测反馈和正式验收为何要分开？
+slug：`ziwei-ziinv-xiangmu-neice-fankui`
+参考研究日期与原文 URL：2026-11-19 https://shengpinkai.com/zwds/learn/twelve-palaces-in-depth
+采用角度与旧文区别：当日资料提示十二宫取象不能只按字面，还要与工作宫位合参。站内产品试运营题讨论停损，本篇限定尚未交付的软件项目，区分内测用户意见与客户正式验收。
+正文草稿：
+团队做了一款预约工具，十名内测者都愿意试用，负责人便说项目已经成功。客户合同却要求能导出账单和处理重复预约，这两项尚未完成。紫微盘的子女宫可用来讨论正在培育的作品，官禄宫则帮助厘清交付责任。若把“有人试用”当作“客户已验收”，盘面和项目记录都会读错。
+
+### 先定义所问的成果
+子女宫在此是作品与培养过程的取象，不表示每个项目都要看同一颗星。先看子女宫主星、所会三方与四化，再问当前是构想、试做还是稳定运行。官禄宫的星曜与四化则对应工作职责和评价环境。子女宫见禄可以提示资源或关注度增加，却不能自动变成合同已付款；官禄见化权也须核实谁有最终签字权。
+
+### 内测记录用来改产品
+第一组内测者说预约页面好用，但有三人找不到取消入口；第二组用旧手机登录时页面卡住。把问题按设备、复现步骤、严重程度和修复负责人记录，才知道下一版改什么。内测反馈的价值是发现不足，不能只摘取“大家喜欢”四个字。即使所有试用者给了好评，样本也不能替代合同里约定的功能清单。
+
+### 正式验收要回到合同
+客户验收看约定的账单导出、重复预约处理、权限设置和上线日期。每一项留下演示环境、测试结果、确认人及日期。若客户临时新增需求，另记变更单，不把它与原验收标准混成一张清单。财帛宫可补问款项何时到账，但验收通过与付款到账仍是两个事件，不能在同一天的口头会议里合并记账。
+
+### 用两张表完成读盘
+排盘先核出生资料和所问时间，再分看子女宫的培养线索、官禄宫的交付责任，必要时加财帛宫的收款安排。现实中分别维护内测问题表与合同验收表；前者每周更新，后者由双方确认。盘面能提示何处值得投入精力，项目是否交付仍以可复现功能和签字记录为准。
+
+英文标题：Zi Wei Dou Shu Children and Career Palaces for Product Testing and Acceptance
+英文描述：Separate user testing feedback from contractual acceptance when a team is developing a product.
+英文正文：
+Ten people try a new booking tool and say they like it. The team calls the project finished, yet the client contract also requires invoice exports and a way to resolve duplicate bookings. In a Zi Wei Dou Shu chart, the Children Palace can frame a work in development. The Career Palace helps ask who is responsible for delivery. A trial user's approval is not the same event as the client's acceptance.
+
+### Define the stage of the work
+First ask whether the product is an idea, a test build, or a stable service. Read the stars and transformations in the Children Palace with its connected palaces. Then use the Career Palace to examine the role and evaluation process. A favorable chart marker may prompt a question about resources or attention. It does not prove that a milestone has been signed off or paid.
+
+### Use testing to find defects
+Record the device, steps to reproduce, severity, and owner for each issue. Three users may miss the cancel button while another group experiences slow loading on older phones. Keep the specific observations, including negative ones. Positive comments from a small group cannot replace the feature list agreed with the client.
+
+### Verify the acceptance terms
+Test each contracted function, record the result and environment, and identify who can approve it. Put new requests into a change record rather than silently adding them to the original acceptance list. If payment follows acceptance, verify the actual invoice and bank date separately. Read the Children, Career, and Wealth Palaces as distinct questions, then compare them with two real lists: test issues and contractual acceptance items.
