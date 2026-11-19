@@ -44,13 +44,13 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-11-19T12:09:00+08:00</lastmod>
+    <lastmod>2026-11-19T12:10:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-learning-path.html</loc>
-    <lastmod>2026-11-19T12:07:00+08:00</lastmod>
+    <lastmod>2026-11-19T12:10:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -25102,4 +25102,6 @@
   <url><loc>https://yuetianai.com/articles/en/ziwei-xiaoxian-shisui-xusui-hedui.html</loc><lastmod>2026-11-19T12:07:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-2027-jumen-huaji-hetong-fujian.html</loc><lastmod>2026-11-19T12:09:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/en/ziwei-2027-jumen-huaji-hetong-fujian.html</loc><lastmod>2026-11-19T12:09:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-liupai-laiyin-shengnian-sihua-koujing.html</loc><lastmod>2026-11-19T12:10:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/en/ziwei-liupai-laiyin-shengnian-sihua-koujing.html</loc><lastmod>2026-11-19T12:10:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
