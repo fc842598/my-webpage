@@ -460,3 +460,66 @@ Write the displayed age in one column and the minor-cycle palace in another. If 
 
 ### Return to the chart carefully
 Confirm the software settings before combining the birth chart, decade, annual, and minor-cycle layers. A different number does not prove that an event has happened. Keep both screenshots and their settings so the comparison can be repeated.
+---
+
+## 02. 2027 巨门化忌遇合同附件漏传，先查哪一层记录？
+slug：`ziwei-2027-jumen-huaji-hetong-fujian`
+参考研究日期与原文 URL：2026-11-19 https://insightapp.life/blog/en/ziwei-2026-bing-wu-to-2027-ding-wei-transition
+采用角度与旧文区别：当日研究讨论丁未年巨门化忌转向职业沟通；站内已有口头改验收标准，本篇只问签署前合同附件漏传、版本号与收件确认。
+正文草稿：
+签约当天，客户说已经把验收细则放在附件，供应商却只收到主合同。若用2027年巨门化忌解读这件事，先要查巨门在自己的盘里落哪一宫，以及所问属于工作交付还是沟通流程。不能把“有化忌”当成谁故意隐瞒附件的证据。最先要找的是收件记录。
+
+### 流年标记先回到盘面
+丁未年巨门化忌是时间层标记；定位巨门实际落宫，再看官禄宫的签约职责、交友宫的合作关系及三方四正。若巨门落官禄相关位置，可提醒核工作文件的表达和确认；若落在另一宫，也不能把所有合同争议硬套在它身上。还要区分本命、大限与流年，不能用年度一项覆盖长期合作记录。
+
+### 把“发过”拆成三条证据
+第一条是附件清单，列文件名、页数和版本号；第二条是发送记录，核邮件或系统里真正上传的文件；第三条是收件确认，由有权签约的人核对。比如甲发了V2附件，乙邮箱只收到V1，双方虽都说“看过”，约定却不同。另一个项目附件确已送达，但签字人尚未审阅，也不能用送达代替同意。
+
+### 签字前设一个停止点
+若双方版本不同，先暂停签署，发一份包含主合同与附件的最终目录，逐项对照页码和生效日期。若已经签署，则查合同里的文件优先级和补充协议流程，必要时请专业人员核定责任。排盘先核出生资料、年度层和巨门落宫，再把官禄职责与实际文件链逐项相对；盘面提示核对方向，合同效力仍以文件和适用规则为准。
+
+英文标题：Zi Wei Dou Shu 2027 Ju Men Hua Ji: Check Missing Contract Attachments
+英文描述：Use the annual communication question to inspect attachment lists, versions, delivery, and receipt before signing.
+英文正文：
+A client says the acceptance criteria were attached to a contract, but the supplier received only the main file. Ju Men Hua Ji in a 2027 Zi Wei Dou Shu chart can prompt a closer look at communication. It cannot establish who sent or read a document. Begin with the actual file trail.
+
+### Locate the annual marker
+Find Ju Men in the person's chart, then compare the annual layer with the Career Palace duties and connected palaces. A communication concern may be relevant to work, but its actual palace position matters. Keep birth-chart, decade, and annual markers separate rather than turning one year's label into a verdict about a partner.
+
+### Check three records
+Make an attachment list with filenames, page counts, and versions. Check what was uploaded or sent, then obtain receipt confirmation from the authorized signer. One party may have sent version two while the other opened version one. Another file may have arrived but never been reviewed. Delivery and agreement are different events.
+
+### Pause before signature
+If the copies differ, circulate one final directory and confirm each file and effective date. If the contract is already signed, review its document-priority and amendment rules with qualified help. Confirm chart data and the annual placement first, then compare the palace question with the file trail. The records determine the contractual facts.
+
+---
+
+## 07. 读到来因宫教程，怎样与生年四化的站内读法对齐？
+slug：`ziwei-liupai-laiyin-shengnian-sihua-koujing`
+参考研究日期与原文 URL：2026-11-19 https://insightapp.life/blog/en/ziwei-2026-bing-wu-to-2027-ding-wei-transition
+采用角度与旧文区别：当日研究将本命、大限与流年分别标注，提示不同方法层次应保持可核对；站内已有来因宫概念与空宫借对宫的区别，本篇只提供跨教程术语核对表，提醒不能把不同流派步骤混进同一次读盘。
+正文草稿：
+一个教程先找来因宫，另一个排盘页面先标生年四化。初学者常把两者画成同一条箭头，结果盘面位置还没核准，就开始问“哪一个才是真正起点”。来因宫是特定飞化体系中的概念，生年四化是出生年干对应的化曜信息；比较之前，先写明软件与教程各自采用的规则。
+
+### 先给术语注明体系
+把出生资料、排盘工具、安星口径和飞化体系列在表头。第一列抄来因宫在该教程中的定义及定位方法；第二列抄生年四化各化曜与实际落宫；第三列才记它们在这个体系里的先后用途。若工具根本不提供来因宫，就不要凭另一本教程的口诀在现有盘上补画一个位置。
+
+### 同一盘只做同口径比较
+例如甲教程从宫干找来因，乙教程先看生年禄权科忌。两者可以各自说明如何组织问题，却不能把甲的来因位置拿去充当乙盘的命宫主星。另一种情况是两款软件对同一生日排出不同命宫，应先核时辰、历法与安星规则，不能把流派差异解释成“命运改变”。
+
+### 回到一个可验证的问题
+若想问岗位选择，先在同一套盘里固定官禄宫及相关四化，再按所选体系记来因宫如何参与解释。将“适合哪种岗位”的判断拆成职责、权限与支持条件，和真实职位说明对照。排盘顺序是核资料、固定体系、记录宫星与生年四化、再依该体系加入来因宫；跨体系只比较方法边界，不混算结论。
+
+英文标题：Zi Wei Dou Shu Cause Palace and Birth-Year Transformations: Match the Method
+英文描述：Compare a Cause Palace tutorial with birth-year transformations without mixing chart rules from different schools.
+英文正文：
+One Zi Wei Dou Shu lesson starts with a Cause Palace; another chart tool first highlights birth-year transformations. They are not interchangeable labels. The Cause Palace belongs to a particular flying-transformation method, while birth-year transformations name the stars affected by the birth-year stem. Write down each tool's rules before linking the two.
+
+### Label the method
+Record the birth data, chart tool, star-placement rules, and transformation school. In separate columns, write how that tutorial locates its Cause Palace and where the four birth-year transformations actually land. Add the reading sequence only after the definitions are clear. Do not draw a Cause Palace into software that does not define one.
+
+### Compare like with like
+One school may use a palace stem to establish a starting point, while another begins with the stars marked by the birth year. Either can organize a question within its own rules. If two tools give different Life Palaces, check time and placement settings before interpreting the difference as a personal change.
+
+### Return to a concrete choice
+For a job decision, locate the Career Palace and the relevant transformations in one consistent chart. If that school uses a Cause Palace, add it according to its stated rule. Compare the resulting questions with real duties, authority, and support in the job descriptions. Verify birth data, fix the method, record placements, and only then interpret.
