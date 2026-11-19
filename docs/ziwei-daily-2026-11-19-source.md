@@ -523,3 +523,130 @@ One school may use a palace stem to establish a starting point, while another be
 
 ### Return to a concrete choice
 For a job decision, locate the Career Palace and the relevant transformations in one consistent chart. If that school uses a Cause Palace, add it according to its stated rule. Compare the resulting questions with real duties, authority, and support in the job descriptions. Verify birth data, fix the method, record placements, and only then interpret.
+---
+
+## 09. 下班仍反复查工作消息，官禄宫与福德宫怎样拆责任和休息？
+slug：`ziwei-guanlu-fude-xiaban-xiaoxi-bianjie`
+参考研究日期与原文 URL：2026-11-19 https://aiziwei.online/zh-TW/blog/%E5%B7%A5%E4%BD%9C%E5%80%A6%E6%80%A0%E4%B8%8D%E6%98%AF%E6%87%B6%E6%83%B0-%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E7%9C%8B%E5%AE%98%E7%A5%BF%E5%AE%AE%E7%A6%8F%E5%BE%B7%E5%AE%AE
+采用角度与旧文区别：当天研究分开岗位负担与休息恢复；站内已有职业倦怠总论，本篇只问下班后消息是否属于正式值班责任，并给出可检查的响应规则。
+正文草稿：
+晚上十一点，主管在群里发一条“明早讨论”，员工反复打开手机，怕漏掉隐含的回复要求。排盘时，官禄宫可问岗位责任，福德宫可问休息能否恢复；两宫一起看，也不能凭星曜判断主管是否真的要求夜间待命。先核合同、值班表和团队的实际做法。
+
+### 把工作责任写清
+官禄宫看主星、四化和三方四正时，问题应落在谁负责、何时交付、谁能决定优先级。若官禄见权，可提醒核授权与负担，不能把所有群消息都算成自己的工作。比如客服有明确轮值，夜间处理紧急订单是职责；设计师没有值班安排，却每晚追踪所有讨论，就需要问清哪些事项可以等到早晨。
+
+### 把休息变成可观察的记录
+福德宫可以提示关注内在恢复，但不能代替睡眠和工时记录。连续两周记下夜间消息数量、实际需要回复的比例、被打断后的入睡时间。若群里常发非紧急通知，团队可设定“紧急电话、普通消息次日处理”；若值班频繁，则应轮换并确认补休。另一个员工不看群也睡不好，原因可能不同，不能用同一宫位解释所有疲惫。
+
+### 用协议复盘
+排盘先核出生资料与所问时间，再看官禄的职责、福德的恢复和四化的触发；最后用值班表、通知规则和休息记录核对。向主管确认响应时限和升级联系人，试行一周后复盘。若明显身心不适，应先处理健康与工作安排，盘面不替代现实支持。
+
+英文标题：Zi Wei Dou Shu Career and Inner-Life Palaces for After-Hours Messages
+英文描述：Separate actual on-call duty from the inability to recover after work.
+英文正文：
+A manager posts a message late at night about a meeting tomorrow. An employee keeps checking the phone, unsure whether a reply is expected. In Zi Wei Dou Shu, the Career Palace can frame assigned responsibility and the Inner-Life Palace can frame recovery. Neither palace establishes the team's response rule. Start with the contract and on-call schedule.
+
+### Define the duty
+Read Career Palace stars, transformations, and connected palaces against the actual role. A scheduled support worker may need to answer urgent orders. A designer without on-call duty may need a clear agreement about which messages can wait. A marker of authority does not make every group notification an emergency.
+
+### Track recovery
+For two weeks, record late messages, how many required a reply, and whether sleep was interrupted. A team can use a phone escalation for emergencies and next-day replies for ordinary updates. If on-call shifts are frequent, rotate them and confirm time off. Poor sleep with few messages may require a different inquiry.
+
+### Check the agreement
+Verify birth data and the question, read Career for duty and Inner-Life for recovery, then compare with the schedule and records. Set a response window and review it after a week. Address serious health concerns through real support.
+
+---
+
+## 10. 紫微坐命主持例会，怎样分清协调会议与拍板权限？
+slug：`ziwei-ziwei-minggong-lihui-jueding-quan`
+参考研究日期与原文 URL：2026-11-19 https://ziweiuniverse.com/knowledge/ziwei/star-ziwei/
+采用角度与旧文区别：当天紫微主星研究提示领导与组织主题；站内紫微星性格文章较宽，本篇只核例会主持、建议汇总和最终批准三种不同权力。
+正文草稿：
+团队让一名新人主持每周例会，他会排议程、点名进度，却不能批准预算。看到紫微坐命就说“天生是领导”，容易把协调角色误读为决策权。紫微斗数先核命宫主星与官禄宫的实际职务，现实里还要看授权文件。
+
+### 星曜提示组织方式
+紫微在命宫，可能使人关注统筹与秩序，但仍须看同宫、对宫、三方四正及四化。若官禄宫承接明确管理职权，可进一步问审批范围；若只是被安排主持会议，就先看他能否把信息整理清楚。命宫见紫微不等于任何项目都由本人拍板。
+
+### 三个动作要有三条记录
+主持人发议程并收集阻碍，项目负责人选择方案，财务批准预算。比如研发例会提出添置设备，主持人可以记录两种报价，却不能越过负责人签采购单。另一场会议只是调整下周讨论顺序，主持人可能当场决定，无需上升为项目授权。会议纪要应分别写“建议”“决定”“待批准”，避免口头称为共识。
+
+### 把盘面与岗位对齐
+排盘先核出生资料，再看紫微落命、官禄的职责和财帛的预算联系；最后核岗位说明、审批矩阵及纪要。若希望争取管理岗位，可从主持质量和跟进记录提出申请，不能靠星曜替自己取得权限。
+
+英文标题：Zi Wei in the Life Palace: Meeting Chair or Decision Maker?
+英文描述：Use a Zi Wei Dou Shu chart to ask about coordination while checking who can approve decisions and budgets.
+英文正文：
+A junior employee chairs a weekly meeting and tracks progress but cannot approve spending. Zi Wei in the Life Palace of a Zi Wei Dou Shu chart may raise a question about organizing people. It does not grant decision rights. Compare the Life Palace with the Career Palace role and the team's written authority.
+
+### Read the placement
+Consider Zi Wei with its palace, opposite position, connected palaces, and transformations. Ask how the person coordinates information before inferring a management role. Check the Career Palace for assigned duties. A star associated with leadership cannot override the job description.
+
+### Name each action
+The chair sets the agenda and records blockers. A project owner chooses a solution. Finance approves a purchase. A chair may collect equipment quotes but not sign the order; the same chair may decide the order of discussion. Mark proposals, decisions, and pending approvals separately in meeting notes.
+
+### Match chart and role
+Confirm birth data, read the Life and Career Palace questions, then check the approval matrix and minutes. If the person wants a larger role, use a record of effective coordination to request one through the actual team process.
+
+---
+
+## 13. 伴侣共同装修，夫妻宫与财帛宫怎样分家用和个人储蓄？
+slug：`ziwei-fuqi-caibo-zhuangxiu-geren-chuxu`
+参考研究日期与原文 URL：2026-11-19 https://www.ziweiaz.com/en/judging-lifes-marital-and-emotional-fortune-through-the-spouse-palace-and-wealth-palace
+采用角度与旧文区别：当日研究把夫妻与财帛并问；站内家居升级预算文章聚焦总付款节奏，本篇限定伴侣双方个人储蓄、共同账户和报销边界。
+正文草稿：
+两人计划装修共有房屋，报价二十万元。甲想动用个人储蓄，乙认为应先用共同账户；争执表面是“谁支持装修”，实质是账户归属和可承担金额。夫妻宫可问协商关系，财帛宫可问资金流向，田宅宫可问房屋使用；一颗吉星不能替两人签预算。
+
+### 三宫回答不同问题
+先看夫妻宫主星、四化和三方四正，问怎样谈分工；财帛宫核钱的来源与流动；田宅宫核产权、居住和修缮需求。若夫妻见化忌，只提示协商容易卡住，不能认定一方自私；若财帛见禄，也不等于个人账户应全额投入。现实决定要从账户与产权资料开始。
+
+### 把钱分成三层
+第一层是共同账户可用余额，第二层是双方愿意投入的个人储蓄，第三层是必须保留的个人应急金。例如甲存十五万元、乙存五万元，但甲需保留十万元照顾家人，不能简单按存款比例摊钱。另一对收入相近，却一方有待偿贷款，出资比例也要另算。每笔大额付款记日期、账户和是否形成双方认可的出资记录。
+
+### 装修前确认退出规则
+列必做维修、可延期升级与追加费用上限；若报价超预算，先删哪项，谁能同意变更。排盘先核双方资料与所问，再分别看夫妻、财帛、田宅，最后与共同账户、产权及合同核对。必要时就法律和产权问题咨询专业人员，别用盘面代替协议。
+
+英文标题：Zi Wei Dou Shu Spouse and Wealth Palaces for a Shared Renovation Budget
+英文描述：Separate joint funds, personal savings, and emergency reserves before renovating a shared home.
+英文正文：
+Two partners plan to renovate a shared home. One wants to use personal savings; the other prefers the joint account. In Zi Wei Dou Shu, the Spouse Palace frames negotiation, the Wealth Palace frames cash flow, and the Property Palace frames the home. The chart does not decide whose money must be spent.
+
+### Ask three questions
+Read each palace's stars, transformations, and connected positions. A difficult Spouse Palace marker may prompt a discussion about friction, not blame. A favorable Wealth Palace marker does not make personal savings available to the other person. Check the accounts and ownership records.
+
+### Separate the funds
+List usable joint cash, contributions each partner freely agrees to make, and reserves each must keep. One partner may have more savings but also a family care obligation. Another household may have similar earnings but unequal debt. Record each major payment, account, date, and agreed treatment.
+
+### Agree on a change rule
+Separate necessary repairs from optional upgrades and set an approval threshold for extra costs. Verify birth data and the precise question, read Spouse, Wealth, and Property Palaces together, then use the written budget and contract to make the decision. Seek qualified help for ownership questions.
+
+---
+
+## 19. 销售额上涨却退货率高，财帛宫与官禄宫怎样核实际利润？
+slug：`ziwei-caibo-guanlu-tuihuo-lirun-hedui`
+参考研究日期与原文 URL：2026-11-19 https://www.purplestarmapper.com/en/blog/2026-economic-reshuffle-ziwei-wealth-palace-guide
+采用角度与旧文区别：当日财帛研究把经济变化落到实际收入；站内现金流文章分到账与承诺，本篇只核退货、履约成本和利润，避免把销售额当利润。
+正文草稿：
+网店本月销售额翻倍，店主看到财帛宫有禄，便打算立即扩大进货。月底却发现退货也翻倍，运费和客服加班吃掉新增收入。财帛宫适合问钱如何流入与流出，官禄宫问交付流程和经营责任；“订单多”不等于“利润高”。
+
+### 先把宫位问题定准
+财帛宫的主星、四化和三方四正可帮助关注收入机会与支出压力；官禄宫则问商品、服务和履约怎样组织。财帛见禄不保证每笔订单都留下利润，见忌也不直接等于亏损。若客户因尺码退货，要查商品说明；若因发货慢取消，要查仓库流程。两种原因分别影响下一步投入。
+
+### 四个数放同一张表
+列已完成且过退货期的销售收入、退款金额、采购与平台费用、额外运费及人工。比如十万元订单中两万元被退，成本和费用共七万元，粗算只余一万元；另一店八万元订单退货少、成本五万元，实际可用空间反而更大。再把尚未到账的平台结算款单列，不能提前拿来付新货。
+
+### 先修流程再扩张
+查看退货理由，选一项可验证的修正，如尺码表、包装或发货时限，连续两周对比退货率和利润。排盘先核出生资料与所问月份，再看财帛的资金主题、官禄的交付结构，最后用订单和账单核对。盘面给检查方向，扩大进货要由实际利润和库存决定。
+
+英文标题：Zi Wei Dou Shu Wealth and Career Palaces: Sales Are Not Profit
+英文描述：Check returns, delivery costs, and settled revenue before expanding a growing shop.
+英文正文：
+An online shop doubles its sales, and the owner wants to order more stock. Returns, shipping, and support costs have risen too. In Zi Wei Dou Shu, the Wealth Palace can frame money entering and leaving; the Career Palace can frame how the business delivers. More orders do not prove higher profit.
+
+### Define the question
+Read the Wealth Palace stars, transformations, and connected palaces, then the Career Palace duties. A return caused by poor sizing information calls for a different fix from a cancellation caused by slow shipping. A favorable money marker does not settle the accounting.
+
+### Put four figures together
+Record completed sales after the return period, refunds, purchase and platform costs, and added shipping or labor. A shop with large orders and many refunds can keep less than one with lower sales and fewer costs. Keep unsettled platform payments in a separate column until they arrive.
+
+### Test a process change
+Choose one fix, such as a clearer size chart or a faster dispatch rule, and compare return rate and profit for two weeks. Verify birth data and the month, read Wealth for funds and Career for delivery, then check the order and bank records before expanding stock.
