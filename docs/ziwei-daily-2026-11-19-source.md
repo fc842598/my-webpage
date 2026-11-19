@@ -365,3 +365,98 @@ Use the Friends Palace for recurring division of work and the Career Palace if a
 
 ### Try a limited shift
 Agree to a two hour task with a named contact and an end time. Record what was added during the shift and what feedback came afterward. Compare two activities before joining a monthly rota. Verify the birth data and the precise question, then read Travel for entry, Friends for cooperation, and Career for assigned duties. Make the continuing commitment from the real schedule.
+---
+
+## 08. 刚学紫微星曜太多，怎样建立一张不混宫位的学习表？
+slug：`ziwei-xuexi-xingyao-biaoge-jilu`
+参考研究日期与原文 URL：2026-11-19 https://ziweiuniverse.com/knowledge/ziwei/star-ziwei/
+采用角度与旧文区别：当天主星资料提示星义必须结合落宫；站内已有读盘顺序，本篇只教初学者如何记录一张盘的星、宫、四化及时间层，避免笔记混层。
+正文草稿：
+刚学紫微斗数时，把“紫微主事”“天机多变”抄进笔记，隔周再看自己的盘，却想不起哪颗星在哪一宫。问题不在背得少，而在星义脱离了落宫。建立学习表时，每行只记录一个明确位置和一个待验证的问题，不急着写吉凶结论。
+
+### 先记盘面事实
+表格可设出生资料版本、所问问题、星曜、所在宫、对宫和三方四正六栏。比如紫微在官禄宫，先写岗位与职责；若紫微在田宅宫，则先问空间、资产和家中安排。星名相同，问题不同。把安星软件名称与时辰设置也写在表头，日后换工具时才知道差异来自哪里。
+
+### 四化和时间层另开列
+生年四化、大限四化、流年四化分别写列，不把年度触发当成终身性格。某人官禄宫有文昌，2027年又见流年化忌相关线索，可以记录“今年合同文档是否反复修改”，不能改写成“文昌一定让人工作不顺”。另一人只想选课程，根本不必把所有流年星曜抄进同一格。
+
+### 用一个例子检查表格是否有用
+以换岗为题，先写官禄宫的主星与四化，再列财帛宫的薪资现金、迁移宫的外部团队，最后记两份岗位说明书的职责差异。一周后复看，能从表里找回当时的问题和证据，表格就合格。排盘时先核资料，再定问题、抄盘面、分时间层，最后写现实核对项；若结论改了，保留旧记录和修改原因。
+
+英文标题：Zi Wei Dou Shu Star Study Table: Keep Stars, Palaces, and Timing Separate
+英文描述：Build a useful Chinese astrology chart notebook with separate fields for star placement, palace, transformations, and evidence.
+英文正文：
+Memorizing star keywords can leave a beginner unable to explain a real chart. In Zi Wei Dou Shu, the same star raises different questions in the Career and Property Palaces. A study table should preserve the actual placement and the question being asked before it records an interpretation.
+
+### Record what the chart shows
+Create columns for the birth data version, question, star, palace, opposite palace, and connected palaces. Write the chart tool and birth time setting at the top. If Zi Wei sits in the Career Palace, ask about duties. If it sits in the Property Palace, ask about space or assets. The name of the star alone is not a reading.
+
+### Keep timing in separate columns
+Record birth-year, decade, and annual transformations separately. A document problem in one year should not become a permanent personality label. Someone comparing jobs may need a Career Palace entry and real job descriptions, while a student choosing a course may need a different question and less timing detail.
+
+### Check whether the notes are reusable
+For a job change, write the Career Palace positions, the Wealth Palace money question, and the Travel Palace team setting. Compare those notes with two actual job descriptions. A week later, you should be able to recover the question and evidence. Verify the birth data, define the question, record placements, separate time layers, and keep a reason whenever you revise the interpretation.
+
+---
+
+## 14. 文昌落官禄宫，岗位要求写文档时先核哪些实际职责？
+slug：`ziwei-wenchang-guanlu-jilu-zhize`
+参考研究日期与原文 URL：2026-11-19 https://fatealignlab.com/en/blog/read-your-career-palace
+采用角度与旧文区别：当日官禄研究提醒星曜应对应实际岗位；站内天机化科新团队文章讨论接入权限，本篇只拆文档撰写、事实审核和归档的不同责任。
+正文草稿：
+产品经理的岗位写着“负责项目文档”，新同事以为自己要写会议纪要、审核技术参数，还要决定旧版何时归档。排盘见文昌落官禄宫，不能由此推断他天生能把所有资料写对。文昌提示文字整理这一层，官禄宫才让问题回到岗位职责和评价方式。
+
+### 从官禄宫定位工作角色
+先看文昌与官禄宫主星、对宫及三方四正，再核四化落在哪里。文昌见科可提示书面表达被看见的机会，但不等于有技术审核权；见忌也不等于文档必然出错。若实际岗位只负责汇总，技术结论仍应由工程负责人确认。星曜线索要和组织里的授权相互核实。
+
+### 把三种动作写成三个人名
+会议纪要由记录人整理，技术规格由专业负责人复核，定稿由版本管理员归档。例如客户要求把接口响应时间从两秒改成一秒，记录人可以写进变更清单，却不能私自在正式手册里改承诺。另一项目只是错别字修正，则可按预设流程由编辑修改、审核者确认。两件事都叫“改文档”，风险却不同。
+
+### 用版本记录结束争论
+每份文件留作者、审核者、批准者、版本号和生效日期。若临时有人代班，写明谁有权限批准发布，避免共享账号。排盘先核出生资料、官禄宫位置及文昌组合，再问文档工作究竟是撰写、判断还是最终签发；最后用岗位说明和版本记录核对。宫位帮助拆问题，责任边界由实际流程给出。
+
+英文标题：Zi Wei Dou Shu Wen Chang in the Career Palace: Who Owns the Documents?
+英文描述：Separate drafting, technical review, and archiving when a role involves written project records.
+英文正文：
+A job description says that a product manager owns project documentation. Does that mean writing notes, approving technical claims, and archiving final versions? Wen Chang in the Career Palace of a Zi Wei Dou Shu chart can raise a question about written work. It cannot assign every permission to one person.
+
+### Start with the role
+Read Wen Chang alongside the Career Palace main stars, opposite palace, connected palaces, and transformations. A favorable writing marker does not grant technical review authority. A difficult marker does not prove that errors will happen. Check the actual job description and who is allowed to approve facts.
+
+### Separate three actions
+One person drafts meeting notes, a specialist reviews technical specifications, and a version owner archives the approved file. A request to change a service promise needs authorized review, while a spelling correction may follow a simpler path. Both modify a document, but they carry different responsibility.
+
+### Keep a version trail
+Record author, reviewer, approver, version, and effective date. Assign a named backup when the usual reviewer is away. Confirm the birth data and palace positions, ask whether the work concerns drafting, judgment, or final release, then compare the chart question with the written workflow.
+
+---
+
+## 20. 小限显示差一岁，怎样核实岁虚岁和软件口径？
+slug：`ziwei-xiaoxian-shisui-xusui-hedui`
+参考研究日期与原文 URL：2026-11-19 https://insightapp.life/blog/en/ziwei-2026-bing-wu-to-2027-ding-wei-transition
+采用角度与旧文区别：当天年度转换研究提示时间层口径要固定；站内大限交界文章讨论日期，本篇只核小限岁数标签与实岁、虚岁的显示差。
+正文草稿：
+同一个生日，一款紫微排盘显示小限三十一岁，另一款显示三十二岁。有人立刻问“是不是走到下一宫了”。先不要拿两张截图比较吉凶：两款软件可能分别用实岁、虚岁，或在不同日期切换年龄标签。需要先把输入和显示规则排成一张对照表。
+
+### 固定比较条件
+抄下出生年月日时、出生地、查询日期与时区，记录各工具的小限规则。若一个人公历生日还没到，实岁可能仍是三十一；按虚岁标记则可能显示三十二。数字差一不自动表示宫位安法错了。还要看软件有没有用农历岁首或其他流派规则，不能凭页面数字猜测。
+
+### 分开年龄标签与所在宫
+第一栏写工具显示的岁数，第二栏写它把小限放在哪一宫，第三栏写采用的转换依据。比如两个工具都把小限放在同一宫，只是年龄叫法不同，争议属于标签；若所在宫也不同，再查安小限方向和起点。另一种情况是查询日期恰好跨生日，先把日期设成同一天再比较。
+
+### 先解释口径，再谈流年
+小限只是时间层之一，不应因为数字大一岁就认定某件事已经发生。排盘先核出生数据和软件设置，再对照实岁、虚岁与小限宫位；只有规则确认后，才把本命、大限、流年及小限放在同一张盘里提问。保留截图和设置，未来复查才不会把软件差异误认作人生变化。
+
+英文标题：Zi Wei Dou Shu Minor Cycle: Why Two Apps Show Different Ages
+英文描述：Compare real age, nominal age, and each chart tool's minor-cycle rule before reading a one-year difference.
+英文正文：
+Two Zi Wei Dou Shu apps show ages thirty-one and thirty-two for the same person. Before treating them as different forecasts, check what each number means. One tool may display real age and another nominal age, or they may switch the label on different dates. A one-year display gap does not by itself locate a different minor-cycle palace.
+
+### Fix the inputs
+Record the birth date, time, place, query date, and time zone. Check whether the birthday has passed in the query year. Then find each app's stated age rule, including any lunar-year convention. Do not infer the rule from a screenshot alone.
+
+### Compare label and placement
+Write the displayed age in one column and the minor-cycle palace in another. If both apps show the same palace but different numbers, the issue may be only the label. If the palace differs too, compare the starting position and direction used by each method. Use the same query date in both apps.
+
+### Return to the chart carefully
+Confirm the software settings before combining the birth chart, decade, annual, and minor-cycle layers. A different number does not prove that an event has happened. Keep both screenshots and their settings so the comparison can be repeated.

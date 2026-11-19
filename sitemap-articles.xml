@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-11-19T12:05:00+08:00</lastmod>
+    <lastmod>2026-11-19T12:07:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-learning-path.html</loc>
-    <lastmod>2026-11-18T11:03:00+08:00</lastmod>
+    <lastmod>2026-11-19T12:07:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -24871,4 +24871,5 @@
   <url><loc>https://yuetianai.com/articles/ziwei-hehuo-caigou-shenpi-ed.html</loc><lastmod>2026-11-19T11:03:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-qianyi-wangshang-shouke-chujian.html</loc><lastmod>2026-11-19T12:05:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-qianyi-xin-shequ-zhiyuan.html</loc><lastmod>2026-11-19T12:05:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-xuexi-xingyao-biaoge-jilu.html</loc><lastmod>2026-11-19T12:07:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
