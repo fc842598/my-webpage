@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-11-20T09:02:00+08:00</lastmod>
+    <lastmod>2026-11-20T09:04:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-main-stars.html</loc>
-    <lastmod>2026-11-19T12:12:00+08:00</lastmod>
+    <lastmod>2026-11-20T09:04:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -24882,4 +24882,5 @@
   <url><loc>https://yuetianai.com/articles/ziwei-caibo-guanlu-tuihuo-lirun-hedui.html</loc><lastmod>2026-11-19T12:12:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-2027-zinv-daixinren-peixun-yusuan.html</loc><lastmod>2026-11-20T09:00:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-2027-jumen-huaji-tianzhai-hezu-shuidian.html</loc><lastmod>2026-11-20T09:02:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-taiyin-tianzhai-jiawu-anpai-chengben.html</loc><lastmod>2026-11-20T09:04:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

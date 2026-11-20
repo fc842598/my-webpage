@@ -69,3 +69,38 @@ Keep the original deposit receipt, permitted deductions, and refund deadline. Fo
 
 ### Confirm the next step in writing
 Ask the landlord to state the deduction, evidence, and expected refund date in one message. Agree which roommate speaks with the landlord, receives the refund, and distributes it. Verify birth data and the annual chart convention, locate Ju Men Hua Ji, then read Property, Wealth, and Friends together. Use the chart to organize questions; use the lease, bills, and applicable rules to settle the money.
+
+---
+
+## 03. 太阴在田宅宫，家务明明平分，为什么总是一个人在安排？
+slug：`ziwei-taiyin-tianzhai-jiawu-anpai-chengben`
+参考研究日期与原文 URL：2026-11-20 https://mingming3.com/en/ziwei/articles/ziwei_taiyin
+采用角度与旧文区别：当天研究指出太阴的思虑与家庭角色成本。站内已有太阴财富、田宅居住和泛家务分工文章，本篇只核家务执行之外的计划、提醒和确认责任；不做单星性格总论。
+正文草稿：
+一家两人约定家务各做一半：一人洗碗，另一人洗衣。几个月后，洗碗的人觉得公平，洗衣的人却越来越累，因为洗涤剂快用完、孩子校服何时要穿、衣物是否能烘干，都由后者提前想着。太阴在田宅宫时，可以把这种居家安排的细节当成提问线索，但不能凭一颗星断定谁天生该操心。
+
+### 太阴不等于某个人的家庭义务
+先看太阴在田宅宫的星曜亮度、同宫主辅星与四化，再看对宫、三方四正；田宅定位住处及其使用，太阴的细致取象要回到实际生活核对。若化禄，可能有资源整理得更顺的机会，也可能只是愿意投入更多；若化忌，先查是哪项安排反复卡住。宫位说的是问题场景，不是要求某个性别或家人承担额外劳动。
+
+### 执行动作之外还有安排动作
+把一周家务分成“发现要做”“确定时间和标准”“实际执行”“验收补救”四栏。甲负责做饭，也负责想菜单、记过敏食材、提醒买菜；乙只负责按清单采购，虽然两人都有动作，计划工作仍集中在甲。另一家把菜单轮流制定、采购预算一起确认，做饭次数相同，负担却更容易看见。若还要照顾长辈，可补看父母宫；涉及孩子作息，则把子女宫纳入，不把全家需求都塞进田宅宫。
+
+### 用交接规则替代反复提醒
+与其说“你多主动一点”，不如明确每项家务的完整负责人：谁发现缺货、谁下单、谁在延误时提出替代方案。比如周日由一人检查冰箱并列购物清单，周三由另一人补充消耗品；连续两周记录漏项和被提醒次数。责任可以按工时、体力或擅长程度调整，并不必每项一人一半。财帛宫可帮助核共同采购费用，但有预算也不等于有人负责安排。
+
+### 排盘和生活各有核对顺序
+先核出生资料，定位太阴与田宅，再看亮度、四化和相关宫位；随后拿家务清单、日历、采购记录对照。若讨论发现一方已经长期疲惫，应先调整现实分工和休息，不等盘面给出许可。紫微斗数在这里帮人看到被漏记的工作，具体分配仍要由同住者共同商量。
+
+英文标题：Tai Yin in the Property Palace: Who Plans the Household Work?
+英文描述：Use Zi Wei Dou Shu to notice planning and reminder work behind an apparently equal chore schedule.
+英文正文：
+Two people split chores evenly, yet one still tracks supplies, schedules, and unfinished tasks. Tai Yin in the Property Palace of a Zi Wei Dou Shu chart can prompt a question about attention and home routines. It does not assign household duty to a gender or personality type. Compare the chart with what actually happens each week.
+
+### Look beyond the star name
+Read Tai Yin's condition, nearby stars, transformations, opposite palace, and related positions. The Property Palace frames the shared living space. A favorable marker does not prove the work feels easy; a difficult one does not prove another person is careless. Use the pattern to ask which tasks repeatedly need attention.
+
+### Count the planning as work
+List who notices a shortage, sets a deadline, does the task, and checks the result. One person may cook and also plan meals around allergies, while the other shops from a ready-made list. Both perform chores, but the planning is uneven. If children or older relatives add scheduling needs, treat those as separate questions rather than hiding them inside a general home label.
+
+### Give each task an owner
+Agree who checks supplies, orders replacements, and proposes a fallback when plans change. Track missed steps and reminders for two weeks, then revise the schedule. Verify birth details, locate Tai Yin and the Property Palace, and read the linked palaces. Use the chart to notice a possible blind spot; use calendars, receipts, and a shared conversation to divide the real work.
