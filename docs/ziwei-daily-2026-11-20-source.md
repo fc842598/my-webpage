@@ -244,3 +244,36 @@ A person born early in the civil year may receive different year stems under dif
 Wen Chang and Wen Qu provide a useful contrast because their placement is tied to the birth hour. If both pairs disagree, keep separate notes for hour and time-zone settings and for the year stem and placement table. Change one input, regenerate the chart, and see which stars move. This yields a repeatable explanation.
 
 Only after placement is settled should you read Tian Kui and Tian Yue with their palace, main stars, transformations, and related palaces. A placement near Career can prompt a question about formal introductions at work; it does not guarantee an offer. Keep uncertainty in the reading if the birth record is incomplete.
+---
+## 08. 换主管后周报模板变了，父母宫和官禄宫怎样分清审批与成果？
+slug：`ziwei-fumu-guanlu-xinzhuguan-zhoubao-moban`
+参考研究日期与原文 URL：2026-11-20 https://horosastrology.com/zh-TW/blog/post/fu-mu-palace-parents-in-zi-wei-dou-shu
+采用角度与旧文区别：当天研究提示父母宫也可问上级和权威关系。站内已有主管反馈模糊及一般领导相处；本篇只核换主管时周报字段、审批链与岗位成果归属，不重复情绪或性格判断。
+正文草稿：
+新主管上任，把周报从“本周完成事项”改为“数据、风险、下周请求”三栏。你明明做了同样的工作，却担心少填一项就被认为没有成果。紫微斗数里，父母宫可帮助观察与上级、制度入口的关系，官禄宫才定位岗位职责与工作产出；两宫要连着看，不能把模板变化直接说成事业受阻。
+
+### 先把规则变化和工作变化分开
+核出生资料后看本命父母、官禄宫的主星、四化及相互会照，再看当前大限、流年哪一层被触发。父母宫受牵动，可问谁有权定格式、审核和退回；官禄宫受牵动，可问任务是否真的换了、谁负责签收。若只是表格字段变了，岗位目标未变，先处理报告口径；若项目负责人也变了，则需同步更新交付清单。化权也不等于主管必然强势，要看现实授权。
+
+### 周报三栏各自保留证据
+第一栏写本周交付物：版本号、链接和验收人。第二栏写风险：卡在谁的审批、预计何时影响交付。第三栏写请求：需要哪位主管决定什么、最迟哪天回复。甲员工只写“协助完成项目”，新主管无法判断贡献；乙员工写“完成客户表单第二版，周三由产品验收，待安全审查”，即使结果还未上线，工作与卡点都能查证。这是报告质量差异，不是命盘决定谁更受赏识。
+
+### 审批人与成果负责人可能不是同一人
+另一种情况是新主管要求所有周报先交组长汇总。组长能改格式，却未必能替你确认项目结果。把审批链分为收表、核事实、签收成果三步，并在周报中写清每步负责人。若父母宫提示制度沟通压力，可以提前问清退回标准；若官禄宫又见责任增加，则确认新增指标是否写入岗位目标。不要为了通过表格审批，把别人的交付算成自己的成果。
+
+### 排盘后用两周记录复查
+先核父母宫的上级与制度主题，再核官禄宫的职责和成果，最后看四化、对宫与三方四正。现实中保存旧版、新版周报和退回意见，两周后比较退回次数、审批等待及项目验收是否更清楚。盘面帮助区分权威关系与职业任务，具体汇报规则仍以团队书面约定为准。
+
+英文标题：Zi Wei Dou Shu Parents and Career Palaces: A New Manager's Weekly Report
+英文描述：Separate a manager's approval rules from your actual job results when a weekly report template changes.
+英文正文：
+A new manager replaces a simple weekly update with three fields: results, risks, and next week's requests. You may do the same work yet worry that a missing field will make it invisible. In Zi Wei Dou Shu, the Parents Palace can frame your relationship with authority and rules, while the Career Palace frames job duties and output. Read them together before treating a reporting change as a career setback.
+
+### Separate the rule from the assignment
+Confirm birth details and read the stars and transformations in both palaces. If only the report format changed, ask who set the template and who can return it. If the project owner or acceptance rule also changed, update the delivery list. Note whether the question belongs to the natal chart, current ten-year cycle, or annual layer. A transformation associated with authority does not describe a manager's personality by itself.
+
+### Make the three fields verifiable
+For results, include a deliverable link, version, and reviewer. For risks, identify the blocked approval and expected effect. For requests, name the decision and deadline. An employee who writes only “helped the project” leaves their contribution vague. Another records a completed form revision, product review date, and pending security check. The second report gives the manager something specific to confirm even before launch.
+
+### Keep approval and ownership distinct
+A team lead may collect reports without being authorized to accept the finished project. Record who receives the form, checks the facts, and signs off on the result. If the job gains a new metric, ask whether it has entered the formal role. Compare old and new reports, returned items, and approval delays over two weeks. Read Parents for the rule and Career for the work, then use the written process to settle responsibility.
