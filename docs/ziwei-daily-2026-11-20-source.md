@@ -34,3 +34,38 @@ Record weekly mentoring hours, software or course fees, and the review time need
 
 ### Put ownership in writing
 A trainee can practice a client response while an authorized colleague approves the final version. If you are accountable for the outcome, ask for the authority to set training steps and request review. Verify birth details and the annual chart convention, read Children, Career, and Wealth together, then compare the chart questions with the written hours, expense approval, and sign-off rule. Review the arrangement after two weeks of actual work.
+
+---
+
+## 02. 2027巨门化忌落田宅，合租水电与押金怎样避免口头争议？
+slug：`ziwei-2027-jumen-huaji-tianzhai-hezu-shuidian`
+参考研究日期与原文 URL：2026-11-20 https://insightapp.life/blog/en/ziwei-2027-ding-wei-annual-si-hua-complete-guide
+采用角度与旧文区别：当天研究提示巨门忌要查落宫、对宫和合同记录。站内已有田宅续租、住房选择与租约文章，本篇限定合租公共费用、押金扣款证据与室友分账，避免重写年度四化通论。
+正文草稿：
+合租到年底，房东说要从押金里扣一笔水电费，室友却记得上个月已经结清。2027年若巨门化忌落在自己的田宅宫，这类争论可以作为要核对的居住事项；它并不预告房东一定失信，也不能凭星曜裁定谁欠钱。先把口头说法变成可查的账单和日期。
+
+### 先看田宅，再看钱和人
+田宅宫定位房屋、租住与共同空间；财帛宫看个人付款与可退金额；交友宫则帮助追问室友之间的分工。先确认巨门化忌到底在本命、流年哪一层、落本宫还是会照，再查田宅的主星、对宫和三方四正。若田宅见忌而财帛未受牵动，重点可能是沟通与凭证，而非资金不足；若财帛也有压力，就要把退租后现金周转列入计划。不能把“忌”直接译成损失金额。
+
+### 押金和水电各留一条证据链
+签约时记下押金付款账户、金额、退还期限与允许扣费的项目。合租水电按抄表日期列数值、单价、各人分摊规则和转账凭证。甲室友每月固定转给主租人，却没有账单截图，退租时很难确认哪期未结；乙室友把每月截图和付款记录放在共享文件夹，即使有争议，也能逐期找出差额。照片要包含表号和拍摄日期，避免拿隔壁住户的读数来算。
+
+### 口头协商留下确认节点
+若房东说“押金先扣，之后再算”，要求在同一条书面消息里列扣款原因、依据和预计返还日期。室友之间也要确认谁联系房东、谁接收退款、谁向其他人转回。另一种常见情况是有人提前搬走，仍要按合同约定核空置期、网络费和钥匙交接；不能让留住的人凭印象代付。发生争议时依据合同、账单和当地规则处理，必要时找合适的专业渠道。
+
+### 排盘只负责把问题问准
+核出生资料及2027流年口径后，定位巨门化忌与田宅，再连财帛、交友和对宫观察。现实里同步做一张费用表：项目、期间、凭证、付款人、待确认金额。用书面核对代替反复争论；盘面是整理居住风险的顺序，不是合同解释或法律结论。
+
+英文标题：Zi Wei Dou Shu 2027 Ju Men Hua Ji: Shared Rent Bills and Deposits
+英文描述：Track utility readings, roommate payments, and deposit deductions when a housing dispute arises.
+英文正文：
+At the end of a shared lease, the landlord proposes a utility deduction from the deposit. One roommate remembers paying it already. If Ju Men Hua Ji touches the Property Palace in a 2027 Zi Wei Dou Shu chart, it can prompt a clearer housing question. It cannot determine who owes the bill. Start with dates and records.
+
+### Separate the home, money, and people
+The Property Palace frames the living arrangement. The Wealth Palace frames each payment and refund. The Friends Palace can help frame roommate cooperation. Confirm whether the transformation belongs to the annual layer and how it connects with the natal chart, opposite palace, and related positions. A difficult marker does not specify a dollar loss.
+
+### Build a record for each charge
+Keep the original deposit receipt, permitted deductions, and refund deadline. For utilities, record meter readings, rates, the sharing formula, and transfer confirmations each month. A screenshot without a date can be hard to match to the correct bill; a dated photo and bank record are more useful. If one roommate moves early, check the lease terms for the vacant period rather than relying on memory.
+
+### Confirm the next step in writing
+Ask the landlord to state the deduction, evidence, and expected refund date in one message. Agree which roommate speaks with the landlord, receives the refund, and distributes it. Verify birth data and the annual chart convention, locate Ju Men Hua Ji, then read Property, Wealth, and Friends together. Use the chart to organize questions; use the lease, bills, and applicable rules to settle the money.
