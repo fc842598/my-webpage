@@ -555,3 +555,143 @@ Verify the birth data, lunar day, element bureau, and Zi Wei placement, then fol
 
 ### Interpret only after validation
 Even a valid pair needs its palace, condition, transformations, other stars, opposite palace, and connected positions. The same pair in Career and Fortune frames different questions. Save the original chart and settings, check the claimed cells, then discuss what the verified arrangement means for the specific issue.
+
+---
+
+## 17. 熟人临时请你接送孩子，交友与兄弟宫怎样分清帮忙和分工？
+slug：`ziwei-jiaoyou-xiongdi-jiating-jiesong-fengong`
+参考研究日期与原文 URL：2026-11-20 https://aiziwei.online/zh-TW/blog/%E5%B0%8F%E9%9B%AA%E5%89%8D%E5%BE%8C%E4%BA%BA%E9%9A%9B%E6%80%8E%E9%BA%BC%E6%94%B6%E6%96%82-%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E8%AB%87%E4%BA%A4%E5%8F%8B%E5%AE%AE%E8%88%87%E5%85%84%E5%BC%9F%E5%AE%AE
+采用角度与旧文区别：当天研究区分外圈人情和近圈同辈分工。本文限于孩子临时接送的具体承诺、授权与备用方案；不重复今日工作群回复边界或泛人际贵人题。
+正文草稿：
+朋友临时说“帮我接一下孩子，十分钟就到”，你答应后才知道还要带孩子等一个多小时。紫微斗数可用交友宫提问熟人请求，用兄弟宫核近圈同辈是否已经形成互助分工；但一次帮忙不会自动变成长期责任。涉及孩子安全，先把接送授权和时间说清。
+
+### 两宫分的是关系层次
+先看本命交友、兄弟两宫的主星、四化、对宫和三方四正，再看当前大限流年是否使同类请求增多。交友宫偏较广的朋友与协作网络，兄弟宫可问熟悉同辈之间的互相支持。若朋友和你已长期轮流接送，关系虽起于交友，现实里更需要明确轮值；不能用宫名替代真实协议。子女宫可补充被照顾者的需求，却不能据此判断谁应担责。
+
+### 一次帮忙先确认四件事
+核接送地点、到达时段、谁能正式接走孩子、联系不上家长时找谁。甲只听到“学校门口”，到了才发现孩子在另一校区；乙收到班级、门牌、授权名单和备用电话，交接更可执行。即便熟人关系很好，也要遵守学校和家长的接送规定。若你无法按时到场，应立刻回绝并协助找备选人，不要为了维持关系含糊答应。
+
+### 重复请求要改成分工表
+同一朋友每周临时请三次，已不是偶发帮忙。把可接送的日期、最长等待时间、临时变更通知和费用写明。另一例是两家轮流接送，车辆、座位和家长工作时间不同，不能机械规定每人各半。财帛宫可提醒核停车和交通成本，官禄宫可问这是否挤占工作时段；最终仍需双方按实际能力协商。拒绝某次安排不等于否定关系。
+
+### 排盘后落实安全交接
+核出生资料与交友、兄弟、子女的关联，再用日历和书面消息核实接送规则。每次交接确认孩子到达及接手人，连续两周后复盘是否需要固定轮值。宫位帮助识别关系负担，儿童安全与家长授权优先按现实规则执行。
+
+英文标题：Zi Wei Dou Shu Friends and Siblings Palaces: A Child Pickup Favor
+英文描述：Turn a last-minute favor into a clear pickup, authorization, and backup plan.
+英文正文：
+A friend asks you to pick up a child “for ten minutes,” but the wait becomes an hour. In Zi Wei Dou Shu, the Friends Palace can frame requests from a wider circle; the Siblings Palace can frame close-peer reciprocity. Neither palace turns a single favor into permanent duty. Child safety and parental authorization come first.
+
+### Read the relationship
+Check the main stars, transformations, opposite palace, and connected positions in Friends and Siblings. A recurring exchange between households needs a practical roster regardless of the relationship label. The Children Palace may add context about the child's needs, but it cannot assign a legal pickup role.
+
+### Confirm the handoff
+Record the exact location and time, authorized adult, and backup contact. One family may name only “the school gate” while the child waits at another campus. Another sends a gate number and pickup authorization. If you cannot arrive on time, say so immediately so the parent can arrange a safe alternative.
+
+### Review repeated favors
+If the request happens every week, agree on dates, maximum wait, change notices, and transport costs. Verify chart inputs and compare palace questions with the actual messages and calendar. Confirm each child's safe handoff. The chart can reveal a relationship question; written permission and the real schedule govern the task.
+
+---
+
+## 18. 两款紫微盘五行局不同，主星位置为何会跟着变？
+slug：`ziwei-wuxingju-butong-ziwei-xingwei-fancha`
+参考研究日期与原文 URL：2026-11-20 https://shengpinkai.com/zwds/learn/how-a-zwds-chart-is-built
+采用角度与旧文区别：当天研究列出宫干、五行局、紫微定位和其余主星的依赖链。本文聚焦五行局分叉后的主星连锁变化；不同于今日命身宫先分叉的输入检查及辅弼生月校验。
+正文草稿：
+两款工具的命宫位置看似一样，五行局却一款写水二局、一款写木三局，随后紫微及其他主星都换了位置。这不是十几颗星各自出错，更可能是上游计算口径已分开。先找五行局为何不同，再解释任何一颗主星。
+
+### 把计算链拆开看
+核原始出生资料、农历换算、命宫地支与宫干，再核用于推五行局的规则。五行局是安紫微的重要输入，紫微位置确定后，其他主星再按相应安星规则排列。若宫干不同，即使命宫地支一样，也应先核起干口径与出生年干。若前面都相同而局数不同，则需要对照两款工具的具体算法或设置，不能凭星位“更像自己”判断哪一款对。
+
+### 对照表只标第一处差异
+甲的两盘年干、农历月日和时辰一致，但宫干从命宫起算便不同，局数和主星差异是后续结果。乙的宫干相同，软件一款采用另一种闰月换算，核到农历日才发现输入不同。把“原始资料、换算结果、命宫宫干、局数、紫微位置”排成列，用颜色只标第一处不同；后续变化先视为待解释，不重复算成多项独立证据。别从一颗吉星位置倒推整个盘正确。
+
+### 不明规则先保持未知
+若软件没有公开换日、闰月或宫干起算规则，把差异记录为“算法未明”，再找可复核的排盘资料。不要混用甲盘的局数和乙盘的主星，也不要在未确认出生时刻时做精细职业或关系断语。校盘过程中可以先比较稳定的宫位问题，但要说明哪些星位随规则变化。安星口径相同之后，才有意义讨论亮度、四化、对宫及三方四正。
+
+### 实际读盘顺序
+核出生记录、历法和时间设置，确认命宫与宫干，复核五行局，最后验紫微及其他主星。保留两款工具的设置截图和版本号，便于以后重算。排盘差异解决前，先用现实事实处理眼前选择，不把软件分歧当成命运分歧。
+
+英文标题：Why Does a Different Element Bureau Move Zi Wei Dou Shu Main Stars?
+英文描述：Trace a chart disagreement from palace stem to element bureau and star placement.
+英文正文：
+Two Zi Wei Dou Shu apps show the same Life Palace branch but different element bureaus. Zi Wei and several other main stars then appear in different positions. This may be one upstream rule disagreement with many downstream effects, not a separate error for every star.
+
+### Trace the calculation
+Compare the original birth record, calendar conversion, Life Palace branch and stem, and the rule used for the element bureau. The bureau helps determine Zi Wei's placement; other main stars follow their placement rules. If the palace stems already differ, investigate that step before judging the stars.
+
+### Mark the first divergence
+Make a table of input, converted date, palace stem, bureau, and Zi Wei position. One pair of apps may agree on the birth data but start palace stems differently. Another may differ earlier in lunar-day conversion. Mark the first mismatch and treat later shifts as consequences until verified. A star that feels more familiar is not proof of correct calculation.
+
+### Keep the convention consistent
+If an app does not document a boundary or calculation rule, label it unknown. Save settings and app versions. Do not combine a bureau from one chart with stars from another. After the inputs agree, read condition, transformations, opposite palace, and connected positions for the actual question.
+
+---
+
+## 19. 导师愿意写推荐信，父母宫与官禄宫怎样分清支持和录用？
+slug：`ziwei-fumu-guanlu-daoshi-tuijianlu-yong`
+参考研究日期与原文 URL：2026-11-20 https://horosastrology.com/zh-TW/blog/post/fu-mu-palace-parents-in-zi-wei-dou-shu
+采用角度与旧文区别：当天研究提示父母宫也可问导师、上级等权威关系。本文只核推荐信到录用之间的边界；不重复今日新主管周报审批或既有父母宫亲子关系。
+正文草稿：
+导师说愿意帮你写推荐信，你立刻觉得这份工作稳了。其实推荐信只解决“谁愿意支持并说明你的经历”，录用还要经过岗位审核、面试和书面条件。紫微斗数中，父母宫可用来问导师与权威支持，官禄宫则问职业角色；把两宫分开，才能避免把鼓励误认为录用。
+
+### 支持关系不是岗位结果
+核本命父母宫主星、辅星、四化及对宫三方，再看官禄宫与大限流年的联系。父母宫在此讨论导师关系与评价来源，不代表导师有录用决定权；官禄宫也不能直接给出某单位的录用结果。若化科牵动父母，可问名誉与推荐的可见度；若官禄有化权，也仍需核正式职责和授权。不能凭一个“贵人”标签省掉招聘流程。
+
+### 推荐信内容要可验证
+先给导师职位说明、申请截止日和三项可核的合作成果。甲只请导师写“能力出色”，用人方难以知道具体贡献；乙提供自己完成的项目、负责范围与结果数据，导师可据亲眼所见写出细节。不要代导师编造经历，也不要要求对方承诺录用。若导师认识面试官，仍应遵守申请渠道和信息披露规则，避免误解为私下保证。
+
+### 同时维护岗位证据
+把推荐信与求职材料分开保存：简历、作品、岗位要求、面试反馈及录用条款。另一种情况是导师推荐你进入面试，却发现岗位要求某项资格证；这时应补核资格，而不是继续追问推荐力度。财帛宫可在收到书面薪酬条件后再讨论收入安排，不要从导师态度推断待遇。求职期间约定与导师的联系频率，避免每轮等待都要求对方催结果。
+
+### 排盘和申请各走一条线
+先核出生资料，分别读父母宫的支持关系和官禄宫的岗位问题，再看相关四化与时层。现实里按截止日提交材料、确认推荐信已送达，并以招聘方书面通知判断进展。命盘帮助区分支持与职责，录用证据仍来自招聘流程。
+
+英文标题：Zi Wei Dou Shu Parents and Career Palaces: A Recommendation Is Not an Offer
+英文描述：Separate a mentor's support from qualifications, interviews, and written hiring terms.
+英文正文：
+A mentor agrees to write a recommendation, and you feel certain the job is yours. In a Zi Wei Dou Shu reading, the Parents Palace can frame support from a mentor or senior figure; the Career Palace frames the actual professional role. The letter helps explain your experience, but hiring still depends on the employer's process.
+
+### Separate support and decision
+Read the main stars, transformations, opposite palace, and connected positions in Parents and Career. A favorable support marker does not give the mentor hiring authority. A Career marker does not replace eligibility requirements or a written offer.
+
+### Give the writer evidence
+Share the job description, deadline, and three specific results the mentor observed. “Strong worker” is less useful than a verifiable project, your responsibility, and its outcome. Do not invent experience or ask the writer to guarantee a decision.
+
+### Follow the hiring record
+Keep the letter separate from your résumé, work samples, interview feedback, and offer terms. If a credential is required, address that requirement rather than pressing the mentor for stronger praise. Verify the chart inputs, then compare Parents and Career questions with the actual application and written employer response.
+
+---
+
+## 20. 2027子女宫叠田宅，孩子线上课占用家中空间怎样协商？
+slug：`ziwei-2027-zinv-tianzhai-xianshangke-kongjian`
+参考研究日期与原文 URL：2026-11-20 https://xingge.tw/zh-hant/notes/2027-liunian-zinu
+采用角度与旧文区别：当天研究提出流年子女宫叠本命宫位会改变问题。本文限定孩子线上课的家庭空间与设备时段；不重复子女宫带新人预算、作品报价或田宅家务脑力负担。
+正文草稿：
+孩子的线上课固定在晚上七点，需要安静和电脑；家里另一人同一时段开远程会议。若2027流年子女宫叠到本命田宅宫，可以把焦点放在学习安排怎样进入共享空间，而非笼统说“孩子运势”。星曜不能替家人决定谁必须让出房间。
+
+### 先分清培养与居住两个问题
+核2027流年子女宫在个人本命盘上的叠宫，若叠田宅，子女宫问培养与学习需求，田宅宫问房间、设备和同住者使用权。再看两宫主星、四化、对宫和三方四正。若化权明显，问谁安排时段；若化忌引动，先找反复冲突的环节。不能因为一宫受引动就推断孩子成绩或家庭关系的好坏。
+
+### 做一张共享资源表
+列每周课程时间、需要的网络与设备、安静程度、其他家人固定使用时段。甲家让孩子临时占用客厅，会议者每晚换地方，双方都受影响；乙家在课程前把客厅桌子和耳机安排好，远程会议者预先使用卧室。两种家庭面积一样，差别在提前沟通与设备准备。若家里只有一台电脑，先查课程能否回看或借用设备，不要让临时争抢变成孩子的责任。
+
+### 预算与照顾分开核
+增购耳机、台灯或网络套餐涉及财帛宫的支出，谁监督登录、谁处理断线则是照顾分工；不宜因为一个人付款就默认其承担全部陪课。另一种情况是课程挤掉孩子原有休息，须与孩子确认负担和意愿，而非只优化房间布局。把临时替代方案写清：断网时联系谁、课程能否补看、会议如何转场。试行两周后再改动长期家具或采购。
+
+### 排盘后的使用顺序
+先核出生资料和流年口径，定位子女宫与本命田宅，再查四化及相关宫位。现实里请同住者一起看时间表，听孩子表达学习和休息需要，确认设备、费用与备用场地。盘面帮助列问题，家中安排由实际使用者共同决定。
+
+英文标题：Zi Wei Dou Shu 2027 Children and Property Palaces: Sharing Home Study Space
+英文描述：Plan a child's online class around rooms, devices, family meetings, and rest.
+英文正文：
+A child's online class starts at seven each evening, just as another family member begins a remote meeting. If the annual Children Palace in a 2027 Zi Wei Dou Shu chart maps onto the natal Property Palace, ask how learning needs fit a shared home. The chart cannot decide who must surrender a room.
+
+### Separate learning from space
+Children frames development and study; Property frames rooms, equipment, and other residents' use. Confirm the natal and annual layers, main stars, transformations, opposite palace, and connected positions. A difficult marker points to a question to check, not a prediction about grades.
+
+### Schedule shared resources
+List class times, device and network needs, quiet requirements, and other fixed uses of the home. One household may move a work meeting each night at the last minute. Another can agree in advance on headphones, a table, and a separate meeting room. If there is one computer, check replay or borrowing options before creating a daily conflict.
+
+### Test before buying
+Separate device costs from supervision and troubleshooting. Paying for a headset does not automatically assign the payer every class handoff. Ask the child about rest and workload too. Verify the chart inputs, then compare Children, Property, and Wealth questions with a two-week schedule and the family's actual experience.
