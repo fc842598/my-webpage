@@ -277,3 +277,36 @@ For results, include a deliverable link, version, and reviewer. For risks, ident
 
 ### Keep approval and ownership distinct
 A team lead may collect reports without being authorized to accept the finished project. Record who receives the form, checks the facts, and signs off on the result. If the job gains a new metric, ask whether it has entered the formal role. Compare old and new reports, returned items, and approval delays over two weeks. Read Parents for the rule and Career for the work, then use the written process to settle responsibility.
+---
+## 09. 2027子女宫叠财帛，定制作品的修改次数怎么写进报价？
+slug：`ziwei-2027-zinv-caibo-dingzhi-zuopin-xiugai-baojia`
+参考研究日期与原文 URL：2026-11-20 https://xingge.tw/zh-hant/notes/2027-liunian-zinu
+采用角度与旧文区别：当天研究将流年子女宫延展至作品，并提示叠本命财帛可问收费。站内已有子女宫带教和财帛宫项目收费；本篇限定定制作品的修改轮次、交付文件和追加费用，不重复培训预算、远程协作或泛收入判断。
+正文草稿：
+客户委托一张店铺插画，报价单写“设计一张”，交稿后却连续要求换色、换字、改尺寸。创作者担心拒绝修改会失去客户，只好反复加班。若2027流年子女宫叠到本命财帛宫，可以把作品如何变成可结算的交付作为读盘问题；它不表示客户一定会加价，也不替双方写合同。
+
+### 子女宫看作品进度，财帛宫看交换
+先核出生资料和流年口径，再把流年子女宫映回本命盘，确认是否真与财帛宫相叠。子女宫在此可问构思、打样、成稿的培养过程；财帛宫问报价、收款及投入工时。官禄宫可补看你以个人接单还是代表公司交付，交友宫可问客户沟通。再看主星、四化、对宫与三方四正；化禄不等于可无限免费修改，化忌也不等于客户故意拖款。
+
+### 把一张图拆成可验收的节点
+报价里列出初稿方向、一次定稿前修改、最终文件规格和付款节点。例如甲的插画包含两套草图供选、一轮颜色调整，交付一张高分辨率图片；乙的宣传图还要源文件及三种社媒尺寸，工时自然不同。两者都叫“一张图”，实际范围并不一样。客户若在草图确认后要求换主题，应先重新估算，而不是把全部重做算作原来的小修改。
+
+### 修改次数要连着范围写
+“一轮修改”应指客户集中提交一份反馈，由创作者统一处理，而不是每条微信消息都算一轮。写明文字错漏由谁提供原稿，尺寸变动是否收费，确认稿后新增元素如何计价。甲客户把七条意见分三天送来，创作者可请其汇总后开始这一轮；乙客户要求加一个此前没有的角色，则可给追加报价和新交期。边界清楚，沟通才不必靠反复猜测。
+
+### 排盘后回到实际账本
+按流年子女叠宫、财帛、官禄和四化的顺序读，再拿工时记录、报价单、确认消息与收款流水核对。完成一单后比较原估工时和实际修改成本，下一单调整轮次或价格。盘面能提醒把作品和钱分开问，最终约定仍须由客户与创作者明确确认。
+
+英文标题：Zi Wei Dou Shu 2027 Children and Wealth Palaces: Pricing Design Revisions
+英文描述：Define revision rounds, deliverable files, and added fees when a custom design project keeps changing.
+英文正文：
+A client orders one illustration, then asks for new colors, text, and sizes after delivery. The artist keeps working because the quote said only “one design.” If the annual Children Palace in a 2027 Zi Wei Dou Shu chart connects with the natal Wealth Palace, the useful question is how developing work becomes a billable deliverable. The chart does not set the client's price or replace a written agreement.
+
+### Separate the work from the payment
+Confirm birth data and the annual convention, then map the annual Children Palace back to the natal chart. Use Children to frame drafts, revisions, and completion. Use Wealth to frame fees, payment, and hours. Career may matter if you deliver for an employer rather than on your own. Read the stars, transformations, opposite palace, and related positions before interpreting any one marker. A favorable marker does not mean unlimited unpaid revisions.
+
+### Define acceptance points
+List the concept draft, included revision round, final file format, and payment date. One illustrator may deliver a high-resolution image after a color correction. Another may need editable source files and three social-media sizes. Both projects are called “one image,” yet their scope and hours differ. If the client changes the subject after approving the sketch, estimate the new work rather than treating it as a minor correction.
+
+### Write what a revision round means
+A round can mean one consolidated set of client feedback. Specify who supplies correct text, whether a new size costs extra, and what happens after approval. Seven messages sent across three days can be gathered into one list before work begins. Adding a new character can require a revised fee and deadline. After delivery, compare quoted hours with actual revision time and update the next quote. Use the chart to organize questions about work and money; use the project record to agree on terms.
