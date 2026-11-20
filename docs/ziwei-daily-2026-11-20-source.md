@@ -174,3 +174,38 @@ Wen Chang and Wen Qu are tied to the birth hour. Zuo Fu and You Bi require a che
 
 ### Interpret only after placement is settled
 Wen Chang or Wen Qu in the Career Palace can frame document work or professional communication. In the Wealth Palace, the question might involve pricing knowledge or keeping income records. Neither placement guarantees an exam result or a career. Read the main stars, transformations, and connected palaces as well. If the birth hour remains uncertain, keep both chart versions visible and seek better records rather than selecting the one that sounds attractive.
+
+---
+
+## 06. 2027子女宫叠迁移，跨时区带新人怎样安排交付？
+slug：`ziwei-2027-zinv-qianyi-yuancheng-daijiao-shicha`
+参考研究日期与原文 URL：2026-11-20 https://xingge.tw/zh-hant/notes/2027-liunian-zinu
+采用角度与旧文区别：当天来源提示流年子女宫叠本命迁移可问远程带人。站内有远程入职适应文章，今日第01篇讨论培训预算；本篇限定跨时区带教的异步材料、答疑窗口与交付验收。
+正文草稿：
+上海的导师带一位在欧洲办公的新人。两人每天只有一小时重合，导师晚上补答问题，新人第二天仍不知道交什么。2027年流年子女宫若叠到本命迁移宫，可把“培养成果怎样穿过距离”作为问题；它不表示一定会被派去海外，也不替团队规定工作时间。
+
+### 先确认子女宫究竟叠到哪里
+核出生资料和2027流年口径，把流年子女宫标回本命盘。子女宫在这个场景可问新人能力、训练中的作品和培养周期；迁移宫问不同地点的沟通与外部条件；官禄宫才问谁对正式交付负责。再看主星、四化、对宫和三方四正。若化权涉及子女宫，重点是导师是否有调整练习的权力；若迁移见忌，先找时差、权限或资料延迟的具体卡点，不把忌直接断成合作失败。
+
+### 录屏不能取代可交付的练习
+导师可把重复说明录成十分钟短视频，但每段都配一个小任务和完成标准：比如新人独立修改一张数据表，并解释两处异常值。甲团队只把三小时会议录屏丢给新人，几天后仍反复问同一栏；乙团队给带时间戳的示例、样板答案和检查清单，新人能在非重合时段自行推进。两种材料的价值，取决于新人能否据此完成任务，而不是文件数量。
+
+### 留一个双方都清醒的答疑窗口
+约定每天一次重合时段，先处理阻断任务的问题，其余问题写进共享清单。新人发问时附上尝试步骤、卡住的截图和截止日期；导师回复时标清下一步及谁复核。若重合时段不足，允许新人先完成低风险练习，不要在无人审核时发给客户。财帛宫可以补看加班与工具费用，但不能用所谓“培养运”要求个人长期无偿夜间值守。
+
+### 用两周结果修正安排
+第一周记录问题从提出到解决的等待时间，第二周记录新人独立交付的准确率和导师返工时长。若等待长但返工少，优化答疑时间；若等待短却错漏多，重写样板和验收标准。排盘时依次看流年子女叠宫、迁移条件、官禄责任与四化；现实里依次定练习、时段、审核人和交付出口。盘面帮助定位协作问题，成果由实际记录检验。
+
+英文标题：Zi Wei Dou Shu 2027 Children Palace: Mentoring Across Time Zones
+英文描述：Plan async exercises, overlap hours, and sign-off when mentoring a new colleague in another time zone.
+英文正文：
+A mentor in Shanghai trains a new colleague in Europe. Their workdays overlap for one hour, so answers arrive late and the trainee is unsure what can be delivered. In a 2027 Zi Wei Dou Shu chart, an annual Children Palace question connected with the natal Travel Palace can frame the development of work across distance. It does not predict an overseas assignment or require night work.
+
+### Separate development, distance, and ownership
+Map the annual Children Palace back to the natal chart. Use it to ask what the trainee can learn and produce. The Travel Palace frames location and communication conditions; the Career Palace frames formal responsibility for client work. Read the stars, transformations, opposite palace, and related positions before drawing an interpretation. If a difficult marker appears, identify a real obstacle such as delayed access or unclear review rights.
+
+### Make recorded lessons actionable
+A short video can answer a repeated question, but attach a task and an acceptance rule. For example, ask the trainee to fix a data table and explain two unusual values. A three-hour meeting recording alone may leave the same questions open. A timestamped example, model answer, and checklist let a colleague work during non-overlapping hours. Measure whether the material supports a finished task.
+
+### Reserve one useful overlap window
+Use the shared hour for blocked work. Put ordinary questions in a shared list with attempted steps, screenshots, and due dates. The mentor should name the next step and reviewer. Let the trainee practice on low-risk work when no reviewer is online, but keep client delivery behind an authorized sign-off. After two weeks, compare waiting time, error rates, and mentor rework. Check birth data and annual-chart settings, then read Children, Travel, and Career together. Use the work record to adjust hours, examples, and approvals.
