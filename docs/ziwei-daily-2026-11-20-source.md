@@ -310,3 +310,108 @@ List the concept draft, included revision round, final file format, and payment 
 
 ### Write what a revision round means
 A round can mean one consolidated set of client feedback. Specify who supplies correct text, whether a new size costs extra, and what happens after approval. Seven messages sent across three days can be gathered into one list before work begins. Adding a new character can require a revised fee and deadline. After delivery, compare quoted hours with actual revision time and update the next quote. Use the chart to organize questions about work and money; use the project record to agree on terms.
+
+---
+
+## 10. 2027巨门化忌牵动官禄，会议纪要怎样避免口头决定变成个人责任？
+slug：`ziwei-2027-jumen-huaji-guanlu-huiyi-jilu`
+参考研究日期与原文 URL：2026-11-20 https://www.shibishibi.jp/blogs/2027-unsei
+采用角度与旧文区别：当天研究提出丁年巨门化忌需落到具体沟通情境。本篇仅讨论会议决议的版本、责任人及异议时限；不重复站内交友宫合作误会、泛会议沟通或年度四化总论。
+正文草稿：
+周会上大家口头同意试行新流程，次日的纪要却写成“你负责月底上线”。你原本只答应做两周测试。若2027年巨门化忌牵动官禄宫，可以把它当作检查工作表达与职责边界的提醒，但不能断定某个同事故意推责。真正要核对的是说过什么、谁批准、何时生效。
+
+### 先分清星曜层次与工作位置
+先核丁年四化口径，再在本命盘定位巨门，叠大限、流年看官禄宫是否实际受牵动。巨门涉及说法和辨析，化忌提示表达可能卡住；官禄宫问岗位职责与成果。若巨门只在交友宫，问题更可能落在协作沟通；官禄也被引动，才进一步问职责如何进入考核。对宫和三方四正可补充资源与外部条件。不能见“忌”就说必有争执，更不能把盘面当会议证据。
+
+### 纪要至少留下三项可核信息
+把“讨论”“试行”“批准”分成不同状态。记录方案版本、负责人、截止日，以及还需谁签字。甲团队约定先在一个客户组试行，纪要却漏写试行范围，后来被当成全公司上线；乙团队把试行名单和验收条件写清，扩围前再开一次确认会。同样是负责项目，两个任务的资源和风险并不相同。发出纪要时注明反馈期限，没回复也不自动代表同意新增工作。
+
+### 有分歧时先改记录再谈责任
+如果纪要与现场说法不同，在同一邮件线程引用具体条目，写明“我负责测试报告，不负责生产上线”，请主持人和审批人确认。另一种情况是会上临时增加预算：应把财帛宫对应的费用问题单独列出，明确谁有采购权限，不把一句“可以试试”当付款授权。修改后的纪要保留版本号及时间，避免多份文件各写一套。对外承诺也应等内部签字完成。
+
+### 排盘与行动的顺序
+核出生资料、丁年四化与巨门落宫，再看官禄、交友、财帛及相关四化。现实里保存议程、纪要版本、责任清单和批准回复。两周后以实际交付核对原定范围。命盘帮助找出容易混淆的问题，职责仍以明示的组织安排为准。
+
+英文标题：Zi Wei Dou Shu 2027 Ju Men Hua Ji: Who Owns a Meeting Decision?
+英文描述：Check minutes, approval, and task scope when a verbal trial becomes a formal assignment.
+英文正文：
+A team agrees to test a process for two weeks. The next day's minutes say you own a full launch. In a 2027 Zi Wei Dou Shu reading, Ju Men Hua Ji connected to the Career Palace can frame a question about wording and responsibility. It cannot prove bad intent. The written scope and approval trail matter more than a star label.
+
+### Read the right layer
+Confirm the annual transformation rule and Ju Men's actual placement in the natal and annual charts. Career concerns formal duties; Friends can frame team communication; Wealth becomes relevant when a budget is attached. Read the opposite and connected palaces before assigning meaning to one transformation.
+
+### Record a decision's status
+Separate discussion, trial, and approval. A trial for one client group is different from a company-wide launch. Write the version, owner, deadline, acceptance point, and person authorized to expand the scope. A response deadline gives colleagues a chance to correct the record; silence should not silently create a new duty.
+
+### Correct the same record
+If the minutes overstate your commitment, quote the exact line and propose a correction in the same email thread. Keep the revised version and approval time. Verify birth details and chart convention, then compare Career, Friends, and Wealth questions with the actual documents. Use the chart to organize the review and the agreed record to settle ownership.
+
+---
+
+## 11. 2027天机化科牵动官禄，项目计划被采纳要核哪些证据？
+slug：`ziwei-2027-tianji-huake-guanlu-jihua-zhengju`
+参考研究日期与原文 URL：2026-11-20 https://www.shibishibi.jp/blogs/2027-unsei
+采用角度与旧文区别：当天研究把丁年天机化科联系到计划表达。本文限定项目计划从建议到采纳的证据和绩效归属；不同于周报审批、年度四化概述及计划能力泛论。
+正文草稿：
+你在会上提出一份排期，主管称赞“思路不错”，过了一个月项目按类似方法执行，却没人说清是谁的方案。2027天机化科若牵动官禄宫，可以提醒你关注计划怎样被说明和认可；它不会自动带来升职，也不能代替事实核查。先分辨被听见、被试用与正式采纳。
+
+### 化科落在哪里才与工作有关
+核2027丁年四化，再定位本命天机所在宫及大限、流年官禄的关系。天机可问方案调整与步骤设计，化科可问方法如何被看见和记录；若实际落宫偏迁移，可能先在外部沟通中显现，不能硬说成公司内部考核。官禄宫还要看主星、同宫辅曜、对宫和三方四正。宫位提供提问顺序，不替单位制定绩效规则。
+
+### 用三份材料界定采纳过程
+第一份是带日期的原计划，列目标、限制和假设；第二份是试行决定，说明试点人群、负责人及期限；第三份是执行结果，核实际采用哪些步骤。甲的提议是把客服问题分级，部门只借用了表格格式，并未采纳排班建议；乙的试行方案连同指标一起进入正式流程。两者都可能得到口头表扬，但在贡献记录里不应写成同一件事。版本差异比“像我的想法”更有说服力。
+
+### 认可与授权分开谈
+如果方案被采纳，询问谁负责实施、谁可以修改规则、最终成果如何记录。官禄宫关注岗位成果，财帛宫才进一步问奖金和成本；不能把“化科”直接换算成收入。另一例是主管愿意署名推荐，却没有给你调动其他小组的权限，此时先确认跨组协调人，而非独自承诺交付。每个阶段都留会议纪要与版本链接，减少事后争议。
+
+### 排盘后回到项目证据
+先确认出生资料与四化口径，定位天机化科，连官禄、迁移和财帛看实际问题。随后对照提案、试行批复和最终执行记录。面谈时说清哪些是个人设计、哪些是团队改进，并提出下一阶段可检验的指标。命盘用于整理问题，认可仍应建立在可查的工作上。
+
+英文标题：Zi Wei Dou Shu 2027 Tian Ji Hua Ke: Was Your Work Plan Adopted?
+英文描述：Separate praise, a pilot, and formal adoption when documenting a project contribution.
+英文正文：
+Your manager praises a project plan, and a similar process appears a month later. Was your proposal adopted, or did the team use only one format? Tian Ji Hua Ke linked to the Career Palace in a 2027 Zi Wei Dou Shu chart can frame a question about how a plan gains recognition. It does not award a promotion or prove ownership by itself.
+
+### Place the transformation
+Check the annual rule and Tian Ji's actual placement. Career concerns formal results; Travel may point to external presentation; Wealth raises a separate question about pay and cost. Read the natal and annual layers with the opposite and connected palaces before interpreting the marker.
+
+### Compare three records
+Keep the dated proposal, the pilot approval, and the final process. A team might borrow your table format while declining your staffing suggestion. Another might adopt both your steps and success measures. The difference belongs in the contribution record. Praise in a meeting is useful context, but a dated version and implementation trail are stronger evidence.
+
+### Ask about authority and credit
+Once a plan moves forward, confirm who can change it, coordinate other teams, and report results. Written approval and version links help distinguish your design from later team improvements. Verify the chart inputs, then compare Career, Travel, and Wealth questions with the proposal and outcome. Present your contribution accurately rather than treating a favorable transformation as a guaranteed reward.
+
+---
+
+## 12. 左辅右弼排盘位置不同，农历生月与闰月怎样核？
+slug：`ziwei-zuofu-youbi-nongli-shengyue-run-yue`
+参考研究日期与原文 URL：2026-11-20 https://ziweiuniverse.com/knowledge/ziwei/lesson-11-lucky-stars/
+采用角度与旧文区别：当天研究指出辅弼按生月、昌曲按时、魁钺按年干。本文限定生月换算、闰月处理及软件口径差异；不重复今日昌曲时辰、魁钺年干两篇。
+正文草稿：
+同一出生日期输入两款排盘工具，左辅右弼分别落在不同宫，你以为其中一款安星错了。若生日落在农历闰月，问题可能更早出现在“算第几月”这一步。辅弼的位置应从排盘输入与安星规则反查，不能先拿“贵人多不多”解释差异。
+
+### 先固定出生日期与月数
+保存原始出生日期、时区与出生时刻，查清农历月名和是否闰月。左辅右弼通常按农历生月安星，但闰月按本月、下月或折中处理的口径并不完全一致；先读工具声明，再看输入界面是否把“闰四月”标为独立选项。不要一边更改农历月数，一边改出生时辰，否则不知道哪项造成宫位变化。命身宫若也不同，先排查基础换算，不急着讨论辅星。
+
+### 把三组吉星的输入分开
+辅弼核生月，文昌文曲核时辰，天魁天钺核出生年干。甲在闰四月出生，只修改软件的闰月规则后，辅弼移动而昌曲、魁钺未动，这提示差异集中在月数；乙同时把子时换成丑时，昌曲也变，已不能用同一个原因解释。把每组输入与结果列成表，才看得出哪一步发生分歧。辅星只能补充主星与宫位的读法，不覆盖本宫主轴。
+
+### 比较规则，不选“好看”的盘
+导出两款工具的出生资料页、农历换算、闰月口径、十二宫表及辅弼位置。若软件只显示星位、不说明闰月规则，标为“口径未明”，不要擅自把它当标准答案。涉及出生月边界，可核可靠的出生记录并咨询熟悉所用流派的人。即使某盘把左辅放进官禄，也不能因此断定工作一定有帮助；仍要看官禄主星、四化、对宫和三方四正。
+
+### 校盘后再解释
+先核日期、时区和农历闰月，再固定工具规则，重排命身与十二宫，最后逐项校辅弼、昌曲、魁钺。把不同口径的结果各自标注，不混用一张盘的主星与另一张盘的辅星。确认输入和算法后，再讨论这些辅星在实际问题中的作用。
+
+英文标题：Zi Wei Dou Shu Zuo Fu and You Bi: Check a Leap Lunar Month
+英文描述：Trace different support-star placements to birth-month conversion and leap-month rules.
+英文正文：
+Two Zi Wei Dou Shu apps place Zuo Fu and You Bi in different palaces for the same birthday. If the birth falls in a leap lunar month, the disagreement may begin with how each app numbers that month. Check the inputs and rule before reading either placement as extra support in life or work.
+
+### Fix the birth input
+Save the original date, time zone, birth time, lunar month name, and leap-month indicator. Some chart conventions count a leap month with the named month; others handle it differently. Read each app's documented rule. Change one setting at a time so a shift in the chart has a traceable cause.
+
+### Separate the star groups
+Zuo Fu and You Bi are checked against the lunar birth month. Wen Chang and Wen Qu depend on birth time; Tian Kui and Tian Yue on the birth year's stem. If only the month rule changes and only the first pair moves, the likely difference is in month handling. If the hour changes too, do not blame every shift on the leap month.
+
+### Keep each chart internally consistent
+Export the birth settings, month conversion, twelve-palace layout, and star positions from both tools. Mark an undocumented leap-month rule as unknown. Verify the Life and Body Palaces before interpreting support stars, and read the main stars, transformations, opposite palace, and connected positions as well. Do not combine placements from two different chart conventions into one interpretation.
