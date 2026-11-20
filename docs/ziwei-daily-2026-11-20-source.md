@@ -209,3 +209,38 @@ A short video can answer a repeated question, but attach a task and an acceptanc
 
 ### Reserve one useful overlap window
 Use the shared hour for blocked work. Put ordinary questions in a shared list with attempted steps, screenshots, and due dates. The mentor should name the next step and reviewer. Let the trainee practice on low-risk work when no reviewer is online, but keep client delivery behind an authorized sign-off. After two weeks, compare waiting time, error rates, and mentor rework. Check birth data and annual-chart settings, then read Children, Travel, and Career together. Use the work record to adjust hours, examples, and approvals.
+---
+## 07. 天魁天钺在两款排盘里位置不同，先查年干还是时辰？
+slug：`ziwei-tiankui-tianyue-niangan-huannian-paipan`
+参考研究日期与原文 URL：2026-11-20 https://ziweiuniverse.com/knowledge/ziwei/lesson-11-lucky-stars/
+采用角度与旧文区别：当天研究指出六吉星安置所依据的输入不同。站内已有魁钺贵人取象和今天第05篇昌曲时辰排错；本篇只处理魁钺的年干、换年规则及安星口径，不重复吉星性质。
+正文草稿：
+两款紫微斗数工具排出相同的命宫主星，天魁和天钺却落在不同位置。有人先把出生时间从上午改成下午，两颗星仍对不上。问题可能不在时辰：魁钺安置依据出生年干，应先查两款工具实际采用哪个年干，再谈星曜意义。
+
+### 先锁住同一份出生资料
+并排记录公历出生日期、当地钟表时间、出生地和时区，确认没有把农历日期再当公历转换。分别抄下工具显示的农历年、年干、命宫及魁钺宫位。若命宫也不同，差异不只在魁钺，先回查时辰、真太阳时设置和历法转换；若命宫一致而年干不同，重点转到换年规则。输入页面和设置也要留存，不能只比较星盘截图。
+
+### 年初出生要核换年界线
+一位一月出生的读者，甲工具仍采用上一年的年干，乙工具已采用下一年；魁钺随所用年干重新安置，钟表时间相同也可能变宫。另一位九月出生者，两工具年干相同，魁钺却不同，就应核安星表、所选流派及软件版本，而非继续争论春节与立春。比较前先标明各自年界规则，再选定本站采用的排盘口径。
+
+### 不同星曜分栏排错
+文昌文曲的位置与时辰有关，魁钺先核年干。若两组星同时不同，左栏记时辰、时区与真太阳时，右栏记年份转换、年干和魁钺安星规则。甲盘只改时辰，昌曲跟着变化而魁钺不动；乙盘只改年界，魁钺变化而时辰未动。每次只改一个输入，才能知道差异源于哪一步，不靠感觉选一张更顺眼的盘。
+
+### 位置确认后再读组合
+确定年干与安星口径，再看魁钺落宫、与主星同宫或会照，以及四化和三方四正。魁钺在官禄附近可问工作中的正式引荐，在父母宫附近可问制度或长辈支持；它们不能直接保证录用。最后保存两款工具的输入、设置和位置对照。出生记录不确定，就把不确定性写进读盘结果。
+
+英文标题：Zi Wei Dou Shu Tian Kui and Tian Yue: Check the Birth Year Stem
+英文描述：When two charts place Tian Kui and Tian Yue differently, compare the year stem, year boundary, and star-placement rules.
+英文正文：
+Two Zi Wei Dou Shu apps agree on the main star in your Life Palace but place Tian Kui and Tian Yue in different palaces. Changing the birth hour may leave them where they are. These supporting stars are placed using the birth year's heavenly stem. Compare the stem each app used before interpreting the chart.
+
+### Keep the input visible
+Record the civil birth date, local time, birthplace, and time zone. Save the input screen as well as the chart. Compare the lunar year and heavenly stem shown by both tools, then list the Life Palace and the two star positions. If the Life Palace also differs, inspect the hour, calendar conversion, and solar-time option first. If it agrees but the year stem differs, investigate how each app changes years.
+
+### Check the year boundary
+A person born early in the civil year may receive different year stems under different boundary rules. The same clock time can therefore produce different Tian Kui and Tian Yue placements. For a person born well away from the boundary, matching stems with different placements point instead to a placement table, school setting, or software version. Record each convention rather than silently combining the charts.
+
+### Change one setting at a time
+Wen Chang and Wen Qu provide a useful contrast because their placement is tied to the birth hour. If both pairs disagree, keep separate notes for hour and time-zone settings and for the year stem and placement table. Change one input, regenerate the chart, and see which stars move. This yields a repeatable explanation.
+
+Only after placement is settled should you read Tian Kui and Tian Yue with their palace, main stars, transformations, and related palaces. A placement near Career can prompt a question about formal introductions at work; it does not guarantee an offer. Keep uncertainty in the reading if the birth record is incomplete.
