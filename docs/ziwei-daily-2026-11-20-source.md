@@ -104,3 +104,73 @@ List who notices a shortage, sets a deadline, does the task, and checks the resu
 
 ### Give each task an owner
 Agree who checks supplies, orders replacements, and proposes a fallback when plans change. Track missed steps and reminders for two weeks, then revise the schedule. Verify birth details, locate Tai Yin and the Property Palace, and read the linked palaces. Use the chart to notice a possible blind spot; use calendars, receipts, and a shared conversation to divide the real work.
+
+---
+
+## 04. 工作群消息不断，交友宫与兄弟宫怎样分清回复边界？
+slug：`ziwei-jiaoyou-xiongdi-gongzuoqun-xiaoxi-bianjie`
+参考研究日期与原文 URL：2026-11-20 https://aiziwei.online/zh-TW/blog/%E5%B0%8F%E9%9B%AA%E5%89%8D%E5%BE%8C%E4%BA%BA%E9%9A%9B%E6%80%8E%E9%BA%BC%E6%94%B6%E6%96%82-%E7%B4%AB%E5%BE%AE%E6%96%97%E6%95%B8%E8%AB%87%E4%BA%A4%E5%8F%8B%E5%AE%AE%E8%88%87%E5%85%84%E5%BC%9F%E5%AE%AE
+采用角度与旧文区别：当天来源区分外圈协作与近圈分工。站内有交友宫合作、同事责任和人际边界文章，本篇只处理工作群通知的响应级别与亲近同事私信求助的边界，不复写季节叙事。
+正文草稿：
+工作群一晚弹出二十条消息，真正需要你当天处理的只有两条；熟悉的同事又私信说“帮我看一眼”。这时若把所有消息都当成关系义务，回复速度就会取代任务轻重。紫微斗数可用交友宫观察较广的协作网络，用兄弟宫追问亲近同辈之间的分工，但先要辨认谁拥有工作决定权。
+
+### 宫位区分的是关系，不是通知颜色
+先核本命交友、兄弟两宫的主星和四化，再看与官禄宫的关系。交友宫有压力，不代表每个群成员都难相处；兄弟宫见助力，也不表示熟人请求必须优先。群里跨部门的需求通常先问交友与官禄：谁发起、谁负责、何时交付。固定搭档的私信则把兄弟宫纳入，核对平时双方是否互相补位。对宫和三方四正用于补全条件，不把单宫标签当回复规则。
+
+### 把二十条消息分成三种
+第一种是你负责的故障，例如今晚值班的服务中断，按值班约定立即处理。第二种是需要你提供资料但没有当晚期限的项目提问，回复接收时间和次日交付点即可。第三种只是抄送，读到不等于认领。甲把群消息都回复“收到”，却漏看指派给他的故障；乙先看任务负责人和截止时间，处理一条故障，再集中答复资料请求。两人的在线时间相近，结果却不同。
+
+### 熟人的私信也要回到职责
+同事私下发来一份合同请你检查，如果你不是审核人，可以指出自己能核哪一项，并让正式审核人签字。若每次都替对方补齐附件，记录缺项、原负责人和返工时长，再谈交接规则；不要靠关系亲近默默接走责任。若上司同时在群内提出相反要求，优先确认官禄宫所对应的岗位授权和现实审批链，而非比较谁在盘里更像“贵人”。
+
+### 排盘后的实际顺序
+核出生资料，定位交友、兄弟与官禄，查看本命主星、四化及当下流年触发，再列消息的负责人、期限和应答渠道。给团队一张简单规则：事故即时电话，普通请求工作时间内回复，抄送集中查看。试行一周后用漏件数和下班打断次数调整。盘面帮助把人际关系与岗位义务拆开，实际响应以明确的工作约定为准。
+
+英文标题：Zi Wei Dou Shu Friends and Siblings Palaces: Work Chat Boundaries
+英文描述：Separate broad team requests from close colleague favors and set clear response times for work messages.
+英文正文：
+A team chat produces twenty messages after work. Only two may need your action tonight, while a close colleague asks for a quick private favor. In Zi Wei Dou Shu, the Friends Palace can frame a broad working network, and the Siblings Palace can frame close peers. Neither palace sets a response deadline. Your actual role and the written on-call rule do.
+
+### Read the relationship and the job together
+Check the natal Friends and Siblings Palaces, their stars and transformations, then connect the question to the Career Palace. A crowded group chat does not prove every colleague is demanding. A helpful peer pattern does not require you to accept every private request. Ask who owns the task, who approves it, and when it is due before applying a chart label.
+
+### Sort messages by action
+An outage assigned to the person on call needs immediate attention. A routine request for data can receive a delivery time for the next workday. A copy-only message can wait. One employee sends twenty acknowledgments but misses the assigned outage; another handles the outage and batches the ordinary requests. The useful distinction is responsibility, not the number of replies.
+
+### Put favors back in the workflow
+If a colleague privately asks you to review a contract, state the part you can check and who must sign the formal review. Repeatedly completing their missing attachments creates invisible work. Record the missing item and owner, then fix the handoff. Verify birth details, read Friends, Siblings, and Career together, and compare the chart questions with an actual response policy. Test that policy for a week and revise it using missed tasks and after-hours interruptions.
+
+---
+
+## 05. 文昌文曲位置对不上，怎样从出生时辰反查排盘？
+slug：`ziwei-wenchang-wenqu-shichen-paipan-fancha`
+参考研究日期与原文 URL：2026-11-20 https://ziweiuniverse.com/knowledge/ziwei/lesson-11-lucky-stars/
+采用角度与旧文区别：当天来源指出昌曲安星依时辰。站内有六吉星性质介绍，本篇限定时辰、时区和排盘口径的排错顺序，不使用来源的对照表示例或照搬算法排版。
+正文草稿：
+同一个人用两款排盘工具，命宫主星看起来一致，文昌、文曲却落在不同宫。急着解释“学习好坏”没有用：昌曲的位置先受出生时辰输入影响。把资料和工具设置核清，再讨论星曜在具体宫位怎样改变表达、文书或学习方式。
+
+### 先把原始出生记录固定
+从出生证明或可信记录抄下日期、当地时间、出生地，不先改成自己推算的农历。检查两款工具是否使用相同的时区、真太阳时开关，以及子时换日口径。例如一份记录写23:40，甲工具把它归到当天晚子时，乙工具归到次日早子时；若连命宫都不同，不能只拿文昌文曲作比较。先保存两张完整盘和设置截图。
+
+### 昌曲与其他吉星用的输入不同
+文昌文曲的安星与出生时辰相关；左辅右弼主要核农历生月，天魁天钺主要核出生年干。发现只有昌曲不一致，优先查时辰栏及换算；若辅弼也不同，再查月份与闰月设置。甲只改了出生地，工具随之启用真太阳时，昌曲位置变了；乙误把19:20填成21:20，虽未改日期，也可能跨过时辰。排错要记录每次只改了哪一项，不要同时改年月日时。
+
+### 位置确认后再看宫位含义
+昌曲落官禄，可提问文件表达、考试资格或岗位沟通；落财帛，则可问知识怎样转成报价、合同与收入记录。但同宫主星、四化、亮度及三方四正仍要合看。文昌在官禄不保证考试通过，文曲在财帛也不保证靠写作赚钱。若工具采用不同安星口径，先注明差异，不能把一版结果当成另一版的错误证明。
+
+### 一次只排除一个变量
+排盘时先固定原始记录，再统一时区和换日规则，逐项比较时辰、命宫、昌曲、辅弼与魁钺的位置。把不同结果及工具设置列成小表；时辰确实不确定，就保留两版，找能核实的出生资料，不为得到想要的星曜随意选盘。最后才把落宫与当下的学习或工作问题对照。排盘工具提供位置，现实记录决定输入是否可信。
+
+英文标题：Zi Wei Dou Shu Wen Chang and Wen Qu: Check the Birth Hour
+英文描述：Troubleshoot different Wen Chang and Wen Qu placements by checking birth time, time zone, and chart settings.
+英文正文：
+Two Zi Wei Dou Shu tools show similar main stars but put Wen Chang and Wen Qu in different palaces. Before interpreting study or writing ability, check the inputs. These supporting stars depend on the birth hour, so a time conversion or hour entry can explain a mismatch.
+
+### Preserve the original record
+Copy the recorded date, local clock time, and birthplace. Keep screenshots of both complete charts and their settings. Check the time zone, solar-time option, and how each tool handles the late-night boundary. If the Life Palace also changes, the issue is broader than the two supporting stars. Do not adjust several fields at once and lose the cause.
+
+### Compare the right inputs
+Wen Chang and Wen Qu are tied to the birth hour. Zuo Fu and You Bi require a check of the lunar birth month, while Tian Kui and Tian Yue involve the birth year's stem. If only Wen Chang and Wen Qu move, inspect the hour and time conversion first. If other pairs move, inspect their corresponding inputs too. A place change can activate a solar-time setting; a mistyped clock time can cross an hour boundary.
+
+### Interpret only after placement is settled
+Wen Chang or Wen Qu in the Career Palace can frame document work or professional communication. In the Wealth Palace, the question might involve pricing knowledge or keeping income records. Neither placement guarantees an exam result or a career. Read the main stars, transformations, and connected palaces as well. If the birth hour remains uncertain, keep both chart versions visible and seek better records rather than selecting the one that sounds attractive.
