@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuetianai.com/articles/</loc>
-    <lastmod>2026-11-20T12:06:00+08:00</lastmod>
+    <lastmod>2026-11-20T12:10:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-learning-path.html</loc>
-    <lastmod>2026-11-19T12:10:00+08:00</lastmod>
+    <lastmod>2026-11-20T12:10:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-main-stars.html</loc>
-    <lastmod>2026-11-20T09:04:00+08:00</lastmod>
+    <lastmod>2026-11-20T12:10:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -44,7 +44,7 @@
   </url>
   <url>
     <loc>https://yuetianai.com/articles/ziwei-cycles.html</loc>
-    <lastmod>2026-11-20T12:06:00+08:00</lastmod>
+    <lastmod>2026-11-20T12:10:00+08:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -24892,4 +24892,8 @@
   <url><loc>https://yuetianai.com/articles/ziwei-2027-jumen-huaji-guanlu-huiyi-jilu.html</loc><lastmod>2026-11-20T12:06:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-2027-tianji-huake-guanlu-jihua-zhengju.html</loc><lastmod>2026-11-20T12:06:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://yuetianai.com/articles/ziwei-zuofu-youbi-nongli-shengyue-run-yue.html</loc><lastmod>2026-11-20T12:06:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-taiyin-fude-shuiqian-qingdan-fupan.html</loc><lastmod>2026-11-20T12:10:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-mingshen-gong-panzhi-chayi-shuru.html</loc><lastmod>2026-11-20T12:10:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-2027-tiantong-huaquan-fude-xiujia-paiban.html</loc><lastmod>2026-11-20T12:10:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://yuetianai.com/articles/ziwei-zhuxing-tonggong-guize-hedui.html</loc><lastmod>2026-11-20T12:10:00+08:00</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

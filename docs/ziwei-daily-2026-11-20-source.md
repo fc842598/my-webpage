@@ -415,3 +415,143 @@ Zuo Fu and You Bi are checked against the lunar birth month. Wen Chang and Wen Q
 
 ### Keep each chart internally consistent
 Export the birth settings, month conversion, twelve-palace layout, and star positions from both tools. Mark an undocumented leap-month rule as unknown. Verify the Life and Body Palaces before interpreting support stars, and read the main stars, transformations, opposite palace, and connected positions as well. Do not combine placements from two different chart conventions into one interpretation.
+
+---
+
+## 13. 太阴在福德宫，睡前反复核明日清单时先看什么？
+slug：`ziwei-taiyin-fude-shuiqian-qingdan-fupan`
+参考研究日期与原文 URL：2026-11-20 https://mingming3.com/en/ziwei/articles/ziwei_taiyin
+采用角度与旧文区别：当天研究提出太阴的细致思考也有精神成本。本篇只核睡前清单和休息边界；不同于今日田宅宫家务计划责任及既有太阴财富文章。
+正文草稿：
+关灯后仍反复想明天的会议、采购和家人预约，手机清单越改越长。太阴在福德宫时，可以把“何时停止整理”作为排盘问题；它不能证明某人一定焦虑，也不能替代睡眠或健康评估。先看清单里哪些是自己负责，哪些只是还没得到别人确认。
+
+### 福德宫问的是休息怎样被占用
+先核太阴在本命福德宫的亮度、同宫星曜与四化，再看对宫及三方四正。太阴的细致倾向落在福德，问题可能表现为休息时还在整理信息；若落田宅，则更适合问家庭空间和事务，不能把两宫混为一谈。化科未必表示想得更少，化忌也不等于临床诊断。大限和流年只标记何时特别值得留意，仍须用实际作息来核对。
+
+### 清单分成可做、待人和暂缓
+把睡前事项分三栏：明天能独立完成的动作、需要他人回复的事项、尚无期限的念头。甲睡前反复核客户资料，实际上还缺主管确认的价格；与其继续改十遍，不如发一条列出待确认项的消息。乙担心孩子次日接送，但日历已有另一位家长的安排，只需核一次交接。两个念头都很具体，处理方式却不相同。
+
+### 让记录有一个停点
+设置固定十分钟，把次日第一步、负责人和提醒时间写清；到点后不再为没有新信息的事项重排顺序。涉及工作责任，可补看官禄宫是否真由自己签字；涉及共同家庭安排，则核田宅与实际分工。若长时间影响睡眠或日常功能，直接寻求合适的健康支持，不用盘面解释或拖延。也不要把所有家人的提醒都默认为自己的任务。
+
+### 排盘后的现实核对
+先核出生资料、太阴与福德宫，再看四化和关联宫位。随后连续两周记录入睡时间、睡前重复修改清单的次数，以及哪些问题第二天真的需要处理。把无效复盘改成一次明确交接，让休息成为可安排的事项。
+
+英文标题：Tai Yin in the Fortune Palace: When Should Planning Stop at Night?
+英文描述：Use a Zi Wei Dou Shu reading to separate tomorrow's tasks from waiting and repetitive review.
+英文正文：
+You keep revising tomorrow's list after turning out the light. Tai Yin in the Fortune Palace can raise a question about the mental effort that continues during rest. It does not diagnose anxiety or replace a sleep assessment. First identify which items are yours and which are waiting on another person's answer.
+
+### Read the placement carefully
+Check Tai Yin's condition, neighboring stars, transformations, opposite palace, and related positions. Fortune frames recovery; Property frames the home arrangement. A difficult marker is not a medical conclusion, and an annual trigger still needs comparison with real sleep habits.
+
+### Sort the list
+Use three columns: an action you can take tomorrow, an item awaiting a reply, and an idea without a deadline. A price needing a manager's approval should become one clear request, not ten revised drafts. A family pickup already assigned on a shared calendar may need one check, not another hour of planning.
+
+### Set a stopping point
+Give the list ten minutes, name the first action and its owner, then stop rearranging items without new information. Verify birth details and the chart convention, then compare Fortune with Career or Property where relevant. Track sleep and repeated list edits for two weeks. If the pattern seriously affects daily life, seek appropriate health support directly.
+
+---
+
+## 14. 两款紫微盘命身宫不同，先核出生时辰还是农历月？
+slug：`ziwei-mingshen-gong-panzhi-chayi-shuru`
+参考研究日期与原文 URL：2026-11-20 https://shengpinkai.com/zwds/learn/how-a-zwds-chart-is-built
+采用角度与旧文区别：当天研究展示出生资料到命身宫、五行局和主星的依赖链。本文只解决命身宫先分叉时的输入核对，不重复真太阳时通论或辅弼生月校盘。
+正文草稿：
+两款软件给同一人排盘，连命宫、身宫都不同，有人立刻比较哪一版的主星更符合自己。这样会把后续错误当作解释差异。命身宫先分叉，应回到出生记录、时辰和农历月的输入，再讨论星曜与运限。
+
+### 找到第一处不同
+保存两份软件的出生资料页，逐项核公历日期、出生地点、时区、时刻和是否采用真太阳时。再看转换出的农历月份、闰月及出生时支。甲的记录是凌晨一点零五分，一款按当地钟点、一款做时差校正，时支可能跨界；乙的出生时刻一致，软件却对闰月采用不同月份，命身宫也可能因此移位。一次只改一个输入，才能知道差异来源。
+
+### 不要从主星倒推时辰
+命身宫定位后，十二宫、宫干、五行局与主星安置才按各自规则继续。若前一步不同，后面多处星位不同可能只是连锁结果。先做一张对照表，列“原始资料—农历换算—时支—命身宫—五行局—紫微位置”，标出第一个不一致的格子。看某盘的武曲更像自己，并不能证明其出生时辰正确。记忆中的性格印象也不等于出生档案。
+
+### 口径不明时保留两个版本
+有的工具不公开闰月或换日规则，这时写“规则未知”，不要替它补一套算法。若出生证明只写“下午”，可先限定可能时辰，分别排盘，标出稳定与变化的宫位；涉及临界点，再找可靠记录。生年四化和大限方向也应在同一套口径下读取，不能从两款盘各选看起来顺眼的部分拼成一盘。
+
+### 核对顺序
+先确认原始记录、时区和校时设置，再核农历月与时支、命身宫，最后检查五行局、主星和大限。问题若只出现在辅星，再针对相应的月、时或年干检查，不必从头解释人生。排盘清楚后才谈具体宫位如何对应现实选择。
+
+英文标题：Zi Wei Dou Shu Life and Body Palaces Differ: Check the Inputs First
+英文描述：Find the first chart-setting difference before comparing stars, cycles, and interpretations.
+英文正文：
+Two Zi Wei Dou Shu apps show different Life and Body Palaces for the same person. Choosing the chart whose stars feel more familiar skips the real problem. Compare the birth inputs and find the first calculation that diverges.
+
+### Fix the original record
+Save both input screens. Compare the calendar date, location, time zone, clock time, solar-time setting, converted lunar month, leap-month treatment, and birth-hour branch. A birth near an hour boundary can change under a time correction. A leap-month convention can create a different month value even when the clock time agrees.
+
+### Trace the dependency chain
+List the raw record, calendar conversion, hour branch, Life and Body Palaces, element bureau, and main-star placement in that order. If the palaces differ early, several later star positions may differ as a consequence. A personality match cannot validate the original birth record.
+
+### Keep uncertainty visible
+If an app does not explain its month or day-boundary rule, mark it unknown. If the record says only “afternoon,” compare the plausible charts and note which placements stay stable. Read transformations and ten-year cycles within one consistent convention. Verify the inputs before using either chart for a practical question.
+
+---
+
+## 15. 2027天同化权牵动福德，休假排班怎样保留自主权？
+slug：`ziwei-2027-tiantong-huaquan-fude-xiujia-paiban`
+参考研究日期与原文 URL：2026-11-20 https://www.shibishibi.jp/blogs/2027-unsei
+采用角度与旧文区别：当天研究将丁年天同化权放进休息安排的具体选择。本文限定休假排班的授权、替班和恢复时间；不重复站内天同化权父母照护服务或一般假期运势。
+正文草稿：
+团队轮班表排出来后，你发现自己连续三周只有零散半天休息，主管说“大家都这样”。如果2027天同化权牵动福德宫，可以追问自己在休息安排上有没有实际选择权；它不意味着请假一定获批，也不是把同事调班义务推给别人。先看单位规则和已经承诺的工作。
+
+### 福德与官禄分问
+核丁年天同化权所在宫，以及它与本命福德、官禄和对宫的联系。福德宫问恢复和内在余裕，官禄宫问岗位值守责任。化权可提示谁能决定安排，却不能直接解释为“我说了算”。若权在官禄，可能要先确认值班权限；若福德受牵动，重点是休息是否被持续挤占。四化还须连同主星、三方四正和大限背景读，不能只挑一颗星替排班制度背书。
+
+### 把休假要求写成可协商方案
+列出希望完整休息的日期、不可离岗的任务、可提前完成的交付，以及需要谁接手紧急联系。甲只说“下周我想休息”，团队不知道客户问题由谁处理；乙提前整理待办、指定可接手的人并说明超出授权的问题如何升级，更容易让排班讨论落地。两种申请都合理，但信息完整程度不同。休假是否批准仍以制度与协商结果为准。
+
+### 替班不等于欠人情
+如果同事代班，记下值班时段、工作范围和补休方式，不要靠口头“以后还你”。若连续几周都靠同一人补位，问题可能是岗位配置不足，需请主管调整。财帛宫可提示加班费与补贴要单列核算，但福德宫的休息需要不能用一笔补贴完全替代。另一种情况是休假期间仍需随时回消息，应明确应急条件和响应时限。
+
+### 排盘后的检查
+先核出生资料、丁年口径、天同化权及福德官禄关系，再看实际班表、剩余假期、值守规则。试行一个排班周期，记录完整休息日和临时召回次数。盘面帮助看清自主权的问题，调整要靠可执行的安排。
+
+英文标题：Zi Wei Dou Shu 2027 Tian Tong Hua Quan: Protecting Rest in a Shift Schedule
+英文描述：Separate recovery time, job coverage, and approval when negotiating leave in 2027.
+英文正文：
+Your shift schedule leaves only scattered half-days off for three weeks. If Tian Tong Hua Quan connects with the Fortune Palace in a 2027 Zi Wei Dou Shu chart, ask who controls the schedule and whether rest is actually protected. The chart cannot approve leave or assign a coworker to cover your work.
+
+### Separate rest from duty
+Confirm the annual transformation and its actual placement. Fortune frames recovery; Career frames formal coverage. A power marker raises a question about decision authority, not an automatic right to choose every shift. Read the main stars, opposite palace, related positions, and longer cycle.
+
+### Make a workable request
+List the days you need, deadlines you can finish early, urgent duties requiring cover, and the person who can escalate exceptions. A request with a clear handoff gives the team something concrete to decide. Approval still comes from the workplace rules and agreed staffing plan.
+
+### Review the real schedule
+Record who covers each shift, whether time is repaid, and what counts as an emergency during leave. If one coworker repeatedly fills every gap, raise the staffing issue with the manager. Verify the chart inputs, then compare Fortune, Career, and Wealth questions with the written roster, leave balance, and actual interruptions after one cycle.
+
+---
+
+## 16. 紫微十四主星能任意同宫吗？看盘先核哪条规则？
+slug：`ziwei-zhuxing-tonggong-guize-hedui`
+参考研究日期与原文 URL：2026-11-20 https://astroverse.com.tw/knowledge/fourteen-major-stars
+采用角度与旧文区别：当天研究指出两套主星安置有固定顺序，同宫组合并非随意拼接。本文限定教程或截图里的组合校验，不重复十四主星性格介绍与单星吉凶。
+正文草稿：
+某篇解读把两颗主星写成同坐命宫，你用自己的排盘工具却始终找不到这种组合。先别用星性硬解释，确认图片是不是把邻宫或对宫的星抄进了本宫。十四主星的位置来自排盘规则，同宫组合并不是可以任意搭配的词组。
+
+### 先确认宫格边界
+一张盘的每格可能同时写宫名、地支、主星、辅星、四化和大限年龄。截图缩得很小时，邻格的文字容易被误读。甲把命宫的主星与对宫迁移的主星连在一行，误以为两者同宫；乙把辅星当成主星，得出另一组“组合”。先把每颗星抄到对应宫格，再核是否真在同一格。命身同宫与两颗主星同宫也不是同一概念。
+
+### 主星安置有先后依赖
+先核出生资料、农历日、五行局与紫微位置，再按所用排盘规则安放其他主星。不同软件的显示设计可能不同，但同一口径下的星曜落宫应可重算。不要为了让一句性格描述成立，手工把另一颗星移进来。若两套工具从五行局开始已不同，先处理输入与口径，再谈同宫可能性；若只是一张科普配图写错，可直接核作者原表。
+
+### 组合成立也不等于结论成立
+就算确认两星确实同宫，还要看所在宫位、亮度、四化、同宫辅煞、对宫与三方四正。甲的同宫组合落官禄，讨论的是工作方式；乙的相同组合落福德，问题转为休息和内在选择。不能从两颗星名推出两人会做同样的工作，也不能用“落陷”一词直接判坏。具体问题仍需回到当事人的现实资料核对。
+
+### 实用校验顺序
+保存原始排盘与出生设置，逐格确认宫名和主星类别，核五行局与主星安置口径，再比较同宫、对宫及三方。发现教程错误时标出具体宫格和规则，不把错误组合转述为新的断语。完成校盘后，再讨论这个宫位在所问事情中有什么作用。
+
+英文标题：Can Any Two Zi Wei Dou Shu Main Stars Share a Palace?
+英文描述：Check chart cells and star-placement rules before interpreting a claimed two-star combination.
+英文正文：
+A chart guide claims that two main stars share the Life Palace, but your chart app never shows the pair. Before interpreting their traits, check whether a star from the neighboring or opposite cell was copied into the same palace. The fourteen main stars follow placement rules; they are not freely combined labels.
+
+### Read the cell boundary
+A small chart cell may show its palace name, branch, main stars, support stars, transformations, and cycle ages. Copy each star into the correct cell. One reader may mistake a Travel Palace star for a Life Palace partner; another may mistake a support star for a main star. Those are different errors.
+
+### Check the placement chain
+Verify the birth data, lunar day, element bureau, and Zi Wei placement, then follow the chosen convention for the remaining main stars. If two apps already disagree on the element bureau, resolve that input first. Do not move a star by hand to make a description sound convincing.
+
+### Interpret only after validation
+Even a valid pair needs its palace, condition, transformations, other stars, opposite palace, and connected positions. The same pair in Career and Fortune frames different questions. Save the original chart and settings, check the claimed cells, then discuss what the verified arrangement means for the specific issue.
