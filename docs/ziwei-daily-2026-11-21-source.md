@@ -209,3 +209,99 @@ For a weekend trip, one person can ask about dates, another can call relatives, 
 
 ### Set a threshold for shared choices
 Routine supplies can have a delegated buyer. A move, a loan, or a lasting change to a child's schedule needs explicit approval from both people. A shared list can show the proposal, deadline, cost, and person who must confirm. Silence should not be treated as consent. Read the chart in context, then review two recent decisions and agree on a practical rule that both partners can follow.
+
+---
+
+## 07. 紫微示例盘一格有宫名、干支和年龄，应该先读哪个？
+slug：`ziwei-shili-pan-gongge-ziduan-zenme-du`
+参考研究日期与原文 URL：2026-11-21 https://astroew.com/articles/first-read
+采用角度与旧文区别：研究以教学盘区分输入和解释；本站已有排盘后总流程，本篇只解决单个宫格各字段的辨认，不借用其虚构人物结局。
+正文草稿：
+初学者打开紫微斗数排盘，看到同一格里有宫名、甲乙之类的天干、寅卯之类的地支、几颗星和一串年龄，很容易把所有数字都读成评分。其实这些字段回答不同问题：宫名说明这格讨论什么生活范围，干支给出位置与计算信息，年龄通常标示大限阶段，星曜和四化才进入具体解释。先辨字段，才能比较两款软件的盘。
+
+### 先找宫名和位置
+先在盘上找到命宫，再按十二宫排列认出所问的官禄、财帛等宫。宫位名称是问题坐标，不是某件事已经发生的证据。地支标记宫位所在的位置；宫干参与后续推算，也不是这格的好坏分数。甲把“寅”看成自己的属相，乙把宫干“甲”当作星名，两人连所问宫位都还没有定位，若直接读运势就会把不同层级混在一起。
+
+### 把年龄与星曜分开
+一格上的“34—43”这类区间常用于标示大限年龄范围，具体起限要依软件规则核对。它不表示这十年有34分或43分。另一组数字也可能是小限或流年标记，必须看图例。丙看到宫格里有“42”就说事业分数偏低；丁先打开图例，发现它标的是年龄，再查看该宫主星、辅曜、亮度和四化。后者才是在读盘，而不是猜界面。
+
+### 用一格做可复核的标注
+把同一宫格截图，分别圈出宫名、宫干、地支、主星、辅曜、四化和年龄；不确定的标“待核”，再看软件说明。两款盘若宫位不同，先核出生时间与历法；宫位相同而字段显示不同，先核图例和设置。最后从所问宫位出发看对宫、三合和时间层，才把星曜组合放入现实问题。界面颜色可以辅助定位，不能替代排盘依据。
+
+英文标题：Zi Wei Dou Shu Chart Cell: Palace, Stem, Branch, Stars, and Age
+英文描述：Learn which chart-cell labels locate a palace, mark an age period, or describe stars before interpreting a Zi Wei Dou Shu chart.
+英文正文：
+A Zi Wei Dou Shu chart cell can contain a palace name, stem and branch, stars, transformations, and an age range. None of those labels is a single score. Start by identifying what each field does. This is especially useful when two apps arrange the same information differently.
+
+### Find the question and its position
+Locate the Life Palace, then find the palace that matches the question, such as Career or Wealth. The palace name defines the topic. The branch marks a position and the stem is used in calculation. A reader who mistakes a branch for a personal zodiac label may start interpreting the wrong field.
+
+### Keep age labels apart from stars
+An interval such as 34 to 43 often marks a ten-year period, subject to the app's rules. It is not a performance rating. Other numbers may mark an annual or shorter period; consult the legend. Only after that should you read the main stars, supporting stars, brightness labels, and transformations.
+
+### Make one cell reproducible
+Annotate a screenshot with each field and mark unknown labels for later checking. If two charts place a palace differently, compare birth inputs and calendar rules first. If the position matches but the display differs, compare legends and settings. Then read the relevant palace with its opposite and trine partners and test the interpretation against the real question.
+
+---
+
+## 08. 网传名人出生时辰不明，紫微斗数能判断到哪一步？
+slug：`ziwei-mingren-chusheng-shichen-buming-panjie`
+参考研究日期与原文 URL：2026-11-21 https://bose131.blogspot.com/2026/11/blog-post.html?m=0
+采用角度与旧文区别：研究追问公众人物的出生数据来源；本站已有个人时辰校正，本篇限定网传资料缺失时能否称为紫微命盘结论，不讨论具体人物。
+正文草稿：
+网上常见“某名人的紫微盘预示这次会成功”的说法，配图却只给生日，不交代出生时辰与资料来源。紫微斗数要先用出生资料排盘，再核命身宫、主星和时间层。少了可靠时辰，就不能把一张任意选出的盘当成此人的确定命盘。更不能因为事后某句话吻合，反推输入一定正确。
+
+### 先区分已知与猜测
+记录能核实的是公历日期、出生地点、当地时间还是转述的农历生日。若只知道日期，把时辰标成未知；若有多个版本，分别保留来源及发布时间。甲的资料来自正式访谈，明确到小时；乙只有社交平台转发的“凌晨出生”，没有原始记录。两者的证据等级不同，写分析时不能使用相同的确定语气。公众事件的成败本身也不能校正出生钟点。
+
+### 不确定时辰会影响哪几步
+改变时辰可能使命宫、身宫和星曜落位变化；涉及的四化与三方四正，也要随排盘结果重新核对。可以展示“若为甲时辰会怎样排、若为乙时辰会怎样排”的条件比较，但每一版都要标假设。丙用一张未经证实的盘分析职业转折，丁看到另一版盘就断言丙造假；更稳妥的做法是先问两版各用了什么出生输入，哪些结论根本无法共同成立。
+
+### 把方法与结果分开
+如果要讨论公开事件，可以核对事件时间线、岗位职责或合同资料；这些是现实证据，不自动成为命盘证据。没有时辰时，可以解释紫微斗数的排盘规则，或说明哪些问题暂时无法回答。不要把其他占测方法的结果写成紫微宫位判断。真正排盘时先核资料来源与时区，再排命身宫、主星、四化和大限流年；输入未确定，就停在条件推演。
+
+英文标题：Can Zi Wei Dou Shu Read a Celebrity Chart Without a Birth Hour?
+英文描述：Separate verified birth records from assumptions before treating a public figure's Zi Wei Dou Shu chart as evidence.
+英文正文：
+A celebrity chart may circulate with a birthday but no reliable birth hour. Zi Wei Dou Shu needs birth inputs before palace and star positions can be checked. A confident prediction attached to an unverified chart does not establish that the underlying time is correct.
+
+### Label what is known
+Record whether the date, birthplace, time zone, and hour came from an original record, an interview, or a repost. A date without an hour is still an incomplete input. If several hours circulate, keep each version and its source separate. A later event cannot prove which clock time was right.
+
+### Compare assumptions explicitly
+A changed hour may move the Life and Body Palaces and alter the arrangement to be interpreted. It is possible to show two hypothetical charts, each labeled with its input. Compare which claims survive both versions and which depend entirely on one guessed hour. Do not silently select the chart whose story sounds better.
+
+### Stop at the evidence boundary
+Public records may establish what happened in a career or election, but they do not validate a birth hour. Without that hour, explain the chart method or state that a palace conclusion is conditional. When a reliable record becomes available, check the local time and location, then read the palaces, stars, transformations, and time period in order.
+
+---
+
+## 09. 官禄宫看着顺，工作却一直不稳，还要核哪些宫位？
+slug：`ziwei-guanlu-shun-gongzuo-buwen-ziyuan`
+参考研究日期与原文 URL：2026-11-21 https://mdj.com.vn/blogs/chia-se/cach-xem-cong-viec-trong-la-so-tu-vi/
+采用角度与旧文区别：研究把职业问题拆到多个宫位；本站已有官禄与财帛定义，本篇限定“岗位合适但难以持续”的资源排查。
+正文草稿：
+有人工作内容合适、主管评价也好，却半年换了三次地点，收入到手后所剩无几。只看官禄宫容易写出“职业顺利”，却解释不了为什么工作难以持续。紫微斗数读职业时，官禄宫先看岗位与责任，命宫看本人能否承受当前做法，财帛宫核收入结构，田宅宫及迁移宫再看居住与移动成本。各宫回答不同问题，不能把一个宫的好坏扩展为整个职业结论。
+
+### 官禄顺，究竟顺在哪里
+先核官禄本宫的主星、辅曜、四化和三方四正，并区分本命、大限、流年。甲擅长解决技术问题，项目也愿意给他复杂任务，这是岗位匹配；乙在审批流程中有实际授权，也算工作开展顺畅。但甲每次都须临时出差，乙的授权仅覆盖一个季度，二者仍可能无法长期按原安排工作。“顺”要写成具体可观察的工作条件。
+
+### 再核收入与居住条件
+财帛宫提示提问方向，实际仍要看工资条、回款日期和支出。丙名义月薪提高，异地房租与双城交通也增加，净结余下降；丁接项目奖金，却须先垫设备费。若频繁搬家或远程通勤，田宅与迁移的议题也应被单独标出。不能把财帛宫一个化禄直接换算为到账金额，也不能把田宅宫受压直接判为一定失业。
+
+### 把时间层与现实记录对齐
+本命盘提供较长期的工作方式，大限与流年帮助定位近期变化；先写出每项判断来自哪一层。若工作不稳始于公司重组，应核项目变动、合同期限和组织预算，而不是用星曜取代事实。排盘时先确认出生输入，定位官禄，再查命、财帛、田宅与迁移的相关组合，最后列“岗位职责、实际收入、移动成本、合同期限”四栏。哪一栏先出问题，就先处理那一栏。
+
+英文标题：Zi Wei Dou Shu Career Palace Looks Strong, but the Job Feels Unstable
+英文描述：Read career fit alongside income, housing, mobility, and timing when a promising role is hard to sustain.
+英文正文：
+A role may fit someone's skills while the overall job remains hard to keep. Frequent moves, delayed payments, or a short contract can outweigh a positive review. In Zi Wei Dou Shu, the Career Palace frames the role, but the practical question also involves the Life, Wealth, Home, and Travel Palaces.
+
+### Define what works at the job
+Read the Career Palace with its stars, transformations, and connected palaces. Separate a long-term pattern from a ten-year or annual issue. One engineer may be trusted with complex problems yet spend every week away from home. Another may have approval authority that expires after a quarter. Both need a more precise description than a generally good career.
+
+### Check money and location
+Compare actual pay dates, expenses, rent, and travel costs. A higher salary may leave less after a second apartment. A bonus may arrive only after the worker pays equipment costs. The Wealth, Home, and Travel Palaces help frame separate questions; they cannot replace a bank statement or lease.
+
+### Match the period to the records
+If instability began with a company reorganization, inspect the contract term and budget before assigning a chart explanation. Start with verified birth inputs, locate the career issue and its time layer, then review role, net income, mobility cost, and contract duration as four distinct records. Act on the constraint that is actually present.
