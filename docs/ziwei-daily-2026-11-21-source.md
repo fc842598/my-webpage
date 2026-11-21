@@ -410,3 +410,143 @@ List staffing, purchases, client commitments, and system access. Mark what the r
 
 ### Test the support chain
 Map the local manager, head-office supervisor, finance team, and customer contact. A worker who waits two days for each decision needs an escalation path and a backup approver. Compare travel and housing costs with the actual role. Verify the birth inputs, read the Travel and Career questions in order, then use the appointment letter and a one-month review to judge whether the rotation can work.
+
+---
+
+## 13. 官禄宫为空宫，能直接把对宫星曜当成职业结论吗？
+slug：`ziwei-konggong-wen-gongzuo-duigong-jiedu`
+参考研究日期与原文 URL：2026-11-21 https://shengpinkai.com/zwds/learn/reading-a-palace
+采用角度与旧文区别：研究说明宫位阅读须连对宫与三合；本站已有三方四正总论，本篇只处理官禄空宫被误读为对宫全部转移。
+正文草稿：
+打开命盘看到官禄宫没有主星，有人就把对宫星曜整段解释搬过来，说自己“职业性质完全由夫妻宫决定”。空宫不是没有工作，也不是另一宫改了名字。紫微斗数看宫位，先把所问事项定在官禄，再借对宫及三合查看支持、牵制和互动。借看的星曜提供线索，结论仍须回到岗位与实际经历。
+
+### 先确认真的空宫
+核官禄宫是否无十四主星，别把辅曜、煞曜、四化误当成主星，也别漏看软件折叠的星曜栏。甲的官禄宫无主星却见文昌，工作上常需整理流程与文书；这不能直接写成“注定做文职”。乙同样空宫，现实是现场工程师，文书只是交接的一部分。宫位里的其他信息仍要记录，不能因为主星栏空白便一笔划掉。
+
+### 借对宫，但保留宫位职能
+对宫星曜描述与工作议题相互照应的条件。比如对宫见重秩序的组合，可追问岗位的沟通、规则和协调；不应把对宫对应的人际关系直接写成职业岗位。若对宫见化忌，也要辨认是沟通链卡住、职责争议，还是其他事项，不可只说“工作必败”。两个同样借对宫的人，可能一个负责售后协调，另一个做内部审计；职责和授权不同，解释就要分开。
+
+### 三合与时间层不能省
+再核官禄的三合宫位、命宫承压方式及财帛收入结构，区分本命、大限、流年。甲在本命结构里善于跨组协调，今年却因部门重组被调岗；乙今年岗位稳定，但合同只有六个月。临时波动不等于本命职业性质，长期倾向也不能替合同期限作证。把星曜放回具体时间层，再与工资、岗位文件和项目记录相互核对。
+
+### 按问题顺序读
+排盘先确认出生资料，定位官禄是否真为空宫，记录本宫辅曜与四化，再看对宫、三合和时间层。最后把抽象判断改写为可核问题：工作内容是什么、谁签字、收入何时到账、变动来自哪里。空宫的阅读重点是补齐关系，而不是用另一宫给官禄贴一条现成断语。
+
+英文标题：Empty Career Palace in Zi Wei Dou Shu: Can the Opposite Palace Decide Your Job?
+英文描述：Read an empty Career Palace through its opposite and trine without moving the whole career answer elsewhere.
+英文正文：
+An empty Career Palace means no main star sits in that chart cell. It does not mean a person has no career or that the opposite palace becomes a substitute job description. Keep the career question in the Career Palace and use connected positions as context.
+
+### Confirm what is empty
+Check the main-star list separately from supporting stars, difficult stars, and transformations. A palace with no main star may still carry useful markers. One worker writes procedures; another works in the field and writes only handoff notes. The same marker cannot turn both jobs into an identical office role.
+
+### Borrow context, not a verdict
+Read the opposite palace for conditions that meet the career question. A marker about coordination may suggest checking who sets rules and who resolves disputes. It does not prove a job title. Then inspect the trine partners, the Life Palace, and the actual income arrangement. Label natal patterns and annual changes separately.
+
+### Check the real role
+Confirm the birth inputs and palace layout. Write down the job, approval rights, contract term, and pay dates. The chart helps identify what to ask; work records show which answer applies. An empty palace calls for a careful relationship reading, not a copied statement from another cell.
+
+---
+
+## 14. 教学示例盘的出生资料被遮住，怎样核对职业解读？
+slug：`ziwei-jiaoxue-pan-shuru-jilu-fuhe`
+参考研究日期与原文 URL：2026-11-21 https://astroew.com/articles/first-read
+采用角度与旧文区别：研究展示从示例盘到职业判断的步骤；本站已写宫格字段辨认，本篇聚焦示例盘输入缺失时哪些结论可核。
+正文草稿：
+一张教程截图写“官禄见化权，适合管理”，但出生时间、地点和软件设置都被裁掉。读者可以学习它怎样提问，却无法复算星曜位置。教学示例盘常为保护隐私遮住资料，这合理；讲解者仍应标明哪些是盘面已给事实、哪些依赖看不到的输入，避免让截图看起来比证据更完整。
+
+### 列出能看见的资料
+先记录宫名、主星、四化层次、命宫与身宫、是否显示大限流年。若截图只截官禄一格，无法判断所说的化权是本宫坐守、对宫照会，还是流年叠加。甲把局部截屏当完整盘，推断自己也该转管理；乙先找出原图的时间层说明，只把它当作一个“怎样提出授权问题”的例子。两种用途要分清。
+
+### 缺输入就保留条件句
+出生时辰若被遮住，命宫及星曜排布无法独立复核；若只有日期却无出生地，临界时间还可能涉及时区或太阳时设置。此时可以写“在示例所示盘面成立的前提下”，不要写成“任何见化权者都会升职”。即使完整显示四化，也不应从一张盘推断真实岗位的审批权。盘面是读法示范，不是雇佣记录。
+
+### 复核解读链条
+检查讲解是否先定位官禄问题，再说明命宫、财帛与迁移提供哪些支持或限制，最后才连接大限与流年。比如示例说管理机会增加，可追问是否有岗位空缺、授权文件及预算；若这些未给，结论只能停在提问层。另一例看见化科，可讨论专业成果如何验证，不能替一个人虚构客户评价。把每一步的依据写在旁边，读者才能辨认推断跳跃。
+
+### 学习示例的正确顺序
+先检查截图完整度与输入说明，再按宫位、星曜、四化、三方四正和时间层重走讲解。资料不足时记录未知，不反向猜出生时辰。用自己的可信出生资料排盘，再以实际岗位、收入和选择检验问题是否适用。好的示例教人复核步骤，而不是让人复制一句职业断语。
+
+英文标题：A Zi Wei Dou Shu Example Chart Hides Birth Data: What Can You Verify?
+英文描述：Separate visible chart facts from birth-input assumptions when learning from a worked career example.
+英文正文：
+A tutorial screenshot says that Hua Quan at the Career Palace points to management, but the birth details are hidden. Privacy may justify the crop. It also limits what another reader can reproduce. Learn the reasoning steps without treating the screenshot as a complete chart record.
+
+### List visible facts
+Record the palace labels, stars, transformations, and whether the image shows natal, decade, or annual layers. A crop of one cell cannot show whether a marker sits there or arrives through an opposite or trine connection. Keep those possibilities separate.
+
+### Mark missing inputs
+Without a birth hour, the Life Palace and star layout cannot be independently checked. A date without location may leave time-conversion questions too. Phrase any interpretation conditionally: if the displayed chart is correct, this marker suggests a question about authority. It does not prove a promotion or a legal approval right.
+
+### Rebuild the reasoning chain
+Start with the Career Palace, follow the connected palaces, and check the active period. Ask for a job description, available position, and budget before calling the result a management opportunity. Use your own verified birth inputs for a personal chart. A strong worked example teaches how to verify each step, including where evidence runs out.
+
+---
+
+## 15. 祖辈与孩子吃饭时间不同，田宅宫如何看共享餐桌？
+slug：`ziwei-tianzhai-canzhuo-changbei-haizi-shiduan`
+参考研究日期与原文 URL：2026-11-21 https://yilunfans.com/blogs/tianzhai-23-picky-eater/
+采用角度与旧文区别：研究从餐桌压力读家庭环境；本站今日已写备餐清洁分工，本篇只核多代同住的作息与空间时段。
+正文草稿：
+祖辈五点半要吃饭，孩子七点才下课，父母八点回家。每天都有人说“全家应该一起吃”，结果饭反复加热，孩子匆忙赶作业，老人等得疲惫。田宅宫可以帮助提问家庭空间如何被共同使用；它不规定必须同桌，也不能凭星曜判断谁不孝或谁不合群。先看作息事实，再谈共同安排。
+
+### 田宅看环境，不替家人发言
+排盘时核田宅的主星、辅曜、四化与对宫、三合，并标明本命还是阶段性问题。若是最近换了学校或工作时段，先查流年变化与现实日程，不把短期冲突说成家人长期性格。甲家祖辈有固定服药后的用餐时间，乙家孩子晚课后需要安静进食；需求不同，不能用一条“全家统一时间”盖过具体条件。
+
+### 把餐桌拆成几个时段
+列出备餐、第一轮吃饭、第二轮加热、清洁和短暂聊天五段。老人可以先吃，孩子回来留一份，父母晚间陪孩子十分钟交流；也可以每周选两天一起吃，其余日子分时。重点是让每个人知道何时能使用厨房和餐桌，食物怎样保存，谁负责加热。另一家所有人等到八点，表面整齐，实际让先饿的人承受成本，不一定更有利于关系。
+
+### 核资源与照顾边界
+若厨房只有一个灶位，晚归者可能需要简化第二轮餐食；若老人行动不便，先确认谁可以安全照看。子女宫和父母宫可作为照顾议题的补充，但不能机械地把每个宫映射到家里某个人。孩子若有营养、感官或健康困难，应依据实际情况向专业人员求助；命盘不能诊断。财帛还可提醒核食品浪费和外卖支出，但不替家庭做决定。
+
+### 用一周试排代替争输赢
+先核出生资料、田宅与时间层，再写一张七天表，记录每人的到家时间、桌面占用和休息需求。试一周后问每个人哪段最不方便，调整时间和清洁顺序。盘面帮助识别家庭节奏问题；是否同桌、何时聊天，由居住者共同商定。
+
+英文标题：Zi Wei Dou Shu Home Palace: Can a Family Share Dinner at Different Times?
+英文描述：Use the Home Palace to frame shared-table schedules across grandparents, parents, and children.
+英文正文：
+Grandparents eat early, a child returns from class later, and parents arrive after work. Insisting on one dinner time can leave someone hungry or rushed. The Home Palace in Zi Wei Dou Shu can frame a question about shared space. It cannot decide that a family must eat together or judge anyone's care for others.
+
+### Read the situation, then the chart
+Check the natal or annual layer, stars, transformations, and connected palaces. A recent school or work change may explain the conflict better than a fixed personality story. Record each person's actual meal and rest needs before interpreting a marker.
+
+### Divide the table into time slots
+Map cooking, an early meal, reheating, cleanup, and a short shared conversation. One household may eat in two rounds and talk together after the child returns. Another may choose two common dinners each week. Make food storage and cleanup responsibility explicit so one person does not carry the entire second shift.
+
+### Try a one-week schedule
+Check kitchen capacity, care needs, and any health advice from appropriate professionals. The chart does not diagnose food or sensory issues. Verify birth inputs, identify the Home Palace question, then test a seven-day schedule with the people who live there. Change the plan from their experience, not a star label.
+
+---
+
+## 16. 官禄化禄说有项目提成，财帛宫怎样核实到账？
+slug：`ziwei-caibo-guanlu-ticheng-daozhang-zhengju`
+参考研究日期与原文 URL：2026-11-21 https://tuvidauso.online/tin-tuc/tu-hoa-tinh-va-su-nghiep-huong-dan-ung-dung/
+采用角度与旧文区别：研究讨论四化与职业资源；本站已有项目回款与晋升四化文章，本篇限定员工提成从业绩确认到工资入账的证据链。
+正文草稿：
+主管说项目签约后“肯定有提成”，员工便把预期金额写进下月预算。到了发薪日才发现，合同签了不等于业绩被确认，更不等于提成已结算。官禄相关的化禄可提示工作资源或机会，但财帛宫的问题是收入能否按规则到手。两宫相连，也不能把口头承诺当到账证明。
+
+### 先确认化禄的层次
+核是生年、大限还是流年化禄，实际落官禄本宫还是经对宫、三合牵动。甲接到新客户，有更多项目机会；乙负责老客户续约，业绩表已经归到他的名字。二者都可能谈工作资源，离个人可支配收入却还有不同距离。若只看一颗化禄便写“今年收入上涨”，会跳过分配和支付条件。
+
+### 拆开四个日期
+把签约日、验收日、提成核算日、实际发薪日写在一张表。某公司按客户付款后才计提成，合同金额再高也可能跨季度；另一公司按验收计，但退单会冲回。员工应核劳动合同或提成制度里的计提口径、阶梯比例、扣减项目和离职结算规则。财帛宫能提示读者去问现金流，不会替制度补上缺失条款。
+
+### 对照实际工资与责任
+官禄看谁承担客户交付、审批和售后，财帛核钱实际到哪一账户。甲主谈合同，却因团队共用客户而只分一部分；乙负责验收和回访，提成要等回款。若化忌同时牵动财帛，不能立即推断亏钱，应检查延迟、争议、税费或返还条件。把工资条、业绩确认单与银行入账逐项对照，才能知道差在何处。
+
+### 用排盘整理核账顺序
+确认出生资料与四化时间层，定位官禄、财帛及相应三方四正，再写出项目、规则、确认、结算、入账五个节点。缺一项就标未知，不拿盘面补证据。做个人预算时只把已确认、可支配的钱算作收入；未来提成单列预期，避免机会看上去顺利却造成现金紧张。
+
+英文标题：Zi Wei Dou Shu Career Hua Lu: When Does a Commission Reach Your Account?
+英文描述：Separate a promising project from confirmed commission, payroll, and usable cash.
+英文正文：
+A manager promises a commission when a project is signed. The employee counts it in next month's budget, then learns that signing, acceptance, calculation, and payroll are different events. Hua Lu linked to the Career Palace may frame an opportunity question. The Wealth Palace asks when money is actually usable.
+
+### Locate the transformation
+Check whether Hua Lu belongs to the natal chart, a decade, or the current year, and whether it sits in Career or reaches it through connected palaces. A new client lead and a confirmed sales credit are different stages. Neither is the same as cash in a bank account.
+
+### Trace four dates
+Write down contract signing, delivery acceptance, commission calculation, and payment. Read the employer's written formula, clawback rule, and departure terms. One plan pays only after the customer pays; another uses acceptance but adjusts for returns. The chart cannot fill a missing contract clause.
+
+### Reconcile records
+Compare the job role, sales-credit record, pay slip, and bank deposit. If a payment is late, check the actual blocker before calling it a loss. Verify birth inputs and the active transformation layer, then read Career and Wealth as separate questions. Put only confirmed, accessible money into a spending plan.
