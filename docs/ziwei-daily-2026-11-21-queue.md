@@ -17,7 +17,7 @@
 | 11 | 已发布 2026-11-21 12:01 https://yuetianai.com/articles/ziwei-zinv-gong-neirong-shiyong-zhichi-gongshi.html / https://yuetianai.com/articles/en/ziwei-zinv-gong-neirong-shiyong-zhichi-gongshi.html | ziwei-zinv-gong-neirong-shiyong-zhichi-gongshi | 子女宫提示内容创意，免费试用的客服工时怎么估？ | 宫位组合 | 限定试用期答疑与维护工时，不重复课程上线预算。 |
 | 12 | 已发布 2026-11-21 12:01 https://yuetianai.com/articles/ziwei-ziwei-qianyi-lungang-quanxian.html / https://yuetianai.com/articles/en/ziwei-ziwei-qianyi-lungang-quanxian.html | ziwei-ziwei-qianyi-lungang-quanxian | 紫微坐迁移宫，外地轮岗时如何区分头衔和实际权限？ | 主星细读 | 限定异地轮岗的审批与汇报关系，不重复夫妻宫共同决定权。 |
 | 13 | 已发布 2026-11-21 12:06 https://yuetianai.com/articles/ziwei-konggong-wen-gongzuo-duigong-jiedu.html / https://yuetianai.com/articles/en/ziwei-konggong-wen-gongzuo-duigong-jiedu.html | ziwei-konggong-wen-gongzuo-duigong-jiedu | 官禄宫为空宫，能直接把对宫星曜当成职业结论吗？ | 看盘方法 | 限定空宫借看时的角色边界，不重复三方四正整体定义。 |
-| 14 | 待发布 | ziwei-jiaoxue-pan-shuru-jilu-fuhe | 教学示例盘的出生资料被遮住，怎样核对职业解读？ | 看盘方法 | 限定示例盘输入透明度与复核步骤，不重复宫格字段辨认。 |
+| 14 | 已发布 2026-11-21 12:06 https://yuetianai.com/articles/ziwei-jiaoxue-pan-shuru-jilu-fuhe.html / https://yuetianai.com/articles/en/ziwei-jiaoxue-pan-shuru-jilu-fuhe.html | ziwei-jiaoxue-pan-shuru-jilu-fuhe | 教学示例盘的出生资料被遮住，怎样核对职业解读？ | 看盘方法 | 限定示例盘输入透明度与复核步骤，不重复宫格字段辨认。 |
 | 15 | 待发布 | ziwei-tianzhai-canzhuo-changbei-haizi-shiduan | 祖辈与孩子吃饭时间不同，田宅宫如何看共享餐桌？ | 宫位组合 | 限定多代同住的用餐时段和空间，不重复备餐清洁分工。 |
 | 16 | 待发布 | ziwei-caibo-guanlu-ticheng-daozhang-zhengju | 官禄化禄说有项目提成，财帛宫怎样核实到账？ | 四化 | 限定提成确认、结算和实际入账，不重复晋升授权或项目收款。 |
 
