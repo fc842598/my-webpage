@@ -22,6 +22,6 @@
 | 16 | 已发布 2026-11-21 12:06 https://yuetianai.com/articles/ziwei-caibo-guanlu-ticheng-daozhang-zhengju.html / https://yuetianai.com/articles/en/ziwei-caibo-guanlu-ticheng-daozhang-zhengju.html | ziwei-caibo-guanlu-ticheng-daozhang-zhengju | 官禄化禄说有项目提成，财帛宫怎样核实到账？ | 四化 | 限定提成确认、结算和实际入账，不重复晋升授权或项目收款。 |
 | 17 | 已发布 2026-11-21 12:09 https://yuetianai.com/articles/ziwei-guanlu-huake-chengguo-shuming-fuhe.html / https://yuetianai.com/articles/en/ziwei-guanlu-huake-chengguo-shuming-fuhe.html | ziwei-guanlu-huake-chengguo-shuming-fuhe | 官禄化科的成果被团队共用，怎样核个人贡献？ | 四化 | 限定成果署名、复现与团队归属，不重复晋升授权评审。 |
 | 18 | 已发布 2026-11-21 12:09 https://yuetianai.com/articles/ziwei-zinv-neirong-pinpaixunhuan-zhize.html / https://yuetianai.com/articles/en/ziwei-zinv-neirong-pinpaixunhuan-zhize.html | ziwei-zinv-neirong-pinpaixunhuan-zhize | 子女宫看内容品牌，旧作品改版时谁负责维护？ | 宫位组合 | 限定旧作品版本、纠错和维护责任，不重复新课上线或试用客服。 |
-| 19 | 待发布 | ziwei-ziwei-fude-zhoumo-anpai-xiuxi | 紫微坐福德宫，周末总在安排别人，怎样核自己的休息？ | 主星细读 | 限定休息日的统筹负担，不重复太阴睡前清单或紫微夫妻共同决定。 |
+| 19 | 已发布 2026-11-21 12:09 https://yuetianai.com/articles/ziwei-ziwei-fude-zhoumo-anpai-xiuxi.html / https://yuetianai.com/articles/en/ziwei-ziwei-fude-zhoumo-anpai-xiuxi.html | ziwei-ziwei-fude-zhoumo-anpai-xiuxi | 紫微坐福德宫，周末总在安排别人，怎样核自己的休息？ | 主星细读 | 限定休息日的统筹负担，不重复太阴睡前清单或紫微夫妻共同决定。 |
 | 20 | 待发布 | ziwei-chusheng-zhengming-zhengdianshi-zaoshichen | 出生证明只写整点，真太阳时计算到分钟可靠吗？ | 看盘方法 | 限定原始时间精度与换算精度，不重复七点十分的临界输入审计。 |
 
