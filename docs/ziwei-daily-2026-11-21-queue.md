@@ -15,5 +15,5 @@
 | 09 | 已发布 2026-11-21 11:02 https://yuetianai.com/articles/ziwei-guanlu-shun-gongzuo-buwen-ziyuan.html / https://yuetianai.com/articles/en/ziwei-guanlu-shun-gongzuo-buwen-ziyuan.html | ziwei-guanlu-shun-gongzuo-buwen-ziyuan | 官禄宫看着顺，工作却一直不稳，还要核哪些宫位？ | 宫位组合 | 分开岗位、收入、住处和时间层，不重复官禄与财帛的定义文。 |
 | 10 | 已发布 2026-11-21 12:00 https://yuetianai.com/articles/ziwei-zaoshang-qidian-shifen-zhen-taiyangshi-jie.html / https://yuetianai.com/articles/en/ziwei-zaoshang-qidian-shifen-zhen-taiyangshi-jie.html | ziwei-zaoshang-qidian-shifen-zhen-taiyangshi-jie | 出生证明写早上七点十分，真太阳时会改变命宫吗？ | 看盘方法 | 限定临界时刻的输入审计，不重复海外时区或一般时辰不明。 |
 | 11 | 已发布 2026-11-21 12:01 https://yuetianai.com/articles/ziwei-zinv-gong-neirong-shiyong-zhichi-gongshi.html / https://yuetianai.com/articles/en/ziwei-zinv-gong-neirong-shiyong-zhichi-gongshi.html | ziwei-zinv-gong-neirong-shiyong-zhichi-gongshi | 子女宫提示内容创意，免费试用的客服工时怎么估？ | 宫位组合 | 限定试用期答疑与维护工时，不重复课程上线预算。 |
-| 12 | 待发布 | ziwei-ziwei-qianyi-lungang-quanxian | 紫微坐迁移宫，外地轮岗时如何区分头衔和实际权限？ | 主星细读 | 限定异地轮岗的审批与汇报关系，不重复夫妻宫共同决定权。 |
+| 12 | 已发布 2026-11-21 12:01 https://yuetianai.com/articles/ziwei-ziwei-qianyi-lungang-quanxian.html / https://yuetianai.com/articles/en/ziwei-ziwei-qianyi-lungang-quanxian.html | ziwei-ziwei-qianyi-lungang-quanxian | 紫微坐迁移宫，外地轮岗时如何区分头衔和实际权限？ | 主星细读 | 限定异地轮岗的审批与汇报关系，不重复夫妻宫共同决定权。 |
 
