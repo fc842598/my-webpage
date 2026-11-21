@@ -1,10 +1,13 @@
 # 2026-11-21 紫微文章发布队列
 
-当天同行交接：10篇、10个独立域名，shortfall=10。下列三题经当天研究重映射与站内查重、双语编辑；其余17题仍待复核，不能直接使用昨天短初稿。
+当天同行交接：10篇、10个独立域名，shortfall=10。下列六题经当天研究重映射与站内查重、双语编辑；其余14题仍待复核，不能直接使用昨天短初稿。
 
 | 顺序 | 状态 | slug | 原创搜索问题 | 类别 | 与旧文区别 |
 |---|---|---|---|---|---|
 | 01 | 已发布 2026-11-21 09:04 https://yuetianai.com/articles/ziwei-guanlu-huaquan-huake-jinsheng-zhengju.html / https://yuetianai.com/articles/en/ziwei-guanlu-huaquan-huake-jinsheng-zhengju.html | ziwei-guanlu-huaquan-huake-jinsheng-zhengju | 官禄化权与化科都被说适合晋升，怎样区分授权和专业证据？ | 四化 | 限定晋升评审的授权范围与专业证据，不重复四化定义。 |
 | 02 | 已发布 2026-11-21 09:04 https://yuetianai.com/articles/ziwei-zinv-guanlu-caibo-kecheng-shangxian-yusuan.html / https://yuetianai.com/articles/en/ziwei-zinv-guanlu-caibo-kecheng-shangxian-yusuan.html | ziwei-zinv-guanlu-caibo-kecheng-shangxian-yusuan | 子女宫有创作念头，课程上线前怎样核官禄与财帛的投入？ | 宫位组合 | 限定课程试讲、维护工时与退款预算，不重复作品署名或报价。 |
 | 03 | 已发布 2026-11-21 09:05 https://yuetianai.com/articles/ziwei-ziwei-fuqi-gongtong-jueding-fengong.html / https://yuetianai.com/articles/en/ziwei-ziwei-fuqi-gongtong-jueding-fengong.html | ziwei-ziwei-fuqi-gongtong-jueding-fengong | 紫微坐夫妻宫，伴侣替你安排事务时怎样核共同决定权？ | 主星细读 | 限定双方决定权与确认流程，不重复太阴家务提醒。 |
+| 04 | 已发布 2026-11-21 10:00 https://yuetianai.com/articles/ziwei-sanfang-sizheng-gongzuo-hunyin-bianjie.html / https://yuetianai.com/articles/en/ziwei-sanfang-sizheng-gongzuo-hunyin-bianjie.html | ziwei-sanfang-sizheng-gongzuo-hunyin-bianjie | 同一张紫微盘问工作和婚姻，三方四正为何要重画？ | 看盘方法 | 用两种具体提问演示问题宫位切换，不重复三方四正定义。 |
+| 05 | 已发布 2026-11-21 10:00 https://yuetianai.com/articles/ziwei-tianzhai-canzhuo-fengong-jiezou.html / https://yuetianai.com/articles/en/ziwei-tianzhai-canzhuo-fengong-jiezou.html | ziwei-tianzhai-canzhuo-fengong-jiezou | 家庭餐桌总起争执，田宅宫如何看分工和节奏？ | 宫位组合 | 限定备餐、用餐和收拾三段分工，不把挑食判成命格。 |
+| 06 | 已发布 2026-11-21 10:00 https://yuetianai.com/articles/ziwei-runyue-shiwu-shiliu-paipan-shezhi.html / https://yuetianai.com/articles/en/ziwei-runyue-shiwu-shiliu-paipan-shezhi.html | ziwei-runyue-shiwu-shiliu-paipan-shezhi | 闰月十五和十六排盘不同，先查换算还是流派设置？ | 看盘方法 | 限定闰月日期边界与软件选项核验，不重复一般出生时辰误差。 |
 

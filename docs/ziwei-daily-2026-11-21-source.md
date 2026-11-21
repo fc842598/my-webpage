@@ -1,6 +1,6 @@
 # 2026-11-21 紫微双语原创稿
 
-同行交接真实10篇、10域名，shortfall=10。写前扫描站内文章、双语索引、Feed、sitemap；本批三篇只取当天研究的问题角度，正文独立撰写。
+同行交接真实10篇、10域名，shortfall=10。写前扫描站内文章、双语索引、Feed、sitemap；本批六篇只取当天研究的问题角度，正文独立撰写。
 
 ## 01. 官禄化权与化科都被说适合晋升，怎样区分授权和专业证据？
 slug：`ziwei-guanlu-huaquan-huake-jinsheng-zhengju`
@@ -34,6 +34,111 @@ For a management track, list the decisions the person can make, budget limits, e
 
 ### Test expertise against reproducible work
 For a specialist track, save examples, review notes, error rates, and methods that others can use. A polished report with unchecked numbers is weak evidence, while a documented fix that colleagues reproduce is strong evidence. If both transformations matter, prepare a decision record and a separate portfolio of technical work. Read the chart in order, then compare it with the company's promotion criteria and available roles.
+
+---
+
+## 04. 同一张紫微盘问工作和婚姻，三方四正为何要重画？
+slug：`ziwei-sanfang-sizheng-gongzuo-hunyin-bianjie`
+参考研究日期与原文 URL：2026-11-21 https://shengpinkai.com/zwds/learn/reading-a-palace
+采用角度与旧文区别：研究强调提问宫位变化会改变关联宫位；本站已有三方四正定义，本篇只演示一张盘分别问工作和婚姻时如何限定结论。
+正文草稿：
+同一张盘，有人上午问工作，下午问婚姻，却沿用命宫那组固定的三方四正，把两段解释写得几乎一样。问题不在盘变了，而在提问的中心没有重设。紫微斗数里，先确定所问宫位，再找它的对宫和三合宫；这样才知道哪些信息回答当前问题，哪些只是背景。工作与婚姻可以互相影响，但不能把相同的四宫直接贴给两种问题。
+
+### 先把问题落到宫位
+问岗位能否接下项目，以官禄宫为中心；问两人怎样分配共同决定，以夫妻宫为中心。先标本宫的主星、辅曜、四化及空宫情况，再在盘上画对宫与两个三合位。不要一看到命宫有强星就说两件事都会顺利。命宫可补个人做事方式，但职位授权来自现实组织，伴侣是否同意来自实际沟通。若问题同时涉及收入和家庭时间，先把它拆成可分别核对的小问题。
+
+### 工作问题看职责怎样落地
+例如甲被邀请带新项目。先看官禄宫的岗位议题，再看它所会的宫位如何提示资源、外部协作及个人承压方式。若官禄见化权，可追问审批权是否写在职责里；若关联的财帛受牵动，还要核项目预算和报酬。乙也被称为负责人，却不能签字、没有代班人，现实条件与头衔不相称。盘面提示要问什么，任命书、预算表和交接记录才给出能否执行的证据。
+
+### 婚姻问题重新确定主体
+换问周末是否接受外地岗位，要以夫妻宫讨论两人关系和共同安排，重新画出该宫的对宫与三合。官禄宫此时可能作为关系问题的对照信息出现，但它不是原来那套工作评估的完整结论。甲愿意调岗，伴侣需要照顾家人，讨论的是谁承担往返和照料；乙暂缓调岗，是双方确认了时间成本。不能因官禄看着好，便推断伴侣一定支持，也不能因夫妻有阻力就断言工作没有机会。
+
+### 用两张问题清单复盘
+把同一张盘复制两份标注：第一份写“岗位权限、协作、收入”，第二份写“共同决定、时间、照料”。各自标本宫、对宫、三合与四化层次，逐条寻找现实证据。若两份图都提到官禄，也要写清它在每个问题中的角色。最后核出生资料、时间层及具体选择，把命盘当成整理问题的工具，不让宫位关系替现实中的人做决定。
+
+英文标题：Zi Wei Dou Shu: Redraw the Four Palaces for Career and Marriage
+英文描述：A practical way to recenter the four-palace reading when one chart is used for two different questions.
+英文正文：
+The chart stays the same when someone asks about a job in the morning and a marriage decision in the afternoon. The center of the reading changes. In Zi Wei Dou Shu, a four-palace reading starts with the palace that owns the question, then traces its opposite and two trine partners. Reusing a Life Palace diagram for every question can make different answers sound identical.
+
+### Start with the actual question
+For a new role, begin at the Career Palace. For a shared move or household decision, begin at the Spouse Palace. Mark the main stars, supporting stars, transformations, and any empty palace before drawing the connected group. The Life Palace can add context about how a person acts. It cannot by itself prove that an employer grants authority or that a partner agrees.
+
+### Check the job against evidence
+Suppose a colleague is offered project leadership. Read the Career Palace and its connected palaces for responsibility, resources, and pressure. Hua Quan may suggest a question about decision rights, but the job description and approval system show who can actually sign. A second colleague may carry the title yet have no budget or backup. The chart helps organize the review; work records settle the practical issue.
+
+### Recenter a relationship choice
+Now suppose the role requires a move. Start again at the Spouse Palace and draw its connections. Career information may appear as part of the relationship context, but it serves a different question. One couple may accept the move after arranging care and travel. Another may postpone it after comparing time costs. A promising career marker does not equal consent. Label two copies of the chart, write a separate checklist for each question, and compare both with the people and records involved.
+
+---
+
+## 05. 家庭餐桌总起争执，田宅宫如何看分工和节奏？
+slug：`ziwei-tianzhai-canzhuo-fengong-jiezou`
+参考研究日期与原文 URL：2026-11-21 https://yilunfans.com/blogs/tianzhai-23-picky-eater/
+采用角度与旧文区别：研究从家庭餐桌讨论田宅氛围；本站已有田宅及家务总论，本篇限定备餐、用餐、收拾三段分工，不推断儿童健康。
+正文草稿：
+晚饭前有人赶着做菜，有人临时说不吃，有人饭后直接离桌。争执看似围着一道菜，实际可能是备餐、决定和收拾都压在同一个人身上。田宅宫可以作为观察家庭生活环境的入口：家里的规则让谁轻松、让谁紧张？它不能诊断孩子的口味或身体，也不能凭一颗星认定谁该做饭。先把具体情境拆开，比给家人贴命格标签有用。
+
+### 先核田宅宫谈的是什么
+读田宅宫时标明本命还是某一阶段的流年议题，再看同宫星曜、四化、对宫与三合。星曜提示的可能是居住安排、资源分配或家庭节奏，不能直接翻译成“家人一定挑食”。若问的是谁承担照顾工作，还要把相关的父母、子女及夫妻宫作为问题背景分别核对。先问实际住在一起的人有哪些、谁能决定用餐时间，避免把命盘里的称谓机械对应每位亲属。
+
+### 备餐前说清选择权
+甲下班晚，仍负责买菜和做饭；乙可以提前报不吃，却常在菜上桌时才说。这不是菜谱能解决的问题。约定下午固定时间报人数，迟报的人自己处理一餐。另一个家庭让孩子在两种可选食物中挑一道、参与洗菜，成年人仍负责采购和安全。这样把参与权和最终责任分开；至于营养或感官困难，应看实际需要并请合适的专业人员判断，不由盘面推断。
+
+### 用餐和收拾分别记账
+饭桌上争论“谁吃了多少”，常把一周的家务积怨带进这一顿。先约定用餐时不临时追加任务，饭后再检查：谁洗碗，谁整理台面，谁处理剩菜。丙负责做饭但不负责清洁，丁负责清洁却不决定菜单，双方觉得分工可以接受；另一家只说“大家自觉”，最后总由一人收尾。记录三天实际耗时，比争谁更辛苦更容易谈出可执行的轮换。
+
+### 排盘后做一次小调整
+核田宅宫与相关宫位、四化和时间层后，挑最近两次争执，写下备餐通知、用餐选择、饭后收拾三步分别由谁负责。先试一周，再看迟报和临时加任务是否减少。若孩子进食影响健康，优先处理现实照护问题。田宅宫提供的是观察居家关系的角度；安排是否有效，要由家人的体验和实际执行来检验。
+
+英文标题：Zi Wei Dou Shu Home Palace: Who Owns Dinner Tasks?
+英文描述：Use the Home Palace to frame dinner routines, choices, and cleanup without labeling a child's health or character.
+英文正文：
+Dinner arguments can begin with a meal and end with a dispute about invisible work. One person shops, cooks, asks who will eat, and cleans afterward. The Home Palace in Zi Wei Dou Shu can frame a question about the household environment. It cannot diagnose a child's appetite or decide who must cook.
+
+### Check the scope of the reading
+Note whether the question concerns a lasting household pattern or a current annual period. Read the stars, transformations, opposite palace, and connected palaces in context. Ask who lives together and who controls the schedule. A palace label should not be mapped mechanically onto every family member.
+
+### Separate choice from responsibility
+One adult may cook after work while another announces at the last minute that they will eat elsewhere. Set a time to confirm the headcount; late changes need their own solution. A child might choose between two available dishes and help wash vegetables while adults still handle shopping and safety. Real nutrition or sensory concerns belong to appropriate care, not a chart verdict.
+
+### Count the work after dinner
+Decide who clears the table, washes dishes, and stores leftovers. One family divides cooking and cleanup and finds the arrangement fair. Another relies on the vague instruction to help, leaving the same person to finish each night. Log three dinners and test one small change for a week. Read the chart to identify a useful question, then judge the routine by what the household actually experiences.
+
+---
+
+## 06. 闰月十五和十六排盘不同，先查换算还是流派设置？
+slug：`ziwei-runyue-shiwu-shiliu-paipan-shezhi`
+参考研究日期与原文 URL：2026-11-21 https://wenbu.app/en/learn/ziwei-leap-month-half-rule/
+采用角度与旧文区别：研究呈现闰月上半月与下半月的排盘口径；本站已有出生时辰误差文，本篇限定闰月日期边界、软件选项和可复现的排盘比对。
+正文草稿：
+同一个出生日期，两个紫微排盘工具给出不同的命宫，有人马上怀疑出生证明写错。若出生在农历闰月，差异可能更早出现在日期处理：工具是否先把公历正确换成农历？闰月十五与十六是否采用同一种分段规则？还有软件是否默认了不同的流派设置。先追踪输入和换算链，才有资格讨论盘上的星曜，不能因为某一版解释更顺耳就认定它准确。
+
+### 固定原始出生资料
+先从出生证明或可靠记录抄下公历年月日、当地钟表时间、地点和时区，不要先把它改写成自己记忆中的农历生日。若有夏令时或接近时辰边界，也单独标注。甲在国外出生，家人按国内日期记生日，两个工具输入的公历日其实不同；乙出生时间明确，却一个工具填了闰月、另一个只填普通同名月份。先把这些输入差异消除，后面的比较才有意义。
+
+### 核对闰月与日期边界
+把公历日期换算成农历时，记下年份、月份、是否闰月及农历日数。十五与十六相邻，但有些工具对闰月上下半段采用不同的安星口径；具体从哪一日切换，应按工具说明核实，不能把一种规则说成所有紫微流派的共识。丙的公历日期相同，切换一个闰月选项后命宫变了；这说明差异来自设定，不说明哪一盘自动更接近真实经历。
+
+### 比较两款工具时只改一个变量
+记录软件版本和设置截图，先让公历日期、出生地、时区与时间完全一致，再只改闰月口径。比较农历换算结果、命宫、身宫、五行局和主要星曜，找出最早产生分歧的一步。若农历日期已经不同，先查历法；若日期相同而安星不同，再查流派规则。不要把不同软件的漂亮解说拿来当技术校验，也不要临时改生日让某句预测吻合。
+
+### 排盘后保留可追溯记录
+把原始资料、换算结果、工具名称和选项连同两版盘一起保存。向读盘者说明具体分歧，不把其中一版悄悄当成唯一事实。最终仍要核出生资料可信度，必要时请懂历法与排盘规则的人复核。按“原始时间—农历换算—闰月设置—安星结果—现实问题”的顺序走，才能讨论命盘解释，而不让一个隐藏选项替自己决定人生结论。
+
+英文标题：Zi Wei Dou Shu Leap Month: Why Can Day 15 and 16 Produce Different Charts?
+英文描述：Trace the original birth record, lunar conversion, leap-month rule, and chart settings before interpreting different results.
+英文正文：
+Two Zi Wei Dou Shu apps can produce different charts from what appears to be one birthday. For a leap-month birth, the difference may begin before any star is placed. Check the Gregorian record, lunar conversion, and the app's leap-month rule before deciding which chart to interpret.
+
+### Preserve the original record
+Write down the Gregorian date, local clock time, birthplace, and time zone from a reliable source. Do not begin with a remembered lunar birthday. A family may remember a date in another country while the birth certificate records the local date. Another user may enter the leap month in one app and the ordinary month with the same number in another. Align those inputs first.
+
+### Inspect the leap-month boundary
+Record the converted lunar year, month, leap-month flag, and day. Some chart systems treat the first and second portions of a leap month differently. Check the app's stated rule for the exact switch; do not assume one convention governs every school. A different chart after toggling that setting shows where the difference began, not which life story is correct.
+
+### Change one setting at a time
+Keep the same birth time, location, and date in both tools. Save the software version and settings, then compare the lunar date, Life Palace, Body Palace, elemental bureau, and major stars. If the lunar dates differ, investigate conversion. If the dates match but star positions differ, investigate the chart rule. Keep both outputs with their settings and ask a qualified reader to review the exact discrepancy. An appealing interpretation is not a technical check.
 
 ---
 
