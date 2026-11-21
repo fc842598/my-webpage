@@ -550,3 +550,143 @@ Write down contract signing, delivery acceptance, commission calculation, and pa
 
 ### Reconcile records
 Compare the job role, sales-credit record, pay slip, and bank deposit. If a payment is late, check the actual blocker before calling it a loss. Verify birth inputs and the active transformation layer, then read Career and Wealth as separate questions. Put only confirmed, accessible money into a spending plan.
+
+---
+
+## 17. 官禄化科的成果被团队共用，怎样核个人贡献？
+slug：`ziwei-guanlu-huake-chengguo-shuming-fuhe`
+参考研究日期与原文 URL：2026-11-21 https://tuvidauso.online/tin-tuc/tu-hoa-tinh-va-su-nghiep-huong-dan-ung-dung/
+采用角度与旧文区别：研究讨论化科与职业认可；本站已有晋升时权与科的区分，本篇限定团队成果如何留痕及个人贡献的验证。
+正文草稿：
+一个团队发布了排盘数据校对工具，宣传页只写部门名称。开发者说“这是我做的”，产品同事说需求和测试也是他们完成的。官禄化科可提示专业成果如何被看见，但它不能替团队裁定署名。要讨论个人贡献，先把成果、角色和证据拆开，而不是把一颗化科翻译成“必有名声”。
+
+### 化科落点对应什么问题
+先核化科属于本命、大限还是流年，落官禄本宫或与官禄会照。若只是当年被项目触发，重点应是这次成果的评价链；若本命长期重视方法，仍不能预言某个奖项必归个人。甲写核心计算模块，乙把错误输入的规则整理成测试清单，丙负责培训使用者。三项劳动不同，不能凭头衔排先后。
+
+### 把成果拆成可复核的部分
+保留任务单、版本记录、代码提交、测试报告、使用说明和发布前后的错误率。没有代码提交的人也可能设计了关键校验流程；提交次数多的人不一定完成了可运行的方案。把贡献写成“解决了哪个问题、留下什么可复用材料、谁能复现”，比一句“主要负责人”更清楚。团队对外署名与内部绩效分配也应分开记录。
+
+### 核认可渠道与权限
+官禄宫讨论职业评价，交友宫可提醒核团队协作，财帛宫再问奖金或收益如何分配。甲的名字出现在论文致谢，但奖金由部门平均分；乙在内部文档署名，却没有对外发言权限。这两种认可不能混为一谈。若化权也牵动官禄，另核谁能批准发布和接受风险；化科的专业证明不自动带来审批权。
+
+### 从盘面回到评审材料
+按可信出生资料排盘，定位官禄及四化时间层，再核关联宫位。现实中请团队先约定署名和贡献记录口径，评审时提交成果样本、复现步骤与协作者确认。盘面帮助提出“能力怎样被验证”的问题；真正的归属仍要靠过程记录与共同确认。
+
+英文标题：Zi Wei Dou Shu Career Hua Ke: How Do You Verify a Team Member's Contribution?
+英文描述：Use documented work, reproducible results, and team confirmation to assess a shared professional result.
+英文正文：
+A team releases a useful chart-checking tool, but the public page names only the department. Several people helped create it. Hua Ke linked to the Career Palace can frame a question about professional recognition. It cannot decide who deserves credit.
+
+### Locate the marker
+Check whether Hua Ke is natal, decade, or annual, and whether it sits in Career or reaches it through connected palaces. A current-year project question should be assessed through this project's evidence. A general chart tendency cannot award a specific prize.
+
+### Document the work
+Keep task records, version history, test results, instructions, and before-and-after error rates. One person may write code, another may design the checks, and a third may train users. Commit count alone does not measure the whole contribution. Describe the problem each person solved and what others can reproduce.
+
+### Separate recognition from control
+A name in a report, a performance award, and authority to approve a release are different things. Compare Career, team relationships, and compensation questions separately. Verify the chart inputs, then use a shared contribution record and colleague confirmation for an actual review. Hua Ke suggests what to investigate, not whose name to print.
+
+---
+
+## 18. 子女宫看内容品牌，旧作品改版时谁负责维护？
+slug：`ziwei-zinv-neirong-pinpaixunhuan-zhize`
+参考研究日期与原文 URL：2026-11-21 https://tuvidaiviet.com/learn/cung-tu-tuc-khong-chi-la-con-cai-dua-con-tinh-than-nao-de-ra-doi-nam-binh-ngo-2026
+采用角度与旧文区别：研究把子女宫扩展到创作产出；本站已有课程上线预算和试用支持，本篇限定旧作品改版、纠错与维护责任。
+正文草稿：
+去年上线的紫微宫位入门图今年仍被转发，但软件界面已经改版，旧截图让新用户找不到按钮。作者想做新内容，编辑希望先修旧图，运营担心继续传播错误。子女宫可以作为作品持续培育的提问入口；真正要决定的是旧作品谁负责、哪些部分过期、修改如何通知，而不是再写一篇相似的新文章盖过去。
+
+### 先列出作品的存量
+查访问量、引用入口、发布日期和最近一次校对时间。甲写的宫位表只在个人笔记里，改错后影响有限；乙的教程已被公众号和邮件反复引用，错误入口可能持续带来问题。即使同是子女宫的创作议题，维护范围也不相同。盘面里若四化牵动子女，先分清本命长期创作习惯与这一阶段的具体改版任务。
+
+### 设定改版的责任线
+为每份旧作品写负责人、专业复核者、页面编辑者和发布批准人。作者负责术语准确，设计者负责图中位置，运营负责旧链接跳转和用户通知。若原作者已离开团队，须指定接手人，不要把“大家都能改”当成责任制度。甲发现一处错别字可直接修；乙发现排盘规则口径变化，应先记录旧版、核对依据并让专业人员复查。
+
+### 区分小修与新版本
+小修是更正错字、失效按钮或说明；大改涉及读盘顺序、示例星曜或适用范围，需保留版本号和更新时间。财帛宫可提醒核维护工时，官禄宫可问谁有发布权限，迁移宫可问外部渠道是否同步。若只改站内正文，外部截图仍会流传，至少在入口页标注新版链接。不要让读者误以为旧图与新版软件完全一致。
+
+### 按读盘与维护顺序复盘
+核可信出生输入、所问宫位、星曜和时间层，再用实际作品清单决定改哪里。记录用户误解、改动理由、复核人和通知范围。子女宫提供创作与培育的观察角度，内容品牌的可信度则由持续纠错和可追溯版本建立。
+
+英文标题：Zi Wei Dou Shu Children Palace: Who Maintains an Older Learning Guide?
+英文描述：Plan corrections, version history, and ownership when a Zi Wei Dou Shu guide outlives its interface.
+英文正文：
+An older Zi Wei Dou Shu palace guide still circulates, but the chart app has changed its interface. New readers cannot follow an outdated screenshot. The Children Palace can frame a question about nurturing a created work. The actual maintenance decision needs an owner, a review process, and a clear version record.
+
+### Inventory what still circulates
+Check page visits, outside links, publication dates, and the last review. A private note has a different reach from a guide quoted in email and social posts. Mark whether a change concerns wording, a button, or the underlying chart explanation.
+
+### Assign each role
+Name the writer, subject reviewer, editor, and release approver. If the original author has left, appoint a new owner. A typo may need a simple correction; a changed chart rule requires a documented comparison and expert review. The Career Palace can prompt a responsibility question; work assignments settle it.
+
+### Keep the version trail
+For a substantial update, save the former explanation, version number, review date, and a link for readers of the old guide. Compare maintenance hours with the value of creating a new piece. Verify chart inputs and palace terms before changing an example. A lasting content brand depends on visible corrections, not just new output.
+
+---
+
+## 19. 紫微坐福德宫，周末总在安排别人，怎样核自己的休息？
+slug：`ziwei-ziwei-fude-zhoumo-anpai-xiuxi`
+参考研究日期与原文 URL：2026-11-21 https://mingming3.com/en/ziwei/articles/ziwei_star
+采用角度与旧文区别：研究讨论紫微星的统筹倾向；本站已有紫微夫妻共同决定与太阴睡前清单，本篇限定休息日无偿统筹的负担。
+正文草稿：
+周末本想休息，却从订车、安排老人就诊到协调孩子活动都由一个人负责。大家说他“最会安排”，他自己却始终没有完整空闲。紫微坐福德宫，可以提示读盘时问：秩序感是否被用在恢复精力，还是变成了别人依赖的排班工具？星曜不能诊断疲劳，也不意味着这个人天生该替全家统筹。
+
+### 先看紫微与福德的关系
+确认紫微实际坐福德宫，还是只通过对宫或三方会照；再看同宫星曜、四化及本命与流年的层次。福德涉及精神感受和休息方式，紫微重组织和中心位置，合看时可以提出“谁来安排安排者”的问题。甲做家庭旅行清单后安心，乙即使在旅途中还不断回复变更，体验不同，不能用相同星曜写成相同休息结论。
+
+### 统计不可见的统筹时间
+把周末事件分成必要照顾、可轮流处理、可延后及纯属偏好四类。记录预约、提醒、导航、确认人数和临时改期各花多少时间。甲表面只开车两小时，之前还有三小时联系医院与家人；乙负责订票，却能让其他人分别准备证件和路线。实际负担不仅是出门那段时间。若父母宫或子女宫被牵动，也先核现实中的照顾安排，不直接把宫名对应家人责任。
+
+### 为休息设一个交接点
+选一个固定时段由另一人接收消息和决定，例如周六下午不由同一人继续协调。预约信息与紧急联系人提前写好，避免交接后所有问题又回到原负责人。若出现真正紧急事项，明确怎样升级；非紧急偏好由提出者自行处理。化权若参与福德议题，可问掌控感是否必须伴随工作量；有决定权也可以决定暂停安排。
+
+### 用盘面整理可行方案
+核出生资料，定位福德、紫微与时间层，再看夫妻、父母、子女等具体关系如何进入问题。现实里试行两周记录每个人投入与休息时段，谈妥谁负责下次预约。命盘帮助看见统筹与恢复之间的张力，真正的休息需要共同分工和明确边界。
+
+英文标题：Zi Wei in the Fortune Palace: Who Plans the Planner's Weekend Rest?
+英文描述：Use Zi Wei in the Fortune Palace to ask whether organizing everyone else's weekend leaves room to recover.
+英文正文：
+One person arranges weekend travel, a parent's appointment, and a child's activities. Everyone praises the planning, but the planner gets no uninterrupted break. Zi Wei in the Fortune Palace can raise a question about order and recovery. It cannot diagnose exhaustion or assign a person permanent family management duty.
+
+### Confirm the placement
+Check whether Zi Wei sits in the Fortune Palace or only connects to it. Mark other stars, transformations, and the natal or annual layer. A list may help one person relax; constant changes may keep another person on call. The same chart label does not settle their experience.
+
+### Count hidden coordination
+Log booking, reminders, route planning, rescheduling, and follow-up. Driving for two hours may require three hours of preparation. Separate essential care from preferences that others can handle. The Parents and Children Palaces can frame further questions, but family members must describe their real needs and capacity.
+
+### Hand off a real break
+Give another person a fixed decision window, the appointment details, and an emergency contact. Let nonurgent preferences wait or go to the person who requested them. Verify the chart inputs, then compare the Fortune Palace question with two weeks of time records. Rest becomes possible when coordination has a clear handoff.
+
+---
+
+## 20. 出生证明只写整点，真太阳时计算到分钟可靠吗？
+slug：`ziwei-chusheng-zhengming-zhengdianshi-zaoshichen`
+参考研究日期与原文 URL：2026-11-21 https://www.purpletome.com/learn/true-solar-time
+采用角度与旧文区别：研究介绍太阳时换算；本站今日已写七点十分临界案例，本篇限定原始记录只精确到整点时，算法输出分钟不能补足输入误差。
+正文草稿：
+出生证明写“上午七时”，软件按真太阳时算出六点四十七分。有人便断言一定是卯时盘。问题是证明上的七时可能是准确到分钟后省略，也可能只是家人报出的约数。换算能处理时区、经度等已知输入，却不能把原本缺失的分钟凭空找回来。先核原始记录精度，再决定是否需要并列两张盘。
+
+### 整点记录有几种含义
+医院电子记录若内部有07:00:00，纸质证明只显示到小时，可能还能查原始数据；家人回忆“差不多七点”，误差范围可能更宽。甲的病历另有06:58的接生记录，乙只有多年后的口述，两者不能赋予同等精度。不要因为软件给出精确到分钟的结果，就把整点输入标为精确。若确实找不到原记录，应在读盘说明里写明“不确定范围”。
+
+### 换算与误差分开算
+先核出生地点、当年法定时区、夏令时，再看软件用的是地方平太阳时还是真太阳时。假设七点是四舍五入到整点，原始时间可能在六点半到七点半之间；换算后仍需把整个可能区间一起移动，而不是只移中点。若区间跨过卯、辰分界，单张盘无法覆盖全部可能。另一位记录为七点整且有秒级档案，才可按较窄范围计算。
+
+### 不用经历反推一个分钟数
+并列卯时与辰时盘，标出命宫、身宫及关键主星哪些位置不同，也标出哪些问题在两盘下都成立。甲觉得卯时盘的职业描述更像自己，这只是一项主观反馈，不能证明出生于六点四十七；乙找到当年原始病历，才增加了输入证据。后验事件可以帮助提出核查问题，却不该被用来改写出生证明。
+
+### 读盘从可信范围开始
+保留证件、病历、地点、软件版本、开关和两种计算结果。先明确输入精度，再做时间换算，最后才看命宫与时间层。若某个结论高度依赖一个未证实的分钟数，就只作条件说明。紫微斗数的解释可以细，出生资料的未知也必须写得同样清楚。
+
+英文标题：Zi Wei Dou Shu Birth Certificate Says 7 a.m.: Can Solar Time Give an Exact Minute?
+英文描述：A precise solar-time output cannot repair an approximate birth-time input; carry the uncertainty into both charts.
+英文正文：
+A certificate says 7 a.m. A Zi Wei Dou Shu app converts it to 6:47 a.m. and displays a different birth period. The app may calculate accurately from its inputs, but the certificate may have rounded the original time. A precise output does not recover a missing minute.
+
+### Ask what the record means
+An electronic hospital record may retain the exact minute even if a printed form shows only an hour. A family memory of roughly seven is much less precise. Look for the original record and label the uncertainty. Do not treat a computed timestamp as evidence that the birth itself happened at that minute.
+
+### Move the whole uncertainty range
+Check the birthplace, historical legal time, daylight-saving rule, longitude adjustment, and the app's solar-time setting. If seven was rounded to the nearest hour, the possible starting range is wider than one instant. Apply the conversion to that whole range. If it crosses the two-hour period boundary, compare both conditional charts.
+
+### Keep conclusions conditional
+Record which Life and Body Palace positions differ and which observations survive both versions. A career story that feels familiar cannot prove a birth minute. Save the documents, app version, settings, and calculation. Read the palaces only after the input range is explicit.
