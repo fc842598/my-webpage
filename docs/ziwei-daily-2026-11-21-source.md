@@ -305,3 +305,108 @@ Compare actual pay dates, expenses, rent, and travel costs. A higher salary may 
 
 ### Match the period to the records
 If instability began with a company reorganization, inspect the contract term and budget before assigning a chart explanation. Start with verified birth inputs, locate the career issue and its time layer, then review role, net income, mobility cost, and contract duration as four distinct records. Act on the constraint that is actually present.
+
+---
+
+## 10. 出生证明写早上七点十分，真太阳时会改变命宫吗？
+slug：`ziwei-zaoshang-qidian-shifen-zhen-taiyangshi-jie`
+参考研究日期与原文 URL：2026-11-21 https://www.purpletome.com/learn/true-solar-time
+采用角度与旧文区别：研究指出地方太阳时与钟表时间可能不同；本站已有海外时区和时辰不明文章，本篇只核七点十分这一辰时边界的可复算输入。
+正文草稿：
+出生证明写七点十分，排盘软件默认给辰时；另一款启用真太阳时后却给卯时。此时不宜先比较两个命宫哪个更像自己。两张盘的分歧可能只来自时间输入和换算开关。先把原始记录保住，再计算出生地点与时间规则，最后才比较宫位。
+
+### 留住原始时间与地点
+抄录证明上的日期、七点十分、医院所在地，并注明记录是否写了时区。不要把户籍地、成长地填成出生医院，也不要先把证明上的时刻改成软件换算结果。甲在城市东侧医院出生，乙在西侧医院出生，证明同写七点十分，精确经度可以不同；但城市内部的差异未必足以跨越时辰界线。先做计算，再谈盘面。
+
+### 分清三种换算
+第一步核当地当年使用的法定钟表时间，特别是历史夏令时。第二步核软件按经度修正的地方平太阳时。第三步看它是否再纳入均时差，形成所称的真太阳时。不同软件可能把这几步合并，甚至只用行政城市中心坐标。输入同一证明时刻、同一地点，逐项打开和关闭开关，记录输出时间；不要把两个不同口径的数字直接相减后断言谁错。
+
+### 只有跨界才重排
+假设换算后仍在七点之后，两版仍落辰时，命宫差异应继续排查农历换算、闰月及安星设置。若换算落到六点五十多分，才需要并列卯时与辰时两张假设盘。另一位出生于七点五十分，单靠城市内几公里的位置差别通常不值得预设会跨界；仍应以软件输出和坐标核算为准。不能因为其中一盘的叙事更贴近经历，就反过来修改原始出生记录。
+
+### 按可复算顺序使用盘
+保存证明照片、医院地址、软件版本、时间设置和两次输出，标注每张盘的输入。再核命宫、身宫与主星是否真的移动；未移动就不必夸大差异。若证明时间本身只精确到整点，应把记录误差单列，不用真太阳时替代未知时刻。读盘从可信输入开始，再看落宫、星曜及问题对应的时间层。
+
+英文标题：Zi Wei Dou Shu Birth Time at 7:10: Does Solar Time Change the Life Palace?
+英文描述：Audit a recorded 7:10 birth time, location, and solar-time settings before comparing two Zi Wei Dou Shu charts.
+英文正文：
+A birth certificate says 7:10 a.m. One Zi Wei Dou Shu app uses the clock time and another shifts it across the 7 a.m. boundary after a solar-time setting. Do not pick the chart that feels more convincing. First preserve the recorded time and the hospital location, then reconstruct each conversion.
+
+### Keep the original record
+Copy the date, time, birthplace, and applicable time zone. A family address is not necessarily the hospital location. A few miles of longitude can change a computed minute without necessarily changing the two-hour birth period. Keep the certificate value separate from any converted value.
+
+### Audit each setting
+Check historical legal time and any daylight-saving rule first. Then record the longitude correction and whether the app adds the equation of time. Some apps use a city center or combine several adjustments under one solar-time switch. Enter identical data in both apps and save the displayed intermediate times. A different Life Palace does not prove which implementation is right.
+
+### Compare charts only after the boundary check
+If both converted times remain after 7 a.m., investigate lunar-date and chart-setting differences before blaming the birth hour. If one result crosses before 7 a.m., label the two charts as conditional. Save the software version, coordinates, and settings so another reader can reproduce the result. Read the Life and Body Palaces only after the input question is explicit.
+
+---
+
+## 11. 子女宫提示内容创意，免费试用的客服工时怎么估？
+slug：`ziwei-zinv-gong-neirong-shiyong-zhichi-gongshi`
+参考研究日期与原文 URL：2026-11-21 https://tuvidaiviet.com/learn/cung-tu-tuc-khong-chi-la-con-cai-dua-con-tinh-than-nao-de-ra-doi-nam-binh-ngo-2026
+采用角度与旧文区别：研究讨论子女宫与创作产出；本站已有课程上线预算，本篇限定内容产品试用期的支持工时与复盘机制。
+正文草稿：
+有人做了一套紫微入门练习，开放七天试用后，报名人数很快上来，却每天花三小时回答“我的盘为什么与你的例子不同”。子女宫可作为创作、作品和培育事项的提问入口，但作品能否持续，还要看官禄宫对应的交付责任与财帛宫对应的时间成本。只把“有人想试”当成可长期运营的证据，会漏掉支持工作。
+
+### 把作品和服务分开
+先核子女宫的主星、辅曜、四化及三方四正，问的是内容如何形成、反馈怎样进入下一版。试用说明、登录帮助、排盘输入纠错则属于运营服务，不能用一颗创作星曜推断它会自动完成。甲写二十页教程只花两周，试用时却反复解释出生时辰；乙内容更短，却把常见输入问题整理成一页清单，两人的维护负担不同。
+
+### 逐项计支持工时
+把七天试用拆成开通、首次上手、答疑、故障处理、退款或退出五类。每天记录问题量、平均回复时间和升级到人工的比例。十位用户各提一个五分钟问题，加上重现、截图和复核，实际未必只用五十分钟。若创作者自己答疑，须把这段时间从下一篇内容制作里扣除；若交给同事，先写清交接资料和回复边界。
+
+### 让盘面问题回到数据
+官禄宫若牵动责任议题，可追问谁有权限改教程、谁确认错误并通知用户；财帛宫若牵动资源议题，核每位试用用户的真实支持成本。比如一批用户集中卡在闰月设置，修一段说明可能减少后续答疑；另一批人期待个性化命盘解读，就需说明试用产品的服务范围，不能把个案咨询伪装成自动教程。
+
+### 用试用结果决定下一步
+先核出生资料与所问宫位，再标本命和流年的差别；盘面只帮助组织创作与维护问题。试用结束看完成率、重复提问、每位用户支持分钟数和可复用修订，再决定扩容、修改说明或缩小范围。不要拿报名数替代交付能力，也不要把子女宫的创作意象当作商业结果保证。
+
+英文标题：Zi Wei Dou Shu Children Palace: Count Support Hours for a Content Trial
+英文描述：Use the Children, Career, and Wealth Palaces to frame a practical content-trial support budget.
+英文正文：
+A creator opens a seven-day trial of a Zi Wei Dou Shu learning guide. Signups rise, but each evening is spent answering why a user's chart differs from the example. The Children Palace can frame a question about making and nurturing a work. It cannot tell you how many support hours the trial will require.
+
+### Separate the work from the service
+Record what the guide teaches and what a user needs to start: access, birth-input help, troubleshooting, and an exit path. One creator may write a longer guide yet face repeated birth-hour questions. Another may supply a concise input checklist that reduces support. The actual workflow, not a star label, determines the burden.
+
+### Measure the hidden work
+For seven days, log the number of questions, minutes per answer, reproduction time, and handoffs to a second person. Ten five-minute replies can take much longer when each needs a screenshot and a chart check. Use the Career Palace to ask who owns correction and approval; use the Wealth Palace to ask what time and money the service consumes.
+
+### Decide from trial evidence
+If many users get stuck at the same leap-month setting, improve one instruction before adding more individual replies. If users expect personal readings, clarify the trial's service boundary. Compare completion rate, repeated questions, and support minutes per user. Read the chart with the correct birth inputs and time layer, then make the next release decision from observed capacity.
+
+---
+
+## 12. 紫微坐迁移宫，外地轮岗时如何区分头衔和实际权限？
+slug：`ziwei-ziwei-qianyi-lungang-quanxian`
+参考研究日期与原文 URL：2026-11-21 https://mingming3.com/en/ziwei/articles/ziwei_star
+采用角度与旧文区别：研究讨论紫微星的领导与中心位置；本站已有紫微坐夫妻宫的共同决定，本篇只谈外地轮岗时头衔、权限及支持链。
+正文草稿：
+总部说派你到外地“负责新团队”，当地同事却仍向原经理请示，预算也只能由总部批准。头衔听起来像负责人，执行时却可能只是在传递信息。紫微坐迁移宫可以提示读盘时留意人在外部环境中的组织位置；它不能自动授予签字权，也不能保证当地团队接受新安排。先把轮岗任务拆成角色、资源和期限。
+
+### 紫微落宫先看问题范围
+核紫微是否真坐迁移宫，还是只会照迁移；再看同宫星曜、辅曜、四化与对宫命宫。紫微偏向统筹与秩序的意象，落在迁移议题时，可以问外部场景里谁协调、谁决策、谁承担后果。甲被介绍为区域负责人，但不能决定排班；乙没有负责人头衔，却握有现场应急预算。两者的权力结构不能由称呼判断。
+
+### 写出权限表
+轮岗前列出人员安排、采购额度、客户承诺、系统账号四项。每项写明可独立决定、须共同签字或只能建议。若化权牵动官禄，重点核授权是否落在岗位文件；若化科牵动迁移，可核跨地区专业认可和交接资料，但专业声望仍不同于审批权限。没有正式权限时，先规定升级路径，免得一线把口头承诺误当决定。
+
+### 核外部支持链
+迁移宫谈外出环境，不能只看个人是否愿意跑动。甲赴外地后每周等总部回复两天，项目因此延误；乙有固定联络人和替代审批人，交付反而稳定。把当地经理、总部主管、财务与客户分别列在沟通图上，标谁收信息、谁批准、谁通知结果。若住宿和往返成本高，再核财帛与田宅相关议题，不让“外地机会”掩盖实际负担。
+
+### 以可执行安排收尾
+按可信出生资料排盘，定位迁移、命宫、官禄及相应时间层，再把盘面提示转成轮岗核对表。看任命书、预算权限、系统账户、交接日和退出条件；试行一个月后复盘决策耗时与任务完成率。紫微星可帮助提出组织位置的问题，工作安排仍以实际授权和团队配合为准。
+
+英文标题：Zi Wei in the Travel Palace: Is a Regional Lead Actually Authorized?
+英文描述：Separate a regional job title from approval rights, resources, and support during an out-of-town rotation.
+英文正文：
+Head office sends a worker to lead a regional team, but local staff still ask their former manager for every decision. Zi Wei in the Travel Palace can prompt a question about how someone operates in an outside environment. It does not grant an approval right or make a team accept a new reporting line.
+
+### Read the actual placement
+Confirm that Zi Wei sits in the Travel Palace rather than merely connecting to it. Check the opposing Life Palace, other stars, transformations, and the active period. A formal leader may lack scheduling authority, while a specialist without the title may control an emergency budget. Describe those roles separately.
+
+### Put authority on paper
+List staffing, purchases, client commitments, and system access. Mark what the rotating worker can approve alone, what needs a second signature, and what is only a recommendation. If Hua Quan is involved, check the written job scope. If Hua Ke appears, check whether professional work is recognized across teams. Recognition is still different from approval.
+
+### Test the support chain
+Map the local manager, head-office supervisor, finance team, and customer contact. A worker who waits two days for each decision needs an escalation path and a backup approver. Compare travel and housing costs with the actual role. Verify the birth inputs, read the Travel and Career questions in order, then use the appointment letter and a one-month review to judge whether the rotation can work.
