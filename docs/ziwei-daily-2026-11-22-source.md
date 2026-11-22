@@ -451,3 +451,38 @@ Note which natal palace receives the annual Life marker. An annual position is a
 
 ### Label every transformation by source
 For each marker, write the star, transformation, timing layer, and palace. A natal Ju Men Hua Ji and an annual Wen Qu Hua Ji are not the same claim. Save the original chart and settings, then compare classroom statements with observable schedules or documents. This sequence makes a lesson testable without treating its sample chart as a forecast for someone else's life.
+
+---
+
+## 14. 2027五虎遁同组宫干相同，为什么财运仍不能一起断？
+slug：`ziwei-2027-wuhudun-tongzu-gonggan-buton-caiyun`
+参考研究日期与原文 URL：2026-11-22 https://ziwei.com.tw/articles/2027-wuzu-tiangan
+采用角度与旧文区别：借五虎遁同组宫干可复算但星曜与大限不同的逻辑。本站已有年度运势话题，本篇只教读者区分宫干表与个人财务判断，不复制同行分组表或运势句。
+正文草稿：
+同事小陈和小吴在一篇2027紫微文章里被分到同一出生年天干组，两人都看到流年财帛宫的宫干相同。小陈便以为他们明年的收入也会同涨同跌。五虎遁分组解决的是“宫干怎么排”的计算问题，不是“谁能赚多少钱”的结论。即使两人用同一张查表，宫内主星、四化落点、大限背景和现实合同仍可能完全不同。
+
+### 先说明表格能回答什么
+五虎遁按出生年天干确定寅宫起干，再顺排十二宫宫干。某些出生年干会落入同一排法组，所以查流年命、财、官三宫时可能得到相同的宫干。排盘时先核出生年干是否填对、阴历与阳历是否转换正确，再对照软件展示的宫干。若两张盘查表结果不同，优先核输入和规则，不急着推断运势。
+
+### 同宫干不是同一张财帛盘
+小陈做固定薪资岗位，小吴接按项目结算的设计单。即使流年财帛宫同干，小陈要查奖金发放与岗位职责，小吴要查合同、回款和空档期。宫干相同不代表坐守主星、对宫、三方及四化都相同；大限走向也要各自核对。把“同组人财运都好”当结论，会遮住现金到账与责任结构的差异。
+
+### 四化要先找来源，再看落宫
+查到宫干后，若继续分析宫干四化，应记下哪颗星化禄、化权、化科或化忌，以及它落在哪一宫。宫干只是起点；星曜位置与所问问题才决定是否值得追问。比如化禄牵涉投入新设备，未必是净收入增加；化忌牵涉客户验收，也不代表没有生意。另一位有稳定工资的人，即使同组，也可能只需要核固定奖金的计算方式。
+
+### 用两张盘练习，不套用年运话术
+分别保存两人的完整盘和软件设置，先核本命命财官，再列大限与2027流年三宫的宫干、星曜和四化。每人独立写一张收入表：来源、到账日、固定支出与不确定费用。最后对照宫位提出具体问题，而不是用同组标签替他们做财务决定。可复算的宫干表适合教学，个人结论仍要回到完整盘与真实账目。
+
+英文标题：2027 Zi Wei Dou Shu Five Tiger Chart Groups: Same Palace Stem, Different Money Story
+英文描述：See what a shared 2027 palace stem can calculate in Zi Wei Dou Shu and why it cannot predict the same income for everyone in one group.
+英文正文：
+Two coworkers find that a 2027 chart table puts them in the same birth-stem group. Their annual Wealth Palace stems match, so they expect the same money outcome. The Five Tiger method helps calculate palace stems. It does not make two complete Zi Wei Dou Shu charts identical.
+
+### Use the table for calculation
+Check the birth year stem, date conversion, and the software rule. The method sets a starting stem and advances through the palaces. People in one group can share a palace-stem sequence, but their stars and decade context still need individual examination.
+
+### Compare different income arrangements
+One worker receives salary and a bonus. The other bills clients by project. Even with a matching annual Wealth stem, the first should check bonus terms while the second should check payment dates and gaps between contracts. A stem cannot replace an invoice or a budget.
+
+### Locate the transformation before interpreting it
+If a palace stem triggers a transformation, note the star, transformation, palace, and time layer. Hua Lu can accompany a larger investment as well as a resource opportunity; Hua Ji can prompt a contract review without proving that income will disappear. Save both full charts, then compare each reading with real cash inflows and obligations. A group table is a calculation aid, not a shared financial forecast.
