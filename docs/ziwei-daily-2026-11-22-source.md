@@ -591,3 +591,38 @@ One partner says “we can consider it,” while a parent hears a firm yes. A ch
 
 ### Agree before paying a deposit
 Ask whether a contribution has conditions about location or guests. If the couple cannot accept them, revise the plan and budget first. Check deposit refunds, changes, and who pays any excess. Confirm the chart inputs and related palaces, then turn the reading into practical questions. The booking contract and the couple's agreement settle the decision.
+
+---
+
+## 18. 伴侣反对换岗，官禄对宫夫妻宫能替谁做决定？
+slug：`ziwei-guanlu-duigong-fuqi-huangang-fendian`
+参考研究日期与原文 URL：2026-11-22 https://yuvachart.com/blog/zi-wei-dou-shu-career-palace/
+采用角度与旧文区别：借官禄对宫夫妻宫可进入职业问题但不代替本人决策的逻辑。本站已有官禄基础与职业方向文，本篇限定伴侣反对换岗时的收入、通勤和家务分担。
+正文草稿：
+小何想从稳定岗位换到一家新公司，工资多两成，却要每周出差两天。伴侣反对的理由不是不支持事业，而是接送孩子和晚间照顾会全部落到自己身上。有人见官禄宫对宫是夫妻宫，就断“伴侣阻事业”。对宫提醒职业选择会碰到关系承诺，并不告诉我们谁对谁错。先把工作条件与家庭时间算清，才能讨论选择。
+
+### 官禄宫先回答岗位做什么
+记录新岗位的职责、试用期、审批权和出差频率，再看官禄主星、辅曜、亮度及四化。若官禄见化权，可能要追问责任是否加重，不等于一定升职；若见化禄，也要查收入条款和发薪时间。小何的新工资是税前还是税后，绩效部分能否保证，均应从录用文件核对，不能用一颗星填空。
+
+### 对宫夫妻宫看承诺如何受影响
+夫妻宫作为官禄的对宫，可帮助整理伴侣怎样参与这项职业变化。小何若一周有两晚不在家，就要重新分配接送、夜间照顾和周末休息。另一对没有孩子的伴侣，可能更在意共同租约或异地时间。相同宫位结构遇到不同生活约束，答案自然不同。夫妻宫不能被解释成“配偶有权决定职业”，也不能把照顾劳动当作免费资源。
+
+### 财帛与迁移补上成本
+财帛宫追问实际到账与家庭现金流，迁移宫关注外部机会、出行和适应。工资多两成，若新增交通、临时托管和住宿自付费用，净收益可能缩小。小何可以列三个方案：接受并安排替班、争取减少出差、暂缓换岗。每个方案都写明收入、工时和谁承担照顾，别拿抽象的“事业运”掩盖条件。
+
+### 排盘后的共同核对
+先核出生资料，围绕命、官、财和官禄对宫看本命结构，再加大限、流年；把盘面提示转成可验证的职位与家庭问题。两人各写一份不能承受的成本，再看合同能否调整。最终是否换岗由当事人决定，但受影响的家庭安排需要共同协商，星曜不能替任何一方签字。
+
+英文标题：Career Palace Opposite Spouse Palace: When a Partner Objects to a Job Change
+英文描述：Use Zi Wei Dou Shu to frame a job-change discussion around work duties, travel, net pay, and shared care responsibilities.
+英文正文：
+A new job pays more but requires two nights of travel each week. The worker's partner worries about childcare falling on one person. In a Zi Wei Dou Shu chart, the Spouse Palace sits opposite the Career Palace. That relationship can bring commitments into the career discussion. It does not label the partner an obstacle or give either person sole authority over the choice.
+
+### Verify the job offer first
+Read the role, probation period, approval authority, travel schedule, and actual pay terms. Hua Quan can raise a question about added responsibility; Hua Lu does not guarantee the variable bonus. Use the written offer to settle amounts and dates.
+
+### Count the household work
+List pickup, evening care, rent, and rest time that will change. A couple without children may face a different schedule problem. The same chart structure does not create the same household answer. Treat unpaid care as a real cost rather than an invisible favor.
+
+### Compare three workable routes
+Use the Wealth Palace for cash flow and the Travel Palace for external demands. Compare taking the job with backup care, negotiating fewer trips, and delaying the move. Write the net income, hours, and responsible person for each route. Confirm the chart inputs and timing layers, then use the reading to sharpen questions. The offer and the couple's agreement determine the next step.
