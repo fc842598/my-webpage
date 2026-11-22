@@ -1,12 +1,12 @@
 # 2026-11-22 紫微文章候选队列
 
-状态：待次日研究复核，未发布。仅基于 2026-11-21 已核验的 10 篇、10 独立域名研究形成候选；不是正式发布队列。11/22 必须先完成当天研究并逐题重映射、站内查重、扩写及编辑，合格后才能改为「待发布」。不得提前生成公开页面或计入配额。
+状态：2026-11-22 当天同行交接已通过（10篇、10域名，shortfall=10）。01–03 已按当天研究重映射、查重、扩写编辑，待逐篇正式发布；04–20 仍待复核，未发布。
 
 | 顺序 | 状态 | slug | 原创搜索问题 | 研究日期与原文 URL | 角度及与旧文区别 |
 |---|---|---|---|---|---|
-| 01 | 待次日研究复核，未发布 | ziwei-ming-guanlu-tianzai-yidi-tongqin | 转到异地岗位，命宫、官禄和田宅怎样分开核适应成本？ | 2026-11-21 https://mdj.com.vn/blogs/chia-se/cach-xem-cong-viec-trong-la-so-tu-vi/ | 岗位变动同时改变居住和通勤；区别于已发轮岗权限，限定住所、通勤和实际岗位任务。 |
-| 02 | 待次日研究复核，未发布 | ziwei-guanlu-caibo-jianzhi-zhuanzheng-jiedian | 兼职转正时，官禄宫与财帛宫怎样核工作量和到手收入？ | 2026-11-21 https://mdj.com.vn/blogs/chia-se/cach-xem-cong-viec-trong-la-so-tu-vi/ | 同一份工作身份变更；区别于已发提成到账，限定工时、社保与净收入。 |
-| 03 | 待次日研究复核，未发布 | ziwei-shichen-laiyuan-jilu-xianghu-maodun | 两份出生记录时辰相冲突，紫微排盘先采用哪一份？ | 2026-11-21 https://bose131.blogspot.com/2026/11/blog-post.html?m=0 | 两份可追溯记录的冲突；区别于已发整点精度、名人资料或无时辰，限定来源优先级与复核。 |
+| 01 | 已发布 2026-11-22 09:03 https://yuetianai.com/articles/ziwei-caiyuan-chuangye-xianjin-qixian-gangwei.html / https://yuetianai.com/articles/en/ziwei-caiyuan-chuangye-xianjin-qixian-gangwei.html | ziwei-caiyuan-chuangye-xianjin-qixian-gangwei | 被裁后想创业，紫微盘怎样同时核现金期限与岗位选择？ | 宫位组合 | 限定失业现金期限、试单与回岗条件，不重复创业总论。 |
+| 02 | 待发布 | ziwei-liuyue-jihui-hetong-yanshou-sihua | 项目机会突然增多，流月四化怎样提醒核合同与验收？ | 四化 | 限定验收及变更条款，不重复文曲化忌定义。 |
+| 03 | 待发布 | ziwei-tiantong-mao-gongzuo-xietiao-bianjie | 天同坐卯在工作中善于协调，为什么还要划清责任边界？ | 主星细读 | 聚焦跨组协调结果和接单上限，不重复天同总论。 |
 | 04 | 待次日研究复核，未发布 | ziwei-chusheng-shijian-jiaren-jiyi-zhengju | 家人记忆与出生证明不同，紫微斗数怎样处理时辰证据？ | 2026-11-21 https://bose131.blogspot.com/2026/11/blog-post.html?m=0 | 口述记忆和书面记录权重；区别于已发网传名人时辰，限定个人资料核验。 |
 | 05 | 待次日研究复核，未发布 | ziwei-guanlu-huaji-huikuan-chongzuo | 官禄化忌遇到项目返工，怎样分清岗位压力与财务损失？ | 2026-11-21 https://tuvidauso.online/tin-tuc/tu-hoa-tinh-va-su-nghiep-huong-dan-ung-dung/ | 返工责任与扣款分离；区别于已发官禄化科署名、化禄提成，限定返工边界。 |
 | 06 | 待次日研究复核，未发布 | ziwei-guanlu-huaquan-linshi-daiguan | 官禄化权遇到临时代理主管，怎样核授权期限？ | 2026-11-21 https://tuvidauso.online/tin-tuc/tu-hoa-tinh-va-su-nghiep-huong-dan-ung-dung/ | 临时代理的权限到期；区别于已发晋升评审授权，限定代理期间、签字权和交接。 |
