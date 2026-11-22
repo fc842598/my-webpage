@@ -346,3 +346,73 @@ List permitted expenses, an amount that requires notice, and a higher amount tha
 
 ### Review the agreement
 Different assumptions about a vague rule call for clarification. Spending against a clear rule calls for a separate trust discussion. Keep receipts and written decisions. Confirm chart details, then read the Wealth and Spouse Palaces with their connected stars and timing layers. Finish with a one-page account rule and revisit it against real statements every few months.
+
+---
+
+## 11. 丁年巨门化忌落夫妻与官禄，沟通问题为何不能混着看？
+slug：`ziwei-dingnian-jumenji-fuqi-guanlu-goutong`
+参考研究日期与原文 URL：2026-11-22 https://mingming3.com/en/ziwei/articles/ziwei_ding_sihua
+采用角度与旧文区别：借同一四化须看落宫的逻辑，拆成家庭协商和岗位交付两个场景。本站已有巨门忌总论与夫妻宫争执速度，本篇只核信息、责任与书面确认，不沿用同行叙述或案例。
+正文草稿：
+小岚在家讨论旅行预算，伴侣说她总在追问细节；在公司，她向客户确认验收标准，同事却觉得她拖慢进度。有人看见丁年巨门化忌，就把两次摩擦都概括成“说话有问题”。这省略了关键一步：巨门忌落在什么宫、由哪一层四化触发，决定该检查的是关系中的共同决定，还是工作中的交付文字。
+
+### 先核四化的时间层与落宫
+丁年生年的四化属于本命底色；某个丁年流年出现的四化，是另一个时间层。排盘时把生年和流年标记分别记下，再看巨门所落宫位、同宫辅曜及三方四正。不能见到“丁”和“忌”就假定每个人今年都在婚姻或职业上出事。两张盘即便都有巨门忌，落夫妻与落官禄，也不是同一条生活问题。
+
+### 落夫妻宫，先找未说清的共同决定
+旅行争论表面上是小岚反复问酒店，实际可能是两人没有约定总预算、能否带长辈、谁请假。巨门忌在夫妻宫可提示核对表达与理解落差，不能判定伴侣必然不诚实。先让双方各自写下已经同意的事项，再把尚未决定的费用和时间列出来。另一对夫妻若争的是共同账户付款，重点应转到支出权限，不能把所有冲突归为“讲话难听”。
+
+### 落官禄宫，查交付链而非评价性格
+客户说“下周给初版”，团队理解成可展示的草图，客户却以为已经能上线。官禄宫的巨门忌可用来追问岗位职责、审批和验收口径。小岚需要把版本范围、修改次数、确认人和截止时间写进工单；若她只有整理会议纪要的权限，就不应替主管承诺最终日期。另一位销售即使很会说话，若报价与合同附件不一致，也要先修文件，而非用星曜解释人品。
+
+### 排盘后的使用顺序
+先核出生年干、盘上生年四化，再看巨门所在宫及对宫、三合；之后才叠入大限和流年。把现实事件拆为“谁参与、决定什么、留了什么记录”三项，对应到夫妻或官禄的具体问题。最后用预算表、工单或合同验证是否真的存在沟通缺口。盘面帮助选择追问路径，不能替代双方确认与正式文件。
+
+英文标题：Ding Year Ju Men Hua Ji in Zi Wei Dou Shu: Relationship or Work Communication?
+英文描述：Separate a Ju Men Hua Ji communication question in the Spouse Palace from one in the Career Palace, then check real decisions and documents.
+英文正文：
+A partner asks for a travel budget before booking. At work, the same person asks a client to define what an approved draft means. Both conversations create friction, but a Zi Wei Dou Shu chart does not turn them into one personality flaw. First identify whether Ju Men Hua Ji belongs to the natal chart or a later timing layer, and where it falls.
+
+### A relationship decision needs two clear answers
+In the Spouse Palace, ask what the couple has actually agreed to. A hotel argument may hide an unresolved spending limit or a question about who takes time off. Have each person list agreed points and open decisions. A transformation label cannot prove that either partner is dishonest.
+
+### Work communication needs a delivery record
+In the Career Palace, check the role and the approval chain. A client may expect a launch-ready version while the team promised a draft. Record scope, revision rounds, the decision maker, and the deadline. If the employee lacks final approval authority, the manager must confirm the commitment. Smooth speech cannot repair a mismatched contract.
+
+### Read the chart in layers
+Confirm the birth year stem and natal transformations, then locate Ju Men with its opposite and related palaces. Add decade and annual layers only after that. Match the palace question to a real budget, work order, or signed term. The chart organizes the conversation; those records show what needs to change.
+
+---
+
+## 12. 兄弟宫为空宫，合伙分工能只借对宫主星判断吗？
+slug：`ziwei-xiongdi-konggong-hehuo-duigong`
+参考研究日期与原文 URL：2026-11-22 https://yuvachart.com/blog/zi-wei-dou-shu-career-palace/
+采用角度与旧文区别：借宫位须放回实际职责的逻辑。本站已有官禄空宫职业结论，本篇限定兄弟宫空宫时合伙人的资金、签约和退出分工，不复制同行结构或案例。
+正文草稿：
+小周与朋友打算开摄影工作室。他负责设备，朋友负责接单，口头说好“一人一半”。看到兄弟宫为空，小周想从对宫借一颗主星，直接判断朋友是否可靠。这个跳步会漏掉更具体的事：谁持有设备、谁能签合同、客户退款由谁承担。空宫并不是没有信息，也不能让对宫主星替真实协议签字。
+
+### 空宫先借对宫，再回到三方四正
+兄弟宫可用来组织同辈、朋友和合作资源的问题。若宫内没有主星，先看对宫主星，再核三合、辅曜和四化，了解合作中的资源与压力落在哪里。借星是读盘方法，不是把对宫星性直接贴成合伙人的固定性格。同样的空宫，若一人只是偶尔介绍客户，另一人共同承担房租和债务，实际关系就不能按同一种合伙模式解释。
+
+### 把投入和决定权分开写
+小周买相机花六万元，朋友带来三个客户，却没有现金投入。若约定对半分账，先要回答设备折旧怎么算、客户取消谁承担、谁能决定降价。财帛宫可帮助追问收入流转，官禄宫可看交付岗位，兄弟宫则留给两人的协作关系；任何一宫都不能单独算出公平比例。另一种情形是朋友只收介绍费，那就没有必要让他承担所有项目的售后。
+
+### 化忌不等于背叛，化禄不等于可免合同
+若相关宫位见化忌，应优先检查账目、权限或沟通是否存在卡点，而非预告朋友会违约。见化禄也可能只是资源机会增多，不保证每单都能回款。约定谁保管收款账户、超过多少金额需要双签、何时结算。把样片版权、客户资料和退出时设备归属写进协议，比猜测星曜能否保证友情更有用。
+
+### 排盘后的核对顺序
+先核出生信息，确认兄弟宫为空及对宫主星，再看三方、四化与当前时间层。随后拿出投入清单、合同草案和退伙方案，逐项对照谁负责、谁批准、谁承受亏损。若现实安排不清，先补文件，再谈合伙。命盘提供提问顺序，合作能否继续要靠明确责任和履约记录判断。
+
+英文标题：Empty Siblings Palace in Zi Wei Dou Shu: Can It Decide a Business Partnership?
+英文描述：Use an empty Siblings Palace to frame partnership questions, then check the opposite palace, money roles, contract authority, and exit terms.
+英文正文：
+Two friends plan a photography studio. One buys the equipment and the other brings clients. They say profits will be split equally, but have not agreed who owns the gear or handles refunds. An empty Siblings Palace in a Zi Wei Dou Shu chart cannot answer whether the friend is trustworthy. It calls for a careful reading and a clear agreement.
+
+### Read the opposite palace in context
+When a palace lacks a major star, look at its opposite and related palaces, then check supporting stars and transformations. Borrowing a star does not assign a permanent personality to a partner. A client referral and shared liability are different arrangements even if the chart pattern looks similar.
+
+### Separate resources from authority
+List cash, equipment, clients, and delivery work. The Wealth Palace can frame money flow; the Career Palace can frame who performs the work; the Siblings Palace concerns cooperation. Decide who may lower a price, sign a contract, or approve a refund. A half-and-half profit split needs a definition of costs first.
+
+### Set an exit rule before launch
+Hua Ji can prompt a review of bookkeeping or communication, not a prediction of betrayal. Hua Lu does not guarantee paid invoices. Write down account access, settlement dates, customer data rights, and what happens to equipment if the partnership ends. Confirm the chart inputs, then compare the palace reading with signed terms and actual performance.
