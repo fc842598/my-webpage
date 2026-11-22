@@ -104,3 +104,38 @@ Check the opposite palace, the triad, supporting stars, and transformations befo
 
 ### Make the boundary operational
 Write down who requests coordination, who decides, the due date, and how many hours the role covers. A teacher who answers student questions need not be available every night. A support worker can be kind and still ask for a rota. Read natal structure, add the relevant cycle, then compare the chart with task records and the agreement the people involved can actually follow.
+
+---
+
+## 04. 紫微自动报告的命宫描述很像自己，能据此相信全部预测吗？
+slug：`ziwei-baogao-minggong-miaoshu-xiang-buneng-quanxin`
+参考研究日期与原文 URL：2026-11-22 https://tuvidauso.online/tin-tuc/cach-doc-bao-cao-tu-vi-ca-nhan-hoa-de-ra-quyet-dinh-thuc-te/
+采用角度与旧文区别：针对同行以性格吻合度推及整份报告的推理跳步；本站已有报告阅读引导，本篇专门检验命宫描述与事业财务判断之间的证据边界。
+正文草稿：
+一份紫微自动报告写「做决定前喜欢多想几步」，读者觉得很像自己，于是连后面「今年适合辞职」也一并相信。这是两个不同层次的命题。命宫描述能否解释过往习惯，可以拿具体经历核对；职业选择还要看官禄、财帛、现实岗位与时间层，不能因为前一句顺耳就给后一句盖章。
+
+### 先分清描述、推断和建议
+报告里的「倾向先规划」是描述，「官禄受流年触动」是盘面推断，「马上辞职」却是行动建议。三者需要不同证据。小雅认同自己常做计划，但目前家里有房租和照顾支出，这些事实不会因命宫描述准确而消失。另一位读者觉得命宫段落不像自己，也不等于整张盘都错；先核出生时刻、地点、夏令时与排盘设置。
+
+### 命宫只回答一部分问题
+命宫可帮助理解个人如何面对变化，官禄宫看岗位责任，财帛宫看收入路径，迁移宫补外部机会。若报告称「适合转职」，应追问是工作内容变化、收入条件变化，还是公司外有新机会。甲拿到书面录用通知，乙只有朋友口头推荐，不能写成同一程度的机会。若官禄见化权，还要核授权是否真实；若财帛见化忌，更该确认账期和固定支出。
+
+### 大限与流年不可当确定期限
+大限描述较长阶段的背景，流年提示这一年可能需要关注的宫位，不能把两个时间标签接成精确的事件日期。小雅今年被邀请面试，并不意味着一定在某个月离职；面试结果、交接要求和家庭预算仍未确定。报告若没有说明四化属于生年、十年还是当年，先补齐标签，再讨论含义。
+
+### 把报告改成核对清单
+排盘先复核出生资料，分别标命宫、官禄、财帛及时间层。每一条建议旁写一项可检查的现实证据：岗位说明、工资明细、存款期限、家人分工。对不上就保留疑问，不以「性格说得准」替代证据。好的报告让人知道下一步核什么，而不是替人决定。
+
+英文标题：A Zi Wei Dou Shu Report Sounds Like Me: Can I Trust Every Forecast?
+英文描述：A familiar Life Palace description does not validate every career or money prediction in an automated chart report.
+英文正文：
+An automated Zi Wei Dou Shu report may describe a habit that feels strikingly familiar. That does not validate every later forecast or action tip. A Life Palace description, a chart interpretation, and a recommendation to change jobs are different claims. Each needs its own check.
+
+### Separate the three claims
+A statement such as “you plan before deciding” can be compared with past behavior. A claim about the Career Palace must identify the stars, connected palaces, and timing layer. Advice to resign also needs a job offer, expenses, and a workable transition. Feeling seen by the first sentence does not provide those missing facts.
+
+### Read the relevant palaces
+The Life Palace frames how a person may approach change. The Career Palace concerns duties; the Wealth Palace concerns income; the Travel Palace can help frame outside opportunities. A signed offer and a friend's casual suggestion are different levels of evidence even if a chart uses the same opportunity language for both.
+
+### Check timing and real decisions
+Mark whether a transformation belongs to the natal chart, a ten-year cycle, or the current year. An annual marker is not an appointment date. Confirm birth details and chart settings, then put a real item beside each recommendation: role description, pay, savings, or household agreement. Keep unsupported predictions open rather than accepting an entire report because one paragraph rings true.
