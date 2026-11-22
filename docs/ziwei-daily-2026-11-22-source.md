@@ -521,3 +521,38 @@ Hua Ke may prompt a question about whether a method gained recognition; Hua Quan
 
 ### Bring the chart back to the review
 Confirm Tian Tong's placement, related palaces, and timing layer. Then choose three documented projects and write the initial obstacle, personal action, decision owner, and result. Have coworkers verify the facts. The chart can help notice quiet coordination work; the review should rest on evidence and the job's criteria.
+
+---
+
+## 16. 田宅化权遇到物业维修，谁能决定施工和付款？
+slug：`ziwei-tianzhai-huaquan-wuye-weixiu-zeren`
+参考研究日期与原文 URL：2026-11-22 https://www.iztro.com/en_US/learn/mutagen
+采用角度与旧文区别：借化权既含控制也含责任的逻辑。本站已有田宅共居与搬家文，本篇限定维修授权、报价与付款，使用独立虚构情境。
+正文草稿：
+小区水管漏水，物业说今天必须安排工人。房子由小李父母出资，产权登记在夫妻两人名下，日常物业费却由小李支付。有人看田宅宫化权，便说“谁化权谁说了算”。现实中的维修决定仍要分清谁有产权、谁受影响、谁能签字和钱从哪个账户出。化权可提示责任集中，却不能代替合同上的授权。
+
+### 先核化权属于哪一层
+田宅宫谈居住空间和房屋资源，化权可能来自生年、大限、流年或宫干，不同来源不能混写。看盘先记下四化附着的星曜、实际落宫和时间层，再核对宫内主星、三方与对宫。若只是流年触发，适合关注今年维修和安排是否增加；不能因此说此人一生都必须替全家处理房产。另一户同样见化权，若只是租客，也不能被盘面赋予业主权限。
+
+### 紧急维修和改善工程分开决策
+漏水影响楼下，先拍照、关闭阀门、通知物业并留工单；紧急止损与更换整套水管是两种决定。物业若只报一个总价，要问检测费、材料、人工和保修分别多少。甲家可授权小李先处理止漏，超过约定金额再请另一产权人确认；乙家若房东与租客分离，还要按租约确定由谁联系和垫付。化权不能自动让一个人承担全部费用。
+
+### 查田宅之外的钱和关系
+财帛宫帮助追问付款来源，夫妻宫可讨论共有产权人的协商，父母宫可提示长辈在家庭资源中的关系，但谁付款要看账户、产权和约定。若相关位置见化忌，优先找卡在报价、沟通还是资金；见化禄也不代表维修必然便宜。小李把维修清单发群里，让两位产权人确认范围，完工后保存发票和保修记录，比只问“盘上哪方占理”更能减少争议。
+
+### 排盘后落实四份记录
+核出生资料与四化层级，围绕田宅、财帛和相关宫位列出待问事项。现实中保留现场照片、物业工单、书面报价和付款凭证；大的工程另加双方授权与验收日期。盘面帮人看见“谁有权”和“谁负责”可能不一致，最终施工与费用仍按真实权属和约定执行。
+
+英文标题：Hua Quan in the Home Palace: Who Approves a Property Repair?
+英文描述：Use Zi Wei Dou Shu Home Palace Hua Quan to ask about repair responsibility, then check ownership, approval limits, quotes, and payment records.
+英文正文：
+A pipe leaks in a shared home. The property manager wants a repair today, but the couple has not agreed who may approve the work or which account pays. Hua Quan in the Home Palace may raise a question about concentrated responsibility. It does not grant legal authority or set a contractor's price.
+
+### Identify the transformation layer
+Record the star carrying Hua Quan, its palace, and whether the marker comes from the natal chart or a later period. A yearly marker can focus attention on this year's housing decisions without describing a lifelong duty. Ownership and tenancy still come from real documents.
+
+### Separate urgent work from upgrades
+Photograph the leak, reduce immediate damage, and get a written work order. Stopping the leak is different from replacing the whole system. Ask for separate labor, parts, and warranty costs. One owner may approve urgent work up to an agreed limit while a larger job needs both signatures.
+
+### Keep money and approval visible
+The Wealth Palace can frame the payment question and the Spouse Palace can frame discussion between co-owners. Neither overrides the title, lease, or account agreement. Save the quote, approvals, invoice, and inspection record. Confirm the chart inputs and timing layer, then use the reading to ask where responsibility is unclear. The repair decision rests on the actual property rights and written terms.
