@@ -174,3 +174,72 @@ One partner may want an answer immediately while the other needs to check work a
 
 ### Use timing as context
 Identify whether a transformation is natal, ten-year, or annual before linking it to the relationship. A difficult annual marker is not a breakup date. Compare it with shift changes, moving, or new care duties. Read the chart, then agree on a pause length, a return time, and a way to record decisions. Real safety concerns require real-world action first.
+---
+
+## 06. 官禄化权遇到临时代理主管，怎样核授权期限？
+slug：`ziwei-guanlu-huaquan-linshi-daiguan`
+参考研究日期与原文 URL：2026-11-22 https://www.iztro.com/en_US/learn/mutagen
+采用角度与旧文区别：只吸收化权可指责任而非必然晋升的逻辑。站内已有晋升评审授权，本篇限定临时代理的权限期限、签字权与交接。
+正文草稿：
+主管请假六周，公司让小周临时带组。排盘见官禄化权，他以为这是正式升职的信号，答应了所有审批和客户承诺。可代理通知只写了排班和周报，预算签字仍归部门经理。官禄化权可以提示工作责任变重，却不能替代书面授权。先把盘面所示的责任感与组织给出的权力分开。
+
+### 化权先看落宫和时间层
+化权附着哪颗星、落在官禄本宫还是相关宫位，是两件需要核清的事；生年、十年与流年的化权，也不能都读成当前职位变化。若官禄见权而财帛没有相应变化，小周也许只是多承担协调，收入未变。若迁移宫同时有外部任务，应追问客户沟通由谁最终拍板。盘面能帮助列出问题，不能替代任命文件。
+
+### 代理主管有三种不同权限
+小周可以安排例会，不等于能批准加班费；可以向客户说明进度，不等于能改合同金额；可以给成员分工，不等于能做绩效决定。另一位代理人拿到正式的预算授权，却只有两周有效期，风险又不同。核对通知里的起止日期、金额阈值、代签流程和上级联系人，比一句“有管理运”更能保护工作关系。
+
+### 责任还要看团队资源
+官禄三方四正可以用来追问任务与资源是否配套。若临时负责人负责交付，却无权调人，应把延误风险写入周报；若团队有副手和明确升级路径，工作压力就不一样。化权也不保证大家听命于他。衡量结果应看六周内的交付、返工和协调记录，而非代理头衔是否好听。
+
+### 排盘后按期限做交接
+先核出生资料，标出官禄、财帛、迁移及化权的来源；再把实际授权文件与盘面问题逐项对照。代理结束前列出未结事项、审批记录和接任人，要求确认交接。若之后谈正式晋升，再单独比较岗位范围、薪酬与评估标准；不要把临时权责自动延长成永久职位。
+
+英文标题：Hua Quan in the Career Palace: A Temporary Manager's Real Authority
+英文描述：Use a Zi Wei Dou Shu Career Palace reading to separate temporary responsibility from written approval rights and promotion.
+英文正文：
+A six-week acting manager assignment can feel like a promotion, especially when a Zi Wei Dou Shu chart shows Hua Quan in the Career Palace. Yet a heavier workload and a permanent title are different facts. Start with the written delegation: its dates, spending limits, and who signs for the team.
+
+### Locate the transformation
+Check which star carries Hua Quan and whether it belongs to the natal chart, a ten-year cycle, or the current year. A Career Palace marker may suggest where responsibility becomes visible; it cannot prove that salary or contract authority changed. Compare the Wealth and Travel Palaces when money and client-facing work are part of the assignment.
+
+### Separate three decisions
+Leading meetings does not automatically allow approval of overtime. Reporting progress to a client does not allow a contract change. Assigning work does not grant control over performance reviews. One acting manager may have budget authority for two weeks; another may have none for six. The document and the approval chain settle the difference.
+
+### Close the assignment cleanly
+List unfinished work, approvals, escalation contacts, and the successor before the delegation expires. Use the chart to frame questions about duties and resources, then verify each answer against the actual role. A later promotion deserves its own review of pay, scope, and evaluation criteria.
+
+---
+
+## 07. 破军化禄遇到工具增购，为什么先核预算和现金流？
+slug：`ziwei-pojun-hualu-zenggou-yusuan-xianjin`
+参考研究日期与原文 URL：2026-11-22 https://www.iztro.com/en_US/learn/mutagen
+采用角度与旧文区别：借用化禄可能放大投入的逻辑，本站已有化禄进财总论；本篇只看团队工具增购的现金支出、试用指标与回本期限。
+正文草稿：
+工作室想一次买齐新设计软件、服务器和自动化工具。有人见财帛相关宫位的破军化禄，就说“化禄是钱进来，可以大胆买”。这把增加资源与增加利润混成一件事。破军强调改造旧流程，化禄可能使投入扩大；钱何时花出去、何时收回来，仍须用账单验证。
+
+### 先查化禄放大了什么
+先确定破军实际落宫、化禄属于生年还是流年，再看财帛、官禄与迁移的连接。若破军落官禄，问题可能是工作流程重建；落财帛，才更直接涉及资金运用。两种盘都不能单凭“禄”判断净现金增加。小团队若今年换系统，要把订阅费、数据迁移和培训小时算进成本。
+
+### 增购分三类，不混算收益
+甲工具每月收费，却能省去重复排版，适合用每月节省工时衡量；乙服务器按流量计费，客户量未增加时可能只是更高固定支出；丙软件有一年预付折扣，但会锁住现金。三项都叫“升级”，回本方式完全不同。先做一个月试用，记录实际使用人次、故障率和交付速度，再决定是否扩量。
+
+### 看财帛也要看付款时点
+财帛宫关心现金如何进出，官禄宫看工具有没有改善工作，迁移宫可问外部客户是否因此增加。若合同需要先付全年费用，而客户回款要等三个月，就要保留这段现金缓冲。若流年化禄伴随项目增多，也应分清已签订单、已交付和已收款；三者不是同一笔钱。
+
+### 排盘后列出止损线
+核准出生资料，先标破军、化禄来源和相关宫位，再把拟购清单逐项写下预算、负责人、试用期和停用条件。设定最多可承受的月支出与最晚复盘日。命盘可提醒改造冲动与资源流向，是否采购仍应由现金表和真实需求决定。
+
+英文标题：Po Jun Hua Lu in Zi Wei Dou Shu: Budget a Tool Upgrade
+英文描述：Hua Lu can expand spending as well as opportunity. Check cash flow and payback before buying new tools.
+英文正文：
+A small studio plans to buy software, server capacity, and automation tools in one month. Po Jun with Hua Lu may sound like a promise of more money. It can also describe a larger investment in changing how the team works. The cash leaves the account before any productivity gain arrives.
+
+### Find what grows
+Identify Po Jun's palace and whether Hua Lu is natal or tied to a current cycle. In the Career Palace, the question may center on rebuilding a workflow. In the Wealth Palace, funding and cash movement become more direct. Neither placement proves a positive net return. Include subscriptions, data migration, and training in the cost.
+
+### Test purchases separately
+A design tool might save editing hours; a server upgrade might raise fixed costs before sales grow; a prepaid annual license might improve the unit price while reducing the cash buffer. Track usage, errors, and delivery time during a limited pilot. A new system is useful only if those measures improve enough to justify its cost.
+
+### Set a cash boundary
+Compare signed orders, completed work, and collected payments. They are not interchangeable. Check the Career Palace for the work process, Wealth Palace for the money, and Travel Palace for outside demand. Write a spending cap, owner, review date, and cancellation condition before the purchase. Use the chart to ask sharper questions, then decide from the budget.
