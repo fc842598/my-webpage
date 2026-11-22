@@ -1,6 +1,6 @@
 # 2026-11-22 紫微文章候选队列
 
-状态：2026-11-22 同行交接通过（10篇、10域名，shortfall=10）。01–10 已逐篇正式发布并线上核验；11 已生成待上线；12 已完成当日研究重映射及编辑，待正式发布；13–20 仍为昨日短初稿，未发布。
+状态：2026-11-22 同行交接通过（10篇、10域名，shortfall=10）。01–12 已逐篇正式生成，11–12 待线上核验；13–20 仍为昨日短初稿，待当日研究重映射、查重和扩写，未发布。
 
 | 顺序 | 状态 | slug | 原创搜索问题 | 类别或研究链接 | 角度及与旧文区别 |
 |---|---|---|---|---|---|
@@ -15,7 +15,7 @@
 | 09 | 已发布 2026-11-22 10:08 https://yuetianai.com/articles/ziwei-ming-guanlu-zhuchi-huiyi-juece.html / https://yuetianai.com/articles/en/ziwei-ming-guanlu-zhuchi-huiyi-juece.html | ziwei-ming-guanlu-zhuchi-huiyi-juece | 紫微坐命宫，爱主持会议就代表有岗位决策权吗？ | 财运事业 | 2026-11-22 https://yuvachart.com/blog/zi-wei-dou-shu-career-palace/；只借岗位不能由单星决定的逻辑，限定主持会议与正式签字权。 |
 | 10 | 已发布 2026-11-22 10:09 https://yuetianai.com/articles/ziwei-fuqi-caibo-gongtong-zhanghu-shenpi.html / https://yuetianai.com/articles/en/ziwei-fuqi-caibo-gongtong-zhanghu-shenpi.html | ziwei-fuqi-caibo-gongtong-zhanghu-shenpi | 夫妻宫谈共同账户，大额支出怎样设审批边界？ | 宫位组合 | 2026-11-22 https://tuvidaiviet.com/learn/tet-binh-ngo-2026-cung-phu-the-bat-che-do-yeu-doc-la-so-de-biet-kieu-nguoi-hop-ban-va-cach-tranh-drama-dau-nam；从争执来源看金钱协商，限定账户用途及双人确认。 |
 | 11 | 已发布 2026-11-22 11:07 https://yuetianai.com/articles/ziwei-dingnian-jumenji-fuqi-guanlu-goutong.html / https://yuetianai.com/articles/en/ziwei-dingnian-jumenji-fuqi-guanlu-goutong.html | ziwei-dingnian-jumenji-fuqi-guanlu-goutong | 丁年巨门化忌落夫妻与官禄，沟通问题为何不能混着看？ | 四化 | 2026-11-22 https://mingming3.com/en/ziwei/articles/ziwei_ding_sihua；区别于巨门忌总论和夫妻宫争执文，限定家庭协商与岗位交付的不同核对方法。 |
-| 12 | 待发布 | ziwei-xiongdi-konggong-hehuo-duigong | 兄弟宫为空宫，合伙分工能只借对宫主星判断吗？ | 宫位组合 | 2026-11-22 https://yuvachart.com/blog/zi-wei-dou-shu-career-palace/；借宫位须放回实际职责的逻辑，区别于本站官禄空宫职业结论，限定合伙资金、签约与退出责任。 |
+| 12 | 已发布 2026-11-22 11:09 https://yuetianai.com/articles/ziwei-xiongdi-konggong-hehuo-duigong.html / https://yuetianai.com/articles/en/ziwei-xiongdi-konggong-hehuo-duigong.html | ziwei-xiongdi-konggong-hehuo-duigong | 兄弟宫为空宫，合伙分工能只借对宫主星判断吗？ | 宫位组合 | 2026-11-22 https://yuvachart.com/blog/zi-wei-dou-shu-career-palace/；借宫位须放回实际职责的逻辑，区别于本站官禄空宫职业结论，限定合伙资金、签约与退出责任。 |
 | 13 | 待当日研究复核，未发布 | ziwei-jiaoxue-pan-liunian-fenbushi | 教学盘的流年标记和本命宫位叠在一起，如何避免读反？ | 2026-11-21 https://astroew.com/articles/first-read | 同一格不同时间层辨认；区别于已发宫格字段、新手读盘流程，限定本命与流年标注。 |
 | 14 | 待当日研究复核，未发布 | ziwei-shengong-caibo-gongzuo-shili | 示例盘身宫在财帛，为什么不能直接断职业收入？ | 2026-11-21 https://astroew.com/articles/first-read | 身宫落财帛在教学盘的解释限度；区别于已发教学盘输入复核，限定身宫、官禄与现金流。 |
 | 15 | 待当日研究复核，未发布 | ziwei-tianzhai-kongjian-gongxiang-wanju | 孩子的玩具占满客厅，田宅宫怎样讨论共享空间？ | 2026-11-21 https://yilunfans.com/blogs/tianzhai-23-picky-eater/ | 家中共享空间使用；区别于已发家庭餐桌时段和备餐分工，限定收纳、通行和使用时段。 |
@@ -24,4 +24,5 @@
 | 18 | 待当日研究复核，未发布 | ziwei-chushengdi-jingdu-bianjie-xianglinchengshi | 出生地只记到相邻城市，真太阳时该怎样估不确定范围？ | 2026-11-21 https://www.purpletome.com/learn/true-solar-time | 地点精度影响时辰边界；区别于已发出生时刻精度和跨时区带教。 |
 | 19 | 待当日研究复核，未发布 | ziwei-runyue-shisanzhisi-liupai | 闰月十三与十四排盘有差异，是日期输入还是流派规则？ | 2026-11-21 https://wenbu.app/en/learn/ziwei-leap-month-half-rule/ | 闰月中段的规则边界；区别于已发十五、十六日设置，限定十三、十四日的转换核对。 |
 | 20 | 待当日研究复核，未发布 | ziwei-runyue-ruanjian-shengri-daoru | 从旧排盘软件导入闰月生日，为什么命宫会变化？ | 2026-11-21 https://wenbu.app/en/learn/ziwei-leap-month-half-rule/ | 软件迁移时的日期字段；区别于已发闰月日期边界，限定导入格式和规则版本。 |
+
 
