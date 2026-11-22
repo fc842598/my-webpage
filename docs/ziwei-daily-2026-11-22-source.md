@@ -243,3 +243,37 @@ A design tool might save editing hours; a server upgrade might raise fixed costs
 
 ### Set a cash boundary
 Compare signed orders, completed work, and collected payments. They are not interchangeable. Check the Career Palace for the work process, Wealth Palace for the money, and Travel Palace for outside demand. Write a spending cap, owner, review date, and cancellation condition before the purchase. Use the chart to ask sharper questions, then decide from the budget.
+---
+
+## 08. 两款紫微软件的流年四化标签不同，先核哪三项设置？
+slug：`ziwei-liunian-sihua-liangruanjian-biaoqian`
+参考研究日期与原文 URL：2026-11-22 https://wenbu.app/en/learn/ziwei-four-transformations/
+采用角度与旧文区别：吸收先核四化附着星曜及时间层的读法。站内已有旧报告升级后的庚干四化核对，本篇只处理同一年跨两款工具的流年标签差异，不替任何软件宣布唯一规则。
+正文草稿：
+小陈把同一份出生资料放进两款紫微软件。一张盘显示某星旁有流年化忌，另一张没有。他先担心哪张盘算错，再担心今年必有坏事。其实眼前只有一个可复核的问题：两款工具展示的是否是同一层四化、同一套排盘输入、同一张四化表。比较前先保存两张盘和设置截图，不急着读吉凶。
+
+### 第一项：核标签属于哪一层
+生年、大限、流年、流月的四化可以同时出现在盘上，颜色和缩写未必统一。一款软件默认只显示流年，另一款把生年与流年叠在星旁；看上去不同，实际可能并无计算冲突。先记下标签所附的星、落宫、时间层和所选年份。若同一宫有两个忌，也要分别标来源，不能把两个符号拼成一次事件。
+
+### 第二项：核输入与换年口径
+小陈两边都输入了“2027”，但一边以农历节气设置换年，一边在另一日期切换，年干显示可能暂时不同。再查出生日期、时区、出生地、子时归日和闰月设置是否一致。比如一份资料在午夜附近，日期口径不同会使整张盘变化；此时先解决输入差异，不能只讨论流年四化。
+
+### 第三项：核四化表版本
+同一年干下，两款软件可能采用不同流派的四化表，或一边允许自定义。把年干、四颗化星和表格版本并列记录，核对差异到底落在规则还是显示。若只是界面颜色不同，解释不必变；若化星真的不同，应分别按各自规则读盘并标明口径，不混用一款的星曜与另一款的结论。
+
+### 排盘使用顺序
+先固定一份原始出生资料，保存两款软件的输入页和设置；再逐项比较时间层、换年规则、四化表。最后才看化星落在哪一宫、与对宫及三方有什么联系，并把现实问题说清楚。软件不一致是核对机会，不是某年必有事的证据。
+
+英文标题：Two Zi Wei Dou Shu Apps Show Different Annual Transformations
+英文描述：Compare timing layers, date settings, and transformation tables before interpreting different annual Hua Lu, Quan, Ke, or Ji labels.
+英文正文：
+Two Zi Wei Dou Shu apps may show different annual transformation labels for the same person. Before interpreting a worrying Hua Ji, save both charts and their settings. The discrepancy may come from display layers, date rules, or a different transformation table.
+
+### Check the layer first
+Natal, ten-year, annual, and monthly transformations can appear together. One app may show only annual labels while another overlays several layers. Record the star carrying each label, its palace, the selected year, and the layer. Two marks in one palace do not automatically describe one event.
+
+### Check dates and chart inputs
+The apps may switch years on different calendar conventions. Compare birth date, time zone, birthplace, midnight handling, and leap-month options. A mismatch in the base chart must be resolved before debating a single annual label. Preserve screenshots so each setting can be checked again.
+
+### Check the rule table
+For the same year stem, compare the four stars assigned to Lu, Quan, Ke, and Ji. Some tools offer school-specific or custom tables. A color difference is only a display issue; a changed star means the methods differ. Keep each reading tied to its own rule set. Once inputs and rules agree, inspect the relevant palace, its opposite and connected palaces, then the real question you are trying to answer.
