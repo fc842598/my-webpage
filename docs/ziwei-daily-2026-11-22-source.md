@@ -626,3 +626,38 @@ List pickup, evening care, rent, and rest time that will change. A couple withou
 
 ### Compare three workable routes
 Use the Wealth Palace for cash flow and the Travel Palace for external demands. Compare taking the job with backup care, negotiating fewer trips, and delaying the move. Write the net income, hours, and responsible person for each route. Confirm the chart inputs and timing layers, then use the reading to sharpen questions. The offer and the couple's agreement determine the next step.
+
+---
+
+## 19. 客户口头加需求，流月文曲忌怎样提示写变更单？
+slug：`ziwei-liuyue-wenquji-kou-tou-xuqiu-biangengdan`
+参考研究日期与原文 URL：2026-11-22 https://aiziwei.online/en/blog/november-2026-zi-wei-dou-shu-turning-opportunity-into-secure-results
+采用角度与旧文区别：借流月四化可提醒核对文字与交付边界的逻辑。本站今日已有合同验收条款文，本篇限定项目执行中途新增需求、报价和变更单，不沿用同行月运判断或案例。
+正文草稿：
+设计师小孟签的是六页网站设计合同。项目做到一半，客户在电话里说“顺便加个预约页面”，小孟答“可以看看”。月底客户却认为新页面已经包含在原价里。有人见流月文曲化忌，就把争议说成“这个月不宜合作”。更有用的读法是检查文字如何从口头请求变成可执行范围，盘面提示问题，合同和聊天记录才说明责任。
+
+### 先确认四化口径和时间层
+不同流派的四化表可能不同，先核软件采用的规则、当前流月的划分与文曲所落宫位。不能只因界面显示一个“忌”就预告必有纠纷。若文曲忌与官禄、财帛相关，可追问交付说明和报价是否一致；若落别处，也要按实际问题读，不能把所有客户都当成风险。小孟的合同和电话发生在什么日期，应先用记录确认。
+
+### 把“可以看看”拆成四个字段
+新页面要多少版式、需不需要文案、预计增加几轮修改、由谁最终确认？这些都是新增范围，而不是一句“顺便”。小孟可发一页变更单，写明原合同范围、新增工作、费用和交期，并请客户确认。另一位开发者若只需换一张图，可能不收附加费，但也应记下图片来源和确认时间。变更单的目的不是处处收费，而是避免双方记忆不同。
+
+### 财帛宫看现金，不把化禄当已回款
+若项目同时出现资源增加的四化，也要分清新需求是潜在收入还是已经签字付款。小孟若先做完再报价，财帛上的机会可能变成无偿工时。把新增费用、付款节点、原项目验收与新增验收分开列；若客户不同意追加预算，就退回原合同或缩小新增范围。化忌提示核对，不证明客户存心赖账。
+
+### 排盘后落实一个可复核流程
+核出生资料及流月规则，按宫位与四化整理需确认的环节。实际执行时保存原合同、电话纪要、变更单与客户确认；若有争议，按文件时间线核谁同意了什么。盘面适合提醒小孟停下写清范围，不应代替项目管理和双方协商。
+
+英文标题：Monthly Wen Qu Hua Ji: Put a Verbal Scope Change in Writing
+英文描述：Use a Zi Wei Dou Shu monthly Wen Qu Hua Ji prompt to review verbal client requests, revised scope, price, and delivery dates.
+英文正文：
+A designer contracts for a six-page site. Midway through the project, the client asks for an appointment page by phone. “I can look at it” later becomes a disagreement about whether the page was included. Monthly Wen Qu Hua Ji can prompt a review of wording and delivery, but it cannot prove that the client intended a dispute.
+
+### Confirm the timing and chart rule
+Check which transformation table the software uses, the monthly period, and the palace involved. A Hua Ji label alone is not a reason to stop working. Match the chart question to dated project records.
+
+### Write a small change order
+State the new page's design scope, copy needs, revision rounds, approval owner, price, and revised deadline. Ask the client to confirm before work begins. A tiny image swap may cost nothing, yet it still deserves a written note so the parties remember the same change.
+
+### Separate possible revenue from cash
+An added request is not a paid invoice. If the client declines the new price, return to the original scope or reduce the request. Keep the original contract, call summary, change order, and final approval in one timeline. Confirm the chart inputs and timing layer, then use the reading to identify where the words need precision. The documents settle what was promised.
