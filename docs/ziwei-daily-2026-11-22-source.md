@@ -416,3 +416,38 @@ List cash, equipment, clients, and delivery work. The Wealth Palace can frame mo
 
 ### Set an exit rule before launch
 Hua Ji can prompt a review of bookkeeping or communication, not a prediction of betrayal. Hua Lu does not guarantee paid invoices. Write down account access, settlement dates, customer data rights, and what happens to equipment if the partnership ends. Confirm the chart inputs, then compare the palace reading with signed terms and actual performance.
+
+---
+
+## 13. 教学盘的流年标记和本命宫位叠在一起，如何避免读反？
+slug：`ziwei-jiaoxue-pan-liunian-fenbushi`
+参考研究日期与原文 URL：2026-11-22 https://tuvidauso.online/tin-tuc/cach-doc-bao-cao-tu-vi-ca-nhan-hoa-de-ra-quyet-dinh-thuc-te/
+采用角度与旧文区别：借本命、大限、流年分层阅读的原则。本站已有新手看盘流程和软件标签差异，本篇只教教学盘上同一宫格内两层标记的核对，不采用同行的可信度比例或预测口吻。
+正文草稿：
+老师投出一张紫微教学盘，学生看到“命宫”格里又有一个“流年命宫”标记，便把旁边的化忌解释成命主一生都容易失误。问题往往不在星曜，而在显示层。教学盘可以同时画本命十二宫、大限、流年与不同来源的四化；文字挤在一格时，先分层，再讨论含义，比急着背断语稳妥。
+
+### 把固定底图单独抄一遍
+先核出生年、月、日、时与排盘规则，只显示本命层，记下本命命宫、官禄、财帛及主星位置。若教学材料未给完整出生资料，就把它当作示意图，不能假装能复算真人命运。甲学生把本命官禄写在纸上，乙学生直接盯着今年高亮的格子；两人的结论不同，先检查是不是读了同一层。
+
+### 再叠流年落点，不改写原宫名
+打开流年层，记录今年的流年命宫落在本命哪一宫。流年标记表示当年的观察入口，并不把那一格永久变成本命命宫。比如流年命落本命迁移，可先问当年外部接触和移动是否增加；不能反过来说命主的本命命宫就是迁移。若课程截图只有颜色没有图例，应先找软件的显示说明，再决定颜色代表哪一层。
+
+### 四化还要标清来源
+同一颗星旁可能同时有生年、大限或流年四化。教学笔记应写“哪颗星、哪一种化、来自哪个时间层、落在哪个宫”，而不是只记一个“忌”。小组讨论客户沟通案例时，若一人读的是生年巨门忌，另一人读的是流年文曲忌，争论实际来自不同标记，先对齐口径才谈现实问题。
+
+### 用四步复核教学结论
+保存原始盘图与软件设置；先读本命底图，再记录大限和流年落点，最后逐项确认四化来源。把课堂上的一句判断改写成可观察的问题，例如“今年哪些合同需要二次确认”。再用实际日程和文件核对，别把练习盘的示意结论带到别人生活里。读盘顺序清楚，讨论才有共同基础。
+
+英文标题：Zi Wei Dou Shu Teaching Charts: Keep Natal and Annual Labels Apart
+英文描述：Learn to separate natal palaces, annual positions, and transformation labels when a Zi Wei Dou Shu teaching chart shows several layers in one cell.
+英文正文：
+A teaching chart may print a natal palace name and an annual marker in the same square. A student sees Hua Ji nearby and turns it into a lifelong judgment. The first task is to identify the display layer. Zi Wei Dou Shu software can show the natal chart, decade and annual positions, and several transformation sources at once.
+
+### Copy the natal map first
+Confirm the birth input and chart rules. Hide later timing layers and record the natal Life, Career, and Wealth Palaces with their stars. If a lesson omits the full birth data, treat the chart as an example rather than a reproducible personal reading.
+
+### Add the annual position without renaming the natal palace
+Note which natal palace receives the annual Life marker. An annual position is a question for that year; it does not permanently rename the underlying palace. If a screenshot uses color without a legend, check the software settings before interpreting it.
+
+### Label every transformation by source
+For each marker, write the star, transformation, timing layer, and palace. A natal Ju Men Hua Ji and an annual Wen Qu Hua Ji are not the same claim. Save the original chart and settings, then compare classroom statements with observable schedules or documents. This sequence makes a lesson testable without treating its sample chart as a forecast for someone else's life.
