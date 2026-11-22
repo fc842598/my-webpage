@@ -1,6 +1,6 @@
 # 2026-11-22 紫微文章候选队列
 
-状态：2026-11-22 当天同行交接已通过（10篇、10域名，shortfall=10）。01–03 已逐篇正式发布；04 经当天研究重映射、查重及双语编辑待发布；05–20 仍待复核，未发布。
+状态：2026-11-22 同行交接通过（10篇、10域名，shortfall=10）。01–04 已正式发布；05 经当天研究重映射、查重、双语编辑待发布；06–20 仍待复核，未发布。
 
 | 顺序 | 状态 | slug | 原创搜索问题 | 类别或研究链接 | 角度及与旧文区别 |
 |---|---|---|---|---|---|
@@ -8,7 +8,7 @@
 | 02 | 已发布 2026-11-22 09:04 https://yuetianai.com/articles/ziwei-liuyue-jihui-hetong-yanshou-sihua.html / https://yuetianai.com/articles/en/ziwei-liuyue-jihui-hetong-yanshou-sihua.html | ziwei-liuyue-jihui-hetong-yanshou-sihua | 项目机会突然增多，流月四化怎样提醒核合同与验收？ | 四化 | 限定验收及变更条款，不重复文曲化忌定义。 |
 | 03 | 已发布 2026-11-22 09:04 https://yuetianai.com/articles/ziwei-tiantong-mao-gongzuo-xietiao-bianjie.html / https://yuetianai.com/articles/en/ziwei-tiantong-mao-gongzuo-xietiao-bianjie.html | ziwei-tiantong-mao-gongzuo-xietiao-bianjie | 天同坐卯在工作中善于协调，为什么还要划清责任边界？ | 主星细读 | 聚焦跨组协调结果和接单上限，不重复天同总论。 |
 | 04 | 已发布 2026-11-22 09:07 https://yuetianai.com/articles/ziwei-baogao-minggong-miaoshu-xiang-buneng-quanxin.html / https://yuetianai.com/articles/en/ziwei-baogao-minggong-miaoshu-xiang-buneng-quanxin.html | ziwei-baogao-minggong-miaoshu-xiang-buneng-quanxin | 紫微自动报告的命宫描述很像自己，能据此相信全部预测吗？ | 看盘方法 | 限定命宫描述与行动建议的证据边界，不重复报告阅读引导。 |
-| 05 | 待次日研究复核，未发布 | ziwei-guanlu-huaji-huikuan-chongzuo | 官禄化忌遇到项目返工，怎样分清岗位压力与财务损失？ | 2026-11-21 https://tuvidauso.online/tin-tuc/tu-hoa-tinh-va-su-nghiep-huong-dan-ung-dung/ | 返工责任与扣款分离；区别于已发官禄化科署名、化禄提成，限定返工边界。 |
+| 05 | 已发布 2026-11-22 09:08 https://yuetianai.com/articles/ziwei-fuqi-qisha-zhengzhi-jiezou-goutong.html / https://yuetianai.com/articles/en/ziwei-fuqi-qisha-zhengzhi-jiezou-goutong.html | ziwei-fuqi-qisha-zhengzhi-jiezou-goutong | 夫妻宫见七杀，争执总是很快升级该怎样看沟通节奏？ | 宫位组合 | 限定对话速度、暂停规则和复盘，不重复破军夫妻创业风险。 |
 | 06 | 待次日研究复核，未发布 | ziwei-guanlu-huaquan-linshi-daiguan | 官禄化权遇到临时代理主管，怎样核授权期限？ | 2026-11-21 https://tuvidauso.online/tin-tuc/tu-hoa-tinh-va-su-nghiep-huong-dan-ung-dung/ | 临时代理的权限到期；区别于已发晋升评审授权，限定代理期间、签字权和交接。 |
 | 07 | 待次日研究复核，未发布 | ziwei-zinv-guanlu-shouhou-weihu-yusuan | 子女宫看作品产出，官禄宫怎样估上线后的维护班次？ | 2026-11-21 https://tuvidaiviet.com/learn/cung-tu-tuc-khong-chi-la-con-cai-dua-con-tinh-than-nao-de-ra-doi-nam-binh-ngo-2026 | 作品上线后的值班配置；区别于已发试用客服、旧作品版本维护，限定轮值班表与应急响应。 |
 | 08 | 待次日研究复核，未发布 | ziwei-zinv-caibo-shoupan-dingjia-shiyan | 新课程先小范围试卖，子女宫与财帛宫怎样核定价试验？ | 2026-11-21 https://tuvidaiviet.com/learn/cung-tu-tuc-khong-chi-la-con-cai-dua-con-tinh-than-nao-de-ra-doi-nam-binh-ngo-2026 | 试卖数据决定后续定价；区别于已发课程上线预算，限定样本、退款和单客成本。 |

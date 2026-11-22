@@ -139,3 +139,38 @@ The Life Palace frames how a person may approach change. The Career Palace conce
 
 ### Check timing and real decisions
 Mark whether a transformation belongs to the natal chart, a ten-year cycle, or the current year. An annual marker is not an appointment date. Confirm birth details and chart settings, then put a real item beside each recommendation: role description, pay, savings, or household agreement. Keep unsupported predictions open rather than accepting an entire report because one paragraph rings true.
+
+---
+
+## 05. 夫妻宫见七杀，争执总是很快升级该怎样看沟通节奏？
+slug：`ziwei-fuqi-qisha-zhengzhi-jiezou-goutong`
+参考研究日期与原文 URL：2026-11-22 https://tuvidaiviet.com/learn/tet-binh-ngo-2026-cung-phu-the-bat-che-do-yeu-doc-la-so-de-biet-kieu-nguoi-hop-ban-va-cach-tranh-drama-dau-nam
+采用角度与旧文区别：借争执来源分层的问题；站内已有破军夫妻创业风险文，本篇只讨论七杀夫妻宫的对话速度、暂停规则与事后复盘，不做婚姻吉凶断语。
+正文草稿：
+两人刚谈到周末去谁家，十分钟内就吵到「你从不尊重我」。夫妻宫见七杀时，不能把星曜直接译成「一定分手」或给某一方贴暴躁标签。先记录争执从哪个具体决定开始、谁先觉得时间被压缩、是否有共同确认的做法，再看夫妻宫本身与对宫、三方四正。盘面是讨论关系模式的线索，真实对话才是证据。
+
+### 先找争执触发点
+同样是声音变大，甲乙可能在争谁安排周末，丙丁却是在争共同账户能花多少。前者先核时间与家务，后者应连财帛宫一起看预算。七杀在夫妻宫可提示关系里决断较快、边界较硬的议题，但不代表每个人都这样说话。若同宫有辅曜或四化，解释还要调整；只摘一颗星写结论容易漏掉问题真正落在哪里。
+
+### 区分表达速度与决定权
+小周习惯当场定下周计划，伴侣需要先确认照顾长辈的安排。小周的快不是事实上的决定权，伴侣的慢也不是反对。可以约定重大安排至少留一晚考虑，两人都说出各自不能放弃的条件。另一对伴侣已谈妥预算，只是用词尖锐，则重点是如何复述对方意思；无需把所有争执都归为钱或控制。
+
+### 四化与时间层只帮助定位阶段
+先辨明四化是生年、大限还是流年，再看是否牵动夫妻宫及其关联宫位。流年见化忌不意味着今年必然分开，可以核最近是否因为搬家、换班或照顾责任让谈话更紧。甲在工作最忙的一个月经常临时取消约定，乙感到不被重视；把排班改成每周确认一次，比空谈「感情运」更可执行。
+
+### 排盘后订一条暂停规则
+核准出生资料，以夫妻宫为中心看主星、辅曜、对宫和三合，再把问题归为时间、金钱、表达或决定权。双方约定争执升温时暂停多久、何时回来继续、谁记录决定。若涉及威胁或伤害，应先处理现实安全，不让命盘替人承担责任。七杀提示要问清边界，边界由双方实际建立。
+
+英文标题：Qi Sha in the Spouse Palace: Slow Down a Fast Argument
+英文描述：Use a Zi Wei Dou Shu relationship reading to identify the trigger, pace, and decision rules behind recurring arguments.
+英文正文：
+A weekend plan can become a much larger argument in minutes. Qi Sha in the Spouse Palace does not prove that a couple will separate or that one partner is aggressive. Start with the actual trigger: time, money, wording, or who gets to decide. Then read the star with the palace, opposite palace, triad, and transformations.
+
+### Name the original question
+One couple disagrees about visiting family. Another disagrees about a shared account. The first needs a time and care plan; the second needs a budget. A chart marker cannot replace the facts of either discussion. Supporting stars and the wider chart can also change how a Qi Sha theme is read.
+
+### Separate speed from authority
+One partner may want an answer immediately while the other needs to check work and care duties. Fast speech is not a legal or personal right to decide alone. Try a rule that major plans receive one night of consideration, with both people stating what matters to them. If the real issue is sharp wording, practice repeating the other person's point before responding.
+
+### Use timing as context
+Identify whether a transformation is natal, ten-year, or annual before linking it to the relationship. A difficult annual marker is not a breakup date. Compare it with shift changes, moving, or new care duties. Read the chart, then agree on a pause length, a return time, and a way to record decisions. Real safety concerns require real-world action first.
