@@ -556,3 +556,38 @@ Photograph the leak, reduce immediate damage, and get a written work order. Stop
 
 ### Keep money and approval visible
 The Wealth Palace can frame the payment question and the Spouse Palace can frame discussion between co-owners. Neither overrides the title, lease, or account agreement. Save the quote, approvals, invoice, and inspection record. Confirm the chart inputs and timing layer, then use the reading to ask where responsibility is unclear. The repair decision rests on the actual property rights and written terms.
+
+---
+
+## 17. 双方父母介入婚礼预算，夫妻宫先看谁的决定？
+slug：`ziwei-fuqi-fumu-hunli-yusuan-goutong`
+参考研究日期与原文 URL：2026-11-22 https://tuvidaiviet.com/learn/tet-binh-ngo-2026-cung-phu-the-bat-che-do-yeu-doc-la-so-de-biet-kieu-nguoi-hop-ban-va-cach-tranh-drama-dau-nam
+采用角度与旧文区别：借夫妻宫用于辨认反复争执来源的逻辑。本站已有夫妻争执速度和共同账户文，本篇限定婚礼出资、父母意见和决定权，不复制同行婚恋断语。
+正文草稿：
+小唐和伴侣原本想办一场小型婚礼，双方父母分别提出加桌数和改酒店。一方父母愿意多出钱，另一方却担心收了钱就不能拒绝安排。有人看夫妻宫，直接断“两人合不合”。更有用的问题是：哪些决定属于两人，哪些是出资人的条件，谁承担超预算部分。夫妻宫可以帮助整理协商方式，不能替任何家庭决定婚礼规模。
+
+### 先把参与者和钱分开
+列一张表，写明两人的自有预算、双方父母自愿承担的金额、每项费用由谁确认。财帛宫可追问资金来源，夫妻宫看两人如何形成共同决定，父母宫用于讨论长辈参与的关系；各宫位并读，也不能让星曜决定谁有权要求加桌。若小唐自己支付摄影费用，父母额外赠与酒席钱，两个项目的决定方式可以不同。
+
+### 夫妻宫不是给任何一方贴标签
+若夫妻宫见七杀，可留意讨论速度是否太快，需不需要暂停后再确认；若见巨门忌，可问口头承诺是否被双方理解成不同条件。不能因此断一方强势或另一方必然欺骗。小唐说“可以考虑”，伴侣听成“已经答应”，父母听成“酒店可以改”。三方误解需要把候选方案、最后答复日和确认人写清，而非找一颗星替谁定错。
+
+### 收款前约定条件与退出办法
+若父母出资附带指定酒店或宾客名单，两人可先确认能否接受；不能接受就说明并调整预算。甲家决定父母只资助酒席，桌数由两人控制；乙家让父母自行邀请并支付额外桌数，但把场地容量和付款截止日写清。无论哪种，都要留意订金退还、改期和超支责任。盘面可提示哪里容易反复协商，合同才决定取消成本。
+
+### 排盘后回到共同决定
+核出生资料、夫妻宫主星及三方四正，叠入当下时间层，再把盘面提示翻成问题：钱从哪里来、谁最终确认、改变方案要问谁。两人先私下确定可接受上限，再向父母分别沟通并记录答复。结婚关系不由一场婚礼证明，预算和决定权却必须在下单前说清。
+
+英文标题：Zi Wei Dou Shu Spouse Palace: When Parents Join the Wedding Budget
+英文描述：Use the Spouse Palace to organize a wedding budget conversation when both families contribute, while keeping funding and decision rights clear.
+英文正文：
+A couple plans a small wedding. One family offers to pay for more guests; the other suggests a different venue. Money and expectations arrive together. The Spouse Palace in Zi Wei Dou Shu can frame how the couple reaches a shared decision. It cannot decide who gets to control the guest list.
+
+### Map contributors and decision makers
+List the couple's own budget, each family's voluntary contribution, and who confirms each expense. The Wealth Palace can frame funding; the Parents Palace can frame family involvement. A gift for the meal and a payment for photography need not carry identical approval rules.
+
+### Clarify what was actually agreed
+One partner says “we can consider it,” while a parent hears a firm yes. A chart marker can prompt a closer look at pace or wording, but it cannot prove bad intent. Record candidate plans, the final response date, and the person who will confirm with the venue.
+
+### Agree before paying a deposit
+Ask whether a contribution has conditions about location or guests. If the couple cannot accept them, revise the plan and budget first. Check deposit refunds, changes, and who pays any excess. Confirm the chart inputs and related palaces, then turn the reading into practical questions. The booking contract and the couple's agreement settle the decision.
