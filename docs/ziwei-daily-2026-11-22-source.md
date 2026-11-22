@@ -277,3 +277,72 @@ The apps may switch years on different calendar conventions. Compare birth date,
 
 ### Check the rule table
 For the same year stem, compare the four stars assigned to Lu, Quan, Ke, and Ji. Some tools offer school-specific or custom tables. A color difference is only a display issue; a changed star means the methods differ. Keep each reading tied to its own rule set. Once inputs and rules agree, inspect the relevant palace, its opposite and connected palaces, then the real question you are trying to answer.
+---
+
+## 09. 紫微坐命宫，爱主持会议就代表有岗位决策权吗？
+slug：`ziwei-ming-guanlu-zhuchi-huiyi-juece`
+参考研究日期与原文 URL：2026-11-22 https://yuvachart.com/blog/zi-wei-dou-shu-career-palace/
+采用角度与旧文区别：只吸收官禄不能由单星定职业、须连命财夫妻的逻辑。站内已有轮岗权限，本篇只看主持会议与书面决策权的落差。
+正文草稿：
+小安每次开组会都先整理议程，常替同事总结意见。有人看到她命宫有紫微，便说她“天生就是领导”，下次升职稳了。可会议主持只是行为，岗位决策权要看职责文件和审批链。紫微坐命可作为观察组织倾向的线索，不能越过官禄宫，也不能替公司签字。
+
+### 命宫描述个人做事方式
+命宫的主星、辅曜和四化，能帮人整理自己习惯如何处理信息与责任。小安喜欢把讨论收束为三项行动，但不代表她能决定预算。另一位同样常主持会议的人可能只是轮流值班；两人的正式职责并不一样。若命宫会化权，也要核其化权属于生年、大限还是当年，以及实际落在哪一宫，不能直接翻译成职位。
+
+### 官禄宫看岗位边界
+官禄宫要连对宫、三方四正一起读，尤其确认主星与辅曜的组合是否支持协调、执行或审批。可把现实工作拆成三栏：谁召集会议、谁批准方案、谁承担结果。小安能提出产品排序，却要部门负责人签字；另一个项目经理有审批权，但只管自己的预算。两人同样忙，承担的责任结构完全不同。
+
+### 财帛与协作关系补足判断
+若会议决定涉及成本，财帛宫要问资金从哪里来、谁负担超支；官禄的对宫可提醒工作承诺怎样影响合作关系，却不能写成伴侣决定职位。小安若被要求替团队口头承诺交付日期，应让真正批准资源的人在纪要中确认。会议上说“我们尽量”，与合同中的固定期限也不是同一件事。
+
+### 排盘后核三份记录
+核准出生资料，分别标命宫、官禄、财帛及时间层，再对照岗位说明、会议纪要和审批系统。看她过去半年是否做过最终决策、是否为结果担责，以及薪酬是否随职责变化。盘面可提醒一个人擅长组织，正式授权由现实制度给出；想争取晋升，要把实际成果和需要的权限一起谈清楚。
+
+英文标题：Zi Wei in the Life Palace: Does Leading Meetings Mean Authority?
+英文描述：A Zi Wei Dou Shu Life Palace trait is not the same as formal Career Palace authority. Compare meetings, approvals, and accountability.
+英文正文：
+Someone who runs every team meeting may look like the natural manager. Zi Wei in the Life Palace can frame an organizing tendency, but it cannot prove formal decision rights. A meeting host, budget approver, and person accountable for delivery may be three different people.
+
+### Read behavior separately from role
+The Life Palace helps ask how a person organizes information and handles pressure. Supporting stars and transformations can change that picture, and the timing layer matters. One person may summarize discussions every week because the duty rotates. Another may have authority without often speaking in meetings. Neither role follows from a single star.
+
+### Check the Career Palace and the paperwork
+Read the Career Palace with its opposite and connected palaces, then compare it with the role description. Who calls the meeting? Who signs off on the plan? Who owns the outcome? A product lead can propose priorities while a department head still approves the budget. Real authority is visible in the approval system, not merely in who talks first.
+
+### Use records before predicting promotion
+The Wealth Palace matters when decisions carry cost. Meeting minutes should name the person who approves resources and dates. Confirm the birth data and chart layer, then review six months of decisions, accountability, and compensation. Use the chart to make the work question clearer; negotiate a promotion from documented results and defined scope.
+
+---
+
+## 10. 夫妻宫谈共同账户，大额支出怎样设审批边界？
+slug：`ziwei-fuqi-caibo-gongtong-zhanghu-shenpi`
+参考研究日期与原文 URL：2026-11-22 https://tuvidaiviet.com/learn/tet-binh-ngo-2026-cung-phu-the-bat-che-do-yeu-doc-la-so-de-biet-kieu-nguoi-hop-ban-va-cach-tranh-drama-dau-nam
+采用角度与旧文区别：借关系争执先辨金钱来源的思路，不复制对方星曜断语。站内已有夫妻宫沟通节奏，本篇限定共同账户用途、金额阈值和对账责任。
+正文草稿：
+两人原本约定共同账户只付房租与孩子开支，一方却用它订了一台新电脑，理由是“工作也为家里赚钱”。争议焦点不是谁运气差，而是账户用途没有写清。夫妻宫可以帮助讨论协商方式，财帛宫帮人问资金流向；星曜不负责替双方规定付款权限。
+
+### 先把钱的问题归位
+先看财帛宫及三方四正，问这笔款是共同储蓄、日常预算还是个人收入；再看夫妻宫，讨论双方在决定中期待怎样被告知。若财帛见化禄，不代表共同账户能随意花；若夫妻见化忌，也不证明有人存心隐瞒。小陈购买电脑是工作必需，但若从孩子的学费账户付款，仍须先约定补回日期。
+
+### 设三个可执行边界
+共同账户写明可支付项目，例如住房、照顾与共同旅行；超过约定金额需双方确认；每月固定日期对账。甲乙把五百元以上设为提醒，两千元以上设为双人批准。另一对收入差异大，可以先按比例存入，再定共同开支上限。数额应由收入、债务和现金缓冲决定，不由盘上某颗星决定。
+
+### 分清误会与越界
+若一方以为电脑属于共同工作支出，另一方以为只准房租，这属于用途理解不同；若已经明确禁止却仍私下转账，则要面对实际的信任与资金问题。夫妻宫的主星、辅曜、四化可帮助提问沟通节奏和控制感，却不能抹掉交易记录。讨论时保留付款凭证与事先约定，避免凭记忆争谁先说过什么。
+
+### 排盘后回到共同决定
+核出生资料，以财帛宫看资金安排、夫妻宫看协商关系，再辨四化时间层。接着写一页账户规则：用途、阈值、例外审批、对账人和争议处理。每三个月按实际账单复盘。紫微盘能帮双方把问题问细，真正的边界来自两人同意且能执行的约定。
+
+英文标题：Spouse and Wealth Palaces: Rules for a Shared Account
+英文描述：Use a Zi Wei Dou Shu relationship reading to frame shared spending, then set account purposes, approval limits, and review dates.
+英文正文：
+A couple agrees to use a shared account for rent and child expenses. One partner buys a work computer from it, believing the purchase benefits the household. The dispute may be about the account's purpose rather than anyone's personality. In Zi Wei Dou Shu, the Wealth Palace frames money movement and the Spouse Palace frames how the decision is discussed. Neither palace creates a spending rule on its own.
+
+### Identify the actual money question
+Is this payment from shared savings, a monthly budget, or personal income? Check the amount, the account balance, and what the couple agreed before buying. Hua Lu in Wealth does not make every purchase affordable; Hua Ji in the Spouse Palace does not prove deception. A work expense can still disrupt a tuition reserve if it is paid from the wrong account.
+
+### Write three practical rules
+List permitted expenses, an amount that requires notice, and a higher amount that requires both approvals. Set a monthly reconciliation date. One household may use a small notification threshold; another may contribute in proportion to income. The right numbers come from income, debt, and a cash buffer, not from a star label.
+
+### Review the agreement
+Different assumptions about a vague rule call for clarification. Spending against a clear rule calls for a separate trust discussion. Keep receipts and written decisions. Confirm chart details, then read the Wealth and Spouse Palaces with their connected stars and timing layers. Finish with a one-page account rule and revisit it against real statements every few months.
