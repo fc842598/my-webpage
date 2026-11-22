@@ -486,3 +486,38 @@ One worker receives salary and a bonus. The other bills clients by project. Even
 
 ### Locate the transformation before interpreting it
 If a palace stem triggers a transformation, note the star, transformation, palace, and time layer. Hua Lu can accompany a larger investment as well as a resource opportunity; Hua Ji can prompt a contract review without proving that income will disappear. Save both full charts, then compare each reading with real cash inflows and obligations. A group table is a calculation aid, not a shared financial forecast.
+
+---
+
+## 15. 天同坐卯做跨部门协调，年终绩效怎样写实际成果？
+slug：`ziwei-tiantong-mao-xietiao-chengguo-jixiao`
+参考研究日期与原文 URL：2026-11-22 https://www.purplestarmapper.com/en/blog/ziwei-tiantong-mao-palace-spring-rhythm
+采用角度与旧文区别：借温和协调须用可观察结果说明的逻辑。本站今日已有天同责任边界文，本篇限定年终绩效的证据、贡献归属和评审表达，不沿用同行句子或行业例子。
+正文草稿：
+小严是客服与产品之间的接口人。年终时，她写“沟通能力强、同事关系好”，主管却问这一年究竟解决了什么。看到盘里天同坐卯，有人会把她归为“适合协调”。这最多是提问的起点，绩效评审仍需成果：哪些问题被提前发现、返工减少多少、谁因此能按时交付。星曜不能替代工作记录。
+
+### 先核天同落宫与实际岗位
+天同坐卯只是星曜位置条件，仍需看它在命、官禄或其他宫位，以及三方四正、辅曜和四化。若在官禄相关结构，可重点观察工作节奏与协作方式；若在命宫，讨论的是本人习惯，不能直接推出岗位绩效。小严负责跨组交接，不负责最终产品审批。把“能调和情绪”写成“有决策权”，会误报她的工作范围。
+
+### 把协调过程改成可验证成果
+小严整理了十五个反复出现的客户问题，使产品组在上线前修正说明页；她主持的两次交接会，把遗漏的责任人补到工单中。绩效材料可以写问题、行动和结果，并附工单号或复盘记录。若只能证明转发消息，便如实写信息传递，不夸成主导项目。另一位老师协调家长和教务，成果可写课程改期后的投诉处理时长，而不是笼统说“大家都满意”。
+
+### 四化提示追问，不替人分配功劳
+若天同会化科，可追问方法是否被团队认可；会化权，要核是否有正式授权推动决定；见化忌，则找信息断点或过量接单。它们都不能直接证明小严贡献了多少。把共同完成的结果标明合作方，单独列出自己负责的表格、会议纪要和跟进节点。这样既能展示作用，也避免把别人的成果全部归给自己。
+
+### 排盘后回到评审材料
+先核天同落宫与时间层，再按任务清单选出三件有记录的协作事件。逐件写清起初的阻碍、本人做的动作、负责最终决定的人和结果。让相关同事确认关键事实，再用公司绩效标准整理成一页材料。盘面可以提醒你别漏掉不显眼的协调劳动，绩效结论仍由实际产出与岗位要求决定。
+
+英文标题：Tian Tong in Mao at Work: Show Coordination Results in a Performance Review
+英文描述：Use a Zi Wei Dou Shu reading of Tian Tong in Mao to frame coordination work, then document outcomes, authority, and shared credit.
+英文正文：
+A support and product coordinator writes “good with people” in her annual review. Her manager asks what changed because of her work. Tian Tong in Mao can suggest a question about cooperation, but a star does not supply performance evidence. Identify the palace where it sits and the employee's actual responsibilities before describing results.
+
+### Record a before-and-after result
+List a specific problem, the action taken, and a traceable outcome. A coordinator might have identified recurring customer questions before launch or assigned owners to missing handoff tasks. Link the claim to work orders or meeting records. Forwarding messages is useful, but it is different from making the final product decision.
+
+### Keep authority and credit accurate
+Hua Ke may prompt a question about whether a method gained recognition; Hua Quan calls for checking real authority; Hua Ji can point to a bottleneck. None measures the person's contribution by itself. Name the partners who shared the outcome and the portion of work she owned.
+
+### Bring the chart back to the review
+Confirm Tian Tong's placement, related palaces, and timing layer. Then choose three documented projects and write the initial obstacle, personal action, decision owner, and result. Have coworkers verify the facts. The chart can help notice quiet coordination work; the review should rest on evidence and the job's criteria.
