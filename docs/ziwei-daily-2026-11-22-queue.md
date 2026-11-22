@@ -1,6 +1,6 @@
 # 2026-11-22 紫微文章候选队列
 
-状态：2026-11-22 同行交接通过（10篇、10域名，shortfall=10）。01–12 已逐篇正式生成，11–12 待线上核验；13–20 仍为昨日短初稿，待当日研究重映射、查重和扩写，未发布。
+状态：2026-11-22 同行交接通过（10篇、10域名，shortfall=10）。01–20 已逐篇正式生成并提交；线上核验以当日配额检查JSON为准。
 
 | 顺序 | 状态 | slug | 原创搜索问题 | 类别或研究链接 | 角度及与旧文区别 |
 |---|---|---|---|---|---|
@@ -23,6 +23,6 @@
 | 17 | 已发布 2026-11-22 11:16 https://yuetianai.com/articles/ziwei-fuqi-fumu-hunli-yusuan-goutong.html / https://yuetianai.com/articles/en/ziwei-fuqi-fumu-hunli-yusuan-goutong.html | ziwei-fuqi-fumu-hunli-yusuan-goutong | 双方父母介入婚礼预算，夫妻宫先看谁的决定？ | 宫位组合 | 2026-11-22 https://tuvidaiviet.com/learn/tet-binh-ngo-2026-cung-phu-the-bat-che-do-yeu-doc-la-so-de-biet-kieu-nguoi-hop-ban-va-cach-tranh-drama-dau-nam；区别于夫妻争执速度和共同账户文，限定婚礼出资、决策者与父母介入。 |
 | 18 | 已发布 2026-11-22 11:17 https://yuetianai.com/articles/ziwei-guanlu-duigong-fuqi-huangang-fendian.html / https://yuetianai.com/articles/en/ziwei-guanlu-duigong-fuqi-huangang-fendian.html | ziwei-guanlu-duigong-fuqi-huangang-fendian | 伴侣反对换岗，官禄对宫夫妻宫能替谁做决定？ | 财运事业 | 2026-11-22 https://yuvachart.com/blog/zi-wei-dou-shu-career-palace/；借官禄对宫夫妻宫进入职业阅读但不决定事业的逻辑，限定换岗后的收入和家庭时间分担。 |
 | 19 | 已发布 2026-11-22 11:18 https://yuetianai.com/articles/ziwei-liuyue-wenquji-kou-tou-xuqiu-biangengdan.html / https://yuetianai.com/articles/en/ziwei-liuyue-wenquji-kou-tou-xuqiu-biangengdan.html | ziwei-liuyue-wenquji-kou-tou-xuqiu-biangengdan | 客户口头加需求，流月文曲忌怎样提示写变更单？ | 四化 | 2026-11-22 https://aiziwei.online/en/blog/november-2026-zi-wei-dou-shu-turning-opportunity-into-secure-results；区别于今日验收条款文，限定执行中途的口头加项与变更单。 |
-| 20 | 待当日研究复核，未发布 | ziwei-runyue-ruanjian-shengri-daoru | 从旧排盘软件导入闰月生日，为什么命宫会变化？ | 2026-11-21 https://wenbu.app/en/learn/ziwei-leap-month-half-rule/ | 软件迁移时的日期字段；区别于已发闰月日期边界，限定导入格式和规则版本。 |
+| 20 | 已发布 2026-11-22 11:19 https://yuetianai.com/articles/ziwei-baogao-buyitiaocao-xianshi-offer-ruhe-he.html / https://yuetianai.com/articles/en/ziwei-baogao-buyitiaocao-xianshi-offer-ruhe-he.html | ziwei-baogao-buyitiaocao-xianshi-offer-ruhe-he | 紫微报告说今年不宜跳槽，限时录用通知该怎么核？ | 看盘方法 | 2026-11-22 https://tuvidauso.online/tin-tuc/cach-doc-bao-cao-tu-vi-ca-nhan-hoa-de-ra-quyet-dinh-thuc-te/；针对同行报告中确定性建议的风险，区别于本站报告可信度总论，限定录用通知期限与可验证条件。 |
 
 

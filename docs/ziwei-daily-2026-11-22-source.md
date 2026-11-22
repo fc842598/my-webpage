@@ -661,3 +661,38 @@ State the new page's design scope, copy needs, revision rounds, approval owner, 
 
 ### Separate possible revenue from cash
 An added request is not a paid invoice. If the client declines the new price, return to the original scope or reduce the request. Keep the original contract, call summary, change order, and final approval in one timeline. Confirm the chart inputs and timing layer, then use the reading to identify where the words need precision. The documents settle what was promised.
+
+---
+
+## 20. 紫微报告说今年不宜跳槽，限时录用通知该怎么核？
+slug：`ziwei-baogao-buyitiaocao-xianshi-offer-ruhe-he`
+参考研究日期与原文 URL：2026-11-22 https://tuvidauso.online/tin-tuc/cach-doc-bao-cao-tu-vi-ca-nhan-hoa-de-ra-quyet-dinh-thuc-te/
+采用角度与旧文区别：针对同行自动报告中确定性“不跳槽”建议的风险，转为限时录用通知的核对流程。本站已有报告可信度总论，本篇限定录用条件、期限与行动顺序，不沿用同行结论。
+正文草稿：
+小罗收到一家公司的录用通知，三天内要答复。她打开紫微自动报告，看到“今年不宜跳槽”，便想直接拒绝。报告没有看过新工作的岗位说明、试用期收入和她在旧公司的实际状况；一句话也没说明“不宜”指收入、职责还是出差风险。紫微斗数可帮她拆问题，不能代替查看录用文件和做决定。
+
+### 先确认报告在读哪一层
+自动报告可能把本命、十年大限和当年流年写在同一页。小罗先核出生资料、排盘规则和报告所指的时间范围，再找它引用的是官禄、财帛、迁移还是四化。若只写“今年事业不顺”却不列宫位与判断依据，就把它当成需要进一步核实的提示，不是可执行禁令。即使官禄见化忌，也应问具体卡在岗位、沟通还是授权。
+
+### 把录用通知拆成可比较的条件
+小罗的旧工作每月固定工资稳定，但常加班；新工作底薪更高，奖金却要等项目验收。比较时列出税后固定收入、奖金条件、试用期条款、通勤与出差、离职成本。财帛宫帮助追问钱怎么来，官禄宫看责任，迁移宫看外部变化。若新岗位需要她独立签字，先问是否有权限和培训；不能只用“升职机会”四字代替风险。
+
+### 三天期限内安排可做的核实
+第一天向招聘方确认奖金和试用期考核；第二天询问团队实际工作时段，并核旧公司的离职流程；第三天把最差和最好情形的现金表交给自己和受影响的家人看。若关键条件没写清，可请求延长期限或补书面说明。另一位求职者没有家庭负担，所能承受的试用期波动也不同；同一句报告建议不能替两人作同一决定。
+
+### 排盘后的结论应是问题清单
+核本命命官财、三方四正，再看大限和流年是否改变关注重点。把报告里模糊的“宜忌”改写为能验证的问题，逐项用合同、预算和真实岗位信息回答。若证据仍不足，就明确哪些未知会影响选择。最终接受或拒绝是小罗的决定，盘面只能帮助她避免漏看重要条件。
+
+英文标题：A Zi Wei Dou Shu Report Says Do Not Change Jobs: How to Check a Time-Limited Offer
+英文描述：Turn a broad Zi Wei Dou Shu report warning into concrete checks on salary, probation, duties, travel, and the deadline for a job offer.
+英文正文：
+A candidate has three days to answer a job offer. An automated Zi Wei Dou Shu report says this is a bad year to change jobs. The report has not read the offer, the probation terms, or the conditions at the current workplace. Treat its sentence as a prompt to ask questions, not a decision made on the candidate's behalf.
+
+### Identify what the report actually read
+Check birth data, chart rules, and whether the report discusses natal, decade, or annual layers. Locate the Career, Wealth, and Travel Palaces and any transformation the claim relies on. A broad warning without a stated basis cannot specify which part of the offer is risky.
+
+### Compare written job conditions
+List fixed after-tax pay, variable bonus conditions, probation, travel, authority, and the cost of leaving the current role. The Wealth Palace can frame cash flow and the Career Palace can frame responsibility. Neither can fill a missing salary clause.
+
+### Use the deadline for focused questions
+Ask the employer to confirm bonus and review terms, speak with the team about working hours, and check the current employer's notice rules. Request a written extension if essential terms remain unclear. Then compare the offer against a household budget and acceptable downside. Confirm the chart layers last, and turn each vague forecast into a question with evidence. The candidate makes the choice with the real terms in view.
