@@ -6,7 +6,7 @@
 |---|---|---|---|---|---|
 | 01 | 已发布 2026-11-22 09:03 https://yuetianai.com/articles/ziwei-caiyuan-chuangye-xianjin-qixian-gangwei.html / https://yuetianai.com/articles/en/ziwei-caiyuan-chuangye-xianjin-qixian-gangwei.html | ziwei-caiyuan-chuangye-xianjin-qixian-gangwei | 被裁后想创业，紫微盘怎样同时核现金期限与岗位选择？ | 宫位组合 | 限定失业现金期限、试单与回岗条件，不重复创业总论。 |
 | 02 | 已发布 2026-11-22 09:04 https://yuetianai.com/articles/ziwei-liuyue-jihui-hetong-yanshou-sihua.html / https://yuetianai.com/articles/en/ziwei-liuyue-jihui-hetong-yanshou-sihua.html | ziwei-liuyue-jihui-hetong-yanshou-sihua | 项目机会突然增多，流月四化怎样提醒核合同与验收？ | 四化 | 限定验收及变更条款，不重复文曲化忌定义。 |
-| 03 | 待发布 | ziwei-tiantong-mao-gongzuo-xietiao-bianjie | 天同坐卯在工作中善于协调，为什么还要划清责任边界？ | 主星细读 | 聚焦跨组协调结果和接单上限，不重复天同总论。 |
+| 03 | 已发布 2026-11-22 09:04 https://yuetianai.com/articles/ziwei-tiantong-mao-gongzuo-xietiao-bianjie.html / https://yuetianai.com/articles/en/ziwei-tiantong-mao-gongzuo-xietiao-bianjie.html | ziwei-tiantong-mao-gongzuo-xietiao-bianjie | 天同坐卯在工作中善于协调，为什么还要划清责任边界？ | 主星细读 | 聚焦跨组协调结果和接单上限，不重复天同总论。 |
 | 04 | 待次日研究复核，未发布 | ziwei-chusheng-shijian-jiaren-jiyi-zhengju | 家人记忆与出生证明不同，紫微斗数怎样处理时辰证据？ | 2026-11-21 https://bose131.blogspot.com/2026/11/blog-post.html?m=0 | 口述记忆和书面记录权重；区别于已发网传名人时辰，限定个人资料核验。 |
 | 05 | 待次日研究复核，未发布 | ziwei-guanlu-huaji-huikuan-chongzuo | 官禄化忌遇到项目返工，怎样分清岗位压力与财务损失？ | 2026-11-21 https://tuvidauso.online/tin-tuc/tu-hoa-tinh-va-su-nghiep-huong-dan-ung-dung/ | 返工责任与扣款分离；区别于已发官禄化科署名、化禄提成，限定返工边界。 |
 | 06 | 待次日研究复核，未发布 | ziwei-guanlu-huaquan-linshi-daiguan | 官禄化权遇到临时代理主管，怎样核授权期限？ | 2026-11-21 https://tuvidauso.online/tin-tuc/tu-hoa-tinh-va-su-nghiep-huong-dan-ung-dung/ | 临时代理的权限到期；区别于已发晋升评审授权，限定代理期间、签字权和交接。 |
