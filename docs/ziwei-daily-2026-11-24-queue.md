@@ -10,4 +10,5 @@
 | 04 | 已发布 2026-11-24 16:02 https://yuetianai.com/articles/ziwei-2027-fuqi-caibo-gongtong-yusuan-fengong.html / https://yuetianai.com/articles/en/ziwei-2027-fuqi-caibo-gongtong-yusuan-fengong.html | ziwei-2027-fuqi-caibo-gongtong-yusuan-fengong | 2027夫妻宫牵动财帛，共同预算怎样分工？ | 宫位组合 |
 | 05 | 已发布 2026-11-24 20:05 https://yuetianai.com/articles/ziwei-2027-caibo-tianzhai-jidu-huikuan-zhufang-yusuan.html / https://yuetianai.com/articles/en/ziwei-2027-caibo-tianzhai-jidu-huikuan-zhufang-yusuan.html | ziwei-2027-caibo-tianzhai-jidu-huikuan-zhufang-yusuan | 2027流年财帛连田宅，季度回款怎样安排住房预算？ | 大限流年 |
 | 06 | 已发布 2026-11-24 21:06 https://yuetianai.com/articles/ziwei-2027-guanlu-jiaoyou-waibao-zhuan-dingyue.html / https://yuetianai.com/articles/en/ziwei-2027-guanlu-jiaoyou-waibao-zhuan-dingyue.html | ziwei-2027-guanlu-jiaoyou-waibao-zhuan-dingyue | 2027外包团队转订阅服务，官禄交友与大限怎样核对？ | 大限流年 |
+| 07 | 已发布 2026-11-24 22:03 https://yuetianai.com/articles/ziwei-2027-qianyi-tuoluo-kuacheng-xunjian-jiaojie.html / https://yuetianai.com/articles/en/ziwei-2027-qianyi-tuoluo-kuacheng-xunjian-jiaojie.html | ziwei-2027-qianyi-tuoluo-kuacheng-xunjian-jiaojie | 2027流年迁移见陀罗，跨城巡检岗位怎样核对交接成本？ | 大限流年 |
 

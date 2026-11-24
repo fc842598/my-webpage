@@ -1,5 +1,43 @@
 # 2026-11-24 紫微文章源稿
 
+## 7. 2027流年迁移见陀罗，跨城巡检岗位怎样核对交接成本？
+slug：`ziwei-2027-qianyi-tuoluo-kuacheng-xunjian-jiaojie`
+搜索意图：跨城设备巡检岗位的等待、返工与交接费用，如何结合个人流年迁移、官禄和财帛核对。
+参考资料：2026-11-24 https://www.108s.tw/article/info/437 。采用角度：将陀罗的拖延感放进巡检任务的交接流程，不沿用原文十二盘型或星曜总览。站内已有迁移见擎羊的异地求职风险，本篇专论陀罗与等待、复检、项目责任的实际成本。
+正文草稿：
+一名设备工程师接到跨城巡检岗位：工资提高，但每周要去三个站点，现场验收常常等业主签字。若个人2027流年迁移宫见陀罗，读盘时可以把“卡住”拆成等待、返工和责任交接，而不是断定出差一定不顺。先确认这颗星确实落在自己的年度迁移宫，再用合同和工时记录检验问题。
+
+### 迁移宫先看外部规则
+迁移不只代表交通，也涉及到外地业主、工地规则和陌生团队。陀罗在这里可提示持续牵制或需要反复打磨，但同宫主星、辅曜及四化会改变具体表现。若本命迁移本来就与官禄相连，先问巡检是核心职责还是临时支援；若流年迁移叠到本命交友，则把合作单位的反馈周期列入检查。不要把一个流年标记套到所有出差者身上。
+
+### 等待时间要进入报价和排班
+例如工程师到站后等两小时才拿到入场许可，检测用一小时，第二天又因签字人不在场而重跑。若公司只按检测时间记工，账面的一小时掩盖了交通和等待。签约前应确认谁预约现场、超时由谁记录、复检能否另计，以及临时改期由谁承担车票。陀罗不是损失金额的预测，而是提醒把缓慢环节写进流程。
+
+### 官禄和财帛决定能否承接
+官禄看岗位责任，财帛看实际报酬与垫付。若官禄线见化权，责任可能增加，也要核签字与升级权限；若财帛线有化禄，仍要分开看底薪、差旅补贴与报销到账。设每月多三千元工资，却要先垫两千元车费，报销拖到下月，现金缓冲不足时所谓加薪难以缓解眼前压力。再看大限是否支持长时间跨城工作，不能只凭一年运势决定跳槽。
+
+### 排盘与岗位核对顺序
+固定出生资料和2027换年口径，定位个人流年迁移及陀罗，再看本命叠宫、同宫星曜与官禄、财帛的联系，最后叠当前大限。把盘上的疑点逐项对照岗位说明、站点排班、工时登记、复检规则和报销周期。若实际工作安排清楚，陀罗也可以表现为慢工细查；结论应以可执行的交接办法收尾。
+
+英文标题：Zi Wei Dou Shu 2027 Travel Palace and Tuo Luo: Checking a Field Service Role
+英文描述：Use the 2027 Travel Palace, Career, and Wealth to examine waiting time, repeat visits, and reimbursement in a cross-city inspection job.
+英文正文：
+A field engineer is offered a cross-city inspection role with better pay. The job covers three sites each week, but acceptance often waits for a client signature. If Tuo Luo appears in the person's 2027 annual Travel Palace in Zi Wei Dou Shu, the useful question is where work may slow down: access, repeat visits, or handoffs. The placement cannot predict a failed trip. Confirm it on the personal chart and test the concern against the job agreement.
+
+### Start with the rules outside your own team
+The Travel Palace can describe clients, site rules, and people working away from home. Tuo Luo can draw attention to prolonged effort, while the main stars and transformations change how that effort plays out. If natal Travel connects with Career, ask whether inspections are the main role or occasional support. If annual Travel overlays natal Friends, check how quickly the partner company responds. A single annual symbol cannot describe every field worker.
+
+### Put waiting and repeat visits on the schedule
+Imagine waiting two hours for site access, inspecting for one hour, then returning the next day because the signer is away. A timesheet that records only inspection time misses travel and delay. Before accepting, ask who books access, who records waiting, whether repeat visits are paid, and who covers a changed train ticket. Tuo Luo is a prompt to document the slow steps, not a forecast of a financial loss.
+
+### Compare duties with cash received
+Career frames responsibility; Wealth frames pay and money advanced for travel. Hua Quan on the work line may increase accountability, so confirm who can sign off and escalate a dispute. Hua Lu on the money line still requires a distinction between salary, allowances, and reimbursement received. A monthly raise of 3,000 yuan feels different if the engineer advances 2,000 in travel costs and waits a month for repayment. Add the current decade cycle to assess whether this stage of life can support repeated trips.
+
+### Reading and job review order
+Confirm birth details and the chosen 2027 year boundary. Locate annual Travel and Tuo Luo, then examine the natal overlay, stars, Career, Wealth, and the current decade cycle. Match every concern to a job document: site roster, time records, repeat-visit rules, and reimbursement dates. When those terms are clear, slow, careful work may be manageable. End with a handoff plan rather than a prediction.
+
+---
+
 研究日期：2026-11-24。研究实际10篇、10个域名；本站原创目标20篇，逐篇补齐。
 
 ---
