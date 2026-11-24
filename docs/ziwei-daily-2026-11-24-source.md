@@ -75,3 +75,41 @@ The Career Palace helps frame duties; the Wealth Palace separates a headline sal
 
 ### Reading order
 Build the personal chart with a stated 2027 year convention. Locate the annual Travel Palace and Qing Yang, then compare their natal overlay with Career and Wealth. Add the decade cycle. Finish with a written list of location, travel limits, expense ownership, insurance, and the person responsible for disputes. The chart helps form questions; the contract and budget provide evidence.
+
+---
+
+## 3. 2027流年财帛叠疾厄，长期复诊开支怎样列账？
+slug：`ziwei-2027-caibo-die-jiee-fuzhen-kaizhi`
+搜索意图：流年财帛宫叠到本命疾厄时，怎样把长期复诊开支纳入个人现金流，而不把盘面当医疗预测。
+参考资料：2026-11-24 https://www.etuvi.vn/kien-thuc/tien-bac-2027/ 。采用角度：把年度财务问题限定为复诊费用的支付时间与资金缓冲。站内已有病符在财帛的泛论，本篇不讨论病符，也不预测疾病；重点是财帛与疾厄叠盘后的账本核对。
+正文草稿：
+复诊一次花费不高，连续几个月的检查、交通和请假却可能挤占房租。若个人 2027 流年财帛叠到本命疾厄，先把它当作检查收入与身体事务是否互相牵动的提示，不能据此推断会患病，更不能据盘面调整治疗。复诊安排仍以医生意见为准；盘面只帮你把财务问题问细。
+
+### 先确认两层宫位确实相叠
+流年财帛说的是这一年收支的观察入口，本命疾厄是个人长期的身体与劳损主题。不同排盘口径可能使年界不同，先固定出生资料和换年设置，再看流年财帛是否真叠在本命疾厄。不要把“2027 年大家都要增加医疗支出”当结论。还要看流年财帛与本命财帛、官禄的连线：收入是否稳定、请假是否影响工资，往往比单宫吉凶更实际。
+
+### 把一次性与持续支出分开
+设想一位每两个月复诊的上班族：挂号检查每次六百元，往返车费一百元，半天事假还会扣工资。只记医院账单会低估实际开支。列账时分别写明固定复诊频率、可能变化的检查项目、交通与误工成本，并注明哪些费用能报销、何时到账。若财帛线上见化禄，也只能提示追查收入来源；若见化忌，更要核付款节点和备用金，不能把两者解释成确定的病情变化。
+
+### 用大限判断现金缓冲
+同样每月平均数百元，稳定领薪者和刚转自由职业者承受方式不同。看大限财帛与官禄，是为了确认当前阶段的收入结构和调整余地。比如甲有带薪病假，可把复诊日提前排进工作日历；乙靠项目回款，要额外确认客户付款周期，并保留一笔可立即动用的生活费。若想购买保险，应核对真实条款、等待期与既有保障；紫微盘不能代替保单审核。
+
+### 排盘使用顺序
+先核出生资料与 2027 换年口径，找到流年财帛与本命疾厄的叠位，再看本命财帛、官禄和大限怎样承接。随后用自己的复诊计划做月度清单：医疗账单、交通、请假损失、报销时间和备用金分别列出。若没有复诊需求，也无需为迎合盘面虚设支出；有健康问题则按专业诊疗安排处理。
+
+英文标题：Zi Wei Dou Shu 2027 Wealth Palace Over Health: Budgeting for Repeat Appointments
+英文描述：Map the annual Wealth Palace onto the natal Health Palace, then budget recurring appointment costs without treating a chart as medical advice.
+英文正文：
+A follow-up appointment may be affordable on its own while repeat tests, travel, and time away from work put pressure on rent. If your personal 2027 annual Wealth Palace overlays the natal Health Palace in Zi Wei Dou Shu, use that pairing to ask how money and health-related routines interact. It cannot predict illness or tell you to change treatment. Medical decisions belong with qualified clinicians; the chart can only help frame a budget question.
+
+### Check the overlay before drawing a conclusion
+The annual Wealth Palace marks a place to examine this year's inflows and outflows. The natal Health Palace describes a longer-running part of the personal chart. First confirm your birth details and the convention used for the start of 2027. Then check whether the two palaces actually overlap on your chart. A general forecast does not establish that everyone will spend more on health care. Compare natal Wealth and Career as well: stable pay and paid leave may matter more to the budget than a favorable label on one palace.
+
+### Separate repeated costs from a single bill
+Consider an employee with an appointment every two months. A visit costs 600 yuan, travel costs another 100, and half a day away from work may reduce pay. Recording only the clinic bill hides part of the burden. Make separate lines for the expected visit schedule, tests whose cost may change, transport, lost income, reimbursement eligibility, and the date reimbursement arrives. Hua Lu on the money line can prompt a closer look at income sources. Hua Ji can prompt a check of payment timing and reserves. Neither transformation establishes what will happen medically.
+
+### Put the decade cycle beside the cash buffer
+The same average monthly cost affects a salaried employee differently from a freelancer waiting for clients to pay. Use the decade cycle alongside Wealth and Career to frame the current income pattern. Someone with paid leave can schedule appointments around work commitments. Someone paid per project should check invoice dates and keep money available for essential expenses. If insurance is relevant, read the actual policy, waiting period, and existing coverage; a chart cannot verify an insurance claim.
+
+### Reading order
+Confirm birth details and the year boundary. Locate the annual Wealth Palace and its natal Health overlay, then compare natal Wealth, Career, and the decade cycle. Build a monthly list covering medical bills, travel, lost work time, reimbursement dates, and cash reserves. If you have no repeat appointments, do not invent an expense to fit the chart. For real health concerns, follow a professional care plan.
