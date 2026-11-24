@@ -2,6 +2,50 @@
 
 研究日期：2026-11-24。研究实际10篇、10个域名；本站原创目标20篇，逐篇补齐。
 
+---
+
+## 6. 2027外包团队转订阅服务，官禄交友与大限怎样核对？
+slug：`ziwei-2027-guanlu-jiaoyou-waibao-zhuan-dingyue`
+搜索意图：创业者在2027年将按项目收费的外包业务改为按月订阅服务，怎样用本命、大限与流年核对团队和回款风险。
+参考资料：2026-11-24 https://jiaofengshuigo.com/ziwei-case-25-decade-year/ 。采用角度：自拟外包团队转订阅的经营场景，聚焦官禄与交友的职责交接、财帛回款节奏；不同于站内泛创业适配或大限交接文章，不借用同行个案与叙述结构。
+正文草稿：
+一家做网站外包的小团队，2027年想把一次性交付改成按月收维护费。旧项目还有尾款，新服务却要先安排客服和服务器。若只盯流年官禄宫的一颗化禄，容易把业务机会误当成已经到手的现金。紫微盘可帮助把问题分层：本命看经营习惯，大限看当前承受力，流年看这次转换触发在哪里；实际决策仍要用合同和收支表验证。
+
+### 先把三层盘放在同一个问题上
+本命官禄用于观察长期工作方式，财帛看收入形成与支出路径，交友则涉及员工、合作方和客户连接。大限反映这十年资源是否足以支撑服务转型；流年只说明2027年哪些环节较突出。假设本命官禄适合接短单，不代表新订阅业务也要沿用“交付即结束”的流程。先确认个人盘的换年口径和三层宫位叠位，再看主星、辅曜与四化，不要把同一年所有创业者写成一种结论。
+
+### 官禄变化要落到具体岗位
+从项目制转向订阅制，工作不再止于上线。官禄线上即使见化权，也应问清谁负责故障响应、谁能批准退款、服务时间是否写进合同。比如甲负责开发，乙负责销售；若乙向客户承诺全天候支持，而甲只能在工作日处理，订单增加反而会放大争议。若见化科，可关注专业规范和可解释的服务标准；这些只是检查方向，不保证签约量。
+
+### 交友与财帛一起核对承接能力
+交友宫涉及合作和团队，财帛宫涉及实际回款。若流年交友被四化牵动，应查外包伙伴能否承担重复工单、离职时客户资料如何交接。设想团队每月新增十家客户，每家付五百元，但首月需要两名客服轮值，工资与软件成本高于五千元。收入数字看起来上涨，现金却可能更紧。财帛见禄也要分清已签、已开票与已到账；见忌则核取消率、退款条款和欠款，不把星曜直接解释为亏损。
+
+### 用大限与试运行给转型设边界
+大限若显示资源正在调整，可把2027年的新业务先设为三个月试运行，而非一次砍掉旧项目。每月记录新增订阅、续费、工单时长、退款和旧项目尾款。若连续两个月客服成本超过订阅毛利，先缩小承诺范围或改价，再决定是否扩大。相反，流程稳定且回款覆盖固定支出，才有条件增员。大限是观察经营阶段的背景，不能替代经营数据。
+
+### 排盘与经营核对顺序
+先核本命官禄、财帛、交友，再看当前大限是否有人员与资金缓冲，最后叠2027流年与四化，找出最该验证的环节。把每个盘面问题对应一项真实材料：岗位表、服务合同、月度现金流和续费数据。这样读盘的结果是一张待核清单，而不是“今年必能转型”的断言。
+
+英文标题：Zi Wei Dou Shu 2027: Can an Agency Shift From Projects to Subscriptions?
+英文描述：Use Career, Friends, Wealth, the decade cycle, and the 2027 annual chart to frame a service business transition and check it against contracts and cash flow.
+英文正文：
+A small web agency wants to replace one-off projects with monthly maintenance plans in 2027. Old clients still owe final payments, while the new service needs support staff and server capacity upfront. A favorable marker in the annual Career Palace cannot turn a sales opportunity into cash already received. Zi Wei Dou Shu can organize the questions: the natal chart frames work habits, the decade cycle frames capacity, and the annual chart highlights the immediate pressure points. Contracts and accounts must settle the business decision.
+
+### Keep the three chart layers tied to one decision
+Natal Career concerns a long-running way of working. Wealth helps frame how money enters and leaves; Friends points to staff, partners, and client relationships. The decade cycle asks whether the current stage can support a service model. The 2027 annual chart narrows the timing. A team that excels at finishing short projects may still lack a process for recurring support. Confirm the year boundary and the palace overlays on the personal chart before reading stars or transformations. The same year does not give every agency the same result.
+
+### Translate Career signals into roles
+Subscription work continues after launch. Even if Hua Quan appears on the Career line, ask who responds to outages, who can approve refunds, and what response time the contract promises. Suppose one partner builds the product and another sells it. If sales promises around-the-clock help but developers work weekdays only, more signups may create disputes. Hua Ke can prompt a review of documented standards and professional credibility. Neither marker guarantees a number of new customers.
+
+### Test the team and cash line together
+The Friends Palace can focus attention on partners and handoffs; Wealth concerns actual receipts. If annual transformations involve Friends, check whether contractors can handle repeat tickets and how client records move when a staff member leaves. Imagine ten new subscribers paying 500 yuan a month each. If two support shifts and software cost more than 5,000 yuan in the first month, rising revenue can still tighten cash. Separate signed deals, invoices, and deposits. Hua Ji can prompt checks of cancellations, refunds, and unpaid bills, without predicting a loss.
+
+### Give the change a trial period
+If the decade cycle suggests resources are in transition, keep existing projects while testing subscriptions for three months. Track signups, renewals, support hours, refunds, and old project balances each month. If support costs exceed subscription margin for two months, narrow the promise or revise pricing before expanding. If renewals and receipts cover recurring costs, hiring becomes easier to evaluate. The cycle frames a phase; operating data sets the limit.
+
+### Reading and operating order
+Start with natal Career, Wealth, and Friends. Check the current decade cycle for staffing and cash reserves. Then overlay the 2027 annual palaces and transformations to identify what deserves a closer look. Match each chart question to a real document: a roles list, service agreement, monthly cash flow, and renewal report. The useful outcome is a checklist to verify, not a promise that the transition will succeed.
+
 ## 5. 2027流年财帛连田宅，季度回款怎样安排住房预算？
 slug：`ziwei-2027-caibo-tianzhai-jidu-huikuan-zhufang-yusuan`
 搜索意图：用个人2027流年财帛与田宅的联系，核对不稳定项目收入下的住房现金流。
