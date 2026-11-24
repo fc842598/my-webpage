@@ -2,6 +2,44 @@
 
 研究日期：2026-11-24。研究实际10篇、10个域名；本站原创目标20篇，逐篇补齐。
 
+## 4. 2027夫妻宫牵动财帛，共同预算怎样分工？
+slug：`ziwei-2027-fuqi-caibo-gongtong-yusuan-fengong`
+搜索意图：以个人流年夫妻宫与财帛宫的联系，核对伴侣共同预算的责任分配。
+参考资料：2026-11-24 https://khamthientuhoa.com/luan-doan-ve-hoa-phuc-doi-nguoi-lien-quan-den-hon-nhan-va-tinh-cam-qua-cung-phu-the-va-tai-bach/ 。采用角度：把宫位关系用于共同账户、固定账单与临时支出的分工，不采用原文的性别或婚姻断语。与站内伴侣财务泛论不同，聚焦2027年度预算执行和对账机制。
+正文草稿：
+两个人说好“生活费一人一半”，到月底却发现房租由一人先付，另一人承担零散采购，金额和付款时间都对不上。若个人2027流年夫妻宫与财帛宫同时被触动，盘面适合提醒双方检查关系与金钱的交界，不能据此断定谁更会理财、谁不够投入。
+
+### 先确认关系线与钱线怎样相接
+流年夫妻宫看今年一对一的协商方式，财帛宫看收入、付款和现金流。先固定个人命盘和换年口径，再看两宫是否通过三方四正、四化或叠宫产生联系。若夫妻宫的化忌牵到财帛，重点是账目与期待有没有说清，并非断言伴侣会亏钱。若财帛见化禄，也要查它是稳定工资、奖金还是暂时性项目收入，不能把资源入口当作可随意支配的余额。
+
+### 把共同支出拆成三本账
+第一本是固定账：房租、水电、保险等，写明金额、付款日和代付人。第二本是弹性账：餐饮、交通、探亲，先定月度上限。第三本是个人账：各自保留可自行决定的部分。比如甲每月先付房租六千，乙负责三千元日常采购；双方若只看“各付了多少次”，就会误会分工。共同表格应按金额和日期对账，再决定是否按收入比例分担，而不是让星曜替两人决定比例。
+
+### 用福德与大限核对承受方式
+夫妻与财帛连起来后，还要看福德宫所提示的压力感，以及大限阶段的收入结构。设想一方收入稳定，另一方靠季度项目回款；每月同日转入同额共同账户，可能让后者在回款前透支。可改成固定账先留缓冲、项目到账后结清差额。若官禄线又见化权，工作责任增加也许影响陪伴时间，应把家务和账务劳动一起谈清。盘面提供观察点，真实流水才决定方案能否执行。
+
+### 排盘后怎样落到现实
+先查2027流年夫妻、财帛的落宫与四化，再对照本命相关宫位和当前大限；把“谁付、何时付、从哪里付”写成三列。每月选固定日期对账，遇到失业、照护或搬家重新约定。预算是双方可修改的协议，不能用一颗星替伴侣定性。
+
+英文标题：Zi Wei Dou Shu 2027 Spouse and Wealth Palaces: Sharing a Household Budget
+英文描述：Read the annual relationship and money lines as prompts to assign bills, set spending limits, and review a shared budget.
+英文正文：
+Two partners agree to split living costs, yet one advances the rent while the other pays for many small purchases. By month end, the amounts and due dates no longer match. If the 2027 annual Spouse and Wealth Palaces connect in a personal Zi Wei Dou Shu chart, use that link to examine how a relationship handles money. It cannot establish which partner is more committed or financially responsible.
+
+### Find the connection on the personal chart
+The annual Spouse Palace frames one-to-one agreements; the Wealth Palace frames inflows, payments, and available cash. Confirm birth details and the chart's year convention before checking their natal overlays, transformations, and related palaces. Hua Ji reaching the money line calls for clearer records and expectations, not a prediction that a partner will lose money. Hua Lu may point to an income source, but a bonus or irregular project fee is not the same as cash available every month.
+
+### Keep three separate ledgers
+List fixed bills such as rent, utilities, and insurance with an amount, due date, and payer. Set a monthly ceiling for flexible costs such as meals and transport. Leave each person's discretionary money visible as a separate category. Imagine one partner advancing 6,000 yuan in rent while the other covers 3,000 yuan of groceries. Counting transactions would hide the difference. Compare amounts and dates, then agree whether an equal split or an income-based split fits their actual earnings.
+
+### Test the plan against cash timing
+The Wellbeing Palace can frame the pressure each person feels; the decade cycle helps place current income in context. A salaried partner and a freelancer paid quarterly may struggle with identical transfers on the first of each month. They could fund fixed bills first, keep a shared buffer, and settle the remaining balance when invoices are paid. If the Career line indicates added responsibility, include time spent on housework and bookkeeping in the discussion. Bank records and a mutually accepted plan determine whether the arrangement works.
+
+### Reading order
+Locate the 2027 annual Spouse and Wealth Palaces, compare transformations and natal overlays, then add the current decade cycle. Make a table of who pays, when payment is due, and which account funds it. Review it monthly and renegotiate after a job change, caregiving need, or move. The chart helps raise questions; both partners decide the terms.
+
+---
+
 ## 1. 2027流年官禄在亥，转职先核哪三件事？
 slug：`ziwei-2027-hai-gong-guanlu-zhuanzhi-hedui`
 搜索意图：2027 年换工作时，如何把流年官禄的位置用于个人岗位判断。
