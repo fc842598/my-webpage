@@ -46,6 +46,8 @@ If the decade cycle suggests resources are in transition, keep existing projects
 ### Reading and operating order
 Start with natal Career, Wealth, and Friends. Check the current decade cycle for staffing and cash reserves. Then overlay the 2027 annual palaces and transformations to identify what deserves a closer look. Match each chart question to a real document: a roles list, service agreement, monthly cash flow, and renewal report. The useful outcome is a checklist to verify, not a promise that the transition will succeed.
 
+---
+
 ## 5. 2027流年财帛连田宅，季度回款怎样安排住房预算？
 slug：`ziwei-2027-caibo-tianzhai-jidu-huikuan-zhufang-yusuan`
 搜索意图：用个人2027流年财帛与田宅的联系，核对不稳定项目收入下的住房现金流。
