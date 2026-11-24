@@ -2,6 +2,44 @@
 
 研究日期：2026-11-24。研究实际10篇、10个域名；本站原创目标20篇，逐篇补齐。
 
+## 5. 2027流年财帛连田宅，季度回款怎样安排住房预算？
+slug：`ziwei-2027-caibo-tianzhai-jidu-huikuan-zhufang-yusuan`
+搜索意图：用个人2027流年财帛与田宅的联系，核对不稳定项目收入下的住房现金流。
+参考资料：2026-11-24 https://www.etuvi.vn/kien-thuc/tien-bac-2027/ 。采用角度：将收入到账和住房固定支出做月份匹配，不沿用原文财运总览结构。与站内一般的财帛宫、现金流文章不同，专论季度回款与每月房租或房贷错期。
+正文草稿：
+一位接项目的设计师每季度结算一次报酬，房租却每月都要交。年底看总收入并不低，到了第二个月仍可能缺现金。若个人2027流年财帛与田宅产生联系，盘面提醒检查收入何时到手、住房费用何时支付，不能单凭“财帛有禄”断定住得起更贵的房子。
+
+### 先辨财帛与田宅各回答什么
+财帛宫看收入与用钱的途径，田宅宫可用来观察住房和资产承接。先确认个人盘的2027换年口径，再看流年两宫分别叠到哪些本命宫、坐什么星，以及四化有没有把两条线连起来。财帛见化禄可能意味着项目入口增加，但合同签署、开票和实际到账是三件事。田宅见化忌也不等于房屋必有损失；先核租约、维修责任和固定支出是否过重。
+
+### 用到账月份，而非年收入定住房上限
+例如三个月收一次九万元，不能简单除以三就认定每月有三万元可用。若第一月收款，第二、三月没有进账，先从到账款中锁定三个月房租、物业和水电，再留税费及项目成本。假设每月住房相关支出一万元，至少先划出三万元，剩余部分才能安排家具或搬家。若款项可能延迟两周，还要留一个月缓冲。这里的金额是演示记账方法，不是命盘推算的收入。
+
+### 把大限和官禄加入检查
+同样的流年组合，对正在扩张客户的大限与正在缩减业务的大限，风险容量不同。官禄宫若提示工作责任改变，先问新增项目是否有书面付款节点；迁移宫若牵动异地工作，别漏算两地住宿。设想甲有固定工资加季度奖金，乙全靠项目尾款，二人即使年收入相同，能承担的固定月供也不同。看盘可以帮助找出容易忽略的连接，最终仍要以合同、银行流水和储备金决定预算。
+
+### 排盘后怎样执行
+按流年财帛、田宅、本命叠宫、四化和大限的顺序核对，再把未来六个月预计到账与每月住房支出排在同一张表。遇到尚未签约的项目，把收入记为不确定，不提前抵扣房租。每月复盘一次；若连续两个月需要动用应急金，就重新评估住房方案。
+
+英文标题：Zi Wei Dou Shu 2027 Wealth and Property Palaces: Budgeting Housing Costs With Quarterly Income
+英文描述：Use annual Wealth and Property Palace links to ask when project income arrives and whether monthly housing costs remain affordable.
+英文正文：
+A freelance designer receives project payments once a quarter, while rent is due every month. Annual income may look comfortable even when cash is tight in the second month of a quarter. If the 2027 annual Wealth and Property Palaces connect on a personal Zi Wei Dou Shu chart, use that connection to examine payment timing and housing commitments. Hua Lu in the Wealth Palace does not make a higher rent automatically affordable.
+
+### Read the two money questions separately
+The Wealth Palace concerns how money enters and is used. The Property Palace can frame housing and the resources retained over time. First confirm the convention used for the 2027 chart year. Then see which natal palaces the annual positions overlay, what stars occupy them, and whether transformations connect the two lines. Hua Lu may suggest an opening for work, but a signed contract, an issued invoice, and cash in the bank are different stages. Hua Ji on the housing line calls for a review of lease terms, repair duties, and recurring bills; it does not predict a property loss.
+
+### Budget by payment dates
+Suppose a freelancer is paid 90,000 yuan every three months. Dividing that figure by three hides the months without income. On receipt, reserve the next three months of rent, utilities, and property fees before buying furniture or planning a move. If housing costs total 10,000 yuan each month, set aside at least 30,000 yuan, then account for taxes and project expenses. Add another month of cash if the client may pay late. These numbers demonstrate a budget, not an amount calculated from the chart.
+
+### Compare the decade cycle and work line
+The same annual palace link has different practical weight during a decade of expanding clients and a decade of shrinking work. If the Career Palace points to new duties, ask whether the next contract states payment milestones. If Travel is involved, include temporary lodging in another city. Someone with a salary plus quarterly bonuses may support a monthly mortgage that would strain someone relying entirely on final project payments, even when their annual totals match. Contracts, bank records, and reserves set the actual limit.
+
+### Put the reading into a six-month plan
+Locate annual Wealth and Property, compare their natal overlays and transformations, and then add the current decade cycle. Put expected payment dates and housing bills on one six-month calendar. Treat unsigned work as uncertain income. If an emergency fund covers the gap for two months in a row, revisit the housing plan instead of assuming a favorable star will solve the timing problem.
+
+---
+
 ## 4. 2027夫妻宫牵动财帛，共同预算怎样分工？
 slug：`ziwei-2027-fuqi-caibo-gongtong-yusuan-fengong`
 搜索意图：以个人流年夫妻宫与财帛宫的联系，核对伴侣共同预算的责任分配。
