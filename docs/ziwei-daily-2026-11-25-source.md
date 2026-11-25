@@ -1,5 +1,43 @@
 # 2026-11-25 紫微文章源稿
 
+## 4. 2027太阴化禄，自由职业接单怎样安排预付款？
+slug：`ziwei-2027-taiyin-hualu-ziyouzhiye-yufukuan`
+搜索意图：自由设计师面对项目预付款与尾款，如何用丁年太阴化禄的落宫核对现金节奏。
+参考资料：2026-11-25 https://www.fateclick.com.tw/blog/ziwei-liunian-2027-guide 。采用角度：把流年四化落宫用于预付款、交付节点与现金缓冲；区别于站内2027四化总览、田宅租金和普通财帛收入文章。已查双语索引、Feed、sitemap及现有文章，无同一搜索问题。
+正文草稿：
+自由设计师小岚接到一套品牌视觉项目，合同总额六万元。客户愿意先付一万元，余款等全部交付后结清；她却要先支付摄影、字体授权和外包排版费用。看到2027丁年太阴化禄，不能直接断定“钱会顺利进来”。太阴化禄是检查资源累积和收款安排的线索，能否维持现金流，仍取决于它在个人盘的落宫和合同节点。
+
+### 太阴落宫决定先问什么
+先核对自己的出生资料、2027换年口径，以及太阴在本命盘的位置。若落财帛，重点是预付款与实际入账；落田宅，先看工作室租金、设备和家庭固定支出是否挤占项目资金；落官禄，则核交付责任、作品署名和团队分工。还要把本命结构、大限与流年分开看，不能把同一年度四化当成人人相同的收入数字。即便太阴与禄存同会，也只提示资源条件，不能代替银行流水。
+
+### 把六万元拆成三个时间点
+小岚估算前期拍摄和授权要一万四千元，客户预付的一万元连成本都不够。她可以谈签约时支付两万元、初稿确认后两万元、交付源文件前结清两万元。若对方只能接受低预付，就缩小首阶段范围，明确每阶段的修改次数和暂停条件。太阴化禄落财帛时，最值得核实的是“约定金额”何时变成“到账金额”；有化忌冲到相关宫位时，还需给返工和延期留缓冲。
+
+### 比较接单与承受力
+财帛宫看现金承接，官禄宫看能否按时产出，迁移宫看外部客户与跨城沟通。另一个设计师虽然报价更高，却同时接三单，摄影档期撞在一起；这时官禄若见天机，流程频繁变动的风险比表面订单额更重要。小岚应先列出每周可用工时、外包付款日和最低生活费，再决定能否接下项目。化禄提示可经营的资源，不能替她承担垫资风险。
+
+### 排盘后回到合同
+排盘时先定位太阴及丁年化禄，再看财帛、官禄、田宅和当前大限，最后对照项目现金表。合同写清预付比例、验收标准、版权移交和逾期付款处理；每个节点留邮件确认与收款凭证。若两个月内预计支出高于已确认收入，就先谈付款安排或缩小首期交付。命盘帮助提出问题，接单决定仍由真实成本、时间与合同支持。
+
+英文标题：Zi Wei Dou Shu 2027 Tai Yin Hua Lu: Setting a Freelance Project Deposit
+英文描述：Use Tai Yin Hua Lu and its palace placement to review a freelancer's deposit, delivery milestones, and cash buffer.
+英文正文：
+Lan is a freelance designer offered a brand identity project worth 60,000 yuan. The client proposes a 10,000-yuan deposit and the balance after final delivery. Lan must pay for photography, font licensing, and layout help before then. In a Zi Wei Dou Shu chart, the 2027 Tai Yin Hua Lu transformation can prompt a review of resources and payment timing. It cannot guarantee that an agreed fee will arrive when expenses are due.
+
+### Start with Tai Yin's natal palace
+Confirm the birth details and the year boundary used by the chart, then locate Tai Yin. In the Wealth Palace, focus on deposits and actual receipts. In the Property Palace, check whether studio rent, equipment, or household costs consume project cash. In the Career Palace, review delivery duties, credit, and team roles. Read the natal chart, decade cycle, and annual transformation as separate layers. Even a favorable star combination is no substitute for a bank balance.
+
+### Put the fee on a calendar
+Lan estimates 14,000 yuan in early photography and licensing costs. A 10,000-yuan deposit leaves her funding the gap. She could propose 20,000 yuan on signing, 20,000 after the first design approval, and 20,000 before handing over source files. If the client cannot increase the deposit, she can narrow the first stage and set limits on revisions. The useful Wealth Palace question is when a promised amount becomes cleared cash. Allow room for delayed approval and rework.
+
+### Compare capacity with the headline price
+Wealth frames cash, Career frames production capacity, and Travel frames outside clients and communication. Another designer may have a higher quote but three overlapping projects and one photographer available only on the same day. A changing work pattern can matter more than the total value of the orders. Lan should list weekly hours, subcontractor payment dates, and minimum living costs before accepting the job. Hua Lu suggests resources to manage, not permission to ignore upfront costs.
+
+### Read the chart, then negotiate
+Locate Tai Yin and the annual Hua Lu, then compare Wealth, Career, Property, and the current decade cycle. Build a cash calendar from the proposal. The contract should state the deposit, acceptance criteria, copyright transfer, and late payment terms. Keep written approvals and receipts at each milestone. If expected spending over two months exceeds confirmed income, change the payment schedule or reduce the first phase. The contract and available cash decide whether the project is workable.
+
+---
+
 ## 3. 2027巨门化忌，建筑项目变更怎样留书面证据？
 slug：`ziwei-2027-jumen-huaji-jianzhu-hetong-biangeng`
 搜索意图：建筑项目经理遇到口头变更，如何结合丁年巨门化忌的实际落宫审查沟通与合同证据。

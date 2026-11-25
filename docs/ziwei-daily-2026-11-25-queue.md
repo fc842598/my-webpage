@@ -7,5 +7,6 @@
 | 01 | 已发布 2026-11-25 10:02 https://yuetianai.com/articles/ziwei-guanlu-konggong-kefu-lungang-jiaojie.html / https://yuetianai.com/articles/en/ziwei-guanlu-konggong-kefu-lungang-jiaojie.html | ziwei-guanlu-konggong-kefu-lungang-jiaojie | 官禄空宫遇客服轮岗，怎样核对岗位交接？ | 宫位组合 |
 | 02 | 已发布 2026-11-25 10:02 https://yuetianai.com/articles/ziwei-2027-tianji-huake-zixun-peixun-yusuan.html / https://yuetianai.com/articles/en/ziwei-2027-tianji-huake-zixun-peixun-yusuan.html | ziwei-2027-tianji-huake-zixun-peixun-yusuan | 2027天机化科，咨询师进修预算怎样排？ | 大限流年 |
 | 03 | 已发布 2026-11-25 10:58 https://yuetianai.com/articles/ziwei-2027-jumen-huaji-jianzhu-hetong-biangeng.html / https://yuetianai.com/articles/en/ziwei-2027-jumen-huaji-jianzhu-hetong-biangeng.html | ziwei-2027-jumen-huaji-jianzhu-hetong-biangeng | 2027巨门化忌，建筑项目变更怎样留书面证据？ | 大限流年 |
+| 04 | 已发布 2026-11-25 12:01 https://yuetianai.com/articles/ziwei-2027-taiyin-hualu-ziyouzhiye-yufukuan.html / https://yuetianai.com/articles/en/ziwei-2027-taiyin-hualu-ziyouzhiye-yufukuan.html | ziwei-2027-taiyin-hualu-ziyouzhiye-yufukuan | 2027太阴化禄，自由职业接单怎样安排预付款？ | 大限流年 |
 
 
