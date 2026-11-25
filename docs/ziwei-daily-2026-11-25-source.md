@@ -1,5 +1,43 @@
 # 2026-11-25 紫微文章源稿
 
+## 6. 2027巨门化忌，仓库盘点差异怎样核对？
+slug：`ziwei-2027-jumen-huaji-cangku-kucun-pandiang`
+搜索意图：仓储主管面对账实差异，怎样结合巨门化忌落宫分清沟通、账目和签收责任。
+参考资料：2026-11-25 https://sng-mia.com/articles/forecast/2027-annual 。采用角度：以仓库批次盘点的账实核对解释丁年巨门化忌；与站内建筑项目合同变更、合租押金争议不同。已查文章、双语索引、Feed、sitemap及同日队列，未见相同库存盘点问题。
+正文草稿：
+仓储主管小陈在月底发现系统显示某批零件有一百二十件，货架却只有一百一十六件。采购说供应商少送，收货员说当天已经点清，领料部门又拿出一张补签单。若2027丁年巨门化忌触及相关宫位，重点不是预言谁说了谎，而是检查哪一句话没有对应的单据、时间和责任人。
+
+### 先看巨门落宫，再定核对范围
+丁年巨门化忌是流年四化，落到个人盘的宫位才有具体问题。若关联官禄，先查岗位分工与审核权限；关联财帛，关注库存金额与损耗入账；关联交友，则核跨部门协作与口头交接。还须回看本命、大限及三方四正，不能拿一个年度标签给四件零件定责任。星曜提供提问方向，账实差异仍需按仓库制度查证。
+
+### 用一条批次记录拆开争议
+小陈先固定盘点当时的货架照片、库位与批号，再导出入库、移库和领料记录。假设一百二十件的入库单实际分两车送达，第二车四件被临时放到待检区，系统却提前全部入库，问题就属于状态更新与实物位置不一致。另一种情况是领料单补签日期晚于实际出库，就应追溯领料人和审批人。两种原因处理方式不同，不能让一句“少了四件”代替查证。
+
+### 沟通和损失分别记录
+巨门常让人想到争辩，化忌更应提醒把口头说明转成可追溯记录。开会时让采购、仓库和使用部门分别陈述自己确认过的事实，缺失的环节标为待核，不能先把损失记到某个人头上。若财帛宫也受牵动，还要核四件零件的单价、保险和报损规则；这与谁有权改库存数据是两件事。可以规定盘点差异未结案前，修改库存须双人复核。
+
+### 排盘之后回到制度
+先确认出生资料与2027换年口径，找出巨门化忌的实际落宫，再对照官禄、财帛、交友和大限。随后按批号重走收货、质检、上架、领料四步，保存原始记录与更正理由。若确有缺件，按制度处理并改进扫描节点；若只是位置误记，更新库位并复盘流程。命盘可帮助列问题，盘点结论必须来自实物和记录。
+
+英文标题：Zi Wei Dou Shu 2027 Ju Men Hua Ji: Resolving a Warehouse Stock Difference
+英文描述：Use the placement of Ju Men Hua Ji to frame questions about warehouse handoffs while verifying stock counts through batch records and approvals.
+英文正文：
+At month end, warehouse supervisor Chen sees 120 parts in the inventory system but only 116 on the shelf. Purchasing says the supplier delivered too few. Receiving says the shipment was counted, while the production team presents a form signed later. In a 2027 Zi Wei Dou Shu reading, Ju Men Hua Ji may prompt a closer look at disputed explanations. It does not identify a dishonest person. Chen needs timestamps, batch numbers, and accountable records.
+
+### Place the annual transformation in a personal chart
+Ju Men Hua Ji belongs to the year's transformation pattern, but its practical question depends on where Ju Men sits in the personal chart. A connection to Career can draw attention to review authority and job duties. Wealth may point to the value of missing stock and how loss is booked. Friends and Networks may suggest cross-team handoffs. Read the natal chart, current decade cycle, and related palaces together. No annual label can establish what happened to four physical parts.
+
+### Trace one batch instead of one accusation
+Chen preserves a photo of the shelf, its location code, and the batch number. He exports receiving, movement, and issue records before anyone edits the count. Perhaps the shipment arrived in two vehicles and four parts stayed in the inspection area while the system marked all 120 as available. That is a location and status problem. Or perhaps production took four parts before its issue form was signed. That calls for a review of who released the stock and when. The same four-part difference can have different causes.
+
+### Record statements and money separately
+Each team should state what it directly checked, with gaps marked as unresolved. A meeting summary should distinguish a witnessed count from a recollection. If the Wealth line is relevant, Chen can also calculate the unit cost and check insurance or write-off rules. Those financial questions differ from permission to change a stock record. Until the discrepancy closes, a second reviewer can approve any adjustment. Clear records reduce argument without pretending the chart is an audit tool.
+
+### Finish with the operating procedure
+Confirm birth details and the chosen 2027 year boundary, locate Ju Men Hua Ji, then compare Career, Wealth, Networks, and the decade cycle. Reconstruct receiving, inspection, shelving, and issue for this batch. Keep the original entries and reasons for corrections. If parts are truly missing, follow the loss procedure; if they were misplaced, correct the location and scanning step. The chart organizes questions, while the count and records establish the result.
+
+---
+
 ## 5. 官禄空宫遇实验室轮岗，质检责任怎样交接？
 slug：`ziwei-guanlu-konggong-shiyanshi-zhijian-jiaojie`
 搜索意图：实验室检验员轮岗时，怎样借官禄空宫的对宫关系核实样本复核与签字责任。
