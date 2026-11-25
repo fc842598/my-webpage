@@ -1,5 +1,43 @@
 # 2026-11-25 紫微文章源稿
 
+## 8. 2027天机化科，社区图书馆借阅数据怎样交接？
+slug：`ziwei-2027-tianji-huake-tushuguan-jieyue-shuju`
+搜索意图：社区图书馆负责人换届时，如何按天机化科的规划线索区分借阅数据、读者隐私与图书实物交接。
+参考资料：2026-11-25 https://ziweiuniverse.com/knowledge/ziwei/lesson-20-yearly-planning/ 。采用角度：从年度规划延伸到公益图书馆的数据和实物双轨交接；区别于站内社区义诊排班、咨询师培训预算及一般工作交接。已检索站内文章、双语索引、Feed 与 sitemap，未见同一借阅数据问题。
+正文草稿：
+社区图书馆换负责人时，旧团队交出一张“在借图书八百册”的表，新团队盘点却发现其中几十册早已归还，只是系统未销账。读者名单还被放进共享网盘，志愿者说方便催还。若用2027丁年天机化科理解这件事，重点是把计划和记录做清楚，而不是用一颗星断定交接必然出错。
+
+### 先把流年标记放回个人盘
+丁年的天机化科只是年度线索，要先看实际落宫，再合本命、大限与三方四正。若关联官禄宫，关注负责人职责与系统权限；关联交友宫，关注志愿者分工；关联财帛宫，则要核采购与遗失赔偿。同一标记不会自动说明哪本书丢了，更不能替代实物盘点和隐私规则。
+
+### 借阅记录和书架数量分开核
+新负责人先冻结交接日的系统快照，按书号抽样核对借出、归还与上架状态。比如系统显示《城市植物》仍外借，读者已在上周还书，书却被放在待整理车上；这应补归还时间和入架步骤，不应催读者还书。另一本书确实未归还，则核借阅期限、联系方式的合法使用范围和提醒记录。两种情形不能混在“缺书”总数里。
+
+### 给数据访问设清楚边界
+若官禄与交友同时受牵动，换届表应写明谁能修改借阅状态、谁能查看读者联系方式、谁负责核对异常。普通志愿者只领取当班所需信息，不复制完整读者名单。旧团队的共享网盘权限在交接后撤销，必要记录按机构规则保存。若财帛宫也相关，图书遗失赔偿另建台账，避免用借阅名单直接推断欠款。
+
+### 排盘之后看可执行的清单
+先确认出生资料和丁年换年口径，找出天机化科落宫，再核官禄、交友、财帛与大限的关系。随后用系统快照、书号抽样、权限清单和异常台账完成交接。命盘可以提示哪些环节值得问，图书和个人数据是否安全，仍要由实物、系统日志与实际权限来验证。
+
+英文标题：Zi Wei Dou Shu 2027 Tian Ji Hua Ke: Handing Over Library Lending Records
+英文描述：Use Tian Ji Hua Ke as a planning prompt for separating book counts, lending records, and reader privacy during a community library handover.
+英文正文：
+A community library changes managers. The old team reports eight hundred books on loan, but the new manager finds that dozens were returned without being cleared in the system. A volunteer has also copied the reader list into a shared drive to send reminders. In a 2027 Zi Wei Dou Shu reading, Tian Ji Hua Ke can prompt better planning and documentation. It cannot establish that a particular book is missing.
+
+### Read the placement in context
+Tian Ji Hua Ke is an annual marker for the Ding year. Its meaning depends on its placement in the person's chart, the natal pattern, the decade cycle, and related palaces. A Career connection points to manager duties and system permissions. Friends and Networks points to volunteer roles. A Wealth connection may raise purchasing and replacement costs. The chart does not replace a physical inventory or privacy rules.
+
+### Reconcile records and shelves separately
+The new manager saves a dated system snapshot and samples books by item ID. One title still appears on loan, although the reader returned it last week and it sits on a sorting cart. That case needs a corrected return timestamp and shelving step, not a collection notice. A different title may truly be overdue. Its due date and reminder history need a separate check. Combining both cases in one missing-books total hides the cause.
+
+### Limit access to reader data
+The handover list names who may change lending status, who may view contact details, and who reviews exceptions. Volunteers receive only information needed for their assigned shift. The old shared-drive access is removed when duties change, while required records are retained under the library's policy. Replacement charges belong in a separate ledger; a lending list alone does not prove a debt.
+
+### Finish with an operating check
+Confirm birth details and the year-boundary convention, locate Tian Ji Hua Ke, and compare Career, Networks, Wealth, and the decade cycle. Then verify the system snapshot, sampled book IDs, access list, and exception log. The chart helps frame handover questions. Books and reader data are protected by actual counts, logs, and permissions.
+
+---
+
 ## 7. 2027天机化科，社区义诊排班怎样安排复核？
 slug：`ziwei-2027-tianji-huake-shequ-yizhen-paiban`
 搜索意图：社区义诊负责人如何借天机化科的规划与记录线索，安排志愿者排班和医疗复核。
