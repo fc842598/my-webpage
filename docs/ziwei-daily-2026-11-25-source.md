@@ -1,5 +1,43 @@
 # 2026-11-25 紫微文章源稿
 
+## 5. 官禄空宫遇实验室轮岗，质检责任怎样交接？
+slug：`ziwei-guanlu-konggong-shiyanshi-zhijian-jiaojie`
+搜索意图：实验室检验员轮岗时，怎样借官禄空宫的对宫关系核实样本复核与签字责任。
+参考资料：2026-11-25 https://www.fatestar.top/blog/empty-career-palace-no-main-star-zi-wei-dou-shu 。采用角度：自拟实验室质量追溯场景，区分借对宫星曜和真实授权；不同于站内客服轮岗的客户承诺与退款交接。查过文章、双语索引、Feed、sitemap及同日队列，未见相同质检搜索问题。
+正文草稿：
+检验员小周从常规样本组转到复核组，第一周就遇到一份数值异常的报告。原组说样本已经处理完，新组却要求重测；两边的系统记录还没有同步。她看到自己官禄宫没有主星，担心轮岗会变成无人负责。官禄空宫不能直接推出职业不稳。更有用的读法是借对宫观察协作方式，再把盘上的问题落实到样本编号、复核权限和签字流程。
+
+### 空宫借星要保留原位
+官禄空宫先看对宫的主星，但星曜仍在对宫，不能当作同时坐进官禄。如果对宫见天机、天梁，可重点问流程变动时谁负责技术复核、谁能提出暂停出报告；若见太阳、巨门，则要留意口头解释与正式报告是否一致。两组只是提问方向，还要看官禄三方四正、辅曜和四化。不能凭某个组合判断小周一定适合或不适合质检。
+
+### 把一份异常样本走到底
+假设样本第一次检测超出参考范围，重测后结果回落。小周应把原始数据、仪器状态、重测理由和审核人的签名串成一条记录。若新旧小组对重测标准不同，先暂停放行，按实验室现行规范找有授权的负责人裁定。借星提示她检查跨组协作，却不能替代质量体系的书面程序。真正危险的是记录断点，而不是宫位里少一颗主星。
+
+### 官禄和财帛别混成一件事
+官禄看工作方式及责任，财帛才帮助追问轮岗后的津贴与绩效。若复核组每月增加八百元津贴，却需要夜间值班，小周应查值班次数、加班计算和谁承担报告延误责任。命宫与大限可补充她对长期轮岗的承受力；如果官禄线见化权，也要核签字权是否随责任增加。收入多一点，不等于能独自批准异常报告。
+
+### 排盘后核交接文件
+先确认出生资料和官禄空宫，再标出对宫主星原位，连同官禄三方、财帛、命宫和大限一起看。随后拿岗位说明、复核清单、系统权限与培训记录逐项比对。首月可安排双人签核和每周异常案例复盘，等权限与能力都确认后再独立值班。命盘负责整理问题，质检决定仍以可追溯的记录和正式授权为准。
+
+英文标题：Zi Wei Dou Shu Empty Career Palace: Handoffs in a Testing Lab
+英文描述：Read an empty Career Palace through its opposite palace while checking retest records, sign-off authority, and pay during a lab rotation.
+英文正文：
+Zhou moves from routine testing to the review team. In her first week, one sample produces an unusual result. The old team says its work is finished, while the new team requests a retest, and the two records have not synced. She notices that her Career Palace has no main star in her Zi Wei Dou Shu chart and worries that nobody will own the problem. An empty palace does not predict an unstable career. It suggests a way to ask better questions about cooperation, records, and authority.
+
+### Borrow stars without moving them
+For an empty Career Palace, inspect the main stars in the opposite palace but keep them in their original position. Tian Ji with Tian Liang may prompt a review of who updates procedures and who may stop a report for technical review. Sun with Ju Men may raise questions about differences between a spoken explanation and the formal result. These are prompts, not labels for Zhou's ability. Compare supporting stars, transformations, and the related palaces before drawing a personal interpretation.
+
+### Trace one unusual sample
+Suppose an initial result is outside the expected range but a retest returns to it. Zhou needs the original reading, instrument status, reason for retesting, and reviewer signature in one traceable chain. If the teams use different retest rules, she should hold the report and ask an authorized supervisor to apply the lab's current procedure. The chart can suggest where coordination needs attention. It cannot replace a quality system or approve the result.
+
+### Separate duties from pay
+Career concerns the work and its responsibility; Wealth helps frame questions about a new allowance and performance pay. If the review team offers an extra 800 yuan per month but requires night shifts, Zhou should check shift frequency, overtime rules, and who owns a delayed report. The Life Palace and current decade cycle add context for a longer rotation. Even if a transformation suggests greater responsibility, verify whether her signing authority grows with it. A higher allowance is not permission to release an unusual result alone.
+
+### Read the chart and check the handoff
+Confirm birth details and the empty Career Palace. Mark the opposite stars where they actually sit, then compare Career's related palaces, Wealth, Life, and the decade cycle. Review the job description, retest checklist, system permissions, and training record. Dual signatures and weekly case reviews can help during the first month. Let the chart organize questions and the written process govern lab decisions.
+
+---
+
 ## 4. 2027太阴化禄，自由职业接单怎样安排预付款？
 slug：`ziwei-2027-taiyin-hualu-ziyouzhiye-yufukuan`
 搜索意图：自由设计师面对项目预付款与尾款，如何用丁年太阴化禄的落宫核对现金节奏。
