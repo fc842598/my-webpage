@@ -1,5 +1,43 @@
 # 2026-11-25 紫微文章源稿
 
+## 7. 2027天机化科，社区义诊排班怎样安排复核？
+slug：`ziwei-2027-tianji-huake-shequ-yizhen-paiban`
+搜索意图：社区义诊负责人如何借天机化科的规划与记录线索，安排志愿者排班和医疗复核。
+参考资料：2026-11-25 https://ziweiuniverse.com/knowledge/ziwei/lesson-20-yearly-planning/ 。采用角度：把年度规划分层用于义诊排班和临床签字，区别于站内咨询师进修预算与其他流年职业文章。已查文章、双语索引、Feed、sitemap和当天队列，没有相同义诊排班问题。
+正文草稿：
+社区义诊要连续开四个周末。负责人小林有十二位志愿者，但只有两位执业医生能做最终诊断。有人提议按报名先后把人填满日历；小林更担心第二周医生临时缺席，现场没人核对处方。若看2027丁年的天机化科，这个组合适合提醒她把计划、培训和复核拆成不同责任，而非预测义诊一定顺利。
+
+### 先确认天机化科落在哪里
+丁年天机化科只是流年标记，实际要看它在个人盘落宫，并与本命、大限、三方四正合读。若牵动官禄宫，关注排班规则、岗位资格和交接；若在交友宫形成关联，重点转向志愿者协作；若财帛宫受影响，还要列出耗材与交通补贴。化科可以提示知识和记录的作用，却不能代替医生资质或医疗机构的管理要求。
+
+### 把四周排班拆成三层
+小林先列出每周的接诊时段和预计人数，再把执业医生、护士、登记员分别放进岗位表。每个时段至少写明谁接诊、谁核验身份与病历、谁负责最终签字。十二位志愿者可以轮换登记和引导，不能因为人手紧就填到处方复核栏。若第二周一名医生请假，先暂停对应的诊疗名额，联系合格替班者；找到之前只保留咨询和转诊服务。这样排班表记录的是可执行能力，不是漂亮的出勤数字。
+
+### 让培训和复核留下痕迹
+天机重安排，化科常让人想到学习，但读盘时仍须问：学的是哪一项操作，谁确认能够独立完成？义诊前可做一次登记流程演练，让新志愿者模拟身份证核对、隐私告知与转诊记录。医生签字与志愿者登记分别保留日志，发现姓名或药物记录不一致时标注更正人和时间。若官禄与交友同时被触及，这份日志尤其有助于区分专业责任和协助责任，而非把错误推给整个团队。
+
+### 排盘后回到现场检查
+先校准出生资料与丁年换年口径，找出天机化科的落宫，再核本命和大限中官禄、交友、财帛的关系。随后检查四周时段、执业资格、替班条件、耗材和签字链。义诊当天用真实到岗情况更新表格；任何诊疗决定都由合格医护人员按规范作出。命盘帮助提出规划问题，现场安全靠明确岗位和可追溯记录。
+
+英文标题：Zi Wei Dou Shu 2027 Tian Ji Hua Ke: Planning a Community Clinic Roster
+英文描述：Use Tian Ji Hua Ke as a planning prompt while assigning qualified clinicians, volunteers, and review duties for a community clinic.
+英文正文：
+A neighborhood clinic plans to run on four weekends. Lin has twelve volunteers but only two licensed physicians who can make final clinical decisions. Filling every slot by sign-up order would look efficient, yet one physician's absence could leave prescriptions without a qualified reviewer. In a 2027 Zi Wei Dou Shu reading, Tian Ji Hua Ke can prompt questions about plans, training, and records. It does not promise a safe event.
+
+### Locate the transformation before applying it
+Tian Ji Hua Ke is part of the annual pattern for the Ding year. Its relevance depends on its placement in Lin's personal chart, the natal structure, the current decade cycle, and related palaces. A Career connection raises questions about job assignments and qualifications. Friends and Networks points toward volunteer coordination. A Wealth connection can bring supplies and travel reimbursements into view. None of these placements grants medical authority.
+
+### Build a roster around real capacity
+Lin lists each weekend's expected patient volume and available hours, then assigns physician, nurse, and registration roles separately. Every session names a person for clinical review and final sign-off. Volunteers may rotate through check-in and directions, but they cannot fill a prescription-review slot. If a physician cancels the second weekend, Lin pauses the affected clinical appointments until a qualified replacement confirms attendance. Information and referral services may continue within their approved scope. The roster must show what the team can actually provide.
+
+### Record training and review
+Before opening, Lin runs a short rehearsal for identity checks, privacy notices, and referral records. New volunteers practice registration while clinical staff retain clinical decisions. Separate logs identify who entered information, who reviewed it, and who corrected an error. If a name or medicine entry conflicts, the correction includes a time and responsible reviewer. This makes handoffs visible without assigning every mistake to the whole team.
+
+### Finish with an operating check
+Confirm birth details and the year-boundary convention, locate Tian Ji Hua Ke, then compare Career, Networks, Wealth, and the decade cycle. Next check actual attendance, licenses, replacement rules, supplies, and the sign-off path for each weekend. Qualified clinicians make clinical decisions under the applicable rules. The chart helps Lin frame planning questions; safe service depends on staffing and verifiable records.
+
+---
+
 ## 6. 2027巨门化忌，仓库盘点差异怎样核对？
 slug：`ziwei-2027-jumen-huaji-cangku-kucun-pandiang`
 搜索意图：仓储主管面对账实差异，怎样结合巨门化忌落宫分清沟通、账目和签收责任。

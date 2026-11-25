@@ -10,5 +10,6 @@
 | 04 | 已发布 2026-11-25 12:01 https://yuetianai.com/articles/ziwei-2027-taiyin-hualu-ziyouzhiye-yufukuan.html / https://yuetianai.com/articles/en/ziwei-2027-taiyin-hualu-ziyouzhiye-yufukuan.html | ziwei-2027-taiyin-hualu-ziyouzhiye-yufukuan | 2027太阴化禄，自由职业接单怎样安排预付款？ | 大限流年 |
 | 05 | 已发布 2026-11-25 16:05 https://yuetianai.com/articles/ziwei-guanlu-konggong-shiyanshi-zhijian-jiaojie.html / https://yuetianai.com/articles/en/ziwei-guanlu-konggong-shiyanshi-zhijian-jiaojie.html | ziwei-guanlu-konggong-shiyanshi-zhijian-jiaojie | 官禄空宫遇实验室轮岗，质检责任怎样交接？ | 宫位组合 |
 | 06 | 已发布 2026-11-25 19:59 https://yuetianai.com/articles/ziwei-2027-jumen-huaji-cangku-kucun-pandiang.html / https://yuetianai.com/articles/en/ziwei-2027-jumen-huaji-cangku-kucun-pandiang.html | ziwei-2027-jumen-huaji-cangku-kucun-pandiang | 2027巨门化忌，仓库盘点差异怎样核对？ | 大限流年 |
+| 07 | 已发布 2026-11-25 21:05 https://yuetianai.com/articles/ziwei-2027-tianji-huake-shequ-yizhen-paiban.html / https://yuetianai.com/articles/en/ziwei-2027-tianji-huake-shequ-yizhen-paiban.html | ziwei-2027-tianji-huake-shequ-yizhen-paiban | 2027天机化科，社区义诊排班怎样安排复核？ | 大限流年 |
 
 
