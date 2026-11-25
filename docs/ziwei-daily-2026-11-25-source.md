@@ -1,5 +1,43 @@
 # 2026-11-25 紫微文章源稿
 
+## 3. 2027巨门化忌，建筑项目变更怎样留书面证据？
+slug：`ziwei-2027-jumen-huaji-jianzhu-hetong-biangeng`
+搜索意图：建筑项目经理遇到口头变更，如何结合丁年巨门化忌的实际落宫审查沟通与合同证据。
+参考资料：2026-11-25 https://sng-mia.com/articles/forecast/2027-annual 。采用角度：用工程变更单、审批链和付款节点解释巨门化忌的落宫差异；区别于站内2027四化总览及普通口舌是非文章。
+正文草稿：
+项目经理阿卓负责一处商业空间改造。甲方在现场说“把入口再移半米”，施工队当天改了图，结算时却没人愿意承担追加费用。看到2027丁年巨门化忌，不能把争议归因于某个人“会犯口舌”。巨门涉及表达、解释与争议；化忌提示把含糊处逐项核对。真正要找的是口头指令在哪个环节变成了没有签字的成本。
+
+### 先按落宫确定谁在解释
+丁年四化是年度共同规则，巨门在个人本命盘的位置却不同。若巨门落官禄，优先查岗位职责、技术说明和变更审批；落迁移，则查看外部甲方、监理与分包方的传话链；落财帛，要核追加款、扣款与付款条件。再结合本命与大限，才能判断这一年哪种沟通问题最值得预先设防。只看“巨门化忌”四字，无法推出项目一定亏损。
+
+### 把一句话拆成三份记录
+入口移位至少涉及新版图纸、现场签证和费用确认。阿卓先记下甲方提出变更的日期、位置与尺寸，再请设计方确认是否影响消防通道，最后让有授权的人签认工期与费用。若官禄宫同时见化权，责任变大，也要核自己有没有签字权；若迁移宫有天马、巨门，现场跑动多，更需要统一版本号，避免手机里的旧图继续流转。星曜组合提出核对方向，合同文本决定实际责任。
+
+### 财帛宫看回款，不把争论当损失
+假设移位增加材料和人工共八千元，合同约定变更签认后才进入下期付款。若没有签证，现金压力会先落在施工方，即使最终谈成补款也可能晚一个月。阿卓应把原合同价、变更金额、已收款和待审批金额分列，别把“可能能收”算作现款。若财帛线另见化忌，就尤其要留周转空间；但预算仍依据账本与合同，而不是命盘预言。
+
+### 排盘与现场处理的顺序
+先校准出生资料与2027换年口径，定位巨门的本命宫位和丁年化忌，再看官禄、迁移、财帛及当前大限。然后拿最新图纸、会议纪要、签证单、合同授权表逐项核对。任何一项缺签字，就在施工前书面追问；已经施工则补齐过程证据并请专业人员审查条款。命盘帮助找到提问顺序，项目管理靠可追溯的文件。
+
+英文标题：Zi Wei Dou Shu 2027 Ju Men Hua Ji: Documenting a Construction Change
+英文描述：Read Ju Men Hua Ji through its palace placement while checking drawings, approvals, and payment terms for a construction change.
+英文正文：
+Project manager Zhuo is renovating a commercial space. A client asks on site to move the entrance by half a meter. The crew changes the drawing that day, but nobody accepts the extra cost at settlement. The 2027 Ju Men Hua Ji transformation in Zi Wei Dou Shu does not identify a person to blame. It raises questions about explanations, disputed instructions, and missing records. The practical issue is where a spoken request became an unsigned expense.
+
+### Find the palace before interpreting the dispute
+The annual transformation rule is shared, but Ju Men occupies a different natal palace in each chart. In Career, review job duties, technical explanations, and who approves a change. In Travel, trace messages among the client, supervisor, and subcontractors. In Wealth, inspect extra charges and payment conditions. Read the natal structure with the current decade cycle before treating one annual label as a forecast. A dispute is possible; a loss is not predetermined.
+
+### Turn one request into three records
+Moving the entrance needs a revised drawing, a site change record, and written cost approval. Zhuo records the date, location, and measurement of the request. The designer checks whether it affects the fire exit. Then an authorized person signs the schedule and price impact. If the Career line suggests more responsibility, Zhuo still needs to check whether the contract grants signing authority. If movement and communication both feature in the Travel line, version control matters: an old drawing on a phone can mislead the next crew.
+
+### Separate a disputed amount from cash received
+Suppose the change adds 8,000 yuan in labor and materials. The contract pays for changes only after formal approval. Without that document, the builder carries the cash cost even if the client later agrees to pay. Zhuo should list the original contract amount, approved changes, money received, and pending claims separately. Do not count a possible reimbursement as current cash. A difficult Wealth pattern may prompt a larger reserve, but the contract and bank balance govern the decision.
+
+### Read the chart and close the paper trail
+Confirm birth data and the chosen 2027 year boundary. Locate Ju Men and its annual Hua Ji, then compare Career, Travel, Wealth, and the decade cycle. Next, inspect the current drawing, meeting notes, change order, and authorization table. Ask for written approval before work proceeds. If work is already done, preserve the sequence of evidence and have the contract terms reviewed. The chart organizes questions; traceable documents manage the project.
+
+---
+
 ## 1. 官禄空宫遇客服轮岗，怎样核对岗位交接？
 slug：`ziwei-guanlu-konggong-kefu-lungang-jiaojie`
 搜索意图：客服主管从单一产品线转为跨组轮岗时，如何用官禄空宫的借星关系核对岗位责任。
