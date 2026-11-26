@@ -149,3 +149,49 @@ The Property Palace directs attention to the lease, capacity, equipment, and ren
 
 ### Return to contracts and the ticket ledger
 Confirm birth details, then locate Wealth, Career, and Property with their stars and transformations. Match each chart question to used tickets, refund terms, performer schedules, and the venue agreement. Reserve enough for remaining shows and refunds before approving a renovation. The ledger and contracts determine the amount the theater can spend.
+
+---
+
+## 5. 2027天同化权与巨门化忌同宫，共享厨房规则争议怎么处理？
+slug：`ziwei-2027-tiantong-jumen-tonggong-gongxiang-chufang`
+搜索意图：社区共享厨房因排期和清洁费起争执，怎样把丁未年权忌同宫的提示拆为授权、沟通和付款证据。
+参考资料：2026-11-26 https://www.kaucim.ai/articles/2027-liunian-sihua 。采用角度：先核个盘是否真的天同、巨门同宫，再用共享厨房的预约、采购和清洁责任解释权忌并见；区别于站内2027四化总览、合租房维修授权及既有社区协作话题。已查文章标题、开头、例子、双语索引、Feed与sitemap，未见同一搜索问题。
+正文草稿：
+社区共享厨房每周开放三晚。最近有人主动统筹排期，却因冰箱采购和清洁费被质疑“一个人说了算”。看到2027丁未年的天同化权、巨门化忌，不能直接说组织会吵架；先要核对这两颗星在个人盘上是否真的同宫、落在哪个本命宫，以及当年宫名是什么。
+
+### 先核同宫，再谈同一件事
+
+丁年四化口径下，天同化权、巨门化忌是两条不同线索。它们是否同处一宫取决于原盘星位，不能从年份直接推出。若盘里并不同宫，应分别记下两星的原坐地支、对应本命宫与流年宫，不能合成一个“权忌冲突”的判断。若同宫，也要连对宫和三方四正看，避免单凭化曜给成员贴性格标签。
+
+### 化权看谁负责，化忌看哪句话没说清
+
+假设同宫位置牵动交友宫，天同化权可提醒把组织责任写明：谁排班，谁保管钥匙，谁能批准额外时段。巨门化忌则提示检查口头约定和异议渠道。比如排班者可以汇总申请，却不能独自改掉已确认的时段；提出质疑的人也要指明是哪条通知与实际不符，而非把所有分歧归为“不合”。如果同宫落到官禄，重点可能转向实际运营分工；若落财帛，就要优先核采购款和报销。
+
+### 把三笔账和两项权限摊开
+
+厨房每月收取使用费，另有食材代购和公共清洁费。三笔钱分别记收入、代垫和共同支出，保留收据与退款规则。再把“安排时段”和“批准采购”分开授权：前者可以按公开规则轮值，后者须有预算上限及第二人确认。若财帛宫同时见化忌，先核现金结余与未报销额；若官禄宫见化科，则可用公开记录减少误解，但都不能替代账本。
+
+### 用命盘整理问题，用会议记录作决定
+
+排盘先确认出生资料与丁未年换年口径，再标天同、巨门原位和相关本命、流年宫位；只有确认同宫才一起讨论权忌。最后用预约表、费用台账、采购授权和会议记录逐项核实。规则由参与者共同确认，命盘只帮助发现应该问清的责任边界。
+
+英文标题：2027 Zi Wei Dou Shu: Tian Tong Hua Quan and Ju Men Hua Ji in One Palace
+英文描述：Check whether the two 2027 transformations truly share a palace, then use a community kitchen dispute to separate scheduling authority, communication, and expenses.
+英文正文：
+A community kitchen opens three evenings a week. One volunteer manages the calendar, but members disagree about refrigerator purchases and cleaning fees. In a 2027 Zi Wei Dou Shu chart, Tian Tong Hua Quan and Ju Men Hua Ji can prompt useful questions about responsibility and unclear statements. The year alone does not prove that the stars share a palace or that a dispute is inevitable.
+
+### Confirm the chart position first
+
+Under the Ding Wei annual transformation convention, Tian Tong receives Hua Quan and Ju Men receives Hua Ji. Find each star's original branch in the person's natal chart, then identify the natal and annual palace names at those positions. Only discuss a combined placement if both stars actually occupy the same palace. If they do not, record their two positions separately. In either case, examine the opposite palace and the supporting Life, Career, and Wealth relationships before drawing a practical question.
+
+### Separate coordination from permission
+
+If a shared placement concerns the Friends Palace, Hua Quan may focus attention on who organizes the group: who books a session, holds the keys, and answers urgent requests. Hua Ji may point to an unrecorded promise or a complaint that needs a precise reply. A calendar coordinator can collect requests without gaining the right to cancel a confirmed booking alone. If the placement instead concerns Career, operational roles become more relevant. If it concerns Wealth, purchase approval and reimbursement deserve closer inspection.
+
+### Keep three accounts and two powers distinct
+
+Track usage fees, groceries bought on behalf of members, and shared cleaning costs separately. Keep receipts and refund terms. Scheduling a room and approving a purchase are separate powers: the first can follow a published rotation, while the second needs a spending limit and another person's confirmation. A Wealth Hua Ji concern makes unpaid reimbursements worth checking; a Career Hua Ke pattern may support transparent records. Neither replaces the accounts.
+
+### Return to the written rules
+
+Confirm birth details and the annual boundary, mark both stars and their palace relationships, and then compare the chart questions with the calendar, ledger, purchase approvals, and meeting notes. Members decide the rules together. The chart is a way to organize questions, not evidence that any member is at fault.
