@@ -10,4 +10,5 @@
 | 04 | 已发布 2026-11-26 15:58 https://yuetianai.com/articles/ziwei-caibo-tianzhai-juchang-jipiao-tuipiao.html / https://yuetianai.com/articles/en/ziwei-caibo-tianzhai-juchang-jipiao-tuipiao.html | ziwei-caibo-tianzhai-juchang-jipiao-tuipiao | 小剧场季票预售后，财帛宫与田宅宫怎么分清退票钱？ | 宫位组合 |
 | 05 | 已发布 2026-11-26 20:01 https://yuetianai.com/articles/ziwei-2027-tiantong-jumen-tonggong-gongxiang-chufang.html / https://yuetianai.com/articles/en/ziwei-2027-tiantong-jumen-tonggong-gongxiang-chufang.html | ziwei-2027-tiantong-jumen-tonggong-gongxiang-chufang | 2027天同化权与巨门化忌同宫，共享厨房规则争议怎么处理？ | 大限流年 |
 | 06 | 已发布 2026-11-26 21:02 https://yuetianai.com/articles/ziwei-2027-jumen-huaji-tijian-baogao-wuchuan.html / https://yuetianai.com/articles/en/ziwei-2027-jumen-huaji-tijian-baogao-wuchuan.html | ziwei-2027-jumen-huaji-tijian-baogao-wuchuan | 2027巨门化忌遇体检报告误传，疾厄宫与交友宫怎么分开看？ | 大限流年 |
+| 07 | 已发布 2026-11-26 21:05 https://yuetianai.com/articles/ziwei-konggong-jietu-duigong-yuanwei.html / https://yuetianai.com/articles/en/ziwei-konggong-jietu-duigong-yuanwei.html | ziwei-konggong-jietu-duigong-yuanwei | 紫微排盘截图裁掉对宫，空宫借星还能怎么核对？ | 看盘方法 |
 

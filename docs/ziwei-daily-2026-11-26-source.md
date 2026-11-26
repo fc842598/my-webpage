@@ -233,3 +233,41 @@ Record when the attachment appeared, which group received it, and whether it was
 
 ### Finish with the chart and evidence in separate columns
 Confirm birth details and the annual convention, then mark Ju Men's original position, natal Health and Friends, and their annual overlays. Next to each chart question, place a fact you can check: first recipient, forwarding path, retraction, and the provider's written response. Use the chart to structure the questions and the actual record to guide the correction.
+
+---
+
+## 7. 紫微排盘截图裁掉对宫，空宫借星还能怎么核对？
+slug：`ziwei-konggong-jietu-duigong-yuanwei`
+搜索意图：收到一张不完整的手机命盘截图，如何判断空宫借星所需的对宫信息是否齐全。
+参考资料：2026-11-26 https://astroew.com/articles/no-major ；https://ziwei.ist/en/learn/read-your-chart 。采用角度：把宫位、地支、主星和图层当成可逐项检查的坐标，重点处理截图缺半边时的证据不足。区别于站内空宫原位教学盘、软件空宫数量差异及泛空宫解释；已查文章、双语索引、Feed与sitemap，没有截图裁切后的借星核对问题。
+正文草稿：
+朋友发来手机排盘截图，只截到“命宫无主星”几个字，右半边宫格被裁掉，便问你能否借迁移宫的星判断新岗位。截图连迁移宫都没显示，马上说“借某颗星”会把缺失资料当成已有资料。空宫是该宫没有十四主星坐入，宫名、地支、辅煞仍在；借对宫前，应先把原盘找完整。
+
+### 先确认截图里究竟缺哪一层
+逐格看宫名和地支是否完整，命宫有没有主星名称，辅星和煞曜图层是否被软件隐藏。只看见空白底色，不等于命宫空宫；有的软件把主星折叠，有的软件用小字放在宫格边缘。请对方给完整十二宫图及出生资料的校对结果，记录软件版本和所选排盘口径。若出生时辰未核准，命宫和对宫都可能变，暂不据此比较工作机会。
+
+### 借迁移信息时保留星曜原位
+若完整盘确认命宫无主星，再找到正对的迁移宫，写成“迁移宫原坐某星，为命宫提供外部环境参照”，不要画箭头把星曜移进命宫。假设迁移宫原坐紫微、贪狼，命宫有擎羊：紫微贪狼仍属迁移，擎羊仍属命宫。再核官禄与财帛的三方四正，才可讨论外部岗位与自身承受力怎样配合。另一张盘若对宫主星不同，不能照抄前一张的解读。
+
+### 截图不全时先问可验证的问题
+如果只拿到上半张图，可以先问岗位职责、试用期和地点等现实条件，却不能说盘上已经出现哪组星。截图补齐后，把命宫、迁移、官禄和财帛原坐的星曜抄在四栏，标出哪些来自本宫，哪些只是对宫参照。两款软件显示不同，还需确认隐藏图层和四化表，而非从颜色或宫格空白推断吉凶。截图是沟通材料，不是可以替代整盘的证据。
+
+### 排盘使用顺序
+先核出生年月日时、地点与软件口径，取得完整十二宫；再查命宫是否真正无主星、迁移宫原坐什么、命财官三方怎样连接。最后回到岗位合同、试用反馈和个人成本。缺了对宫或输入资料时，诚实标为“待核”，比给出确定断语更有用。
+
+英文标题：Zi Wei Dou Shu Empty Life Palace: What If a Chart Screenshot Cuts Off the Opposite Palace?
+英文描述：A cropped Chinese astrology chart cannot show where borrowed stars originally sit. Check the full twelve palaces, visible layers, and chart inputs first.
+英文正文：
+A friend sends a cropped mobile chart. It shows “no major star” in the Life Palace, but the opposite side of the board is missing. The friend asks whether stars borrowed from the Travel Palace support a new job. Without the Travel Palace in view, naming those stars would treat missing information as observed fact. An empty Life Palace means no major star sits there; it does not erase the palace's branch or supporting stars.
+
+### Identify what the screenshot omits
+Check whether all palace labels and branches are visible, whether major stars have been collapsed by the app, and whether minor and challenging stars are hidden in another layer. A pale square alone does not prove an empty palace. Request the complete twelve-palace chart and confirmed birth inputs. Record the app version and chart convention. If the birth hour is uncertain, even the Life and opposite palace locations may change, so pause the job interpretation.
+
+### Keep borrowed stars at their original address
+Once the full chart confirms an empty Life Palace, find the opposite Travel Palace. Describe its stars as context from Travel rather than moving them into Life. Suppose Zi Wei and Tan Lang originally occupy Travel while Qing Yang sits in Life. Zi Wei and Tan Lang remain in Travel; Qing Yang remains in Life. Then examine Career and Wealth in the supporting palace relationships before asking how an external offer fits the person's responsibilities and resources. A different chart requires a fresh placement check.
+
+### Ask real questions while the chart is incomplete
+With only half a board, you can still ask about the role, trial period, location, and travel costs. You cannot claim that a particular star combination appears. When the complete chart arrives, make four columns for Life, Travel, Career, and Wealth. Mark which stars sit in each palace and which palace is merely being used as a reference. If two apps disagree, compare hidden layers and transformation conventions before reading meaning into the display colors.
+
+### Read the full chart before deciding
+Verify birth date, time, location, and the software's chart convention. Obtain all twelve palaces, confirm whether Life really lacks a major star, and locate Travel's original stars. Only then compare the Life, Career, and Wealth relationships with the written job terms and trial experience. “Still to verify” is a useful chart note when the opposite palace or input data is missing.
