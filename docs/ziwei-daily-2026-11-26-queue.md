@@ -9,4 +9,5 @@
 | 03 | 已发布 2026-11-26 12:00 https://yuetianai.com/articles/ziwei-2027-tiantong-huaquan-jiaoyou-hezu-weixiu.html / https://yuetianai.com/articles/en/ziwei-2027-tiantong-huaquan-jiaoyou-hezu-weixiu.html | ziwei-2027-tiantong-huaquan-jiaoyou-hezu-weixiu | 2027天同化权牵动交友宫，合租房维修该由谁拍板？ | 大限流年 |
 | 04 | 已发布 2026-11-26 15:58 https://yuetianai.com/articles/ziwei-caibo-tianzhai-juchang-jipiao-tuipiao.html / https://yuetianai.com/articles/en/ziwei-caibo-tianzhai-juchang-jipiao-tuipiao.html | ziwei-caibo-tianzhai-juchang-jipiao-tuipiao | 小剧场季票预售后，财帛宫与田宅宫怎么分清退票钱？ | 宫位组合 |
 | 05 | 已发布 2026-11-26 20:01 https://yuetianai.com/articles/ziwei-2027-tiantong-jumen-tonggong-gongxiang-chufang.html / https://yuetianai.com/articles/en/ziwei-2027-tiantong-jumen-tonggong-gongxiang-chufang.html | ziwei-2027-tiantong-jumen-tonggong-gongxiang-chufang | 2027天同化权与巨门化忌同宫，共享厨房规则争议怎么处理？ | 大限流年 |
+| 06 | 已发布 2026-11-26 21:02 https://yuetianai.com/articles/ziwei-2027-jumen-huaji-tijian-baogao-wuchuan.html / https://yuetianai.com/articles/en/ziwei-2027-jumen-huaji-tijian-baogao-wuchuan.html | ziwei-2027-jumen-huaji-tijian-baogao-wuchuan | 2027巨门化忌遇体检报告误传，疾厄宫与交友宫怎么分开看？ | 大限流年 |
 

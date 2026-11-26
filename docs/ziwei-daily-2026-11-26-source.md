@@ -195,3 +195,41 @@ Track usage fees, groceries bought on behalf of members, and shared cleaning cos
 ### Return to the written rules
 
 Confirm birth details and the annual boundary, mark both stars and their palace relationships, and then compare the chart questions with the calendar, ledger, purchase approvals, and meeting notes. Members decide the rules together. The chart is a way to organize questions, not evidence that any member is at fault.
+
+---
+
+## 6. 2027巨门化忌遇体检报告误传，疾厄宫与交友宫怎么分开看？
+slug：`ziwei-2027-jumen-huaji-tijian-baogao-wuchuan`
+搜索意图：体检报告被误发进工作群，如何区分健康信息、传播范围和更正责任。
+参考资料：2026-11-26 https://www.kaucim.ai/articles/2027-liunian-sihua ；https://ziwei.ist/en/learn/read-your-chart 。采用角度：丁年巨门化忌提示沟通问题，疾厄对应本人健康议题，交友对应群体传播；区别于站内疾厄空宫、父母宫体检报告与共享厨房争议。已查文章、双语索引、Feed及sitemap，未见误传个人报告这一搜索意图。
+正文草稿：
+体检机构把你的报告发给公司联络人，对方又误转进二十人的工作群。有人看见异常指标便私聊询问病情，你还没和医生讨论结果。若用2027丁未年的巨门化忌看这件事，先要把命盘上的沟通线索与现实中的隐私处理分开：化忌不能证明诊断，也不能替你判定谁该承担责任。
+
+### 先定位巨门，不把年度四化套在所有人身上
+采用丁年巨门化忌的排法时，先确认软件的换年口径，再找巨门原坐地支、该处本命宫名和2027流年宫名。巨门在交友宫，重点可问群体里谁转述了什么；在疾厄宫，重点可问本人怎样核实报告与表达需求。这是不同落宫的两种读法，不能假设同一人的巨门同时坐在两处。还要看对宫和命宫、官禄的关系，别因一个“忌”字就断言有人蓄意泄露。
+
+### 疾厄讲本人议题，交友讲传播链
+疾厄宫可提醒你把健康疑问留给有资格解释报告的人。比如本命疾厄有天机化科，可把复查项目和日期列清；若流年巨门化忌牵动交友，工作群里的猜测则要停止扩散。反过来，若巨门落疾厄、交友宫见天同化权，负责人可以协助联系收件人撤回附件，但不能替你解释指标。星曜组合只是整理提问的方式，诊断依报告原件与医生意见。
+
+### 把更正拆成三个可核实动作
+先保存误发的时间、群名、附件名称和传播截图，不转发报告扩大范围。再请发送者撤回、请群管理员限制继续转存，并让体检机构说明原本授权的接收对象。最后由你决定是否向相关人员说明情况，尽量只给必要信息。若公司需要安排请假或岗位调整，可以单独谈工作安排，不必在群里公开全部检查数值。是否涉及进一步处置，应依据实际授权与当地适用规则咨询专业人士。
+
+### 排盘后的使用顺序
+校准出生资料和年界，标出巨门原位、本命疾厄与交友，再看流年叠宫和对宫，不挪动星曜。把盘上的每个疑问对到现实证据：谁最先收到报告、谁转发、撤回是否成功、机构给了什么书面回复。健康结论交给医生，传播更正依事实推进；命盘不能取代这两件事。
+
+英文标题：2027 Zi Wei Dou Shu Ju Men Hua Ji: A Medical Report Shared by Mistake
+英文描述：Use the Health and Friends Palaces to separate a private medical question from a workplace sharing error, then verify disclosure and correction steps.
+英文正文：
+A testing provider sends your medical report to a company contact, who mistakenly forwards it to a group chat of twenty coworkers. Before a clinician has reviewed the results with you, people begin asking about an unusual number on the page. The 2027 Ju Men Hua Ji in a Zi Wei Dou Shu chart may help organize questions about communication. It cannot diagnose a condition or establish who is legally responsible.
+
+### Locate Ju Men before reading the annual layer
+Under the Ding year transformation convention, Ju Men receives Hua Ji. Check the chart's year boundary, find the star's natal branch, and identify both the natal and annual palace names at that position. A Ju Men placement connected with Friends raises questions about messages moving through a group. One connected with Health raises questions about how the person verifies and discusses the report. These are alternative placements, not two positions for the same star. Read the opposite palace and the Life and Career relationships before attaching any interpretation to a real person.
+
+### Keep personal health and group communication separate
+The Health Palace can frame the person's need to obtain a correct explanation from a qualified clinician. A natal Tian Ji Hua Ke there, for example, may suggest keeping a clear list of results to ask about. If annual Ju Men Hua Ji concerns Friends, the separate issue is what the work group actually received and repeated. If Ju Men concerns Health while Tian Tong Hua Quan concerns Friends, a group coordinator may help remove the attachment without interpreting anyone's test values. The chart does not turn a coworker's question into a medical conclusion.
+
+### Verify the correction in the real record
+Record when the attachment appeared, which group received it, and whether it was removed; avoid forwarding the report again just to document the mistake. Ask the sender to retract it, the group administrator to limit further sharing, and the provider to confirm who was authorized to receive it. You can discuss any work schedule needs privately without disclosing every result to the group. A clinician should explain the report; applicable privacy duties depend on the actual authorization and local rules.
+
+### Finish with the chart and evidence in separate columns
+Confirm birth details and the annual convention, then mark Ju Men's original position, natal Health and Friends, and their annual overlays. Next to each chart question, place a fact you can check: first recipient, forwarding path, retraction, and the provider's written response. Use the chart to structure the questions and the actual record to guide the correction.
