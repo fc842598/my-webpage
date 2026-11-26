@@ -73,3 +73,41 @@ Property points to kennels, the lease, and the shop's physical constraints. More
 
 ### Read the chart, then read the ledger
 Confirm the birth time and annual boundary. Mark the natal palace at Mao, then compare Wealth, Career, and Property with their stars and supporting relationships. Pair every chart question with evidence: booking terms, completed stays, refunds, shifts, and the lease. Contract duties and cash flow decide what the owner can safely spend.
+
+---
+
+## 3. 2027天同化权牵动交友宫，合租房维修该由谁拍板？
+slug：`ziwei-2027-tiantong-huaquan-jiaoyou-hezu-weixiu`
+搜索意图：合租房共用热水器坏了，怎样区分同住者意见、租约责任与实际付款权限。
+参考资料：2026-11-26 https://www.fateclick.com.tw/blog/2027-tiantong-huaquan 。采用角度：把丁未年天同化权的本命落宫与流年交友宫分开，再用合租维修的通知、授权、分摊三个决策点检验；区别于站内交友宫团队冲突、志愿协作及天同化权管理岗、休假安排。已检索文章标题与开头、双语索引、Feed及sitemap，未见合租维修拍板这一问题。
+正文草稿：
+周五晚上，合租房的共用热水器坏了。三位室友都想尽快修，一人联系师傅，一人提议先换新机，另一人担心押金和退租时的责任。若在2027丁未年的盘上看到天同化权牵动交友宫，值得问的不是“谁一定说了算”，而是同住者如何形成有授权的决定。
+
+### 先确认化权落在谁的哪一宫
+丁年天同化权是年度四化口径之一，但天同原本坐在哪个地支，要看个人本命盘。先确认所用排盘的流年换年方式，再标天同原坐宫、2027流年宫名及本命交友宫；不要看到“化权”就把它从原宫挪到合租关系上。若天同本命在交友宫，关注长期的同伴协商方式；若是流年交友宫与天同的位置重叠，关注的是这一年协作场景。二者可以相交，也可能只是不同层次的提示。
+
+### 交友宫管协作，田宅与财帛回答另一半
+交友宫可提示室友之间能否表达需求、有人是否经常替大家接任务；它不能决定热水器所有权。田宅宫对应居住空间及设施条件，财帛宫提醒谁先垫钱、何时结算。比如交友宫见天同化权，田宅宫同时有维修压力，可以由一人负责收集报价，却不能仅凭热心就替房东同意更换设备。若财帛见化忌，尤其要先写清垫付上限和退款路径，别把“大家以后平摊”当成到账凭据。
+
+### 把拍板拆成三次确认
+第一步拍照记录故障并联系物业或房东，确认合同约定谁负责维修。第二步拿到两份可比报价，列出检测费、零件、上门时间及保修范围；联系师傅的人负责传递信息，不自动获得替全屋签字的权限。第三步在群里明确方案、付款人、分摊额与押金如何处理，得到各方回复后再约上门。若房东应承担费用，就保留报修和付款记录；若室友自行升级设备，先取得书面同意。
+
+### 排盘后回到租约和收据
+先核出生时辰与2027流年年界，再记录天同原坐、交友、田宅、财帛及其三方四正。用交友问协商责任，用田宅问设备归属，用财帛问垫付和清算；最后拿租约、报价、群内确认和收据逐项核对。命盘只能帮助把协作问题拆清，维修授权仍以合同和当事人的明确同意为准。
+
+英文标题：2027 Zi Wei Dou Shu Hua Quan: Who Approves a Shared Apartment Repair?
+英文描述：Use the annual Tian Tong Hua Quan and Friends Palace to organize a shared repair decision while checking the lease, quotes, and payment authority.
+英文正文：
+A shared apartment loses hot water on Friday night. One roommate calls a technician, another wants a new unit, and a third worries about the deposit. If a 2027 Zi Wei Dou Shu chart brings Tian Tong Hua Quan into a Friends Palace question, it can help separate coordination from authority. It cannot tell the roommates who owns the heater.
+
+### Locate the transformation precisely
+Confirm the chart's convention for the start of the Ding Wei annual cycle. Find Tian Tong's original natal branch, the annual palace name there, and the natal Friends Palace. Hua Quan can raise a question about responsibility and influence, but the star remains at its original chart position. A natal Friends placement describes an enduring collaboration pattern; an annual Friends overlap directs attention to this year's group decisions. Keep those layers distinct.
+
+### Read Friends with Property and Wealth
+Friends concerns how people coordinate and whose voice is heard. Property brings in the apartment and its equipment; Wealth asks about deposits, advance payments, and reimbursement. If Tian Tong Hua Quan highlights collaboration while Property shows a repair issue, the person gathering quotes still does not gain the right to authorize a replacement for the landlord. A Wealth Hua Ji concern makes a written spending limit and repayment plan particularly useful.
+
+### Make three separate decisions
+Photograph the fault and check the lease or contact the landlord to establish repair responsibility. Compare two quotes that state inspection fees, parts, timing, and warranty. Then agree in the group chat on the selected work, who pays first, each share, and how the deposit will be handled. The caller who booked a technician is a coordinator, not automatically the final approver. Keep messages and receipts, especially if a roommate pays before reimbursement.
+
+### End with the lease
+Check the birth hour and annual boundary, then locate Tian Tong, Friends, Property, and Wealth with their supporting chart relationships. Match each palace question to the lease, quotes, written consent, and receipts. The chart organizes a discussion; a repair proceeds on clear permission and documented costs.
