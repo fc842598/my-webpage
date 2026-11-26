@@ -1,5 +1,43 @@
 # 2026-11-26 紫微文章源稿
 
+## 8. 2027流年财帛宫看摄影器材押金，到账就能用于扩店吗？
+slug：`ziwei-2027-caibo-gong-sheying-qicai-yajin`
+搜索意图：摄影器材租赁店收到大量押金时，怎样分清暂收款和可投资现金。
+参考资料：2026-11-26 https://xingge.tw/zh-hant/notes/2027-liunian-caibo ；https://thaiam.vn/tu-vi-wiki/cung-khi/cung-tai-bach.html 。采用角度：以可退押金、维修储备和扩店决策核对流年财帛。区别于本站宠物寄养预收款的履约收入、小剧场季票的服务退款；已扫文章、双语索引、Feed、sitemap，未见同一搜索意图。
+正文草稿：
+摄影器材店在旺季收到二十笔相机租赁押金，账户多出四万元。店主想用这笔钱租下一间新门店，却忘了设备归还后，多数押金还要退回。看2027流年财帛宫，先分清钱暂时在账上和钱可以支配，再谈扩店。
+
+### 把流年财帛放回本命盘
+确认出生时辰与2027丁未年的换年口径，找出流年财帛所落地支，再看它对应本命哪一宫、宫内原坐哪些星，以及对宫和命财官三方。不同人的同一流年宫名会叠在不同本命位置，不能套用通用盘。若叠本命官禄，重点是出租业务能否交付；若叠田宅，场地租约和设备存放更需核实。化禄也不把可退押金变成利润。
+
+### 押金、租金和维修储备分开
+假设四万元中三万二千元是可退押金，六千元是已完成租期的租金，两千元是待结算延租款。列出每份合同的返还日期、损坏扣款条件和验机记录，押金单独留存。财帛宫提醒现金进出，官禄宫对应出租流程，田宅宫关联仓储成本。若官禄见化忌、设备回收核验又延误，先修交接台账；财帛见禄也不能让全部余额用于签新铺。
+
+### 扩店前做两种现金情形
+先算多数设备完好归还、押金集中退回时剩多少；再算器材维修占款、下一批订单推迟时能否支付新店租金。若流年财帛牵动本命田宅，把押金返还日与新铺首期租金日期排在一张表。大限官禄即使支持扩张，也仍需独立运营资金，不能用客户可退资金赌下一季订单。
+
+### 排盘与账本一起核对
+先核盘面年界、本命落宫、流年财帛及官禄、田宅，再对照合同、验机单、押金返还和新店租约。盘面帮助找出收支与场地问题；是否扩店取决于扣除返还义务和维修储备后真实可用的现金。
+
+英文标题：Zi Wei Dou Shu Wealth Palace in 2027: Can a Camera Rental Shop Spend Customer Deposits?
+英文描述：A camera rental shop may hold many refundable deposits. Separate them from earned income before using the annual Wealth Palace to consider expansion.
+英文正文：
+A camera rental shop receives twenty new bookings and holds $40,000 in customer deposits. Its owner considers renting another storefront. Most of that balance must go back when the cameras return. A 2027 Zi Wei Dou Shu reading can organize the cash-flow questions, but a bank balance alone cannot fund expansion.
+
+### Locate annual Wealth on the natal chart
+Check the birth inputs and the convention used to start the Ding Wei year. Mark the branch occupied by annual Wealth, then identify the natal palace at that position, its original stars, the opposite palace, and the supporting Life, Wealth, and Career relationship. The annual label does not have the same natal meaning for everyone. If it overlaps natal Career, ask whether the rental process can handle more orders. If it overlaps Property, inspect storage and lease terms. A favorable transformation does not convert a refundable deposit into profit.
+
+### Separate deposits, earned rent, and repairs
+Suppose $32,000 is refundable deposits, $6,000 is rent from completed bookings, and $2,000 covers an unsettled extension. Record the return date and damage terms for each contract. Keep the refundable amount available. Wealth raises the movement of money; Career points to handover and inspection; Property raises the cost of storage and premises. If equipment checks are routinely late, fix that process before opening another location, regardless of a promising Wealth indicator.
+
+### Test the second shop's cash demands
+Model a week when nearly all cameras come back intact and deposits are refunded together. Then model a week when repairs absorb cash while new bookings are delayed. Compare both with the new lease's first payment and recurring rent. A decade cycle connected with Career may make growth a useful topic, but it does not supply working capital. Expansion requires money left after refunds and a repair reserve.
+
+### Put chart notes beside the contracts
+Confirm the annual boundary, natal placement, and Wealth, Career, and Property connections. Put the contracts, return logs, refund schedule, repair costs, and draft lease beside the chart notes. The chart helps organize the review. Expansion depends on cash the business can retain and spend.
+
+---
+
 ## 1. 跨城照护岗位先试岗还是先搬家？迁移宫与大限怎么核对
 slug：`ziwei-qianyi-daxian-kuacheng-zhaohu-shigang`
 搜索意图：收到跨城养老照护岗位邀请，如何区分短期试岗与长期搬迁决策。
