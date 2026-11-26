@@ -111,3 +111,41 @@ Photograph the fault and check the lease or contact the landlord to establish re
 
 ### End with the lease
 Check the birth hour and annual boundary, then locate Tian Tong, Friends, Property, and Wealth with their supporting chart relationships. Match each palace question to the lease, quotes, written consent, and receipts. The chart organizes a discussion; a repair proceeds on clear permission and documented costs.
+
+---
+
+## 4. 小剧场季票预售后，财帛宫与田宅宫怎么分清退票钱？
+slug：`ziwei-caibo-tianzhai-juchang-jipiao-tuipiao`
+搜索意图：小剧场售出季票后，如何区分账面收款、未履约场次与场地固定开销。
+参考资料：2026-11-26 https://thaiam.vn/tu-vi-wiki/cung-khi/cung-tai-bach.html 。采用角度：用剧场季票的退票准备金解释财帛现金流、官禄履约能力和田宅场租的不同问题。区别于站内宠物寄养预收款文章，它关注跨月演出场次、场地变更与退票承诺；已检索文章标题、开头、双语索引、Feed及sitemap，未见同一搜索问题。
+正文草稿：
+一家四十座的小剧场提前卖出下季度季票，到账九万元。负责人想用这笔钱翻新舞台，但有两场演出尚未定档，租约又将在下月续签。紫微斗数里谈财帛宫，先问钱何时流入、何时必须流出；不能因为账户余额高，就把尚未完成的演出都算成可支配利润。
+
+### 财帛宫看流动，先把票款分层
+财帛宫要连命宫、官禄宫的三方四正及对宫福德看，不凭一颗财星判断经营好坏。假设九万元含六场演出，每场一万五千元，其中两场已完成、四场还要支付演员、灯光和场务。已履约部分与未履约部分应分开记账，退票条款允许退还的金额另列准备金。若财帛见化禄，可以把它当成关注收款渠道的提示，却不能代替售票平台的结算单；若见化忌，优先核对退款期限和现金缺口，也不是预言剧场一定亏损。
+
+### 官禄宫回答能否完成承诺
+季票卖出去，只完成了收款。官禄宫对应演出的组织方式：主创人员是否签约、排练室是否可用、每场是否有技术和前台值班。比如财帛宫看起来有进账，官禄宫却显示责任分散，现实里就要把未定档两场的负责人、最晚公布日期和改期通知写清。另一种组合是官禄较稳定而财帛出现退款压力，问题可能不是节目做不出，而是集中退票时账户里留的钱不够。两个宫位提出的是不同核对题。
+
+### 田宅宫对应场地，不等于票房
+田宅宫提示固定空间的条件：租期、消防容量、舞台设备和续租成本。若房东涨租，不能直接挪用可退款票款付装修首款；先算现有租约覆盖哪些场次，再看改期或换场地是否触发退票。即使田宅有利，也不能跳过新的场租报价。把已完成演出的净收入、未完成演出的直接成本、可退款金额和下一季固定支出分成四栏，才能看出翻新预算从哪里来。
+
+### 排盘之后回到票务台账
+先确认出生资料，标出财帛、官禄、田宅及三方四正，再看相关星曜与四化分别落在哪个宫位。每个判断对应票务系统的已用场次、合同里的退票条件、演员排期及场租凭据。决定翻新前，先留足未演场次成本和退款准备金；命盘帮助排列问题，实际余额要以台账和合同核实。
+
+英文标题：Zi Wei Dou Shu Wealth and Property Palaces: Theater Season Ticket Refunds
+英文描述：Use the Wealth, Career, and Property Palaces to frame a small theater's season ticket cash flow, outstanding shows, venue costs, and refund reserve.
+英文正文：
+A forty-seat theater sells season passes for the coming quarter and receives 90,000 yuan. Its manager wants to renovate the stage, but two performances have no confirmed date and the venue lease is up for renewal. In a Zi Wei Dou Shu reading, the Wealth Palace raises questions about cash moving in and out. Money received for a future show is not automatically money available for construction.
+
+### Split ticket receipts by obligation
+Read Wealth with Life and Career in its chart relationships, and check the opposite palace as well. Suppose the passes cover six shows at 15,000 yuan each. Two have taken place; four still require actors, lighting, and front-of-house staff. Record completed shows separately from unfulfilled ones, and reserve the amount customers can claim under the refund policy. Hua Lu may prompt a closer look at sales channels, while Hua Ji may make refund timing more urgent. Neither marker replaces the ticketing platform's settlement records.
+
+### Career asks whether the shows can happen
+Selling a pass creates a delivery commitment. The Career Palace points to the way work is organized: signed performers, rehearsal space, technical crew, and a person accountable for each date. If cash is arriving while responsibility for two shows is unclear, name the producer, set a date for announcing the schedule, and agree on how customers will be notified. If the program is well organized but refunds could arrive together, the issue may be liquidity rather than artistic capacity. These are different questions.
+
+### Property asks what the venue costs
+The Property Palace directs attention to the lease, capacity, equipment, and renewal terms. A rent increase or venue change may affect the outstanding shows and their refund rights. Keep four columns: net income from completed performances, direct costs of future shows, refundable amounts, and fixed venue spending. A favorable chart pattern does not supply a lease quote or authorize spending refundable ticket money on a renovation.
+
+### Return to contracts and the ticket ledger
+Confirm birth details, then locate Wealth, Career, and Property with their stars and transformations. Match each chart question to used tickets, refund terms, performer schedules, and the venue agreement. Reserve enough for remaining shows and refunds before approving a renovation. The ledger and contracts determine the amount the theater can spend.
